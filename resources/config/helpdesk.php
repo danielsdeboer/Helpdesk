@@ -9,6 +9,6 @@ return [
     'tables' => [
         'users' => 'users',
         'tickets' => 'tickets',
-        'generic_content' => 'generic_content',
+        'generic_contents' => 'generic_contents',
     ],
 ];

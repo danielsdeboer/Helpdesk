@@ -29,6 +29,14 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
+        Schema::create($tables['generic_contents'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->text('body');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
     }
 
     /**
