@@ -4,6 +4,8 @@ use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\Email;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\PoolAssignment;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\User;
 use Carbon\Carbon;
@@ -60,6 +62,22 @@ $factory->define(Email::class, function (Faker\Generator $faker) {
         'ticket_id' => factory(Ticket::class)->create()->id,
         'subject' => 'Test Subject',
         'body' => 'Test body.',
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(Pool::class, function (Faker\Generator $faker) {
+    return [
+        'team_lead' => factory(User::class)->create()->id,
+        'name' => 'Customer Service',
+    ];
+});
+
+$factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
+        'pool_id' => factory(Pool::class)->create()->id,
         'created_by' => null,
         'is_visible' => false,
     ];

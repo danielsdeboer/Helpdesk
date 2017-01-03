@@ -14,6 +14,8 @@ return [
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',
         'emails' => 'emails',
+        'pools' => 'pools',
+        'pool_assignments' => 'pool_assignments',
     ],
 
     'supervisor' => [
@@ -48,6 +50,14 @@ return [
             'assignedToUser' => [
                 'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToUser::class,
                 'subject' => 'A ticket has been assigned to you',
+                'greeting' => 'Hey there.',
+                'line' => '',
+                'route' => '',
+            ],
+
+            'assignedToPool' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToPool::class,
+                'subject' => 'A ticket has been assigned to your pool',
                 'greeting' => 'Hey there.',
                 'line' => '',
                 'route' => '',

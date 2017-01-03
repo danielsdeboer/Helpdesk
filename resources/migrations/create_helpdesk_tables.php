@@ -78,6 +78,24 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
+        Schema::create($tables['pools'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('team_lead');
+            $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['pool_assignments'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->unsignedInteger('pool_id');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
     }
 
     /**
