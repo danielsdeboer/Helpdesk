@@ -21,7 +21,7 @@ class CreateHelpdeskTables extends Migration
             $table->increments('id');
             $table->char('uuid', 32)->unique();
             $table->unsignedInteger('user_id')->nullable();
-            $table->string('name');
+            // $table->string('name');
             $table->integer('content_id')->unsigned()->nullable();
             $table->string('content_type')->nullable();
             $table->string('status')->default('open');

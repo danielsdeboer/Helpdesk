@@ -33,4 +33,9 @@ class Ticket extends Model
             config('helpdesk.userModel')
         );
     }
+
+    public function content()
+    {
+        return $this->morphTo()->withTrashed();
+    }
 }

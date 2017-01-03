@@ -14,4 +14,9 @@ class GenericContent extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected $fillable = [
+        'title',
+        'body'
+    ];
 }
