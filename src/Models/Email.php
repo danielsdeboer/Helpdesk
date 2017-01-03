@@ -6,11 +6,6 @@ use Aviator\Helpdesk\Models\ActionBase;
 
 class Email extends ActionBase
 {
-    public function action()
-    {
-        return $this->morphOne(Action::class, 'object');
-    }
-
     /**
      * Set the table name from the Helpdesk config
      * @param array $attributes

@@ -16,6 +16,7 @@ return [
         'emails' => 'emails',
         'pools' => 'pools',
         'pool_assignments' => 'pool_assignments',
+        'closings' => 'closings',
     ],
 
     'supervisor' => [

@@ -4,12 +4,8 @@ namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Models\ActionBase;
 
-class Assignment extends ActionBase
+class Closing extends ActionBase
 {
-    public function assignee() {
-        return $this->belongsTo(config('helpdesk.userModel'), 'assigned_to');
-    }
-
     /**
      * Set the table name from the Helpdesk config
      * @param array $attributes
@@ -18,6 +14,6 @@ class Assignment extends ActionBase
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.assignments'));
+        $this->setTable(config('helpdesk.tables.closings'));
     }
 }

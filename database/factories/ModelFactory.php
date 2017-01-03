@@ -1,6 +1,7 @@
 <?php
 
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\Email;
 use Aviator\Helpdesk\Models\GenericContent;
@@ -78,6 +79,15 @@ $factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'pool_id' => factory(Pool::class)->create()->id,
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(Closing::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
+        'note' => 'Test note',
         'created_by' => null,
         'is_visible' => false,
     ];

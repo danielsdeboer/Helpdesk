@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Notifications\External\Created;
 use Aviator\Helpdesk\Tests\TestCase;
@@ -86,9 +87,25 @@ class TicketTest extends TestCase {
 
         $this->actingAs($user);
 
-        $this->ticket->assignTo($user);
+        $this->ticket->assignToUser($user);
 
         $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_assigned_to_an_assignment_pool()
+    {
+        $this->createTicket();
+        $user = factory(User::class)->create();
+        $pool = factory(Pool::class)->create();
+
+        $this->actingAs($user);
+        $this->ticket->assignToPool($pool);
+
+        $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
     }
 
     /**
@@ -116,7 +133,7 @@ class TicketTest extends TestCase {
     {
         $this->createTicket();
 
-        $this->ticket->assignTo(User::first());
+        $this->ticket->assignToUser(User::first());
         $this->ticket->dueOn('today');
 
         $this->assertEquals(3, $this->ticket->actions->count());
@@ -134,5 +151,32 @@ class TicketTest extends TestCase {
             $this->ticket->user,
             Created::class
         );
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_closed()
+    {
+        $this->createTicket();
+
+        $this->ticket->close();
+
+        $this->assertEquals('closed', $this->ticket->status);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_closed_with_a_note()
+    {
+        $this->createTicket();
+
+        $this->ticket->close('here is a note');
+
+        $this->assertEquals('closed', $this->ticket->status);
+        $this->assertEquals('here is a note', $this->ticket->closing->note);
     }
 }

@@ -51,11 +51,34 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function assignTo($user, $isVisible = false, $creator = null)
+    public function assignToUser($user, $isVisible = false, $creator = null)
     {
         Assignment::create([
             'ticket_id' => $this->id,
             'assigned_to' => $user->id,
+            'created_by' => $creator ? $creator->id : null,
+            'is_visible' => $isVisible,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Assign to a pool. Optionally set the creator if the
+     * assignment isn't automatically done.
+     *
+     * Visibility for assignments is assumed to be false as
+     * this isn't relevant for the end user but this can
+     * be overriden.
+     * @param  User $user
+     * @param  User $creator
+     * @return $this
+     */
+    public function assignToPool($pool, $isVisible = false, $creator = null)
+    {
+        PoolAssignment::create([
+            'ticket_id' => $this->id,
+            'pool_id' => $pool->id,
             'created_by' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
@@ -72,7 +95,7 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function dueOn($date, $isVisible = false, $creator = null)
+    public function dueOn($date, $isVisible = true, $creator = null)
     {
         DueDate::create([
             'ticket_id' => $this->id,
@@ -80,6 +103,29 @@ class Ticket extends Model
             'created_by' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
+    }
+
+    /**
+     * Close the ticket. Optionally set the creator.
+     *
+     * Visibility is assumed true for closings as a status
+     * indicator for the customer
+     * @param  string $date
+     * @param  User $creator
+     * @return $this
+     */
+    public function close($note = null, $isVisible = true, $creator = null)
+    {
+        Closing::create([
+            'ticket_id' => $this->id,
+            'note' => $note,
+            'created_by' => $creator ? $creator->id : null,
+            'is_visible' => $isVisible,
+        ]);
+
+        $this->status = 'closed';
+
+        $this->save();
     }
 
     ///////////////////
@@ -110,6 +156,14 @@ class Ticket extends Model
         return $this->hasOne(Assignment::class)->latest();
     }
 
+    public function poolAssignments() {
+        return $this->hasMany(PoolAssignment::class);
+    }
+
+    public function poolAssignment() {
+        return $this->hasOne(PoolAssignment::class)->latest();
+    }
+
     public function dueDates() {
         return $this->hasMany(DueDate::class);
     }
@@ -120,5 +174,13 @@ class Ticket extends Model
 
     public function emails() {
         return $this->hasMany(Email::class);
+    }
+
+    public function closing() {
+        return $this->hasOne(Closing::class)->latest();
+    }
+
+    public function closings() {
+        return $this->hasMany(Closing::class);
     }
 }
