@@ -21,5 +21,13 @@ class HelpdeskServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/config/helpdesk.php',
             'helpdesk'
         );
+
+        $this->registerObservers();
+    }
+
+    protected function registerObservers()
+    {
+        \Aviator\Helpdesk\Models\Ticket::observe(\Aviator\Helpdesk\Observers\TicketObserver::class);
+        \Aviator\Helpdesk\Models\Assignment::observe(\Aviator\Helpdesk\Observers\AssignmentObserver::class);
     }
 }

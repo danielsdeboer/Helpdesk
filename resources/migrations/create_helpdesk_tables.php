@@ -21,7 +21,6 @@ class CreateHelpdeskTables extends Migration
             $table->increments('id');
             $table->char('uuid', 32)->unique();
             $table->unsignedInteger('user_id')->nullable();
-            // $table->string('name');
             $table->integer('content_id')->unsigned()->nullable();
             $table->string('content_type')->nullable();
             $table->string('status')->default('open');
@@ -33,6 +32,27 @@ class CreateHelpdeskTables extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('body');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['actions'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->integer('subject_id')->unsigned()->nullable();
+            $table->string('subject_type')->nullable();
+            $table->integer('object_id')->unsigned()->nullable();
+            $table->string('object_type')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['assignments'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->unsignedInteger('assigned_to');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible');
             $table->timestamps();
             $table->softDeletes();
         });

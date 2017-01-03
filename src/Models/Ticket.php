@@ -24,6 +24,20 @@ class Ticket extends Model
         'name'
     ];
 
+    ////////////////////
+    // HELPER METHODS //
+    ////////////////////
+
+    public function assignTo($user)
+    {
+        $assignment = Assignment::create([
+            'ticket_id' => $this->id,
+            'assigned_to' => $user->id,
+            'created_by' => auth()->user()->id,
+            'is_visible' => false,
+        ]);
+    }
+
     ///////////////////
     // RELATIONSHIPS //
     ///////////////////
@@ -37,5 +51,24 @@ class Ticket extends Model
     public function content()
     {
         return $this->morphTo()->withTrashed();
+    }
+
+    public function actions()
+    {
+        return $this->morphMany(Action::class, 'subject');
+    }
+
+    /**
+     * Get all assignments
+     */
+    public function assignments() {
+        return $this->hasMany(Assignment::class);
+    }
+
+    /**
+     * Get the latest assignment
+     */
+    public function assignment() {
+        return $this->hasOne(Assignment::class)->latest();
     }
 }

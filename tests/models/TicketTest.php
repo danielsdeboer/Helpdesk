@@ -64,4 +64,30 @@ class TicketTest extends TestCase {
         $this->assertSame($this->content, $this->ticket->content);
         $this->assertSame('Some title', $this->ticket->content->title);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function creating_a_ticket_also_creates_an_action_via_the_ticket_observer()
+    {
+        $this->createTicket();
+
+        $this->assertEquals('Created', $this->ticket->actions->first()->name);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_assigned_to_a_user()
+    {
+        $this->createTicket();
+        $this->createUser();
+        $this->actingAs($this->user);
+
+        $this->ticket->assignTo($this->user);
+
+        $this->assertEquals('test@test.com', $this->ticket->assignment->assignee->email);
+    }
 }
