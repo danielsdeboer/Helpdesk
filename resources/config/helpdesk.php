@@ -45,6 +45,14 @@ return [
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
                 'route' => ''
             ],
+
+            'closed' => [
+                'class' => \Aviator\Helpdesk\Notifications\External\Closed::class,
+                'subject' => 'Your ticket has been closed.',
+                'greeting' => 'Hey there.',
+                'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
+                'route' => ''
+            ],
         ],
 
         'internal' => [

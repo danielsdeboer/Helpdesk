@@ -36,5 +36,6 @@ class HelpdeskServiceProvider extends ServiceProvider
         \Aviator\Helpdesk\Models\DueDate::observe(\Aviator\Helpdesk\Observers\DueDateObserver::class);
         \Aviator\Helpdesk\Models\Email::observe(\Aviator\Helpdesk\Observers\EmailObserver::class);
         \Aviator\Helpdesk\Models\PoolAssignment::observe(\Aviator\Helpdesk\Observers\PoolAssignmentObserver::class);
+        \Aviator\Helpdesk\Models\Closing::observe(\Aviator\Helpdesk\Observers\ClosingObserver::class);
     }
 }

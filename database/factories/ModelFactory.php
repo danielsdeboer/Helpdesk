@@ -86,7 +86,9 @@ $factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
 
 $factory->define(Closing::class, function (Faker\Generator $faker) {
     return [
-        'ticket_id' => factory(Ticket::class)->create()->id,
+        'ticket_id' => factory(Ticket::class)->create([
+            'status' => 'closed'
+        ])->id,
         'note' => 'Test note',
         'created_by' => null,
         'is_visible' => false,
