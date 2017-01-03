@@ -4,7 +4,7 @@ return [
     /**
      * Define the user model
      */
-    'userModel' => Aviator\Helpdesk\Tests\User::class,
+    'userModel' => \Aviator\Helpdesk\Tests\User::class,
 
     'tables' => [
         'users' => 'users',
@@ -14,6 +14,10 @@ return [
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',
         'emails' => 'emails',
+    ],
+
+    'supervisor' => [
+        'email' => 'supervisor@test.com',
     ],
 
     'from' => [
@@ -28,6 +32,14 @@ return [
                 'subject' => 'Your ticket has been placed!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been created. A member of our customer service staff will be in touch shortly.',
+                'route' => ''
+            ],
+
+            'emailed' => [
+                'class' => \Aviator\Helpdesk\Notifications\External\Emailed::class,
+                'subject' => 'Your ticket has been replied to!',
+                'greeting' => 'Hey there.',
+                'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
                 'route' => ''
             ],
         ],
