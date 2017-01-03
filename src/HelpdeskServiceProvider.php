@@ -25,9 +25,15 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->registerObservers();
     }
 
+    /**
+     * Register model observers
+     * @return void
+     */
     protected function registerObservers()
     {
         \Aviator\Helpdesk\Models\Ticket::observe(\Aviator\Helpdesk\Observers\TicketObserver::class);
         \Aviator\Helpdesk\Models\Assignment::observe(\Aviator\Helpdesk\Observers\AssignmentObserver::class);
+        \Aviator\Helpdesk\Models\DueDate::observe(\Aviator\Helpdesk\Observers\DueDateObserver::class);
+        \Aviator\Helpdesk\Models\Email::observe(\Aviator\Helpdesk\Observers\EmailObserver::class);
     }
 }

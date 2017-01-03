@@ -4,12 +4,8 @@ namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Models\ActionBase;
 
-class Assignment extends ActionBase
+class Email extends ActionBase
 {
-    public function assignee() {
-        return $this->belongsTo(config('helpdesk.userModel'), 'assigned_to');
-    }
-
     public function action()
     {
         return $this->morphOne(Action::class, 'object');
@@ -23,6 +19,6 @@ class Assignment extends ActionBase
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.assignments'));
+        $this->setTable(config('helpdesk.tables.emails'));
     }
 }

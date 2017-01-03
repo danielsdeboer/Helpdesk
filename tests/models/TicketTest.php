@@ -9,30 +9,28 @@ use Aviator\Helpdesk\Tests\User;
 
 class TicketTest extends TestCase {
 
-    protected $user;
     protected $ticket;
     protected $content;
 
-    protected function createUser()
-    {
-        $this->user = User::create([
-            'email' => 'test@test.com'
-        ]);
-    }
-
     protected function createTicket()
     {
-        $this->ticket = Ticket::create([
-            // 'name' => 'Test Ticket',
-        ]);
+        $this->ticket = factory(Ticket::class)->create();
     }
 
     protected function createContent()
     {
-        $this->content = GenericContent::create([
-            'title' => 'Some title',
-            'body' => 'Hey there!'
-        ]);
+        $this->content = factory(GenericContent::class)->create();
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_has_an_automatically_generated_uuid()
+    {
+        $this->createTicket();
+
+        $this->assertEquals(32, strlen($this->ticket->uuid));
     }
 
     /**
@@ -41,12 +39,9 @@ class TicketTest extends TestCase {
      */
     public function a_ticket_belongs_to_a_user()
     {
-        $this->createUser();
         $this->createTicket();
 
-        $this->ticket->user()->associate($this->user);
-
-        $this->assertEquals('test@test.com', $this->ticket->user->email);
+        $this->assertNotNull($this->ticket->user->email);
     }
 
     /**
@@ -55,14 +50,14 @@ class TicketTest extends TestCase {
      */
     public function a_ticket_can_have_polymorphic_generic_content()
     {
-        $this->createUser();
         $this->createTicket();
         $this->createContent();
 
         $this->ticket->content()->associate($this->content);
 
         $this->assertSame($this->content, $this->ticket->content);
-        $this->assertSame('Some title', $this->ticket->content->title);
+        $this->assertNotNull($this->ticket->content->title);
+        $this->assertNotNull($this->ticket->content->body);
     }
 
     /**
@@ -83,11 +78,13 @@ class TicketTest extends TestCase {
     public function a_ticket_may_be_assigned_to_a_user()
     {
         $this->createTicket();
-        $this->createUser();
-        $this->actingAs($this->user);
 
-        $this->ticket->assignTo($this->user);
+        $user = factory(User::class)->create();
 
-        $this->assertEquals('test@test.com', $this->ticket->assignment->assignee->email);
+        $this->actingAs($user);
+
+        $this->ticket->assignTo($user);
+
+        $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
     }
 }

@@ -1,9 +1,12 @@
 <?php
 
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\DueDate;
+use Aviator\Helpdesk\Models\Email;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\User;
+use Carbon\Carbon;
 
 /**
  * User factory facilities
@@ -38,6 +41,25 @@ $factory->define(Assignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'assigned_to' => factory(User::class)->create()->id,
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(DueDate::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
+        'due_on' => Carbon::parse('+1 day'),
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(Email::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
+        'subject' => 'Test Subject',
+        'body' => 'Test body.',
         'created_by' => null,
         'is_visible' => false,
     ];

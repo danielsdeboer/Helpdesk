@@ -24,6 +24,17 @@ class Ticket extends Model
         'name'
     ];
 
+    /**
+     * Set the table name from the Helpdesk config
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setTable(config('helpdesk.tables.tickets'));
+    }
+
     ////////////////////
     // HELPER METHODS //
     ////////////////////
@@ -58,17 +69,19 @@ class Ticket extends Model
         return $this->morphMany(Action::class, 'subject');
     }
 
-    /**
-     * Get all assignments
-     */
     public function assignments() {
         return $this->hasMany(Assignment::class);
     }
 
-    /**
-     * Get the latest assignment
-     */
     public function assignment() {
         return $this->hasOne(Assignment::class)->latest();
+    }
+
+    public function dueDates() {
+        return $this->hasMany(DueDate::class);
+    }
+
+    public function dueDate() {
+        return $this->hasOne(DueDate::class)->latest();
     }
 }

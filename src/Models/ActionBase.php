@@ -43,4 +43,12 @@ class ActionBase extends Model
     public function creator() {
         return $this->belongsTo(config('helpdesk.userModel'), 'created_by');
     }
+
+    /**
+     * Associated with one action
+     */
+    public function action()
+    {
+        return $this->morphOne(Action::class, 'object');
+    }
 }

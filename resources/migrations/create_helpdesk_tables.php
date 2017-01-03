@@ -20,7 +20,7 @@ class CreateHelpdeskTables extends Migration
         Schema::create($tables['tickets'], function (Blueprint $table) {
             $table->increments('id');
             $table->char('uuid', 32)->unique();
-            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->integer('content_id')->unsigned()->nullable();
             $table->string('content_type')->nullable();
             $table->string('status')->default('open');
@@ -52,7 +52,28 @@ class CreateHelpdeskTables extends Migration
             $table->unsignedInteger('ticket_id');
             $table->unsignedInteger('assigned_to');
             $table->unsignedInteger('created_by')->nullable();
-            $table->boolean('is_visible');
+            $table->boolean('is_visible')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['due_dates'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->date('due_on');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['emails'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->string('subject');
+            $table->text('body');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
