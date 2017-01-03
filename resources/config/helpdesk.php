@@ -31,5 +31,15 @@ return [
                 'route' => ''
             ],
         ],
+
+        'internal' => [
+            'assignedToUser' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToUser::class,
+                'subject' => 'A ticket has been assigned to you',
+                'greeting' => 'Hey there.',
+                'line' => '',
+                'route' => '',
+            ]
+        ]
     ],
 ];

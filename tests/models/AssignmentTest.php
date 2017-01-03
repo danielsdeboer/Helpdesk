@@ -3,6 +3,8 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Notifications\Internal\AssignedToUser;
+use Illuminate\Support\Facades\Notification;
 
 class AssignmentTest extends TestCase {
 
@@ -15,5 +17,19 @@ class AssignmentTest extends TestCase {
         $assignment = factory(Assignment::class)->create();
 
         $this->assertEquals('Assigned', $assignment->action->name);
+    }
+
+    /**
+     * @group assignment
+     * @test
+     */
+    public function create_an_assignment_fires_a_notification_to_the_assignee()
+    {
+        $assignment = factory(Assignment::class)->create();
+
+        Notification::assertSentTo(
+            $assignment->assignee,
+            AssignedToUser::class
+        );
     }
 }
