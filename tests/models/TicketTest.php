@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
@@ -86,5 +87,36 @@ class TicketTest extends TestCase {
         $this->ticket->assignTo($user);
 
         $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_given_a_due_date()
+    {
+        $this->createTicket();
+
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $this->ticket->dueOn('+1 day');
+
+        $this->assertNotNull($this->ticket->dueDate->due_on);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_have_many_actions()
+    {
+        $this->createTicket();
+
+        $this->ticket->assignTo(User::first());
+        $this->ticket->dueOn('today');
+
+        $this->assertEquals(3, $this->ticket->actions->count());
     }
 }

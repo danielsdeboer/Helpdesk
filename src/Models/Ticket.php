@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Traits\AutoUuids;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -39,13 +40,45 @@ class Ticket extends Model
     // HELPER METHODS //
     ////////////////////
 
-    public function assignTo($user)
+    /**
+     * Assign to a user. Optionally set the creator if the
+     * assignment isn't automatically done.
+     *
+     * Visibility for assignments is assumed to be false as
+     * this isn't relevant for the end user but this can
+     * be overriden.
+     * @param  User $user
+     * @param  User $creator
+     * @return $this
+     */
+    public function assignTo($user, $isVisible = false, $creator = null)
     {
-        $assignment = Assignment::create([
+        Assignment::create([
             'ticket_id' => $this->id,
             'assigned_to' => $user->id,
-            'created_by' => auth()->user()->id,
-            'is_visible' => false,
+            'created_by' => $creator ? $creator->id : null,
+            'is_visible' => $isVisible,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Add a due date. Optionally set the creator.
+     *
+     * Visibility is assumed true for due dates since
+     * end users will probably want to know this.
+     * @param  string $date
+     * @param  User $creator
+     * @return $this
+     */
+    public function dueOn($date, $isVisible = false, $creator = null)
+    {
+        DueDate::create([
+            'ticket_id' => $this->id,
+            'due_on' => Carbon::parse($date),
+            'created_by' => $creator ? $creator->id : null,
+            'is_visible' => $isVisible,
         ]);
     }
 
@@ -83,5 +116,9 @@ class Ticket extends Model
 
     public function dueDate() {
         return $this->hasOne(DueDate::class)->latest();
+    }
+
+    public function emails() {
+        return $this->hasMany(Email::class);
     }
 }
