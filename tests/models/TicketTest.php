@@ -327,10 +327,10 @@ class TicketTest extends TestCase {
     public function a_ticket_may_be_replied_to_externally_by_the_end_user()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
+        $externalUser = factory(User::class)->create();
 
-        $this->ticket->externalReply('here is the body of the reply', $creator);
+        $this->ticket->externalReply('here is the body of the reply', $externalUser);
 
-        $this->assertEquals($creator->id, $this->ticket->externalReplies->first()->creator->id);
+        $this->assertEquals($externalUser->id, $this->ticket->externalReplies->first()->creator->id);
     }
 }
