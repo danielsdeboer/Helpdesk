@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Models\ActionBase;
+use Carbon\Carbon;
 
 class DueDate extends ActionBase
 {
@@ -19,5 +20,15 @@ class DueDate extends ActionBase
         parent::__construct($attributes);
 
         $this->setTable(config('helpdesk.tables.due_dates'));
+    }
+
+    /**
+     * Enforce the dateString format for due_on. This is useful
+     * for sqlite which doesn't have a date type
+     * @param mixed $value
+     */
+    public function setDueOnAttribute($value)
+    {
+        $this->attributes['due_on'] = Carbon::parse($value)->toDateString();
     }
 }

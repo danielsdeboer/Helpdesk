@@ -10,6 +10,7 @@ use Aviator\Helpdesk\Notifications\External\Created;
 use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 
 class TicketTest extends TestCase {
@@ -31,7 +32,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_has_an_automatically_generated_uuid()
+    public function it_has_an_automatically_generated_uuid()
     {
         $this->createTicket();
 
@@ -42,7 +43,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_belongs_to_a_user()
+    public function it_belongs_to_a_user()
     {
         $this->createTicket();
 
@@ -53,7 +54,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_can_have_polymorphic_generic_content()
+    public function it_can_have_polymorphic_generic_content()
     {
         $this->createTicket();
         $this->createContent();
@@ -69,7 +70,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_can_create_the_content()
+    public function it_can_create_the_content()
     {
         $this->createTicket();
 
@@ -86,7 +87,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_a_user_automatically()
+    public function it_may_be_assigned_to_a_user_automatically()
     {
         $this->createTicket();
         $user = factory(User::class)->create();
@@ -100,7 +101,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_a_user_by_a_user()
+    public function it_may_be_assigned_to_a_user_by_a_user()
     {
         $this->createTicket();
         $user = factory(User::class)->create();
@@ -118,7 +119,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_an_assignment_pool_automatically()
+    public function it_may_be_assigned_to_an_assignment_pool_automatically()
     {
         $this->createTicket();
         $pool = factory(Pool::class)->create();
@@ -132,7 +133,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_an_assignment_pool_by_a_user()
+    public function it_may_be_assigned_to_an_assignment_pool_by_a_user()
     {
         $this->createTicket();
         $pool = factory(Pool::class)->create();
@@ -148,7 +149,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_given_a_due_date_automatically()
+    public function it_may_be_given_a_due_date_automatically()
     {
         $this->createTicket();
 
@@ -161,7 +162,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_given_a_due_date_by_a_user()
+    public function it_may_be_given_a_due_date_by_a_user()
     {
         $this->createTicket();
         $creator = factory(User::class)->create();
@@ -176,7 +177,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_have_many_actions()
+    public function it_may_have_many_actions()
     {
         $this->createTicket();
 
@@ -190,7 +191,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_closed_automatically()
+    public function it_may_be_closed_automatically()
     {
         $this->createTicket();
 
@@ -203,7 +204,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_closed_with_a_note()
+    public function it_may_be_closed_with_a_note()
     {
         $this->createTicket();
 
@@ -217,7 +218,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_closed_by_a_user()
+    public function it_may_be_closed_by_a_user()
     {
         $this->createTicket();
         $creator = factory(User::class)->create();
@@ -233,7 +234,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_opened_after_being_closed_automatically()
+    public function it_may_be_opened_after_being_closed_automatically()
     {
         $this->createTicket();
 
@@ -247,7 +248,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_opened_after_being_closed_with_a_note()
+    public function it_may_be_opened_after_being_closed_with_a_note()
     {
         $this->createTicket();
 
@@ -263,7 +264,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_opened_after_being_closed_by_a_user()
+    public function it_may_be_opened_after_being_closed_by_a_user()
     {
         $this->createTicket();
         $creator = factory(User::class)->create();
@@ -279,7 +280,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_replied_to_internally_by_a_user()
+    public function it_may_be_replied_to_internally_by_a_user()
     {
         $this->createTicket();
         $creator = factory(User::class)->create();
@@ -293,7 +294,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_not_be_replied_to_internally_automatically()
+    public function it_may_not_be_replied_to_internally_automatically()
     {
         $this->createTicket();
 
@@ -324,7 +325,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_replied_to_externally_by_the_end_user()
+    public function it_may_be_replied_to_externally_by_the_end_user()
     {
         $this->createTicket();
         $externalUser = factory(User::class)->create();
@@ -338,7 +339,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_has_a_uuid_scope()
+    public function it_has_a_uuid_scope()
     {
         $this->createTicket();
 
@@ -352,7 +353,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_has_a_find_with_actions_scope()
+    public function it_has_a_find_with_actions_scope()
     {
         $this->createTicket();
 
@@ -366,7 +367,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_has_an_unassigned_scope()
+    public function it_has_an_unassigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
         $assignee = factory(User::class)->create();
@@ -381,7 +382,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_has_an_assigned_scope()
+    public function it_has_assigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
         $assignee = factory(User::class)->create();
@@ -390,5 +391,61 @@ class TicketTest extends TestCase {
         $assignedTickets = Ticket::assigned()->get();
 
         $this->assertEquals(1, $assignedTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_overdue_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+
+        $tickets->first()->dueOn('yesterday');
+        $overdueTickets = Ticket::overdue()->get();
+
+        $this->assertEquals(1, $overdueTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_ontime_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+
+        $tickets->first()->dueOn('tomorrow');
+        $onTimeTickets = Ticket::onTime()->get();
+
+        $this->assertEquals(1, $onTimeTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_due_today_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+
+        $tickets->first()->dueOn('now');
+        $todaysTickets = Ticket::dueToday()->get();
+
+        $this->assertEquals(1, $todaysTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_opened_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+
+        $tickets->first()->close();
+        $openTickets = Ticket::opened()->get();
+
+        $this->assertEquals(9, $openTickets->count());
     }
 }

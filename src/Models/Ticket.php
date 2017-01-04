@@ -297,6 +297,46 @@ class Ticket extends Model
         return $query->whereHas('assignment');
     }
 
+    /**
+     * Get overdue tickets
+     */
+    public function scopeOverdue($query)
+    {
+        return $query->whereHas('dueDate', function($query) {
+            $query->where('due_on', '<', Carbon::now()->toDateString());
+        });
+    }
+
+    /**
+     * Get on time tickets. Due Today is a subet of on time tickets
+     */
+    public function scopeOnTime($query)
+    {
+        return $query->whereHas('dueDate', function($query) {
+            $query->where('due_on', '>=', Carbon::now()->toDateString());
+        });
+    }
+
+    /**
+     * Get on time tickets. Due Today is a subet of on time tickets
+     */
+    public function scopeDueToday($query)
+    {
+        return $query->whereHas('dueDate', function($query) {
+            $query->where('due_on', Carbon::now()->toDateString());
+        });
+    }
+
+    /**
+     * Get open tickets. This method name is a bit silly but we're already
+     * using open() above. This can be refactored once the open() method
+     * is refactored to a builder or domain object
+     */
+    public function scopeOpened($query)
+    {
+        return $query->whereDoesntHave('closing');
+    }
+
     ///////////////////
     // RELATIONSHIPS //
     ///////////////////

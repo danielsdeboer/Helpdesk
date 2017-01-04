@@ -8,7 +8,7 @@ trait AutoUuids {
         parent::boot();
 
         static::creating(function($model) {
-            $model->uuid = str_random(32);
+            $model->uuid = strtolower(str_random(32));
         });
     }
 }
