@@ -22,13 +22,9 @@ class ActionBase extends Model
 
     protected $guarded = [];
 
-    /**
-     * Is the model visible
-     * @return boolean
-     */
-    public function isVisible() {
-        return $this->is_visible == 1;
-    }
+    protected $casts = [
+        'is_visible' => 'boolean',
+    ];
 
     /**
      * Owned by ticket

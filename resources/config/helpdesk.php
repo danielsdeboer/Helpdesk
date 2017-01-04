@@ -13,11 +13,12 @@ return [
         'actions' => 'actions',
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',
-        'emails' => 'emails',
+        'internal_replies' => 'internal_replies',
         'pools' => 'pools',
         'pool_assignments' => 'pool_assignments',
         'closings' => 'closings',
         'openings' => 'openings',
+        'notes' => 'notes',
     ],
 
     'supervisor' => [
@@ -39,8 +40,8 @@ return [
                 'route' => ''
             ],
 
-            'emailed' => [
-                'class' => \Aviator\Helpdesk\Notifications\External\Emailed::class,
+            'replied' => [
+                'class' => \Aviator\Helpdesk\Notifications\External\Replied::class,
                 'subject' => 'Your ticket has been replied to!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',

@@ -15,7 +15,7 @@ class DueDateTest extends TestCase {
     {
         $dueDate = factory(DueDate::class)->create();
 
-        $this->assertEquals('Due Dated', $dueDate->action->name);
+        $this->assertEquals('Due Date Added', $dueDate->action->name);
     }
 
     /**

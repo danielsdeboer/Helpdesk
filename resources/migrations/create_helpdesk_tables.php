@@ -67,13 +67,12 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
-        Schema::create($tables['emails'], function (Blueprint $table) {
+        Schema::create($tables['internal_replies'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('ticket_id');
-            $table->string('subject');
             $table->text('body');
-            $table->unsignedInteger('created_by')->nullable();
-            $table->boolean('is_visible')->default(0);
+            $table->unsignedInteger('created_by');
+            $table->boolean('is_visible')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -110,6 +109,16 @@ class CreateHelpdeskTables extends Migration
             $table->increments('id');
             $table->unsignedInteger('ticket_id');
             $table->text('note')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create($tables['notes'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->text('body');
             $table->unsignedInteger('created_by')->nullable();
             $table->boolean('is_visible')->default(0);
             $table->timestamps();

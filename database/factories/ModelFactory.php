@@ -3,8 +3,9 @@
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
-use Aviator\Helpdesk\Models\Email;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\InternalReply;
+use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\PoolAssignment;
@@ -59,13 +60,12 @@ $factory->define(DueDate::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Email::class, function (Faker\Generator $faker) {
+$factory->define(InternalReply::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'subject' => 'Test Subject',
-        'body' => 'Test body.',
-        'created_by' => null,
-        'is_visible' => false,
+        'body' => $faker->paragraph(2),
+        'created_by' => factory(User::class)->create()->id,
+        'is_visible' => true,
     ];
 });
 
@@ -99,6 +99,15 @@ $factory->define(Closing::class, function (Faker\Generator $faker) {
 $factory->define(Opening::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(Note::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
+        'body' => $faker->paragraph(2),
         'created_by' => null,
         'is_visible' => false,
     ];

@@ -104,6 +104,8 @@ class Ticket extends Model
             'created_by' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
+
+        return $this;
     }
 
     /**
@@ -127,6 +129,8 @@ class Ticket extends Model
         $this->status = 'closed';
 
         $this->save();
+
+        return $this;
     }
 
     /**
@@ -150,6 +154,30 @@ class Ticket extends Model
         $this->status = 'open';
 
         $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Add an internal reply to the ticket.
+     *
+     * Visibility is always true for replies as the end user
+     * is notified for them and must be able to see the
+     * body of the reply.
+     * @param  string $body
+     * @param  User $creator
+     * @return $this
+     */
+    public function internalReply($body, $creator)
+    {
+        InternalReply::create([
+            'ticket_id' => $this->id,
+            'body' => $body,
+            'created_by' => $creator->id,
+            'is_visible' => true,
+        ]);
+
+        return $this;
     }
 
     /**
@@ -217,8 +245,8 @@ class Ticket extends Model
         return $this->hasOne(DueDate::class)->latest();
     }
 
-    public function emails() {
-        return $this->hasMany(Email::class);
+    public function internalReplies() {
+        return $this->hasMany(InternalReply::class);
     }
 
     public function closing() {

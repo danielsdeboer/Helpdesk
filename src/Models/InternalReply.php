@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Models\ActionBase;
 
-class Email extends ActionBase
+class InternalReply extends ActionBase
 {
     /**
      * Set the table name from the Helpdesk config
@@ -14,6 +14,6 @@ class Email extends ActionBase
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.emails'));
+        $this->setTable(config('helpdesk.tables.internal_replies'));
     }
 }

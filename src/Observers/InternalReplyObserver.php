@@ -3,19 +3,19 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Email;
+use Aviator\Helpdesk\Models\InternalReply;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
 
-class EmailObserver
+class InternalReplyObserver
 {
     /**
      * Listen to the created event.
      *
-     * @param  DueDate
+     * @param  InternalReply $observed
      * @return void
      */
-    public function created(Email $observed)
+    public function created(InternalReply $observed)
     {
         $this->createAction($observed);
         $this->sendNotification($observed);
@@ -23,24 +23,29 @@ class EmailObserver
 
     /**
      * Create the action
-     * @param  Email  $observed
+     * @param  InternalReply  $observed
      * @return void
      */
-    protected function createAction(Email $observed)
+    protected function createAction(InternalReply $observed)
     {
         $action = new Action;
 
-        $action->name = 'Emailed';
+        $action->name = 'Internal Reply Added';
         $action->subject_id = $observed->ticket_id;
         $action->subject_type = Ticket::class;
         $action->object_id = $observed->id;
-        $action->object_type = Email::class;
+        $action->object_type = InternalReply::class;
         $action->save();
     }
 
-    protected function sendNotification(Email $observed)
+    /**
+     * Send the notification
+     * @param  InternalReply $observed
+     * @return void
+     */
+    protected function sendNotification(InternalReply $observed)
     {
-        $notification = config('helpdesk.notifications.external.emailed.class');
+        $notification = config('helpdesk.notifications.external.replied.class');
 
         Notification::send($observed->ticket->user, new $notification($observed->ticket));
     }

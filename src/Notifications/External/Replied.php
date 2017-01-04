@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Emailed extends Notification implements ShouldQueue
+class Replied extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -50,10 +50,10 @@ class Emailed extends Notification implements ShouldQueue
         $message = new MailMessage;
 
         $message->from(config('helpdesk.from.address'), config('helpdesk.from.name'));
-        $message->subject(config('helpdesk.notifications.external.emailed.subject'));
-        $message->greeting(config('helpdesk.notifications.external.emailed.greeting'));
-        $message->line(config('helpdesk.notifications.external.emailed.line'));
-        $message->action('View your ticket', route(config('helpdesk.notifications.external.emailed.route'), $this->ticket->uuid));
+        $message->subject(config('helpdesk.notifications.external.replied.subject'));
+        $message->greeting(config('helpdesk.notifications.external.replied.greeting'));
+        $message->line(config('helpdesk.notifications.external.replied.line'));
+        $message->action('View your ticket', route(config('helpdesk.notifications.external.replied.route'), $this->ticket->uuid));
 
         return $message;
     }

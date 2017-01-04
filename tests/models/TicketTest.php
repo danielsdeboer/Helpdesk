@@ -274,4 +274,49 @@ class TicketTest extends TestCase {
         $this->assertEquals('open', $this->ticket->status);
         $this->assertEquals($creator->id, $this->ticket->opening->creator->id);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_replied_to_internally_by_a_user()
+    {
+        $this->createTicket();
+        $creator = factory(User::class)->create();
+
+        $this->ticket->internalReply('here is the body of the reply', $creator);
+
+        $this->assertEquals($creator->id, $this->ticket->internalReplies->first()->creator->id);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_not_be_replied_to_internally_automatically()
+    {
+        $this->createTicket();
+
+        try {
+            $this->ticket->internalReply('here is the body of the reply');
+        } catch (\ErrorException $e) {
+            return;
+        }
+
+        $this->fail('An internal reply should not be created without a creator');
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function an_internal_reply_created_via_the_ticket_is_visible_to_the_end_user()
+    {
+        $this->createTicket();
+        $creator = factory(User::class)->create();
+
+        $this->ticket->internalReply('here is the body of the reply', $creator);
+
+        $this->assertTrue($this->ticket->internalReplies->first()->is_visible);
+    }
 }

@@ -3,7 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Notifications\External\Emailed;
 use Illuminate\Support\Facades\Notification;
 
 class PoolTest extends TestCase {

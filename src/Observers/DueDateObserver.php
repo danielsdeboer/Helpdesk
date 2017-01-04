@@ -18,7 +18,7 @@ class DueDateObserver
     {
         $action = new Action;
 
-        $action->name = 'Due Dated';
+        $action->name = 'Due Date Added';
         $action->subject_id = $observed->ticket_id;
         $action->subject_type = Ticket::class;
         $action->object_id = $observed->id;
