@@ -298,6 +298,14 @@ class Ticket extends Model
     }
 
     /**
+     * Get tickets assigned to pools
+     */
+    public function scopePooled($query)
+    {
+        return $query->whereHas('poolAssignment');
+    }
+
+    /**
      * Get overdue tickets
      */
     public function scopeOverdue($query)

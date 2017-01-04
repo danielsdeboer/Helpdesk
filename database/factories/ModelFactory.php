@@ -24,6 +24,12 @@ $factory->define(User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(config('helpdesk.userModel'), function (Faker\Generator $faker) {
+    return [
+        'email' => $faker->email,
+    ];
+});
+
 /**
  * Helpdesk factory facilities
  */

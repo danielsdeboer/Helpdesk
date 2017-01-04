@@ -448,4 +448,19 @@ class TicketTest extends TestCase {
 
         $this->assertEquals(9, $openTickets->count());
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_pooled_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+        $pool = factory(Pool::class)->create();
+
+        $tickets->first()->assignToPool($pool);
+        $tickets = Ticket::pooled()->get();
+
+        $this->assertEquals(1, $tickets->count());
+    }
 }
