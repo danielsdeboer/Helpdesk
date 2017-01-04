@@ -61,10 +61,6 @@ abstract class TestCase extends Orchestra
         // Create testing database fixtures
         include_once __DIR__ . '/../database/migrations/2017_01_01_000000_create_users_table.php';
         (new CreateUsersTable())->up();
-
-        // Create Helpdesk tables
-        // include_once __DIR__ . '/../resources/migrations/create_helpdesk_tables.php';
-        // (new CreateHelpdeskTables())->up();
     }
 
     /**

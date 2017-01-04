@@ -19,13 +19,7 @@ class Ticket extends Model
         'deleted_at',
     ];
 
-    /**
-     * Fields exempt from mass assignment
-     * @var array
-     */
-    protected $fillable = [
-        'name'
-    ];
+    protected $guarded = [];
 
     /**
      * Set the table name from the Helpdesk config
