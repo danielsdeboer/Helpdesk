@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Database\Seeders;
+namespace Aviator\Helpdesk\Database\Seeds;
 
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;

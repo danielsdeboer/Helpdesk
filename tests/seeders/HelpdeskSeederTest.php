@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests\Seeders;
 
-use Aviator\Helpdesk\Database\Seeders\HelpdeskSeeder;
+use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
