@@ -44,7 +44,7 @@ return [
                 'subject' => 'Your ticket has been opened!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-                'route' => ''
+                'route' => 'tickets.uuid.show'
             ],
 
             'replied' => [
@@ -52,7 +52,7 @@ return [
                 'subject' => 'Your ticket has been replied to!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-                'route' => ''
+                'route' => 'tickets.uuid.show'
             ],
 
             'closed' => [
@@ -60,7 +60,7 @@ return [
                 'subject' => 'Your ticket has been closed.',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
-                'route' => ''
+                'route' => 'tickets.uuid.show'
             ],
         ],
 
@@ -70,7 +70,7 @@ return [
                 'subject' => 'A ticket has been assigned to you',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => '',
+                'route' => 'tickets.show',
             ],
 
             'assignedToPool' => [
@@ -78,7 +78,7 @@ return [
                 'subject' => 'A ticket has been assigned to your pool',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => '',
+                'route' => 'tickets.show',
             ],
 
             'replied' => [
@@ -86,7 +86,7 @@ return [
                 'subject' => 'A ticket has been replied to',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => '',
+                'route' => 'tickets.show',
             ],
         ]
     ],
