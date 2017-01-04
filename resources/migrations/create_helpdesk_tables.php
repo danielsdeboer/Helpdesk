@@ -77,6 +77,16 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
+        Schema::create($tables['external_replies'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->text('body');
+            $table->unsignedInteger('created_by');
+            $table->boolean('is_visible')->default(1);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create($tables['pools'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('team_lead');

@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
@@ -38,7 +39,7 @@ class Ticket extends Model
     }
 
     ////////////////////
-    // HELPER METHODS //
+    // FLUENT HELPERS //
     ////////////////////
 
     /**
@@ -181,12 +182,34 @@ class Ticket extends Model
     }
 
     /**
+     * Add an external reply to the ticket.
+     *
+     * Visibility is always true for replies
+     * @param  string $body
+     * @param  User $creator
+     * @return $this
+     */
+    public function externalReply($body, $creator)
+    {
+        ExternalReply::create([
+            'ticket_id' => $this->id,
+            'body' => $body,
+            'created_by' => $creator->id,
+            'is_visible' => true,
+        ]);
+
+        return $this;
+    }
+
+    /**
      * Associate the content model with a ticket
      * @param TicketContent $content
      */
     public function withContent(TicketContent $content)
     {
         $this->content()->associate($content);
+
+        return $this;
     }
 
     /**
@@ -199,6 +222,42 @@ class Ticket extends Model
         $content = $class::create($attributes);
 
         $this->content()->associate($content);
+
+        return $this;
+    }
+
+    ////////////////////////
+    // NON-FLUENT HELPERS //
+    ////////////////////////
+
+    /**
+     * Find the internal user who should receive notifications for
+     * external user replies, etc.
+     * @return User
+     */
+    public function getInternalUser()
+    {
+        $userModel = config('helpdesk.userModel');
+        $emailColumn = config('helpdesk.userModelEmailColumn');
+        $supervisorEmail = config('helpdesk.supervisor.email');
+
+        // Check if the ticket is assigned to a particular user
+        if (isset($this->assignment->assignee)) {
+            return $this->assignment->assignee;
+        }
+
+        // If not, check if the ticket is assigned to a pool
+        if (isset($this->poolAssignment->pool->teamLead)) {
+            return $this->poolAssignment->pool->teamLead;
+        }
+
+        // Notify the supervisor
+        if ($super = $userModel::where($emailColumn, $supervisorEmail)->first()) {
+            return $super;
+        }
+
+        // If all else fails, throw an exception
+        throw new SupervisorNotFoundException();
     }
 
     ///////////////////
@@ -247,6 +306,10 @@ class Ticket extends Model
 
     public function internalReplies() {
         return $this->hasMany(InternalReply::class);
+    }
+
+    public function externalReplies() {
+        return $this->hasMany(ExternalReply::class);
     }
 
     public function closing() {

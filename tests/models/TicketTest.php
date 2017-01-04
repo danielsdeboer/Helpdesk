@@ -319,4 +319,18 @@ class TicketTest extends TestCase {
 
         $this->assertTrue($this->ticket->internalReplies->first()->is_visible);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_replied_to_externally_by_the_end_user()
+    {
+        $this->createTicket();
+        $creator = factory(User::class)->create();
+
+        $this->ticket->externalReply('here is the body of the reply', $creator);
+
+        $this->assertEquals($creator->id, $this->ticket->externalReplies->first()->creator->id);
+    }
 }

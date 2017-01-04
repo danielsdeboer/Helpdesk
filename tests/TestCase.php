@@ -20,6 +20,7 @@ abstract class TestCase extends Orchestra
         );
 
         $this->setUpDatabase();
+        $this->createSupervisorUser();
 
         Notification::fake();
     }
@@ -61,5 +62,20 @@ abstract class TestCase extends Orchestra
         // Create Helpdesk tables
         include_once __DIR__ . '/../resources/migrations/create_helpdesk_tables.php';
         (new CreateHelpdeskTables())->up();
+    }
+
+    /**
+     * Create the supervisor user. This is necessary as the supervisor user
+     * is the fallback for notifications where an assignment or pool assignment
+     * are not set.
+     * @return void
+     */
+    protected function createSupervisorUser()
+    {
+        $userModel = config('helpdesk.userModel');
+
+        $userModel::create([
+            'email' => config('helpdesk.supervisor.email')
+        ]);
     }
 }

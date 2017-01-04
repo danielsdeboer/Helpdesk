@@ -6,6 +6,16 @@ return [
      */
     'userModel' => \Aviator\Helpdesk\Tests\User::class,
 
+    /**
+     * The email address column on the user model. When we need to look up the supervisor's
+     * user model for sending notifications.
+     */
+    'userModelEmailColumn' => 'email',
+
+    'supervisor' => [
+        'email' => 'supervisor@test.com',
+    ],
+
     'tables' => [
         'users' => 'users',
         'tickets' => 'tickets',
@@ -14,15 +24,12 @@ return [
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',
         'internal_replies' => 'internal_replies',
+        'external_replies' => 'external_replies',
         'pools' => 'pools',
         'pool_assignments' => 'pool_assignments',
         'closings' => 'closings',
         'openings' => 'openings',
         'notes' => 'notes',
-    ],
-
-    'supervisor' => [
-        'email' => 'supervisor@test.com',
     ],
 
     'from' => [
@@ -72,7 +79,15 @@ return [
                 'greeting' => 'Hey there.',
                 'line' => '',
                 'route' => '',
-            ]
+            ],
+
+            'replied' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\Replied::class,
+                'subject' => 'A ticket has been replied to',
+                'greeting' => 'Hey there.',
+                'line' => '',
+                'route' => '',
+            ],
         ]
     ],
 ];
