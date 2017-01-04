@@ -347,4 +347,48 @@ class TicketTest extends TestCase {
 
         $this->assertSame($this->ticket->uuid, $ticketLookupByUuid->uuid);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_has_a_find_with_actions_scope()
+    {
+        $this->createTicket();
+
+        $ticketWithActions = Ticket::findWithActions($this->ticket->id);
+
+        $this->assertNotNull($ticketWithActions->actions);
+        $this->assertEquals(1, $ticketWithActions->actions->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_has_an_unassigned_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+        $assignee = factory(User::class)->create();
+
+        $tickets->first()->assignToUser($assignee);
+        $unassignedTickets = Ticket::unassigned()->get();
+
+        $this->assertEquals(9, $unassignedTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_has_an_assigned_scope()
+    {
+        $tickets = factory(Ticket::class, 10)->create();
+        $assignee = factory(User::class)->create();
+
+        $tickets->first()->assignToUser($assignee);
+        $assignedTickets = Ticket::assigned()->get();
+
+        $this->assertEquals(1, $assignedTickets->count());
+    }
 }

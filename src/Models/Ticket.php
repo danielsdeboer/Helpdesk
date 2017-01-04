@@ -262,15 +262,40 @@ class Ticket extends Model
      * Find a model by uuid. It doesn't make sense to call
      * anything other than first() here so the call is
      * made here automatically.
-     * @param  Builder $query
      * @param  string $uuid
-     * @return Ticket
      */
     public function scopeUuid($query, $uuid)
     {
         return $query->where('uuid', $uuid)->first();
     }
 
+    /**
+     * Find a single model with actions
+     * @param  int $id
+     */
+    public function scopeFindWithActions($query, $id)
+    {
+        return $query->with('actions')->find($id);
+    }
+
+    /**
+     * Get unasssigned tickets. A pool assignment isn't
+     * considered an assignment for these purposes since
+     * a pool assignment is an automatic intermediary
+     * to an assignment to an actual user.
+     */
+    public function scopeUnassigned($query)
+    {
+        return $query->whereDoesntHave('assignment');
+    }
+
+    /**
+     * Get asssigned tickets.
+     */
+    public function scopeAssigned($query)
+    {
+        return $query->whereHas('assignment');
+    }
 
     ///////////////////
     // RELATIONSHIPS //
