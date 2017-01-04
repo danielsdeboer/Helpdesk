@@ -155,4 +155,50 @@ class TicketTest extends TestCase {
         $this->assertEquals('closed', $this->ticket->status);
         $this->assertEquals('here is a note', $this->ticket->closing->note);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_opened_after_being_closed()
+    {
+        $this->createTicket();
+
+        $this->ticket->close();
+        $this->ticket->open();
+
+        $this->assertEquals('open', $this->ticket->status);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_opened_after_being_closed_with_a_note()
+    {
+        $this->createTicket();
+
+        $this->ticket->close();
+        $this->ticket->open('here is an opening note');
+
+
+        $this->assertEquals('open', $this->ticket->status);
+        $this->assertEquals('here is an opening note', $this->ticket->opening->note);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_opened_after_being_closed_by_a_particular_user()
+    {
+        $this->createTicket();
+        $user = factory(User::class)->create();
+
+        $this->ticket->close();
+        $this->ticket->open(null, $user);
+
+        $this->assertEquals('open', $this->ticket->status);
+        $this->assertEquals($user->id, $this->ticket->opening->creator->id);
+    }
 }

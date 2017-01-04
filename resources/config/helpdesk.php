@@ -33,9 +33,9 @@ return [
         'external' => [
             'opened' => [
                 'class' => \Aviator\Helpdesk\Notifications\External\Opened::class,
-                'subject' => 'Your ticket has been placed!',
+                'subject' => 'Your ticket has been opened!',
                 'greeting' => 'Hey there.',
-                'line' => 'Your ticket has been created. A member of our customer service staff will be in touch shortly.',
+                'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
                 'route' => ''
             ],
 

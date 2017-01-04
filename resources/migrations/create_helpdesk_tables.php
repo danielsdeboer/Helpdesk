@@ -109,6 +109,7 @@ class CreateHelpdeskTables extends Migration
         Schema::create($tables['openings'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('ticket_id');
+            $table->text('note')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->boolean('is_visible')->default(0);
             $table->timestamps();
