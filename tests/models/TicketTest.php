@@ -69,13 +69,10 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_a_user()
+    public function a_ticket_may_be_assigned_to_a_user_automatically()
     {
         $this->createTicket();
-
         $user = factory(User::class)->create();
-
-        $this->actingAs($user);
 
         $this->ticket->assignToUser($user);
 
@@ -86,13 +83,29 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_assigned_to_an_assignment_pool()
+    public function a_ticket_may_be_assigned_to_a_user_by_a_user()
     {
         $this->createTicket();
         $user = factory(User::class)->create();
-        $pool = factory(Pool::class)->create();
+        $creator = factory(User::class)->create();
 
         $this->actingAs($user);
+
+        $this->ticket->assignToUser($user, $creator);
+
+        $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
+        $this->assertEquals($creator->id, $this->ticket->assignment->creator->id);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_assigned_to_an_assignment_pool_automatically()
+    {
+        $this->createTicket();
+        $pool = factory(Pool::class)->create();
+
         $this->ticket->assignToPool($pool);
 
         $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
@@ -102,17 +115,44 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_given_a_due_date()
+    public function a_ticket_may_be_assigned_to_an_assignment_pool_by_a_user()
     {
         $this->createTicket();
+        $pool = factory(Pool::class)->create();
+        $creator = factory(User::class)->create();
 
-        $user = factory(User::class)->create();
+        $this->ticket->assignToPool($pool, $creator);
 
-        $this->actingAs($user);
+        $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
+        $this->assertEquals($creator->id, $this->ticket->poolAssignment->creator->id);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_given_a_due_date_automatically()
+    {
+        $this->createTicket();
 
         $this->ticket->dueOn('+1 day');
 
         $this->assertNotNull($this->ticket->dueDate->due_on);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_given_a_due_date_by_a_user()
+    {
+        $this->createTicket();
+        $creator = factory(User::class)->create();
+
+        $this->ticket->dueOn('+1 day', $creator);
+
+        $this->assertNotNull($this->ticket->dueDate->due_on);
+        $this->assertEquals($creator->id, $this->ticket->dueDate->creator->id);
     }
 
     /**
@@ -133,7 +173,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_closed()
+    public function a_ticket_may_be_closed_automatically()
     {
         $this->createTicket();
 
@@ -160,7 +200,23 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_opened_after_being_closed()
+    public function a_ticket_may_be_closed_by_a_user()
+    {
+        $this->createTicket();
+        $creator = factory(User::class)->create();
+
+        $this->ticket->close(null, $creator);
+
+        $this->assertEquals('closed', $this->ticket->status);
+        $this->assertEquals($creator->id, $this->ticket->closing->creator->id);
+    }
+
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_may_be_opened_after_being_closed_automatically()
     {
         $this->createTicket();
 
@@ -190,15 +246,15 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function a_ticket_may_be_opened_after_being_closed_by_a_particular_user()
+    public function a_ticket_may_be_opened_after_being_closed_by_a_user()
     {
         $this->createTicket();
-        $user = factory(User::class)->create();
+        $creator = factory(User::class)->create();
 
         $this->ticket->close();
-        $this->ticket->open(null, $user);
+        $this->ticket->open(null, $creator);
 
         $this->assertEquals('open', $this->ticket->status);
-        $this->assertEquals($user->id, $this->ticket->opening->creator->id);
+        $this->assertEquals($creator->id, $this->ticket->opening->creator->id);
     }
 }
