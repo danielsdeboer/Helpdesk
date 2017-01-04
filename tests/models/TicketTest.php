@@ -333,4 +333,18 @@ class TicketTest extends TestCase {
 
         $this->assertEquals($externalUser->id, $this->ticket->externalReplies->first()->creator->id);
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_has_a_uuid_scope()
+    {
+        $this->createTicket();
+
+        $uuid = $this->ticket->uuid;
+        $ticketLookupByUuid = Ticket::uuid($uuid);
+
+        $this->assertSame($this->ticket->uuid, $ticketLookupByUuid->uuid);
+    }
 }

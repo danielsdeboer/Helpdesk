@@ -254,6 +254,24 @@ class Ticket extends Model
         throw new SupervisorNotFoundException();
     }
 
+    ////////////
+    // SCOPES //
+    ////////////
+
+    /**
+     * Find a model by uuid. It doesn't make sense to call
+     * anything other than first() here so the call is
+     * made here automatically.
+     * @param  Builder $query
+     * @param  string $uuid
+     * @return Ticket
+     */
+    public function scopeUuid($query, $uuid)
+    {
+        return $query->where('uuid', $uuid)->first();
+    }
+
+
     ///////////////////
     // RELATIONSHIPS //
     ///////////////////
