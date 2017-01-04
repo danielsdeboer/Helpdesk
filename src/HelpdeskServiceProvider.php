@@ -15,7 +15,7 @@ class HelpdeskServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/config/helpdesk.php' => $this->app->configPath() . '/' . 'helpdesk.php',
         ], 'config');
 
-        $this->loadMigrationsFrom(__DIR__ . '../resources/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../resources/migrations');
 
         $this->mergeConfigFrom(
             __DIR__ . '/../resources/config/helpdesk.php',

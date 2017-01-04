@@ -20,6 +20,9 @@ abstract class TestCase extends Orchestra
         );
 
         $this->setUpDatabase();
+
+        $this->loadMigrationsFrom(__DIR__ . '/../resources/migrations');
+
         $this->createSupervisorUser();
 
         Notification::fake();
@@ -56,12 +59,12 @@ abstract class TestCase extends Orchestra
     protected function setUpDatabase()
     {
         // Create testing database fixtures
-        include_once __DIR__ . '/../database/migrations/create_users_table.php';
+        include_once __DIR__ . '/../database/migrations/2017_01_01_000000_create_users_table.php';
         (new CreateUsersTable())->up();
 
         // Create Helpdesk tables
-        include_once __DIR__ . '/../resources/migrations/create_helpdesk_tables.php';
-        (new CreateHelpdeskTables())->up();
+        // include_once __DIR__ . '/../resources/migrations/create_helpdesk_tables.php';
+        // (new CreateHelpdeskTables())->up();
     }
 
     /**

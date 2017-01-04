@@ -1,7 +1,5 @@
 <?php
 
-namespace Aviator\Database\Migrations;
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -134,7 +132,6 @@ class CreateHelpdeskTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
     }
 
     /**
@@ -144,7 +141,7 @@ class CreateHelpdeskTables extends Migration
      */
     public function down()
     {
-        $tables = config('helpdesk.tableNames');
+        $tables = config('helpdesk.tables');
 
         foreach ($tables as $table) {
             Schema::drop($table);
