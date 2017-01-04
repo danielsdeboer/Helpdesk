@@ -5,6 +5,7 @@ use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\Email;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\PoolAssignment;
 use Aviator\Helpdesk\Models\Ticket;
@@ -90,6 +91,14 @@ $factory->define(Closing::class, function (Faker\Generator $faker) {
             'status' => 'closed'
         ])->id,
         'note' => 'Test note',
+        'created_by' => null,
+        'is_visible' => false,
+    ];
+});
+
+$factory->define(Opening::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_id' => factory(Ticket::class)->create()->id,
         'created_by' => null,
         'is_visible' => false,
     ];

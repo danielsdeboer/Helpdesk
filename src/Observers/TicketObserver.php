@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
+use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Ticket;
 
 class TicketObserver
@@ -15,34 +16,13 @@ class TicketObserver
      */
     public function created(Ticket $ticket)
     {
-        $this->createAction($ticket);
-        $this->sendNotification($ticket);
+        $this->createOpening($ticket);
     }
 
-    /**
-     * Create the action
-     * @param  Ticket $ticket
-     * @return void
-     */
-    protected function createAction(Ticket $ticket)
+    protected function createOpening(Ticket $ticket)
     {
-        $action = new Action;
-
-        $action->name = 'Created';
-        $action->subject_id = $ticket->id;
-        $action->subject_type = Ticket::class;
-        $action->save();
-    }
-
-    /**
-     * Send the notification
-     * @param  Ticket $ticket
-     * @return void
-     */
-    protected function sendNotification(Ticket $ticket)
-    {
-        $notification = config('helpdesk.notifications.external.created.class');
-
-        \Notification::send($ticket->user, new $notification($ticket));
+        Opening::create([
+            'ticket_id' => $ticket->id,
+        ]);
     }
 }

@@ -3,19 +3,19 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Closing;
+use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
 
-class ClosingObserver
+class OpeningObserver
 {
     /**
      * Listen to the created event.
      *
-     * @param  Closing $observed
+     * @param  Opening $observed
      * @return void
      */
-    public function created(Closing $observed)
+    public function created(Opening $observed)
     {
         $this->createAction($observed);
         $this->sendNotification($observed);
@@ -23,29 +23,29 @@ class ClosingObserver
 
     /**
      * Create the action
-     * @param  Closing  $observed
+     * @param  Opening  $observed
      * @return void
      */
-    protected function createAction(Closing $observed)
+    protected function createAction(Opening $observed)
     {
         $action = new Action;
 
-        $action->name = 'Closed';
+        $action->name = 'Opened';
         $action->subject_id = $observed->ticket_id;
         $action->subject_type = Ticket::class;
         $action->object_id = $observed->id;
-        $action->object_type = Closing::class;
+        $action->object_type = Opening::class;
         $action->save();
     }
 
     /**
      * Send the notification
-     * @param  Closing $observed
+     * @param  Opening $observed
      * @return void
      */
-    protected function sendNotification(Closing $observed)
+    protected function sendNotification(Opening $observed)
     {
-        $notification = config('helpdesk.notifications.external.closed.class');
+        $notification = config('helpdesk.notifications.external.opened.class');
 
         Notification::send($observed->ticket->user, new $notification($observed->ticket));
     }

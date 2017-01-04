@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Notifications\External\Created;
+use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Facades\Notification;
@@ -62,17 +63,6 @@ class TicketTest extends TestCase {
         $this->assertSame($this->content, $this->ticket->content);
         $this->assertNotNull($this->ticket->content->title);
         $this->assertNotNull($this->ticket->content->body);
-    }
-
-    /**
-     * @group ticket
-     * @test
-     */
-    public function creating_a_ticket_also_creates_an_action_via_the_ticket_observer()
-    {
-        $this->createTicket();
-
-        $this->assertEquals('Created', $this->ticket->actions->first()->name);
     }
 
     /**
@@ -137,20 +127,6 @@ class TicketTest extends TestCase {
         $this->ticket->dueOn('today');
 
         $this->assertEquals(3, $this->ticket->actions->count());
-    }
-
-    /**
-     * @group ticket
-     * @test
-     */
-    public function creating_a_ticket_sends_a_notification_to_the_user()
-    {
-        $this->createTicket();
-
-        Notification::assertSentTo(
-            $this->ticket->user,
-            Created::class
-        );
     }
 
     /**

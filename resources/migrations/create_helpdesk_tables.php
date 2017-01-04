@@ -106,6 +106,15 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
+        Schema::create($tables['openings'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->boolean('is_visible')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
     }
 
     /**
