@@ -2,10 +2,11 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Interfaces\TicketContent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GenericContent extends Model
+class GenericContent extends Model implements TicketContent
 {
     use SoftDeletes;
 

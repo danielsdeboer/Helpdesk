@@ -58,11 +58,28 @@ class TicketTest extends TestCase {
         $this->createTicket();
         $this->createContent();
 
-        $this->ticket->content()->associate($this->content);
+        $this->ticket->withContent($this->content);
 
         $this->assertSame($this->content, $this->ticket->content);
         $this->assertNotNull($this->ticket->content->title);
         $this->assertNotNull($this->ticket->content->body);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function a_ticket_can_create_the_content()
+    {
+        $this->createTicket();
+
+        $this->ticket->createContent(GenericContent::class, [
+            'title' => 'test title',
+            'body' => 'test body',
+        ]);
+
+        $this->assertEquals('test title', $this->ticket->content->title);
+        $this->assertEquals('test body', $this->ticket->content->body);
     }
 
     /**

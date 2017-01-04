@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -149,6 +150,27 @@ class Ticket extends Model
         $this->status = 'open';
 
         $this->save();
+    }
+
+    /**
+     * Associate the content model with a ticket
+     * @param TicketContent $content
+     */
+    public function withContent(TicketContent $content)
+    {
+        $this->content()->associate($content);
+    }
+
+    /**
+     * Create and assocate the ticket content
+     * @param string $class
+     * @param array $attribute
+     */
+    public function createContent($class, array $attributes)
+    {
+        $content = $class::create($attributes);
+
+        $this->content()->associate($content);
     }
 
     ///////////////////
