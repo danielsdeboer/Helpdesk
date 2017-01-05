@@ -35,7 +35,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../resources/factories/HelpdeskFactory.php' => database_path('factories/HelpdeskFactory.php'),
-        ], 'config');
+        ], 'factories');
     }
 
     /**
