@@ -2,7 +2,8 @@
     "name": "aviator/helpdesk",
     "autoload": {
         "psr-4": {
-            "Aviator\\Helpdesk\\": "src/"
+            "Aviator\\Helpdesk\\": "src/",
+            "Aviator\\Helpdesk\\Database\\": "database/"
         }
     },
     "require": {
@@ -16,8 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Aviator\\Helpdesk\\Tests\\": "tests/",
-            "Aviator\\Helpdesk\\Database\\": "database/"
+            "Aviator\\Helpdesk\\Tests\\": "tests/"
         }
     }
 }
