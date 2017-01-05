@@ -314,7 +314,7 @@ class Ticket extends Model
      */
     public function scopeUnassigned($query)
     {
-        return $query->whereDoesntHave('assignment');
+        return $query->whereDoesntHave('assignment')->whereStatus('open');
     }
 
     /**
@@ -322,7 +322,7 @@ class Ticket extends Model
      */
     public function scopeAssigned($query)
     {
-        return $query->has('assignment');
+        return $query->has('assignment')->whereStatus('open');
     }
 
     /**
@@ -330,7 +330,7 @@ class Ticket extends Model
      */
     public function scopePooled($query)
     {
-        return $query->has('poolAssignment');
+        return $query->has('poolAssignment')->whereStatus('open');
     }
 
     /**
@@ -340,7 +340,7 @@ class Ticket extends Model
     {
         return $query->whereHas('dueDate', function($query) {
             $query->where('due_on', '<', Carbon::now()->toDateString());
-        });
+        })->whereStatus('open');
     }
 
     /**
@@ -350,7 +350,7 @@ class Ticket extends Model
     {
         return $query->whereHas('dueDate', function($query) {
             $query->where('due_on', '>=', Carbon::now()->toDateString());
-        });
+        })->whereStatus('open');
     }
 
     /**
@@ -360,7 +360,7 @@ class Ticket extends Model
     {
         return $query->whereHas('dueDate', function($query) {
             $query->where('due_on', Carbon::now()->toDateString());
-        });
+        })->whereStatus('open');
     }
 
     /**
@@ -370,7 +370,7 @@ class Ticket extends Model
      */
     public function scopeOpened($query)
     {
-        return $query->whereDoesntHave('closing');
+        return $query->whereStatus('open');
     }
 
     /**

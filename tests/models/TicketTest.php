@@ -363,6 +363,21 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
+    public function the_unassigned_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create();
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $unassignedTickets = Ticket::unassigned()->get();
+
+        $this->assertEquals(1, $unassignedTickets->count());
+        $this->assertEquals('open', $unassignedTickets->first()->status);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
     public function it_has_assigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
@@ -372,6 +387,23 @@ class TicketTest extends TestCase {
         $assignedTickets = Ticket::assigned()->get();
 
         $this->assertEquals(1, $assignedTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function the_assigned_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+            $item->assignToUser($item->user);
+        });
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $assignedTickets = Ticket::assigned()->get();
+
+        $this->assertEquals(1, $assignedTickets->count());
+        $this->assertEquals('open', $assignedTickets->first()->status);
     }
 
     /**
@@ -392,6 +424,23 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
+    public function the_overdue_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+            $item->dueOn('yesterday');
+        });
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $overdueTickets = Ticket::overdue()->get();
+
+        $this->assertEquals(1, $overdueTickets->count());
+        $this->assertEquals('open', $overdueTickets->first()->status);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
     public function it_has_ontime_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
@@ -400,6 +449,23 @@ class TicketTest extends TestCase {
         $onTimeTickets = Ticket::onTime()->get();
 
         $this->assertEquals(1, $onTimeTickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function the_ontime_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+            $item->dueOn('tomorrow');
+        });
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $ontime = Ticket::ontime()->get();
+
+        $this->assertEquals(1, $ontime->count());
+        $this->assertEquals('open', $ontime->first()->status);
     }
 
     /**
@@ -415,6 +481,24 @@ class TicketTest extends TestCase {
 
         $this->assertEquals(1, $todaysTickets->count());
     }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function the_duetoday_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+            $item->dueOn('now');
+        });
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $today = Ticket::dueToday()->get();
+
+        $this->assertEquals(1, $today->count());
+        $this->assertEquals('open', $today->first()->status);
+    }
+
 
     /**
      * @group ticket
@@ -444,6 +528,25 @@ class TicketTest extends TestCase {
         $tickets = Ticket::pooled()->get();
 
         $this->assertEquals(1, $tickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function the_pooled_scope_returns_only_open_tickets()
+    {
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+            $pool = factory(Pool::class)->create();
+
+            $item->assignToPool($pool);
+        });
+
+        $tickets->first()->close(null, $tickets->first()->user);
+        $pooled = Ticket::pooled()->get();
+
+        $this->assertEquals(1, $pooled->count());
+        $this->assertEquals('open', $pooled->first()->status);
     }
 
     /**
