@@ -192,13 +192,17 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_closed_automatically()
+    public function it_may_not_be_closed_automatically()
     {
         $this->createTicket();
 
-        $this->ticket->close();
+        try {
+            $this->ticket->close(null, null);
+        } catch (CreatorRequiredException $e) {
+            return;
+        }
 
-        $this->assertEquals('closed', $this->ticket->status);
+        $this->fail('A ticket should not be closed automatically');
     }
 
     /**
@@ -208,42 +212,12 @@ class TicketTest extends TestCase {
     public function it_may_be_closed_with_a_note()
     {
         $this->createTicket();
+        $user = factory(config('helpdesk.userModel'))->create();
 
-        $this->ticket->close('here is a note');
+        $this->ticket->close('here is a note', $user);
 
         $this->assertEquals('closed', $this->ticket->status);
         $this->assertEquals('here is a note', $this->ticket->closing->note);
-    }
-
-    /**
-     * @group ticket
-     * @test
-     */
-    public function it_may_be_closed_by_a_user()
-    {
-        $this->createTicket();
-        $creator = factory(User::class)->create();
-
-        $this->ticket->close(null, $creator);
-
-        $this->assertEquals('closed', $this->ticket->status);
-        $this->assertEquals($creator->id, $this->ticket->closing->creator->id);
-    }
-
-
-    /**
-     * @group ticket
-     * @test
-     */
-    public function it_may_be_opened_after_being_closed_automatically()
-    {
-        $this->createTicket();
-        $user = factory(User::class)->create();
-
-        $this->ticket->close();
-        $this->ticket->open(null, $user);
-
-        $this->assertEquals('open', $this->ticket->status);
     }
 
     /**
@@ -255,7 +229,7 @@ class TicketTest extends TestCase {
         $this->createTicket();
         $user = factory(User::class)->create();
 
-        $this->ticket->close();
+        $this->ticket->close(null, $user);
         $this->ticket->open('here is an opening note', $user);
 
 
@@ -271,7 +245,7 @@ class TicketTest extends TestCase {
     {
         $this->createTicket();
 
-        $this->ticket->close();
+        $this->ticket->close(null, $this->ticket->user);
 
         try {
             $this->ticket->open(null, null);
@@ -449,8 +423,9 @@ class TicketTest extends TestCase {
     public function it_has_opened_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
+        $user = factory(config('helpdesk.userModel'))->create();
 
-        $tickets->first()->close();
+        $tickets->first()->close(null, $user);
         $openTickets = Ticket::opened()->get();
 
         $this->assertEquals(9, $openTickets->count());

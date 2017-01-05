@@ -128,7 +128,7 @@ class HelpdeskSeeder extends Seeder
     protected function closeRandomTickets($numberOfTickets)
     {
         Ticket::inRandomOrder()->take($numberOfTickets)->get()->each(function($item) {
-            $item->close();
+            $item->close(null, $item->user);
         });
 
         return $this;

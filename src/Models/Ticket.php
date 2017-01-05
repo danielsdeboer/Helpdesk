@@ -90,6 +90,7 @@ class Ticket extends Model
      * end users will probably want to know this.
      * @param  string $date
      * @param  User $creator
+     * @param  bool $isVisible
      * @return $this
      */
     public function dueOn($date, $creator = null, $isVisible = true)
@@ -113,13 +114,17 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function close($note = null, $creator = null, $isVisible = true)
+    public function close($note = null, $creator)
     {
+        if (! $creator) {
+            throw new CreatorRequiredException;
+        }
+
         Closing::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'created_by' => $creator ? $creator->id : null,
-            'is_visible' => $isVisible,
+            'created_by' => $creator->id,
+            'is_visible' => true,
         ]);
 
         $this->status = 'closed';
