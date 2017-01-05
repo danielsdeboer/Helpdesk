@@ -450,7 +450,7 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_has_with_actions_scope()
+    public function it_has_with_actions_scope_which_returns_actions_sorted_ascending()
     {
         $ticket = factory(Ticket::class)->create();
         $pool = factory(Pool::class)->create();
@@ -468,5 +468,35 @@ class TicketTest extends TestCase {
 
             $this->assertEquals($previousId, $item->id);
         });
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_an_is_open_method()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->assertTrue($ticket->isOpen());
+
+        $ticket->close(null, $ticket->user);
+
+        $this->assertFalse($ticket->isOpen());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_an_is_closed_method()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->assertFalse($ticket->isClosed());
+
+        $ticket->close(null, $ticket->user);
+
+        $this->assertTrue($ticket->isClosed());
     }
 }

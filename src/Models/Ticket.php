@@ -264,6 +264,24 @@ class Ticket extends Model
         throw new SupervisorNotFoundException();
     }
 
+    /**
+     * Is the ticket open
+     * @return boolean
+     */
+    public function isOpen()
+    {
+        return $this->status == 'open';
+    }
+
+    /**
+     * Is the ticket closed
+     * @return boolean
+     */
+    public function isClosed()
+    {
+        return $this->status == 'closed';
+    }
+
     ////////////
     // SCOPES //
     ////////////

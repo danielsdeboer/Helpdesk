@@ -32,6 +32,7 @@ $factory->define(Ticket::class, function (Faker\Generator $faker) {
         'user_id' => factory(config('helpdesk.userModel'))->create()->id,
         'content_id' => factory(GenericContent::class)->create()->id,
         'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+        'status' => 'open',
     ];
 });
 
