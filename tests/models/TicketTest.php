@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Pool;
@@ -237,9 +238,10 @@ class TicketTest extends TestCase {
     public function it_may_be_opened_after_being_closed_automatically()
     {
         $this->createTicket();
+        $user = factory(User::class)->create();
 
         $this->ticket->close();
-        $this->ticket->open();
+        $this->ticket->open(null, $user);
 
         $this->assertEquals('open', $this->ticket->status);
     }
@@ -251,9 +253,10 @@ class TicketTest extends TestCase {
     public function it_may_be_opened_after_being_closed_with_a_note()
     {
         $this->createTicket();
+        $user = factory(User::class)->create();
 
         $this->ticket->close();
-        $this->ticket->open('here is an opening note');
+        $this->ticket->open('here is an opening note', $user);
 
 
         $this->assertEquals('open', $this->ticket->status);
@@ -264,16 +267,20 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_opened_after_being_closed_by_a_user()
+    public function it_may_not_be_opened_with_no_user()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
 
         $this->ticket->close();
-        $this->ticket->open(null, $creator);
 
-        $this->assertEquals('open', $this->ticket->status);
-        $this->assertEquals($creator->id, $this->ticket->opening->creator->id);
+        try {
+            $this->ticket->open(null, null);
+
+        } catch (CreatorRequiredException $e) {
+            return;
+        }
+
+        $this->fail('Creating an opening without a creator should fail');
     }
 
     /**
@@ -462,5 +469,29 @@ class TicketTest extends TestCase {
         $tickets = Ticket::pooled()->get();
 
         $this->assertEquals(1, $tickets->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_has_with_actions_scope()
+    {
+        $ticket = factory(Ticket::class)->create();
+        $pool = factory(Pool::class)->create();
+        $user = factory(config('helpdesk.userModel'))->create();
+
+        $ticket->dueOn('today')->assignToPool($pool)->internalReply('this is a reply', $user);
+        $ticket = Ticket::withActions()->find($ticket->id);
+
+        $this->assertEquals(4, $ticket->actions->count());
+
+        $previousId = 0;
+
+        $ticket->actions->each(function($item) use (&$previousId) {
+            $previousId++;
+
+            $this->assertEquals($previousId, $item->id);
+        });
     }
 }

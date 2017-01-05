@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Traits\AutoUuids;
@@ -137,13 +138,17 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function open($note = null, $creator = null, $isVisible = true)
+    public function open($note = null, $creator)
     {
+        if (! $creator) {
+            throw new CreatorRequiredException;
+        }
+
         Opening::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'created_by' => $creator ? $creator->id : null,
-            'is_visible' => $isVisible,
+            'created_by' => $creator->id,
+            'is_visible' => true,
         ]);
 
         $this->status = 'open';
@@ -343,6 +348,16 @@ class Ticket extends Model
     public function scopeOpened($query)
     {
         return $query->whereDoesntHave('closing');
+    }
+
+    /**
+     * Get the ticket with actions, sorted oldest to newest
+     */
+    public function scopeWithActions($query)
+    {
+        return $query->with(['actions' => function($query) {
+            $query->orderBy('id', 'asc');
+        }]);
     }
 
     ///////////////////

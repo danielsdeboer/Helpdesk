@@ -100,16 +100,16 @@ $factory->define(Closing::class, function (Faker\Generator $faker) {
             'status' => 'closed'
         ])->id,
         'note' => 'Test note',
-        'created_by' => null,
-        'is_visible' => false,
+        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
+        'is_visible' => true,
     ];
 });
 
 $factory->define(Opening::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'created_by' => null,
-        'is_visible' => false,
+        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
+        'is_visible' => true,
     ];
 });
 
