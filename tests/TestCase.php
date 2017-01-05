@@ -15,9 +15,7 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->withFactories(
-            realpath(dirname(__DIR__).'/database/factories')
-        );
+        $this->withFactories(__DIR__ . '/../resources/factories');
 
         $this->setUpDatabase();
 

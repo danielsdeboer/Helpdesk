@@ -11,9 +11,8 @@ class HelpdeskServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../resources/config/helpdesk.php' => $this->app->configPath() . '/' . 'helpdesk.php',
-        ], 'config');
+        $this->publishConfig();
+        $this->publishFactories();
 
         $this->loadMigrationsFrom(__DIR__ . '/../resources/migrations');
 
@@ -23,6 +22,20 @@ class HelpdeskServiceProvider extends ServiceProvider
         );
 
         $this->registerObservers();
+    }
+
+    protected function publishConfig()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/config/helpdesk.php' => config_path('helpdesk.php'),
+        ], 'config');
+    }
+
+    protected function publishFactories()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/factories/HelpdeskFactory.php' => database_path('factories/HelpdeskFactory.php'),
+        ], 'config');
     }
 
     /**
