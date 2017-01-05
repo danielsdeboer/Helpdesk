@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Database\Seeds;
 
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class HelpdeskSeeder extends Seeder
@@ -23,7 +24,10 @@ class HelpdeskSeeder extends Seeder
             ->createUsers(10)
             ->createAssignmentPools(3)
             ->assignTicketsToUsers()
-            ->assignTicketsToPools();
+            ->assignTicketsToPools()
+            ->addDueDatesToAssignedOrPooledTickets()
+            ->addInternalRepliesToAssignedTickets(5)
+            ->closeRandomTickets(10);
     }
 
     /**
@@ -82,6 +86,49 @@ class HelpdeskSeeder extends Seeder
             if ($key % 2 === 0) {
                 $item->assignToPool($this->pools->random());
             }
+        });
+
+        return $this;
+    }
+
+    /**
+     * Add a due date for each assigned or pooled tickets
+     * @return $this
+     */
+    protected function addDueDatesToAssignedOrPooledTickets()
+    {
+        Ticket::has('assignment')->orHas('poolAssignment')->get()->each(function($item) {
+            $days = rand(-5, 5);
+
+            $item->dueOn(Carbon::parse('now')->addDays($days));
+        });
+
+        return $this;
+    }
+
+    /**
+     * Add internal replies to some assigned tickets
+     * @param int $numberOfReplies
+     * @return $this
+     */
+    protected function addInternalRepliesToAssignedTickets($numberOfReplies)
+    {
+        Ticket::assigned()->take($numberOfReplies)->get()->each(function($item) {
+            $item->internalReply('This is a test reply from the seeder.', $item->assignment->assignee);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Close some random tickets
+     * @param  int $numberOfTickets
+     * @return $this
+     */
+    protected function closeRandomTickets($numberOfTickets)
+    {
+        Ticket::inRandomOrder()->take($numberOfTickets)->get()->each(function($item) {
+            $item->close();
         });
 
         return $this;

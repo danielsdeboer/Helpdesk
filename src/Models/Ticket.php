@@ -294,7 +294,7 @@ class Ticket extends Model
      */
     public function scopeAssigned($query)
     {
-        return $query->whereHas('assignment');
+        return $query->has('assignment');
     }
 
     /**
@@ -302,7 +302,7 @@ class Ticket extends Model
      */
     public function scopePooled($query)
     {
-        return $query->whereHas('poolAssignment');
+        return $query->has('poolAssignment');
     }
 
     /**

@@ -47,4 +47,43 @@ class HelpdeskSeederTest extends TestCase {
 
         $this->assertEquals(13, $tickets->count());
     }
+
+    /**
+     * @group seeders
+     * @test
+     */
+    public function it_adds_a_due_date_for_assigned_and_pooled_tickets()
+    {
+        $this->seed(HelpdeskSeeder::class);
+
+        $tickets = Ticket::has('dueDate')->get();
+
+        $this->assertEquals(39, $tickets->count());
+    }
+
+    /**
+     * @group seeders
+     * @test
+     */
+    public function it_adds_a_reply_to_a_subset_of_assigned_tickets()
+    {
+        $this->seed(HelpdeskSeeder::class);
+
+        $tickets = Ticket::has('internalReplies')->get();
+
+        $this->assertEquals(5, $tickets->count());
+    }
+
+    /**
+     * @group seeders
+     * @test
+     */
+    public function it_closes_some_random_tickets()
+    {
+        $this->seed(HelpdeskSeeder::class);
+
+        $tickets = Ticket::has('closings')->get();
+
+        $this->assertEquals(10, $tickets->count());
+    }
 }
