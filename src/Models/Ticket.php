@@ -171,13 +171,13 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function note($body, $creator, $isVisible = false)
+    public function note($body, $creator, $isVisible = true)
     {
         Note::create([
             'ticket_id' => $this->id,
             'body' => $body,
             'created_by' => $creator->id,
-            'is_visible' => true,
+            'is_visible' => $isVisible,
         ]);
 
         return $this;

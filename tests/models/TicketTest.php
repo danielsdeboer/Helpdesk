@@ -290,6 +290,32 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
+    public function it_creates_notes_with_default_visibility_of_true()
+    {
+        $this->createTicket();
+
+        $this->ticket->note('note1', $this->ticket->user);
+
+        $this->assertTrue($this->ticket->notes->first()->is_visible);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_may_create_notes_with_visibility_set_to_false()
+    {
+        $this->createTicket();
+
+        $this->ticket->note('note1', $this->ticket->user, false);
+
+        $this->assertFalse($this->ticket->notes->first()->is_visible);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
     public function it_may_be_replied_to_internally_by_a_user()
     {
         $this->createTicket();
