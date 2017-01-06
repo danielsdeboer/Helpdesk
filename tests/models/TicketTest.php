@@ -190,7 +190,7 @@ class TicketTest extends TestCase {
     public function it_may_be_given_a_due_date_by_a_user()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
+        $creator = factory(Agent::class)->create();
 
         $this->ticket->dueOn('+1 day', $creator);
 
