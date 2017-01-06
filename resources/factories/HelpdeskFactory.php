@@ -1,5 +1,6 @@
 <?php
 
+use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\Closing;
@@ -27,6 +28,16 @@ $factory->define(config('helpdesk.userModel'), function (Faker\Generator $faker)
 /**
  * Helpdesk factory facilities
  */
+
+$factory->define(Action::class, function (Faker\Generator $faker) {
+    return [
+        'name' => 'Test Name',
+        'subject_id' => factory(Ticket::class)->create()->id,
+        'subject_type' => 'Aviator\Helpdesk\Models\Ticket',
+        'object_id' => factory(Assignment::class)->create()->id,
+        'object_type' => 'Aviator\Helpdesk\Models\Assignment',
+    ];
+});
 
 $factory->define(Ticket::class, function (Faker\Generator $faker) {
     return [
