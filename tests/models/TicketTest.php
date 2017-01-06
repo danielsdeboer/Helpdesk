@@ -123,27 +123,6 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_must_be_assigned_to_an_agent_by_an_agent()
-    {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
-        $creator = factory(config('helpdesk.userModel'))->create();
-
-        $this->ticket->assignToAgent($agent);
-
-        try {
-            $this->ticket->assignToAgent($agent, $creator);
-        } catch (\ErrorException $e) {
-            return;
-        }
-
-        $this->fail('Assigning a ticket by a user should fail');
-    }
-
-    /**
-     * @group ticket
-     * @test
-     */
     public function it_may_be_assigned_to_an_assignment_pool_automatically()
     {
         $this->createTicket();
@@ -349,23 +328,6 @@ class TicketTest extends TestCase {
         $this->ticket->internalReply('here is the body of the reply', $agent);
 
         $this->assertEquals($agent->id, $this->ticket->internalReplies->first()->agent->id);
-    }
-
-    /**
-     * @group ticket
-     * @test
-     */
-    public function it_may_not_be_replied_to_internally_automatically()
-    {
-        $this->createTicket();
-
-        try {
-            $this->ticket->internalReply('here is the body of the reply');
-        } catch (\ErrorException $e) {
-            return;
-        }
-
-        $this->fail('An internal reply should not be created without a creator');
     }
 
     /**
