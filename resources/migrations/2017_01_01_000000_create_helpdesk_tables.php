@@ -26,6 +26,14 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
+        Schema::create($tables['agents'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('team_lead_of')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create($tables['generic_contents'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');

@@ -19,6 +19,7 @@ return [
     'tables' => [
         'users' => 'users',
         'tickets' => 'tickets',
+        'agents' => 'agents',
         'generic_contents' => 'generic_contents',
         'actions' => 'actions',
         'assignments' => 'assignments',

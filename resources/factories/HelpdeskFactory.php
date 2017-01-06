@@ -1,5 +1,6 @@
 <?php
 
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
@@ -33,6 +34,13 @@ $factory->define(Ticket::class, function (Faker\Generator $faker) {
         'content_id' => factory(GenericContent::class)->create()->id,
         'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
         'status' => 'open',
+    ];
+});
+
+$factory->define(Agent::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(config('helpdesk.userModel'))->create()->id,
+        'team_lead_of' => null,
     ];
 });
 
