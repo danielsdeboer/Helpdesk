@@ -261,6 +261,35 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
+    public function it_can_create_a_note()
+    {
+        $this->createTicket();
+
+        $this->ticket->note('here is the body of the note', $this->ticket->user);
+
+        $this->assertNotNull($this->ticket->notes);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_can_have_many_notes()
+    {
+        $this->createTicket();
+
+        $this->ticket
+            ->note('note1', $this->ticket->user)
+            ->note('note2', $this->ticket->user)
+            ->note('note3', $this->ticket->user);
+
+        $this->assertEquals(3, $this->ticket->notes->count());
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
     public function it_may_be_replied_to_internally_by_a_user()
     {
         $this->createTicket();

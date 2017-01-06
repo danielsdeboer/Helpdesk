@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Models;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
+use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -159,6 +160,25 @@ class Ticket extends Model
         $this->status = 'open';
 
         $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Add a note to the ticket.
+     *
+     * @param  string $body
+     * @param  User $creator
+     * @return $this
+     */
+    public function note($body, $creator, $isVisible = false)
+    {
+        Note::create([
+            'ticket_id' => $this->id,
+            'body' => $body,
+            'created_by' => $creator->id,
+            'is_visible' => true,
+        ]);
 
         return $this;
     }
@@ -449,5 +469,9 @@ class Ticket extends Model
 
     public function openings() {
         return $this->hasMany(Opening::class);
+    }
+
+    public function notes() {
+        return $this->hasMany(Note::class);
     }
 }
