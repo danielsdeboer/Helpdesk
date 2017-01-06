@@ -12,6 +12,7 @@ use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\PoolAssignment;
+use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
 
@@ -66,7 +67,7 @@ $factory->define(Assignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'assigned_to' => factory(Agent::class)->create()->id,
-        'created_by' => null,
+        'agent_id' => null,
         'is_visible' => false,
     ];
 });
@@ -75,26 +76,25 @@ $factory->define(DueDate::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'due_on' => Carbon::parse('+1 day'),
-        'created_by' => null,
+        'agent_id' => null,
         'is_visible' => false,
     ];
 });
 
-$factory->define(InternalReply::class, function (Faker\Generator $faker) {
+$factory->define(Reply::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'body' => $faker->paragraph(2),
-        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
+        'agent_id' => factory(config('helpdesk.userModel'))->create()->id,
+        'user_id' => null,
         'is_visible' => true,
     ];
 });
 
-$factory->define(ExternalReply::class, function (Faker\Generator $faker) {
+$factory->state(Reply::class, 'isUser', function (Faker\Generator $faker) {
     return [
-        'ticket_id' => factory(Ticket::class)->create()->id,
-        'body' => $faker->paragraph(2),
-        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
-        'is_visible' => true,
+        'agent_id' => null,
+        'user_id' => factory(config('helpdesk.userModel'))->create(),
     ];
 });
 
@@ -108,7 +108,7 @@ $factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'pool_id' => factory(Pool::class)->create()->id,
-        'created_by' => null,
+        'agent_id' => null,
         'is_visible' => false,
     ];
 });
@@ -119,7 +119,14 @@ $factory->define(Closing::class, function (Faker\Generator $faker) {
             'status' => 'closed'
         ])->id,
         'note' => 'Test note',
-        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
+        'agent_id' => factory(Agent::class)->create()->id,
+        'is_visible' => true,
+    ];
+});
+
+$factory->state(Closing::class, 'isUser', function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(config('helpdesk.userModel'))->create()->id,
         'is_visible' => true,
     ];
 });
@@ -127,8 +134,16 @@ $factory->define(Closing::class, function (Faker\Generator $faker) {
 $factory->define(Opening::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'created_by' => factory(config('helpdesk.userModel'))->create()->id,
+        'agent_id' => null,
+        'user_id' => factory(config('helpdesk.userModel'))->create()->id,
         'is_visible' => true,
+    ];
+});
+
+$factory->state(Opening::class, 'isAgent', function (Faker\Generator $faker) {
+    return [
+        'agent_id' => factory(Agent::class)->create()->id,
+        'user_id' => null,
     ];
 });
 
@@ -136,7 +151,15 @@ $factory->define(Note::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'body' => $faker->paragraph(2),
-        'created_by' => null,
+        'agent_id' => factory(Agent::class)->create()->id,
+        'user_id' => null,
         'is_visible' => false,
+    ];
+});
+
+$factory->state(Note::class, 'isUser', function (Faker\Generator $faker) {
+    return [
+        'agent_id' => null,
+        'user_id' => factory(config('helpdesk.userModel'))->create()->id,
     ];
 });

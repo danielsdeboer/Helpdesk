@@ -34,10 +34,17 @@ class ActionBase extends Model
     }
 
     /**
-     * Owned by creator
+     * Owned by an agent
      */
-    public function creator() {
-        return $this->belongsTo(config('helpdesk.userModel'), 'created_by');
+    public function agent() {
+        return $this->belongsTo(Agent::class)->whereNotNull('agent_id');
+    }
+
+    /**
+     * Owned by an user
+     */
+    public function user() {
+        return $this->belongsTo(config('helpdesk.userModel'))->whereNotNull('user_id');
     }
 
     /**

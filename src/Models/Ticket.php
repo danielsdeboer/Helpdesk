@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
@@ -50,16 +51,12 @@ class Ticket extends Model
      * @param  Agent $creator
      * @return $this
      */
-    public function assignToAgent(Agent $agent, $creator = null, $isVisible = false)
+    public function assignToAgent(Agent $agent, Agent $creator = null, $isVisible = false)
     {
-        if ($creator && ! $creator instanceof Agent) {
-            throw new CreatorMustBeAnAgentException;
-        }
-
         Assignment::create([
             'ticket_id' => $this->id,
             'assigned_to' => $agent->id,
-            'created_by' => $creator ? $creator->id : null,
+            'agent_id' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -77,16 +74,12 @@ class Ticket extends Model
      * @param  Agent $creator
      * @return $this
      */
-    public function assignToPool($pool, $creator = null, $isVisible = false)
+    public function assignToPool($pool, Agent $creator = null, $isVisible = false)
     {
-        if ($creator && ! $creator instanceof Agent) {
-            throw new CreatorMustBeAnAgentException;
-        }
-
         PoolAssignment::create([
             'ticket_id' => $this->id,
             'pool_id' => $pool->id,
-            'created_by' => $creator ? $creator->id : null,
+            'agent_id' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -103,16 +96,12 @@ class Ticket extends Model
      * @param  bool $isVisible
      * @return $this
      */
-    public function dueOn($date, $creator = null, $isVisible = true)
+    public function dueOn($date, Agent $creator = null, $isVisible = true)
     {
-        if ($creator && ! $creator instanceof Agent) {
-            throw new CreatorMustBeAnAgentException;
-        }
-
         DueDate::create([
             'ticket_id' => $this->id,
             'due_on' => Carbon::parse($date),
-            'created_by' => $creator ? $creator->id : null,
+            'agent_id' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -134,10 +123,13 @@ class Ticket extends Model
             throw new CreatorRequiredException;
         }
 
+        $userClass = config('helpdesk.userModel');
+
         Closing::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'created_by' => $creator->id,
+            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
+            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -163,10 +155,13 @@ class Ticket extends Model
             throw new CreatorRequiredException;
         }
 
+        $userClass = config('helpdesk.userModel');
+
         Opening::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'created_by' => $creator->id,
+            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
+            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -181,7 +176,7 @@ class Ticket extends Model
      * Add a note to the ticket.
      *
      * @param  string $body
-     * @param  User $creator
+     * @param  User | Agent $creator
      * @return $this
      */
     public function note($body, $creator, $isVisible = true)
@@ -190,10 +185,13 @@ class Ticket extends Model
             throw new CreatorRequiredException;
         }
 
+        $userClass = config('helpdesk.userModel');
+
         Note::create([
             'ticket_id' => $this->id,
             'body' => $body,
-            'created_by' => $creator->id,
+            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
+            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -207,15 +205,15 @@ class Ticket extends Model
      * is notified for them and must be able to see the
      * body of the reply.
      * @param  string $body
-     * @param  User $creator
+     * @param  Agent $agent
      * @return $this
      */
-    public function internalReply($body, $creator)
+    public function internalReply($body, Agent $agent)
     {
-        InternalReply::create([
+        Reply::create([
             'ticket_id' => $this->id,
             'body' => $body,
-            'created_by' => $creator->id,
+            'agent_id' => $agent->id,
             'is_visible' => true,
         ]);
 
@@ -230,12 +228,20 @@ class Ticket extends Model
      * @param  User $creator
      * @return $this
      */
-    public function externalReply($body, $creator)
+    public function externalReply($body, $user)
     {
-        ExternalReply::create([
+        $userClass = config('helpdesk.userModel');
+
+        // Can't user a type hint as the user class
+        // is variable
+        if (! $user instanceof $userClass) {
+            throw new CreatorMustBeAUserException;
+        }
+
+        Reply::create([
             'ticket_id' => $this->id,
             'body' => $body,
-            'created_by' => $creator->id,
+            'user_id' => $user->id,
             'is_visible' => true,
         ]);
 
@@ -465,11 +471,11 @@ class Ticket extends Model
     }
 
     public function internalReplies() {
-        return $this->hasMany(InternalReply::class);
+        return $this->hasMany(Reply::class)->whereNotNull('agent_id');
     }
 
     public function externalReplies() {
-        return $this->hasMany(ExternalReply::class);
+        return $this->hasMany(Reply::class)->whereNotNull('user_id');
     }
 
     public function closing() {
