@@ -29,9 +29,16 @@ class CreateHelpdeskTables extends Migration
         Schema::create($tables['agents'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('team_lead_of')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create($tables['agent_pool'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('agent_id');
+            $table->unsignedInteger('pool_id');
+            $table->boolean('is_team_lead')->default(false);
+            $table->timestamps();
         });
 
         Schema::create($tables['generic_contents'], function (Blueprint $table) {
@@ -95,7 +102,6 @@ class CreateHelpdeskTables extends Migration
 
         Schema::create($tables['pools'], function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('team_lead');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

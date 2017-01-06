@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Database\Seeds;
 
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
@@ -10,7 +11,7 @@ use Illuminate\Database\Seeder;
 class HelpdeskSeeder extends Seeder
 {
     protected $tickets;
-    protected $users;
+    protected $agents;
     protected $pools;
 
     /**
@@ -21,8 +22,8 @@ class HelpdeskSeeder extends Seeder
     public function run()
     {
         $this->createTickets(52)
-            ->createUsers(10)
-            ->createAssignmentPools(3)
+            ->createAgents(10)
+            ->createPools(3)
             ->assignTicketsToUsers()
             ->assignTicketsToPools()
             ->addDueDatesToAssignedOrPooledTickets()
@@ -43,18 +44,23 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Create a batch of internal users
+     * Create a batch of agents
      * @param  int $numberOfUsers
      * @return $this
      */
-    protected function createUsers($numberOfUsers)
+    protected function createAgents($numberOfAgents)
     {
-        $this->users = factory(config('helpdesk.userModel'), $numberOfUsers)->create();
+        $this->agents = factory(Agent::class, $numberOfAgents)->create();
 
         return $this;
     }
 
-    protected function createAssignmentPools($numberOfPools)
+    /**
+     * Create a batch of pools
+     * @param  int $numberOfPools
+     * @return $this
+     */
+    protected function createPools($numberOfPools)
     {
         $this->pools = factory(Pool::class, $numberOfPools)->create();
 
@@ -62,14 +68,14 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Assign every other ticket to a random user
+     * Assign every other ticket to a random agent
      * @return $this
      */
     protected function assignTicketsToUsers()
     {
         $this->tickets->each(function($item, $key) {
             if ($key % 2 === 0) {
-                $item->assignToUser($this->users->random());
+                $item->assignToAgent($this->agents->random());
             }
         });
 

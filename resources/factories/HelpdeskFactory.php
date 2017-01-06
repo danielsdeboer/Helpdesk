@@ -51,9 +51,9 @@ $factory->define(Ticket::class, function (Faker\Generator $faker) {
 $factory->define(Agent::class, function (Faker\Generator $faker) {
     return [
         'user_id' => factory(config('helpdesk.userModel'))->create()->id,
-        'team_lead_of' => null,
     ];
 });
+
 
 $factory->define(GenericContent::class, function (Faker\Generator $faker) {
     return [
@@ -65,7 +65,7 @@ $factory->define(GenericContent::class, function (Faker\Generator $faker) {
 $factory->define(Assignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'assigned_to' => factory(config('helpdesk.userModel'))->create()->id,
+        'assigned_to' => factory(Agent::class)->create()->id,
         'created_by' => null,
         'is_visible' => false,
     ];
@@ -100,8 +100,7 @@ $factory->define(ExternalReply::class, function (Faker\Generator $faker) {
 
 $factory->define(Pool::class, function (Faker\Generator $faker) {
     return [
-        'team_lead' => factory(config('helpdesk.userModel'))->create()->id,
-        'name' => 'Customer Service',
+        'name' => $faker->jobTitle(),
     ];
 });
 

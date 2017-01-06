@@ -6,8 +6,15 @@ use Aviator\Helpdesk\Models\ActionBase;
 
 class Assignment extends ActionBase
 {
+    /**
+     * Overridden as assignment belong to agents, not users
+     */
+    public function creator() {
+        return $this->belongsTo(Agent::class, 'created_by');
+    }
+
     public function assignee() {
-        return $this->belongsTo(config('helpdesk.userModel'), 'assigned_to');
+        return $this->belongsTo(Agent::class, 'assigned_to');
     }
 
     /**

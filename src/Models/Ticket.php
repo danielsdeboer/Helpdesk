@@ -45,15 +45,15 @@ class Ticket extends Model
      * Visibility for assignments is assumed to be false as
      * this isn't relevant for the end user but this can
      * be overriden.
-     * @param  User $user
+     * @param  Agent $agent
      * @param  User $creator
      * @return $this
      */
-    public function assignToUser($user, $creator = null, $isVisible = false)
+    public function assignToAgent(Agent $agent, $creator = null, $isVisible = false)
     {
         Assignment::create([
             'ticket_id' => $this->id,
-            'assigned_to' => $user->id,
+            'assigned_to' => $agent->id,
             'created_by' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
