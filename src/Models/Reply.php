@@ -3,8 +3,9 @@
 namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Models\ActionBase;
+use Aviator\Helpdesk\Models\Agent;
 
-class InternalReply extends ActionBase
+class Reply extends ActionBase
 {
     /**
      * Set the table name from the Helpdesk config
@@ -14,6 +15,6 @@ class InternalReply extends ActionBase
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.internal_replies'));
+        $this->setTable(config('helpdesk.tables.replies'));
     }
 }

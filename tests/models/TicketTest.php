@@ -115,8 +115,8 @@ class TicketTest extends TestCase {
         $this->assertInstanceOf(Agent::class, $this->ticket->assignment->assignee);
         $this->assertEquals($agent->id, $this->ticket->assignment->assignee->id);
 
-        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->creator);
-        $this->assertEquals($creator->id, $this->ticket->assignment->creator->id);
+        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->agent);
+        $this->assertEquals($creator->id, $this->ticket->assignment->agent->id);
     }
 
     /**
@@ -133,7 +133,7 @@ class TicketTest extends TestCase {
 
         try {
             $this->ticket->assignToAgent($agent, $creator);
-        } catch (CreatorMustBeAnAgentException $e) {
+        } catch (\ErrorException $e) {
             return;
         }
 
@@ -167,7 +167,7 @@ class TicketTest extends TestCase {
         $this->ticket->assignToPool($pool, $creator);
 
         $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
-        $this->assertEquals($creator->id, $this->ticket->poolAssignment->creator->id);
+        $this->assertEquals($creator->id, $this->ticket->poolAssignment->agent->id);
     }
 
     /**
@@ -195,7 +195,7 @@ class TicketTest extends TestCase {
         $this->ticket->dueOn('+1 day', $creator);
 
         $this->assertNotNull($this->ticket->dueDate->due_on);
-        $this->assertEquals($creator->id, $this->ticket->dueDate->creator->id);
+        $this->assertEquals($creator->id, $this->ticket->dueDate->agent->id);
     }
 
     /**
@@ -341,14 +341,14 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_replied_to_internally_by_a_user()
+    public function it_may_be_replied_to_by_an_agent()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
 
-        $this->ticket->internalReply('here is the body of the reply', $creator);
+        $this->ticket->internalReply('here is the body of the reply', $agent);
 
-        $this->assertEquals($creator->id, $this->ticket->internalReplies->first()->creator->id);
+        $this->assertEquals($agent->id, $this->ticket->internalReplies->first()->agent->id);
     }
 
     /**
@@ -372,12 +372,12 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function an_internal_reply_created_via_the_ticket_is_visible_to_the_end_user()
+    public function a_reply_created_by_an_agent_is_visible_to_the_user()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
 
-        $this->ticket->internalReply('here is the body of the reply', $creator);
+        $this->ticket->internalReply('here is the body of the reply', $agent);
 
         $this->assertTrue($this->ticket->internalReplies->first()->is_visible);
     }
@@ -386,14 +386,14 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_replied_to_externally_by_the_end_user()
+    public function it_may_be_replied_to_by_a_user()
     {
         $this->createTicket();
-        $externalUser = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-        $this->ticket->externalReply('here is the body of the reply', $externalUser);
+        $this->ticket->externalReply('here is the body of the reply', $user);
 
-        $this->assertEquals($externalUser->id, $this->ticket->externalReplies->first()->creator->id);
+        $this->assertEquals($user->id, $this->ticket->externalReplies->first()->user->id);
     }
 
     /**
@@ -639,9 +639,9 @@ class TicketTest extends TestCase {
     {
         $ticket = factory(Ticket::class)->create();
         $pool = factory(Pool::class)->create();
-        $user = factory(config('helpdesk.userModel'))->create();
+        $agent = factory(Agent::class)->create();
 
-        $ticket->dueOn('today')->assignToPool($pool)->internalReply('this is a reply', $user);
+        $ticket->dueOn('today')->assignToPool($pool)->internalReply('this is a reply', $agent);
         $ticket = Ticket::withActions()->find($ticket->id);
 
         $this->assertEquals(4, $ticket->actions->count());

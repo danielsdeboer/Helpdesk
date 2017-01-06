@@ -23,7 +23,8 @@ class TicketObserver
     {
         Opening::create([
             'ticket_id' => $ticket->id,
-            'created_by' => $ticket->user->id,
+            'agent_id' => $ticket->agent ? $ticket->agent->id : null,
+            'user_id' => $ticket->user ? $ticket->user->id : null,
         ]);
     }
 }
