@@ -19,6 +19,8 @@ return [
     'tables' => [
         'users' => 'users',
         'tickets' => 'tickets',
+        'agents' => 'agents',
+        'agent_pool' => 'agent_pool',
         'generic_contents' => 'generic_contents',
         'actions' => 'actions',
         'assignments' => 'assignments',
@@ -65,8 +67,8 @@ return [
         ],
 
         'internal' => [
-            'assignedToUser' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToUser::class,
+            'assignedToAgent' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToAgent::class,
                 'subject' => 'A ticket has been assigned to you',
                 'greeting' => 'Hey there.',
                 'line' => '',

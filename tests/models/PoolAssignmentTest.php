@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\PoolAssignment;
 use Aviator\Helpdesk\Notifications\Internal\AssignedToPool;
 use Illuminate\Support\Facades\Notification;
@@ -25,10 +27,16 @@ class PoolAssignmentTest extends TestCase {
      */
     public function create_an_assignment_fires_a_notification_to_the_assignee()
     {
-        $assignment = factory(PoolAssignment::class)->create();
+        $agent = factory(Agent::class)->create();
+        $pool = factory(Pool::class)->create();
+
+        $agent->makeTeamLeadOf($pool);
+        $assignment = factory(PoolAssignment::class)->create([
+            'pool_id' => $pool->id,
+        ]);
 
         Notification::assertSentTo(
-            $assignment->pool->teamLead,
+            $assignment->pool->teamLeads,
             AssignedToPool::class
         );
     }

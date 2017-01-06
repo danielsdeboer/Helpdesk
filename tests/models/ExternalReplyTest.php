@@ -3,9 +3,11 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\ExternalReply;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Notifications\Internal\AssignedToPool;
 use Aviator\Helpdesk\Notifications\Internal\Replied;
 use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Facades\Notification;
@@ -41,16 +43,16 @@ class ExternalReplyTest extends TestCase {
     public function creating_an_external_reply_sends_a_notification_to_the_assignee()
     {
         $ticket = factory(Ticket::class)->create();
-        $internalUser = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
 
-        $ticket->assignToUser($internalUser);
+        $ticket->assignToAgent($agent);
         $reply = factory(ExternalReply::class)->create([
             'ticket_id' => $ticket->id,
         ]);
 
 
         Notification::assertSentTo(
-            $internalUser,
+            $agent,
             Replied::class
         );
     }
@@ -62,17 +64,19 @@ class ExternalReplyTest extends TestCase {
     public function if_no_assignee_is_set_the_notification_goes_to_the_assignment_pools_team_lead()
     {
         $ticket = factory(Ticket::class)->create();
+        $agent = factory(Agent::class)->create();
         $pool = factory(Pool::class)->create();
 
+        $agent->makeTeamLeadOf($pool);
         $ticket->assignToPool($pool);
+
         $reply = factory(ExternalReply::class)->create([
             'ticket_id' => $ticket->id,
         ]);
 
-
         Notification::assertSentTo(
-            $pool->teamLead,
-            Replied::class
+            $pool->teamLeads,
+            AssignedToPool::class
         );
     }
 

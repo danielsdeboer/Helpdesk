@@ -20,7 +20,16 @@ class Pool extends Model
         $this->setTable(config('helpdesk.tables.pool'));
     }
 
-    public function teamLead() {
-        return $this->belongsTo(config('helpdesk.userModel'), 'team_lead');
+    public function agents() {
+        return $this->belongsToMany(Agent::class)->withPivot('is_team_lead')->withTimestamps();
     }
+
+    public function teamLeads() {
+        return $this->belongsToMany(Agent::class)
+            ->withPivot('is_team_lead')
+            ->withTimestamps()
+            ->wherePivot('is_team_lead', 1);
+    }
+
+
 }

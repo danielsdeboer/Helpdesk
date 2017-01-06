@@ -2,7 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Pool;
@@ -88,32 +90,54 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_assigned_to_a_user_automatically()
+    public function it_may_be_assigned_to_an_agent_automatically()
     {
         $this->createTicket();
-        $user = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
 
-        $this->ticket->assignToUser($user);
+        $this->ticket->assignToAgent($agent);
 
-        $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
+        $this->assertEquals($agent->user->email, $this->ticket->assignment->assignee->user->email);
     }
 
     /**
      * @group ticket
      * @test
      */
-    public function it_may_be_assigned_to_a_user_by_a_user()
+    public function it_may_be_assigned_to_an_agent_by_an_agent()
     {
         $this->createTicket();
-        $user = factory(User::class)->create();
-        $creator = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
+        $creator = factory(Agent::class)->create();
 
-        $this->actingAs($user);
+        $this->ticket->assignToAgent($agent, $creator);
 
-        $this->ticket->assignToUser($user, $creator);
+        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->assignee);
+        $this->assertEquals($agent->id, $this->ticket->assignment->assignee->id);
 
-        $this->assertEquals($user->email, $this->ticket->assignment->assignee->email);
+        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->creator);
         $this->assertEquals($creator->id, $this->ticket->assignment->creator->id);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_must_be_assigned_to_an_agent_by_an_agent()
+    {
+        $this->createTicket();
+        $agent = factory(Agent::class)->create();
+        $creator = factory(config('helpdesk.userModel'))->create();
+
+        $this->ticket->assignToAgent($agent);
+
+        try {
+            $this->ticket->assignToAgent($agent, $creator);
+        } catch (CreatorMustBeAnAgentException $e) {
+            return;
+        }
+
+        $this->fail('Assigning a ticket by a user should fail');
     }
 
     /**
@@ -134,11 +158,11 @@ class TicketTest extends TestCase {
      * @group ticket
      * @test
      */
-    public function it_may_be_assigned_to_an_assignment_pool_by_a_user()
+    public function it_may_be_assigned_to_an_assignment_pool_by_an_agent()
     {
         $this->createTicket();
         $pool = factory(Pool::class)->create();
-        $creator = factory(User::class)->create();
+        $creator = factory(Agent::class)->create();
 
         $this->ticket->assignToPool($pool, $creator);
 
@@ -166,7 +190,7 @@ class TicketTest extends TestCase {
     public function it_may_be_given_a_due_date_by_a_user()
     {
         $this->createTicket();
-        $creator = factory(User::class)->create();
+        $creator = factory(Agent::class)->create();
 
         $this->ticket->dueOn('+1 day', $creator);
 
@@ -181,8 +205,9 @@ class TicketTest extends TestCase {
     public function it_may_have_many_actions()
     {
         $this->createTicket();
+        $agent = factory(Agent::class)->create();
 
-        $this->ticket->assignToUser(User::first());
+        $this->ticket->assignToAgent($agent);
         $this->ticket->dueOn('today');
 
         $this->assertEquals(3, $this->ticket->actions->count());
@@ -406,9 +431,9 @@ class TicketTest extends TestCase {
     public function it_has_an_unassigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
-        $assignee = factory(User::class)->create();
+        $assignee = factory(Agent::class)->create();
 
-        $tickets->first()->assignToUser($assignee);
+        $tickets->first()->assignToAgent($assignee);
         $unassignedTickets = Ticket::unassigned()->get();
 
         $this->assertEquals(9, $unassignedTickets->count());
@@ -436,9 +461,9 @@ class TicketTest extends TestCase {
     public function it_has_assigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
-        $assignee = factory(User::class)->create();
+        $assignee = factory(Agent::class)->create();
 
-        $tickets->first()->assignToUser($assignee);
+        $tickets->first()->assignToAgent($assignee);
         $assignedTickets = Ticket::assigned()->get();
 
         $this->assertEquals(1, $assignedTickets->count());
@@ -450,8 +475,10 @@ class TicketTest extends TestCase {
      */
     public function the_assigned_scope_returns_only_open_tickets()
     {
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
-            $item->assignToUser($item->user);
+        $agent = factory(Agent::class)->create();
+
+        $tickets = factory(Ticket::class, 2)->create()->each(function($item) use ($agent) {
+            $item->assignToAgent($agent);
         });
 
         $tickets->first()->close(null, $tickets->first()->user);

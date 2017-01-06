@@ -45,8 +45,8 @@ class AssignmentObserver
      */
     protected function sendNotification(Assignment $assignment)
     {
-        $notification = config('helpdesk.notifications.internal.assignedToUser.class');
+        $notification = config('helpdesk.notifications.internal.assignedToAgent.class');
 
-        Notification::send($assignment->assignee, new $notification($assignment->ticket));
+        Notification::send($assignment->assignee->user, new $notification($assignment->ticket));
     }
 }

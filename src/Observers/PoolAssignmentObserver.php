@@ -47,6 +47,6 @@ class PoolAssignmentObserver
     {
         $notification = config('helpdesk.notifications.internal.assignedToPool.class');
 
-        Notification::send($observed->pool->teamLead, new $notification($observed->ticket));
+        Notification::send($observed->pool->teamLeads, new $notification($observed->ticket));
     }
 }

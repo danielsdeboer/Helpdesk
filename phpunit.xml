@@ -16,4 +16,15 @@
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+      <whitelist>
+        <directory suffix=".php">./src</directory>
+      </whitelist>
+    </filter>
+
+<!--     <logging>
+      <log type="testdox-html" target="./test_logs/testdox.html"/>
+      <log type="coverage-html" target="./test_logs/report" lowUpperBound="35" highLowerBound="70"/>
+    </logging> -->
 </phpunit>

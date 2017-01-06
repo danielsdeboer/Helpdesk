@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
@@ -45,15 +46,19 @@ class Ticket extends Model
      * Visibility for assignments is assumed to be false as
      * this isn't relevant for the end user but this can
      * be overriden.
-     * @param  User $user
-     * @param  User $creator
+     * @param  Agent $agent
+     * @param  Agent $creator
      * @return $this
      */
-    public function assignToUser($user, $creator = null, $isVisible = false)
+    public function assignToAgent(Agent $agent, $creator = null, $isVisible = false)
     {
+        if ($creator && ! $creator instanceof Agent) {
+            throw new CreatorMustBeAnAgentException;
+        }
+
         Assignment::create([
             'ticket_id' => $this->id,
-            'assigned_to' => $user->id,
+            'assigned_to' => $agent->id,
             'created_by' => $creator ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
@@ -69,11 +74,15 @@ class Ticket extends Model
      * this isn't relevant for the end user but this can
      * be overriden.
      * @param  User $user
-     * @param  User $creator
+     * @param  Agent $creator
      * @return $this
      */
     public function assignToPool($pool, $creator = null, $isVisible = false)
     {
+        if ($creator && ! $creator instanceof Agent) {
+            throw new CreatorMustBeAnAgentException;
+        }
+
         PoolAssignment::create([
             'ticket_id' => $this->id,
             'pool_id' => $pool->id,
@@ -90,12 +99,16 @@ class Ticket extends Model
      * Visibility is assumed true for due dates since
      * end users will probably want to know this.
      * @param  string $date
-     * @param  User $creator
+     * @param  Agent $creator
      * @param  bool $isVisible
      * @return $this
      */
     public function dueOn($date, $creator = null, $isVisible = true)
     {
+        if ($creator && ! $creator instanceof Agent) {
+            throw new CreatorMustBeAnAgentException;
+        }
+
         DueDate::create([
             'ticket_id' => $this->id,
             'due_on' => Carbon::parse($date),
@@ -112,7 +125,7 @@ class Ticket extends Model
      * Visibility is assumed true for closings as a status
      * indicator for the customer
      * @param  string $note
-     * @param  User $creator
+     * @param  User | Agent $creator
      * @return $this
      */
     public function close($note = null, $creator)
@@ -141,7 +154,7 @@ class Ticket extends Model
      * Visibility is assumed true for openings as a status
      * indicator for the customer
      * @param  string $note
-     * @param  User $creator
+     * @param  User | Agent $creator
      * @return $this
      */
     public function open($note = null, $creator)
@@ -173,6 +186,10 @@ class Ticket extends Model
      */
     public function note($body, $creator, $isVisible = true)
     {
+        if (! $creator) {
+            throw new CreatorRequiredException;
+        }
+
         Note::create([
             'ticket_id' => $this->id,
             'body' => $body,
