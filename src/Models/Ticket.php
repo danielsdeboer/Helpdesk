@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
@@ -51,6 +52,10 @@ class Ticket extends Model
      */
     public function assignToAgent(Agent $agent, $creator = null, $isVisible = false)
     {
+        if ($creator && ! $creator instanceof Agent) {
+            throw new CreatorMustBeAnAgentException;
+        }
+
         Assignment::create([
             'ticket_id' => $this->id,
             'assigned_to' => $agent->id,

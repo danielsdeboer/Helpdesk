@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
@@ -116,6 +117,27 @@ class TicketTest extends TestCase {
 
         $this->assertInstanceOf(Agent::class, $this->ticket->assignment->creator);
         $this->assertEquals($creator->id, $this->ticket->assignment->creator->id);
+    }
+
+    /**
+     * @group ticket
+     * @test
+     */
+    public function it_must_be_assigned_to_an_agent_by_an_agent()
+    {
+        $this->createTicket();
+        $agent = factory(Agent::class)->create();
+        $creator = factory(config('helpdesk.userModel'))->create();
+
+        $this->ticket->assignToAgent($agent);
+
+        try {
+            $this->ticket->assignToAgent($agent, $creator);
+        } catch (CreatorMustBeAnAgentException $e) {
+            return;
+        }
+
+        $this->fail('Assigning a ticket by a user should fail');
     }
 
     /**
