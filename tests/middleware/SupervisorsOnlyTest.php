@@ -7,13 +7,13 @@ use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Facades\Route;
 
-class AgentsOnlyTest extends TestCase {
+class SupervisorsOnlyTest extends TestCase {
 
     public function setUp()
     {
         parent::setUp();
 
-        Route::any('/guarded', ['middleware' => 'helpdesk.agents', function() {
+        Route::any('/guarded', ['middleware' => 'helpdesk.supervisors', function() {
             return 'Guarded.';
         }]);
     }
@@ -33,9 +33,14 @@ class AgentsOnlyTest extends TestCase {
      * @group middleware
      * @test
      */
-    public function it_aborts_with_403_if_the_user_isnt_an_agent()
+    public function it_aborts_with_403_if_the_user_isnt_a_supervisor()
     {
         $this->be(factory(User::class)->create());
+        $this->call('GET', '/guarded');
+
+        $this->assertResponseStatus(403);
+
+        $this->be(factory(Agent::class)->create()->user);
         $this->call('GET', '/guarded');
 
         $this->assertResponseStatus(403);
@@ -45,9 +50,13 @@ class AgentsOnlyTest extends TestCase {
      * @group middleware
      * @test
      */
-    public function it_passes_if_the_user_is_an_agent()
+    public function it_passes_if_the_user_is_a_supervisor()
     {
-        $this->be(factory(Agent::class)->create()->user);
+        $supervisor = factory(User::class)->create([
+            'email' => config('helpdesk.supervisor.email'),
+        ]);
+
+        $this->be($supervisor);
         $response = $this->call('GET', '/guarded');
 
         $this->assertEquals('Guarded.', $response->getContent());

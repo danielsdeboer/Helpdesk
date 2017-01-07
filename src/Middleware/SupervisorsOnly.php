@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Middleware;
 use Aviator\Helpdesk\Models\Agent;
 use Closure;
 
-class AgentsOnly
+class SupervisorsOnly
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,9 @@ class AgentsOnly
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && Agent::where('user_id', $request->user()->id)->first()) {
+        $email = config('helpdesk.userModelEmailColumn');
+
+        if ($request->user() && $request->user()->$email == config('helpdesk.supervisor.email')) {
             return $next($request);
         }
 

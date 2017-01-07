@@ -2,6 +2,10 @@
 
 namespace Aviator\Helpdesk;
 
+use Aviator\Helpdesk\Middleware\AgentsOnly;
+use Aviator\Helpdesk\Middleware\SupervisorsOnly;
+use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class HelpdeskServiceProvider extends ServiceProvider
@@ -9,8 +13,9 @@ class HelpdeskServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(Kernel $kernel, Router $router)
     {
+        $this->pushMiddleware($kernel, $router);
         $this->publishConfig();
         $this->publishFactories();
 
@@ -24,6 +29,26 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->registerObservers();
     }
 
+    /**
+     * Push the middleware into the kernel middleware stack
+     * and make them available via an alias
+     * @param  Kernel $kernel
+     * @param  Router $router
+     * @return void
+     */
+    protected function pushMiddleware($kernel, $router)
+    {
+        $kernel->pushMiddleware(AgentsOnly::class);
+        $router->middleware('helpdesk.agents', AgentsOnly::class);
+
+        $kernel->pushMiddleware(SupervisorsOnly::class);
+        $router->middleware('helpdesk.supervisors', SupervisorsOnly::class);
+    }
+
+    /**
+     * Make the configuration file available for publishing
+     * @return void
+     */
     protected function publishConfig()
     {
         $this->publishes([
@@ -31,6 +56,10 @@ class HelpdeskServiceProvider extends ServiceProvider
         ], 'config');
     }
 
+    /**
+     * Make the helpdesk factory available for publishing
+     * @return void
+     */
     protected function publishFactories()
     {
         $this->publishes([
