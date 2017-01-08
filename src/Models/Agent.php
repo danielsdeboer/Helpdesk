@@ -78,6 +78,58 @@ class Agent extends Model
         return $this;
     }
 
+    /**
+     * Add the agent to a team
+     * @param Pool $team
+     * @return $this
+     */
+    public function addToTeam(Pool $team)
+    {
+        $this->teams()->attach($team->id);
+
+        return $this;
+    }
+
+    /**
+     * Remove the agent from a team
+     * @param  Pool   $team
+     * @return $this
+     */
+    public function removeFromTeam(Pool $team)
+    {
+        $this->teams()->detach($team->id);
+
+        return $this;
+    }
+
+    /**
+     * Add the agent to multiple teams
+     * @param array $teams
+     * @return $this
+     */
+    public function addToTeams(array $teams)
+    {
+        foreach ($teams as $team) {
+            $this->teams()->attach($team);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove the agent from multiple teams
+     * @param  array $teams
+     * @return $this
+     */
+    public function removeFromTeams(array $teams)
+    {
+        foreach ($teams as $team) {
+            $this->teams()->detach($team);
+        }
+
+        return $this;
+    }
+
     public function user() {
         return $this->belongsTo(config('helpdesk.userModel'));
     }

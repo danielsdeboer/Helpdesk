@@ -104,4 +104,11 @@ return [
             'supervisor' => 'supervisor',
         ],
     ],
+
+    'controllers' => [
+        'dashboard' => [
+            'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
+            'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
+        ],
+    ],
 ];

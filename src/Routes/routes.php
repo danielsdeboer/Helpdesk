@@ -15,13 +15,15 @@ Route::group([
             return;
         })->middleware(\Aviator\Helpdesk\Middleware\DashboardRouter::class)->name('router');
 
-        Route::get(config('helpdesk.routes.dashboard.user'), function() {
-            return 'user-dashboard';
-        })->name(config('helpdesk.routes.dashboard.user'));
+        Route::get(
+            config('helpdesk.routes.dashboard.user'),
+            config('helpdesk.controllers.dashboard.user')
+        )->name(config('helpdesk.routes.dashboard.user'));
 
-        Route::get(config('helpdesk.routes.dashboard.agent'), function() {
-            return 'agent-dashboard';
-        })->name(config('helpdesk.routes.dashboard.agent'));
+        Route::get(
+            config('helpdesk.routes.dashboard.agent'),
+            config('helpdesk.controllers.dashboard.agent')
+        )->name(config('helpdesk.routes.dashboard.agent'));
 
         Route::get(config('helpdesk.routes.dashboard.supervisor'), function() {
             return 'supervisor-dashboard';

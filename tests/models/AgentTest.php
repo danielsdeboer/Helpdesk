@@ -37,15 +37,84 @@ class AgentTest extends TestCase {
         $agent = $this->agent();
         $agent2 = $this->agent();
 
-        $team = factory(Pool::class)->create()->id;
-        $team2 = factory(Pool::class)->create()->id;
+        $team = factory(Pool::class)->create();
+        $team2 = factory(Pool::class)->create();
 
-        $agent2->teams()->attach([$team, $team2]);
+        $agent2->addToTeams([$team, $team2]);
 
-        $agent->teams()->attach($team);
+        $agent->addToTeam($team);
 
         $this->assertEquals(1, $agent->teams->count());
         $this->assertEquals(2, $agent2->teams->count());
+    }
+
+    /**
+     * @group agent
+     * @test
+     */
+    public function it_may_be_added_to_a_team()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $agent->addToTeam($team);
+
+        $this->assertEquals(1, $agent->teams->count());
+    }
+
+    /**
+     * @group agent
+     * @test
+     */
+    public function it_may_be_removed_from_a_team()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $agent->addToTeam($team);
+
+        $this->assertEquals(1, $agent->teams->count());
+
+        $agent = $agent->fresh();
+        $agent->removeFromTeam($team);
+
+        $this->assertEquals(0, $agent->teams->count());
+    }
+
+    /**
+     * @group agent
+     * @test
+     */
+    public function it_may_be_added_to_many_teams()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+        $team2 = factory(Pool::class)->create();
+
+        $agent->addToTeams([$team, $team2]);
+
+        $this->assertEquals(2, $agent->teams->count());
+    }
+
+    /**
+     * @group agent
+     * @test
+     */
+    public function it_may_be_removed_from_many_teams()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+        $team2 = factory(Pool::class)->create();
+        $team3 = factory(Pool::class)->create();
+
+        $agent->addToTeams([$team, $team2, $team3]);
+
+        $this->assertEquals(3, $agent->teams->count());
+
+        $agent = $agent->fresh();
+        $agent->removeFromTeams([$team, $team2]);
+
+        $this->assertEquals(1, $agent->teams->count());
     }
 
     /**
