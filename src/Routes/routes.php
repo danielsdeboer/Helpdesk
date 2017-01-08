@@ -3,6 +3,7 @@
 Route::group([
     'as' => config('helpdesk.routes.helpdesk.prefix') . '.',
     'prefix' => config('helpdesk.routes.helpdesk.prefix'),
+    'middleware' => 'web',
 ], function() {
 
     Route::group([

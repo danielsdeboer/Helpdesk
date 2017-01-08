@@ -46,6 +46,7 @@ abstract class TestCase extends Orchestra
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('app.debug', 'true');
+        $app['config']->set('app.key', 'base64:2+SetJaztC7g0a1sSF81LYsDasiWymO6tp8yVv6KGrA=');
         $app['config']->set('database.default', 'testing');
 
         $app['config']->set('database.connections.testing', [
