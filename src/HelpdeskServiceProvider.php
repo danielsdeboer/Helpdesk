@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk;
 
-use Aviator\Helpdesk\Middleware\AgentsOnly;
-use Aviator\Helpdesk\Middleware\SupervisorsOnly;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -15,16 +13,19 @@ class HelpdeskServiceProvider extends ServiceProvider
      */
     public function boot(Kernel $kernel, Router $router)
     {
-        $this->pushMiddleware($kernel, $router);
-        $this->publishConfig();
-        $this->publishFactories();
-
         $this->loadMigrationsFrom(__DIR__ . '/../resources/migrations');
 
+        $this->publishConfig();
         $this->mergeConfigFrom(
             __DIR__ . '/../resources/config/helpdesk.php',
             'helpdesk'
         );
+
+        $this->loadRoutesFrom(__DIR__ . '/Routes/routes.php');
+
+        $this->pushMiddleware($kernel, $router);
+        $this->publishFactories();
+
 
         $this->registerObservers();
     }
@@ -38,11 +39,14 @@ class HelpdeskServiceProvider extends ServiceProvider
      */
     protected function pushMiddleware($kernel, $router)
     {
-        $kernel->pushMiddleware(AgentsOnly::class);
-        $router->middleware('helpdesk.agents', AgentsOnly::class);
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\AgentsOnly::class);
+        $router->middleware('helpdesk.agents', \Aviator\Helpdesk\Middleware\AgentsOnly::class);
 
-        $kernel->pushMiddleware(SupervisorsOnly::class);
-        $router->middleware('helpdesk.supervisors', SupervisorsOnly::class);
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
+        $router->middleware('helpdesk.supervisors', \Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
+
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class);
+        $router->middleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
     }
 
     /**

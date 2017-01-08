@@ -91,4 +91,17 @@ return [
             ],
         ]
     ],
+
+    'routes' => [
+        'helpdesk' => [
+            'prefix' => 'helpdesk',
+        ],
+
+        'dashboard' => [
+            'prefix' => 'dashboard',
+            'user' => 'user',
+            'agent' => 'agent',
+            'supervisor' => 'supervisor',
+        ],
+    ],
 ];
