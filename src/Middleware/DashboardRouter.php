@@ -3,18 +3,11 @@
 namespace Aviator\Helpdesk\Middleware;
 
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Contracts\Auth\Factory as Auth;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardRouter
 {
-    /**
-     * The authentication factory instance.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
     /**
      * The supervisor's email
      * @var string
@@ -29,11 +22,9 @@ class DashboardRouter
 
     /**
      * Constructor
-     * @param \Illuminate\Contracts\Auth\Factory $auth
      */
-    public function __construct(Auth $auth)
+    public function __construct()
     {
-        $this->auth = $auth;
         $this->supervisorEmail = config('helpdesk.supervisor.email');
         $this->emailColumn = config('helpdesk.userModelEmailColumn');
     }
@@ -47,7 +38,9 @@ class DashboardRouter
      */
     public function handle($request, Closure $next)
     {
-        $this->auth->authenticate();
+        if (Auth::guest()) {
+            return redirect('login');
+        }
 
         if ($request->user()->{$this->emailColumn} == $this->supervisorEmail) {
             return redirect( route('helpdesk.dashboard.supervisor') );

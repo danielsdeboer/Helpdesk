@@ -2,7 +2,7 @@
 
 Route::group([
     'as' => config('helpdesk.routes.helpdesk.prefix') . '.',
-    'prefix' => config('helpdesk.routes.dashboard.prefix'),
+    'prefix' => config('helpdesk.routes.helpdesk.prefix'),
 ], function() {
 
     Route::group([
