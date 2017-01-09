@@ -52,8 +52,7 @@ class AgentDashboardTest extends TestCase
         $this->seeJsonStructure([
             'team',
             'overdue',
-            'dueToday',
-            'open',
+            'agent',
         ]);
     }
 
@@ -74,7 +73,7 @@ class AgentDashboardTest extends TestCase
 
         $this->assertResponseOk();
         $this->seeJsonSubset([
-            'open' => $agentTickets->toArray(),
+            'agent' => $agentTickets->toArray(),
         ]);
     }
 
@@ -100,6 +99,43 @@ class AgentDashboardTest extends TestCase
         $this->seeJsonSubset([
             'team' => $teamTickets->toArray(),
             'teamCount' => 10,
+        ]);
+    }
+
+    /**
+     * @group feature
+     * @group dashboard
+     * @test
+     */
+    public function the_dashboard_returns_overdue_tickets_for_the_agent_or_their_teams()
+    {
+        // Create the agent and team and assign
+        $agent = factory(Agent::class)->create();
+        $team = factory(Pool::class)->create();
+        $agent->addToTeam($team);
+
+        // Create and assign tickets to agent
+        $assignedTickets = factory(Ticket::class, 10)->create()->each(function($item) use ($agent) {
+            $item->assignToAgent($agent);
+        });
+
+        // Create and assign tickets to team
+        $teamTickets = factory(Ticket::class, 10)->create()->each(function($item) use ($team) {
+            $item->assignToPool($team);
+        });
+
+        // Merge the ticket collections and make them overdue
+        $allTickets = $assignedTickets->merge($teamTickets)->each(function($item) {
+            $item->dueOn('yesterday');
+        });
+
+        $this->be($agent->user);
+        $response = $this->call('get', 'helpdesk/dashboard/agent');
+
+        $this->assertResponseOk();
+        $this->seeJsonSubset([
+            'overdue' => $allTickets->toArray(),
+            'overdueCount' => 20,
         ]);
     }
 }
