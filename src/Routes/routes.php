@@ -25,9 +25,10 @@ Route::group([
             config('helpdesk.controllers.dashboard.agent')
         )->name(config('helpdesk.routes.dashboard.agent'));
 
-        Route::get(config('helpdesk.routes.dashboard.supervisor'), function() {
-            return 'supervisor-dashboard';
-        })->name(config('helpdesk.routes.dashboard.supervisor'));
+        Route::get(
+            config('helpdesk.routes.dashboard.supervisor'),
+            config('helpdesk.controllers.dashboard.supervisor')
+        )->name(config('helpdesk.routes.dashboard.supervisor'));
     });
 
 });

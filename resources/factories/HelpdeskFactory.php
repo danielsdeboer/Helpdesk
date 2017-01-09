@@ -55,6 +55,14 @@ $factory->define(Agent::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->state(Agent::class, 'isSuper', function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(config('helpdesk.userModel'))->create([
+            'email' => config('helpdesk.supervisor.email'),
+        ])->id,
+    ];
+});
+
 
 $factory->define(GenericContent::class, function (Faker\Generator $faker) {
     return [

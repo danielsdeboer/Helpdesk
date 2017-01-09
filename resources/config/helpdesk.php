@@ -109,6 +109,7 @@ return [
         'dashboard' => [
             'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
             'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
+            'supervisor' => '\Aviator\Helpdesk\Controllers\Dashboard\SupervisorController@index',
         ],
     ],
 ];
