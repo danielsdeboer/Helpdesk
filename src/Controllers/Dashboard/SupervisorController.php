@@ -24,10 +24,11 @@ class SupervisorController extends Controller
     {
         $super = Agent::where('user_id', auth()->user()->id)->first();
 
-        return [
+        return view('helpdesk::dashboard.index')->with([
             'unassigned' => Tickets::forSuper($super)->unassigned(),
             'overdue' => Tickets::forSuper($super)->overdue(),
-            'super' => Tickets::forSuper($super)->all(),
-        ];
+            'open' => Tickets::forSuper($super)->all(),
+            'tab' => 'dashboard',
+        ]);
     }
 }

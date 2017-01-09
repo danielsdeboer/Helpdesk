@@ -21,9 +21,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return [
-            'user' => Tickets::forUser(auth()->user())->all(),
+        return view('helpdesk::dashboard.index', [
+            'open' => Tickets::forUser(auth()->user())->all(),
             'overdue' => Tickets::forUser(auth()->user())->overdue(),
-        ];
+            'tab' => 'dashboard'
+        ]);
     }
 }

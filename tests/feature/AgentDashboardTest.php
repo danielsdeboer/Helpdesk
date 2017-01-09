@@ -12,6 +12,7 @@ class AgentDashboardTest extends TestCase
     /**
      * @group feature
      * @group dashboard
+     * @group agent
      * @test
      */
     public function a_user_cannot_visit_the_agent_dashboard()
@@ -26,6 +27,7 @@ class AgentDashboardTest extends TestCase
     /**
      * @group feature
      * @group dashboard
+     * @group agent
      * @test
      */
     public function an_agent_can_visit_their_dashboard()
@@ -40,19 +42,18 @@ class AgentDashboardTest extends TestCase
     /**
      * @group feature
      * @group dashboard
+     * @group agent
      * @test
      */
-    public function the_dashboard_returns_the_correct_json_structure()
+    public function an_agent_can_see_their_dashboard()
     {
         $this->be(factory(Agent::class)->create()->user);
 
-        $response = $this->call('get', 'helpdesk/dashboard/agent');
-
-        $this->assertResponseOk();
-        $this->seeJsonStructure([
-            'team',
-            'overdue',
-            'agent',
-        ]);
+        $this->visit('helpdesk/dashboard/agent')
+            ->see('Helpdesk')
+            ->see('Assigned to team')
+            ->see('Overdue')
+            ->see('Open')
+            ->see('Nothing to see here!');
     }
 }

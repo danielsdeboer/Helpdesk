@@ -30,7 +30,7 @@ class UserDashboardTest extends TestCase
      * @group user
      * @test
      */
-    public function an_user_can_visit_their_dashboard()
+    public function a_user_can_visit_their_dashboard()
     {
         $this->be(factory(User::class)->create());
 
@@ -45,16 +45,14 @@ class UserDashboardTest extends TestCase
      * @group user
      * @test
     */
-    public function the_dashboard_returns_the_correct_json_structure()
+    public function a_user_can_see_their_dashboard()
     {
         $this->be(factory(User::class)->create());
 
-        $response = $this->call('get', 'helpdesk/dashboard/user');
-
-        $this->assertResponseOk();
-        $this->seeJsonStructure([
-            'user',
-            'overdue',
-        ]);
+        $this->visit('helpdesk/dashboard/user')
+            ->see('Helpdesk')
+            ->see('Overdue')
+            ->see('Open')
+            ->see('Nothing to see here!');
     }
 }

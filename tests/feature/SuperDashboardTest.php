@@ -42,7 +42,7 @@ class SuperDashboardTest extends TestCase
      * @group super
      * @test
      */
-    public function an_supervisor_can_visit_their_dashboard()
+    public function a_supervisor_can_visit_their_dashboard()
     {
         $this->be(factory(Agent::class)->states('isSuper')->create()->user);
 
@@ -57,17 +57,15 @@ class SuperDashboardTest extends TestCase
      * @group super
      * @test
     */
-    public function the_dashboard_returns_the_correct_json_structure()
+    public function a_supervisor_can_see_their_dashboard()
     {
         $this->be(factory(Agent::class)->states('isSuper')->create()->user);
 
-        $response = $this->call('get', 'helpdesk/dashboard/supervisor');
-
-        $this->assertResponseOk();
-        $this->seeJsonStructure([
-            'unassigned',
-            'overdue',
-            'super',
-        ]);
+        $this->visit('helpdesk/dashboard/supervisor')
+            ->see('Helpdesk')
+            ->see('Unassigned')
+            ->see('Overdue')
+            ->see('Open')
+            ->see('Nothing to see here!');
     }
 }

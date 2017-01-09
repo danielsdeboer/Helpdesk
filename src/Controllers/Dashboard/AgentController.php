@@ -26,17 +26,11 @@ class AgentController extends Controller
     {
         $agent = Agent::where('user_id', Auth::user()->id)->first();
 
-        return [
+        return view('helpdesk::dashboard.index')->with([
             'team' => Tickets::forAgent($agent)->team(),
-            'teamCount' => Tickets::forAgent($agent)->team()->count(),
-
             'overdue' => Tickets::forAgent($agent)->overdue(),
-            'overdueCount' => Tickets::forAgent($agent)->overdue()->count(),
-
-            'agent' => Tickets::forAgent($agent)->all(),
-            'agentCount' => Tickets::forAgent($agent)->all()->count(),
-
+            'open' => Tickets::forAgent($agent)->all(),
             'tab' => 'dashboard',
-        ];
+        ]);
     }
 }

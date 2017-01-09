@@ -21,11 +21,12 @@ class HelpdeskServiceProvider extends ServiceProvider
             'helpdesk'
         );
 
+        $this->pushMiddleware($kernel, $router);
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'helpdesk');
         $this->loadRoutesFrom(__DIR__ . '/Routes/routes.php');
 
-        $this->pushMiddleware($kernel, $router);
         $this->publishFactories();
-
 
         $this->registerObservers();
     }
