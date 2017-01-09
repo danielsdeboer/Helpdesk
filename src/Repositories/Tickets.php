@@ -52,6 +52,24 @@ class Tickets
     }
 
     /**
+     * User getter
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Agent getter
+     * @return Agent
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
+
+    /**
      * Set the user
      * @param mixed $user
      */
@@ -63,7 +81,6 @@ class Tickets
             $this->user = $user;
         } else {
             throw new \Exception('You must provide an instance of '. $userModel);
-
         }
 
         return $this;
@@ -107,6 +124,11 @@ class Tickets
                     return $item->dueDate->due_on;
                 });
         }
+
+        return Ticket::with('user', 'dueDate')
+            ->where('user_id', $this->user->id)
+            ->overdue()
+            ->get();
     }
 
     /**
@@ -126,6 +148,11 @@ class Tickets
                     return isset($item->dueDate->due_on) ? $item->dueDate->due_on->toDateString() : 9999999;
                 });
         }
+
+        return Ticket::with('user')
+            ->where('user_id', $this->user->id)
+            ->opened()
+            ->get();
     }
 
     /**
