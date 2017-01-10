@@ -234,7 +234,7 @@
           visible: false,
         }
       },
-      agents: {{ $agents or '[]' }}
+      agents: {!! $agents or '[]' !!}
     },
     methods: {
       toggle: function(modal) {
