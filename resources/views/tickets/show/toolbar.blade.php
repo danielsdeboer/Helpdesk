@@ -156,7 +156,7 @@
               {{ csrf_field() }}
 
               <p class="control">
-                <textarea name="reply" class="textarea" placeholder="Reply Body"></textarea>
+                <textarea name="body" class="textarea" placeholder="Reply Body"></textarea>
               </p>
 
               <div class="control is-grouped">

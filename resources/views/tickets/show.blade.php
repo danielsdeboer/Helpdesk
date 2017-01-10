@@ -1,6 +1,23 @@
 @extends('helpdesk::layout.main')
 
 @section('content')
+  @if (count($errors) > 0)
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Oops!</h1>
+          <h2 class="subtitle">Look like we found some problems:</h2>
+
+          <div class="content">
+            @foreach ($errors->all() as $error)
+              <p>$error</p>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </section>
+  @endif
+
   <div class="section">
     <div class="container">
       <h1 class="title">Timeline</h1>

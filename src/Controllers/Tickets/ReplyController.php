@@ -30,6 +30,8 @@ class ReplyController extends Controller
 
         $this->validate($request, [
             'body' => 'required|string',
+        ], [
+            'required' => 'The reply body is required.'
         ]);
 
         if ($agent) {
