@@ -49,6 +49,9 @@ class TicketsController extends Controller
                     'actions' => function($query) {
                         $query->where('visibility', 1);
                     }])->find($ticket),
+                'withOpen' => true,
+                'withClose' => true,
+                'withReply' => true,
             ]);
         }
 
@@ -56,6 +59,10 @@ class TicketsController extends Controller
             return view('helpdesk::tickets.show')->with([
                 'for' => 'agent',
                 'ticket' => Ticket::with('actions')->find($ticket),
+                'withOpen' => true,
+                'withClose' => true,
+                'withReply' => true,
+                'withNote' => true,
             ]);
         }
 
@@ -64,6 +71,11 @@ class TicketsController extends Controller
                 'for' => 'agent',
                 'ticket' => Ticket::with('actions')->find($ticket),
                 'agents' => Agent::with('user')->get()->toJson(),
+                'withOpen' => true,
+                'withClose' => true,
+                'withReply' => true,
+                'withNote' => true,
+                'withAssign' => true,
             ]);
         }
     }

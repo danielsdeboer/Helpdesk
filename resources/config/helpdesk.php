@@ -119,19 +119,19 @@ return [
                 'name' => 'public',
             ],
             'assign' => [
-                'route' => 'assign',
+                'route' => 'assign/{ticket}',
                 'name' => 'assign',
             ],
             'close' => [
-                'route' => 'close',
+                'route' => 'close/{ticket}',
                 'name' => 'close',
             ],
             'reply' => [
-                'route' => 'reply',
+                'route' => 'reply/{ticket}',
                 'name' => 'reply',
             ],
             'note' => [
-                'route' => 'note',
+                'route' => 'note/{ticket}',
                 'name' => 'note',
             ],
         ],

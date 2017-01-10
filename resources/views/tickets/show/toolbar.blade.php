@@ -2,7 +2,7 @@
   <div class="container">
     <div class="modal-app nav">
 
-      @if ($ticket->isOpen() && ! $ticket->assignment && isset($withAssignment))
+      @if ($ticket->isOpen() && isset($withAssign))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Assign</p>
@@ -45,7 +45,7 @@
         </div>
       @endif
 
-      @if ($ticket->isOpen()  && isset($withClose))
+      @if ($ticket->isOpen() && isset($withClose))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Close Ticket</p>
@@ -234,7 +234,7 @@
           visible: false,
         }
       },
-      agents: {{ $agents or '' }}
+      agents: {{ $agents or '[]' }}
     },
     methods: {
       toggle: function(modal) {

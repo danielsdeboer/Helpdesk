@@ -205,4 +205,139 @@ class TicketsTest extends TestCase
         $this->dontSee('<i class="material-icons">lock_outline</i>');
         $this->see('<i class="material-icons">lock_open</i>');
     }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_user_tickets_have_an_close_action()
+    {
+        $user = factory(User::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->see('<i class="material-icons">lock_outline</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_user_tickets_have_an_reply_action()
+    {
+        $user = factory(User::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->see('<i class="material-icons">reply</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_user_tickets_dont_have_agent_actions()
+    {
+        $user = factory(User::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->dontSee('<i class="material-icons">note_add</i>');
+        $this->dontSee('<i class="material-icons">person_pin_circle</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function closed_user_tickets_have_an_open_action()
+    {
+        $user = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ])->close('with note', $agent);
+
+        $this->be($user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+
+        $this->dontSee('<i class="material-icons">reply</i>');
+        $this->dontSee('<i class="material-icons">lock_outline</i>');
+        $this->see('<i class="material-icons">lock_open</i>');
+    }
+
+    /**
+     * @group feature.tickets.agent
+     * @test
+     */
+    public function open_agent_tickets_have_agent_actions()
+    {
+        $agent = factory(Agent::class)->create();
+
+        $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
+
+        $this->be($agent->user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->see('<i class="material-icons">lock_outline</i>');
+        $this->see('<i class="material-icons">note_add</i>');
+        $this->see('<i class="material-icons">reply</i>');
+
+        $this->dontSee('<i class="material-icons">lock_open</i>');
+        $this->dontSee('<i class="material-icons">person_pin_circle</i>');
+    }
+
+    /**
+     * @group feature.tickets.agent
+     * @test
+     */
+    public function closed_agent_tickets_have_an_open_action()
+    {
+        $agent = factory(Agent::class)->create();
+
+        $ticket = factory(Ticket::class)->create()->assignToAgent($agent)->close('with note', $agent);
+
+        $this->be($agent->user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->see('<i class="material-icons">lock_open</i>');
+
+        $this->dontSee('<i class="material-icons">lock_outline</i>');
+        $this->dontSee('<i class="material-icons">note_add</i>');
+        $this->dontSee('<i class="material-icons">reply</i>');
+        $this->dontSee('<i class="material-icons">person_pin_circle</i>');
+    }
+
+    /**
+     * @group feature.tickets.super
+     * @test
+     */
+    public function open_supervisor_tickets_have_supervisor_actions()
+    {
+        $agent = factory(Agent::class)->states('isSuper')->create();
+        $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
+
+        $this->be($agent->user);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
+
+        $this->see('<i class="material-icons">lock_outline</i>');
+        $this->see('<i class="material-icons">note_add</i>');
+        $this->see('<i class="material-icons">reply</i>');
+        $this->see('<i class="material-icons">person_pin_circle</i>');
+
+        $this->dontSee('<i class="material-icons">lock_open</i>');
+    }
 }
