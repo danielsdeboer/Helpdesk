@@ -70,7 +70,7 @@ Route::group([
         )->name(config('helpdesk.routes.tickets.reply.name'));
 
         // Close
-        Route::get(
+        Route::post(
             config('helpdesk.routes.tickets.close.route'),
             config('helpdesk.controllers.tickets.close')
         )->name(config('helpdesk.routes.tickets.close.name'));

@@ -8,11 +8,9 @@
           <h1 class="title">Oops!</h1>
           <h2 class="subtitle">Look like we found some problems:</h2>
 
-          <div class="content">
-            @foreach ($errors->all() as $error)
-              <p>{{ $error }}</p>
-            @endforeach
-          </div>
+          @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+          @endforeach
         </div>
       </div>
     </section>
