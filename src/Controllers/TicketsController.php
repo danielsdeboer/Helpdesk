@@ -52,6 +52,7 @@ class TicketsController extends Controller
                 'withOpen' => true,
                 'withClose' => true,
                 'withReply' => true,
+                'showPrivate' => false,
             ]);
         }
 
@@ -63,6 +64,7 @@ class TicketsController extends Controller
                 'withClose' => true,
                 'withReply' => true,
                 'withNote' => true,
+                'showPrivate' => true,
             ]);
         }
 
@@ -76,6 +78,7 @@ class TicketsController extends Controller
                 'withReply' => true,
                 'withNote' => true,
                 'withAssign' => true,
+                'showPrivate' => true,
             ]);
         }
     }

@@ -33,12 +33,14 @@
   <hr class="is-collapsed-top">
 
   @foreach($ticket->actions as $action)
-    <section class="section is-small">
-      <div class="container">
-        <?php $actionName = strtolower(str_replace(' ', '', $action->name)); ?>
-        @include('helpdesk::tickets.show.actions.' . $actionName)
-      </div>
-    </section>
+    @if ($action->object->visibility == 1 || ($showPrivate == $true && $action->object->visibility == 0))
+      <section class="section is-small">
+        <div class="container">
+          <?php $actionName = strtolower(str_replace(' ', '', $action->name)); ?>
+          @include('helpdesk::tickets.show.actions.' . $actionName)
+        </div>
+      </section>
+    @endif
 
     @if ($loop->last)
       <hr class="is-collapsed-bottom">

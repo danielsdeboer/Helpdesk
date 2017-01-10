@@ -45,7 +45,7 @@ return [
                 'subject' => 'Your ticket has been opened!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-                'route' => 'helpdesk.tickets.public.show'
+                'route' => 'helpdesk.tickets.public'
             ],
 
             'replied' => [
@@ -53,7 +53,7 @@ return [
                 'subject' => 'Your ticket has been replied to!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-                'route' => 'helpdesk.tickets.public.show'
+                'route' => 'helpdesk.tickets.public'
             ],
 
             'closed' => [
@@ -61,7 +61,7 @@ return [
                 'subject' => 'Your ticket has been closed.',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
-                'route' => 'helpdesk.tickets.public.show'
+                'route' => 'helpdesk.tickets.public'
             ],
         ],
 
