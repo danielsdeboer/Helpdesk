@@ -33,7 +33,7 @@
   <hr class="is-collapsed-top">
 
   @foreach($ticket->actions as $action)
-    @if ($action->object->visibility == 1 || ($showPrivate == $true && $action->object->visibility == 0))
+    @if ($action->object->visibility == 1 || ($showPrivate == true && $action->object->visibility == 0))
       <section class="section is-small">
         <div class="container">
           <?php $actionName = strtolower(str_replace(' ', '', $action->name)); ?>

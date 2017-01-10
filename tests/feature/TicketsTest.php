@@ -80,7 +80,7 @@ class TicketsTest extends TestCase
         $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
 
         $this->be($agent->user);
-        $response = $this->call('GET', 'helpdesk/tickets/' . $ticket->id);
+        $this->visit('helpdesk/tickets/' . $ticket->id);
 
         $this->assertResponseOk();
     }
