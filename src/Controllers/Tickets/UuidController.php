@@ -17,8 +17,11 @@ class UuidController extends Controller
     {
         $ticket = Ticket::whereUuid($uuid)->firstOrFail();
 
-        return [
-            'ticket' => $ticket
-        ];
+        return view('helpdesk::tickets.show')->with([
+            'ticket' => $ticket,
+            'withOpen' => true,
+            'withClose' => true,
+            'withReply' => true,
+        ]);
     }
 }

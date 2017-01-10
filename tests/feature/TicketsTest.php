@@ -134,4 +134,75 @@ class TicketsTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function the_content_and_user_are_displayed_on_the_ticket_page()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+
+        $this->see($ticket->content->title);
+        $this->see($ticket->content->body);
+        $this->see($ticket->user->name);
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_public_tickets_have_an_close_action()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+
+        $this->see('<i class="material-icons">lock_outline</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_public_tickets_have_an_reply_action()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+
+        $this->see('<i class="material-icons">reply</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function open_public_tickets_dont_have_agent_actions()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+
+        $this->dontSee('<i class="material-icons">note_add</i>');
+        $this->dontSee('<i class="material-icons">person_pin_circle</i>');
+    }
+
+    /**
+     * @group feature.tickets
+     * @test
+     */
+    public function closed_public_tickets_have_an_open_action()
+    {
+        $agent = factory(Agent::class)->create();
+        $ticket = factory(Ticket::class)->create()->close('with note', $agent);
+
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+
+        $this->dontSee('<i class="material-icons">reply</i>');
+        $this->dontSee('<i class="material-icons">lock_outline</i>');
+        $this->see('<i class="material-icons">lock_open</i>');
+    }
 }

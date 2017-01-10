@@ -10,7 +10,7 @@
 
 @section('action-note')
   @if ($action->object->note)
-    @include('tickets.internal.show.note', [
+    @include('helpdesk::tickets.show.note', [
       'note' => $action->object->note
     ])
   @endif

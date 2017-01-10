@@ -2,7 +2,7 @@
   <div class="container">
     <div class="modal-app nav">
 
-      @if ($ticket->isOpen() && ! $ticket->assignment)
+      @if ($ticket->isOpen() && ! $ticket->assignment && isset($withAssignment))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Assign</p>
@@ -16,7 +16,7 @@
         </div>
       @endif
 
-      @if ($ticket->isOpen())
+      @if ($ticket->isOpen() && isset($withReply))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Add Reply</p>
@@ -31,7 +31,7 @@
       @endif
 
 
-      @if ($ticket->isOpen())
+      @if ($ticket->isOpen() && isset($withNote))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Add Note</p>
@@ -45,7 +45,7 @@
         </div>
       @endif
 
-      @if ($ticket->isOpen())
+      @if ($ticket->isOpen()  && isset($withClose))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Close Ticket</p>
@@ -59,7 +59,7 @@
         </div>
       @endif
 
-      @if ($ticket->isClosed())
+      @if ($ticket->isClosed() && isset($withOpen))
         <div class="nav-item has-text-centered">
           <div>
             <p class="heading">Reopen Ticket</p>
@@ -210,9 +210,11 @@
   </div>
 </div>
 
-
-
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+@if(config('app.debug'))
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+@else
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+@endif
 
 <script>
   var app = new Vue({
