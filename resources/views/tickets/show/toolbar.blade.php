@@ -87,10 +87,10 @@
               {{ csrf_field() }}
 
               <p class="control">
-                <select name="user_id" class="select">
+                <select name="agent_id" class="select">
                   <option
                     v-for="agent in agents"
-                    :value="agent"
+                    :value="agent.id"
                   >@{{ agent.user.name }}</option>
                 </select>
               </p>
