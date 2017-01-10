@@ -48,6 +48,9 @@ class HelpdeskServiceProvider extends ServiceProvider
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class);
         $router->middleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
+
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
+        $router->middleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
     }
 
     /**

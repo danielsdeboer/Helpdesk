@@ -63,17 +63,17 @@ Route::group([
             config('helpdesk.controllers.tickets.assign')
         )->name(config('helpdesk.routes.tickets.assign.name'));
 
+        // Reply
+        Route::post(
+            config('helpdesk.routes.tickets.reply.route'),
+            config('helpdesk.controllers.tickets.reply')
+        )->name(config('helpdesk.routes.tickets.reply.name'));
+
         // Close
         Route::get(
             config('helpdesk.routes.tickets.close.route'),
             config('helpdesk.controllers.tickets.close')
         )->name(config('helpdesk.routes.tickets.close.name'));
-
-        // Reply
-        Route::get(
-            config('helpdesk.routes.tickets.reply.route'),
-            config('helpdesk.controllers.tickets.reply')
-        )->name(config('helpdesk.routes.tickets.reply.name'));
 
         // Note
         Route::get(
