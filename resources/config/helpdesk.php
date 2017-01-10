@@ -103,6 +103,38 @@ return [
             'agent' => 'agent',
             'supervisor' => 'supervisor',
         ],
+
+        'tickets' => [
+            'prefix' => 'tickets',
+            'index' => [
+                'route' => '/',
+                'name' => 'index',
+            ],
+            'show' => [
+                'route' => '{ticket}',
+                'name' => 'show'
+            ],
+            'uuid' => [
+                'route' => 'public/{uuid}',
+                'name' => 'public',
+            ],
+            'assign' => [
+                'route' => 'assign',
+                'name' => 'assign',
+            ],
+            'close' => [
+                'route' => 'close',
+                'name' => 'close',
+            ],
+            'reply' => [
+                'route' => 'reply',
+                'name' => 'reply',
+            ],
+            'note' => [
+                'route' => 'note',
+                'name' => 'note',
+            ],
+        ],
     ],
 
     'controllers' => [
@@ -111,5 +143,17 @@ return [
             'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
             'supervisor' => '\Aviator\Helpdesk\Controllers\Dashboard\SupervisorController@index',
         ],
+
+        'tickets' => [
+            'index' => '\Aviator\Helpdesk\Controllers\TicketsController@index',
+            'show' => '\Aviator\Helpdesk\Controllers\TicketsController@show',
+            'uuid' => [
+                'show' => '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show',
+            ],
+            'assign' => '\Aviator\Helpdesk\Controllers\Tickets\AssignmentController@create',
+            'close' => '\Aviator\Helpdesk\Controllers\Tickets\ClosingController@create',
+            'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
+            'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
+        ]
     ],
 ];
