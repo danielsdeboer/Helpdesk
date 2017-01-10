@@ -2,7 +2,7 @@
 
 @section('content')
   @if (count($errors) > 0)
-    <section class="hero">
+    <section class="hero is-danger">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Oops!</h1>
