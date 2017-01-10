@@ -21,6 +21,8 @@ class HelpdeskServiceProvider extends ServiceProvider
             'helpdesk'
         );
 
+        $this->registerObservers();
+
         $this->pushMiddleware($kernel, $router);
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'helpdesk');
@@ -28,7 +30,6 @@ class HelpdeskServiceProvider extends ServiceProvider
 
         $this->publishFactories();
 
-        $this->registerObservers();
     }
 
     /**

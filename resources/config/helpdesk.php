@@ -45,7 +45,7 @@ return [
                 'subject' => 'Your ticket has been opened!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-                'route' => 'tickets.uuid.show'
+                'route' => 'helpdesk.tickets.public.show'
             ],
 
             'replied' => [
@@ -53,7 +53,7 @@ return [
                 'subject' => 'Your ticket has been replied to!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-                'route' => 'tickets.uuid.show'
+                'route' => 'helpdesk.tickets.public.show'
             ],
 
             'closed' => [
@@ -61,7 +61,7 @@ return [
                 'subject' => 'Your ticket has been closed.',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
-                'route' => 'tickets.uuid.show'
+                'route' => 'helpdesk.tickets.public.show'
             ],
         ],
 
@@ -71,7 +71,7 @@ return [
                 'subject' => 'A ticket has been assigned to you',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => 'tickets.show',
+                'route' => 'helpdesk.tickets.show',
             ],
 
             'assignedToPool' => [
@@ -79,7 +79,7 @@ return [
                 'subject' => 'A ticket has been assigned to your pool',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => 'tickets.show',
+                'route' => 'helpdesk.tickets.show',
             ],
 
             'replied' => [
@@ -87,7 +87,7 @@ return [
                 'subject' => 'A ticket has been replied to',
                 'greeting' => 'Hey there.',
                 'line' => '',
-                'route' => 'tickets.show',
+                'route' => 'helpdesk.tickets.show',
             ],
         ]
     ],
