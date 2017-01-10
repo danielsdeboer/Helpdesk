@@ -10,7 +10,7 @@
 
           <div class="content">
             @foreach ($errors->all() as $error)
-              <p>$error</p>
+              <p>{{ $error }}</p>
             @endforeach
           </div>
         </div>
