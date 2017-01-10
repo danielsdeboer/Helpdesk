@@ -58,7 +58,7 @@ Route::group([
         )->name(config('helpdesk.routes.tickets.uuid.name'));
 
         // Assign
-        Route::get(
+        Route::post(
             config('helpdesk.routes.tickets.assign.route'),
             config('helpdesk.controllers.tickets.assign')
         )->name(config('helpdesk.routes.tickets.assign.name'));
