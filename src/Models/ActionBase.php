@@ -37,14 +37,14 @@ class ActionBase extends Model
      * Owned by an agent
      */
     public function agent() {
-        return $this->belongsTo(Agent::class)->whereNotNull('agent_id');
+        return $this->belongsTo(Agent::class);
     }
 
     /**
      * Owned by an user
      */
     public function user() {
-        return $this->belongsTo(config('helpdesk.userModel'))->whereNotNull('user_id');
+        return $this->belongsTo(config('helpdesk.userModel'));
     }
 
     /**
