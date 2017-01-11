@@ -188,7 +188,7 @@
               {{ csrf_field() }}
 
               <p class="control">
-                <textarea name="note" class="textarea" placeholder="Note Body"></textarea>
+                <textarea name="body" class="textarea" placeholder="Note Body"></textarea>
               </p>
 
               <div class="control is-grouped">
