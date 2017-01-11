@@ -65,7 +65,7 @@
             <p class="heading">Reopen Ticket</p>
 
             <span class="icon">
-              <a href="#">
+              <a @click="toggle('open')">
                 <i class="material-icons">lock_open</i>
               </a>
             </span>
