@@ -23,6 +23,8 @@
 
       <?php $contentName = strtolower(str_replace('Aviator\Helpdesk\Models\\', '', $ticket->content_type)); ?>
       @include('helpdesk::tickets.show.content.' . $contentName)
+
+      <a href="{{ route('helpdesk.tickets.public', $ticket->uuid) }}">Permalink</a>
     </div>
   </div>
 
@@ -40,12 +42,12 @@
           @include('helpdesk::tickets.show.actions.' . $actionName)
         </div>
       </section>
-    @endif
 
-    @if ($loop->last)
-      <hr class="is-collapsed-bottom">
-    @else
-      <hr>
+      @if ($loop->last)
+        <hr class="is-collapsed-bottom">
+      @else
+        <hr>
+      @endif
     @endif
   @endforeach
 @endsection
