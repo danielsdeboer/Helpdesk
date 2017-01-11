@@ -134,6 +134,10 @@ return [
                 'route' => 'note/{ticket}',
                 'name' => 'note',
             ],
+            'open' => [
+                'route' => 'open/{ticket}',
+                'name' => 'open',
+            ],
         ],
     ],
 
@@ -154,6 +158,7 @@ return [
             'close' => '\Aviator\Helpdesk\Controllers\Tickets\ClosingController@create',
             'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
             'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
+            'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
         ]
     ],
 ];

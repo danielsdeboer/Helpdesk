@@ -76,10 +76,16 @@ Route::group([
         )->name(config('helpdesk.routes.tickets.close.name'));
 
         // Note
-        Route::get(
+        Route::post(
             config('helpdesk.routes.tickets.note.route'),
             config('helpdesk.controllers.tickets.note')
         )->name(config('helpdesk.routes.tickets.note.name'));
+
+        // Note
+        Route::post(
+            config('helpdesk.routes.tickets.open.route'),
+            config('helpdesk.controllers.tickets.open')
+        )->name(config('helpdesk.routes.tickets.open.name'));
     });
 });
 

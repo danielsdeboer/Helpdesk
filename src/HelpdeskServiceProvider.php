@@ -52,6 +52,9 @@ class HelpdeskServiceProvider extends ServiceProvider
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
         $router->middleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
+
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketAssignee::class);
+        $router->middleware('helpdesk.ticket.assignee', \Aviator\Helpdesk\Middleware\TicketAssignee::class);
     }
 
     /**

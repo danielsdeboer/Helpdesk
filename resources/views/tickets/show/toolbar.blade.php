@@ -206,6 +206,38 @@
         <button class="modal-close" @click="toggle('note')"></button>
       </div>
 
+      {{-- CLOSE A TICKET --}}
+      <div class="modal" v-bind:class="{
+        'is-active': modals.open.visible
+      }" v-if="modals.open.visible"
+      >
+        <div class="modal-background" @click="toggle('open')"></div>
+        <div class="modal-content">
+          <div class="box">
+            <h1 class="title">Open This Ticket</h1>
+
+            <form method="post" action="{{ route('helpdesk.tickets.open', $ticket->id) }}">
+              {{ csrf_field() }}
+
+              <p class="control">
+                <textarea name="note" class="textarea" placeholder="Note (optional)"></textarea>
+              </p>
+
+              <div class="control is-grouped">
+                <p class="control">
+                  <button class="button is-primary">Open Ticket</button>
+                </p>
+
+                <p class="control">
+                  <button class="button is-link" @click.prevent="toggle('open')">Cancel</button>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+        <button class="modal-close" @click="toggle('open')"></button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -231,6 +263,9 @@
           visible: false,
         },
         note: {
+          visible: false,
+        },
+        open: {
           visible: false,
         }
       },
