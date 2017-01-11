@@ -1,11 +1,11 @@
 @extends('helpdesk::tickets.show.action')
 
 @section('action-content')
-  <strong>{{ $action->name }}</strong>
+  <strong id="action-header-{{ $action->id }}">{{ $action->name }}</strong>
   <br>
   <em>When</em>: {{ $action->created_at->diffForHumans() }}
   <br>
-  <em>By</em>: {{ $action->object->agent ? $action->object->agent->name : $action->object->user->name }}
+  <em>By</em>: {{ $action->object->agent ? $action->object->agent->user->name : $action->object->user->name }}
 @overwrite
 
 @section('action-note')

@@ -29,12 +29,12 @@ class NoteController extends Controller
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
         $this->validate($request, [
-            'body' => 'required|string',
+            'note_body' => 'required|string',
         ], [
             'required' => 'The note body is required.'
         ]);
 
-        $ticket->note($request->body, $agent);
+        $ticket->note($request->note_body, $agent, $request->note_is_visible ? true : false);
 
         return redirect( route('helpdesk.tickets.show', $ticket->id) );
     }

@@ -51,7 +51,7 @@ class TicketReplyTest extends TestCase
 
         $this->be($user);
         $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
-            'body' => 'test body'
+            'reply_body' => 'test body'
         ]);
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
@@ -90,7 +90,7 @@ class TicketReplyTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
-            'body' => 'test body'
+            'reply_body' => 'test body'
         ]);
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);

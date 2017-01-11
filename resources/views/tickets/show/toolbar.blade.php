@@ -129,7 +129,7 @@
 
               <div class="control is-grouped">
                 <p class="control">
-                  <button class="button is-primary">Close Ticket</button>
+                  <button class="button is-primary" name="close_submit">Close Ticket</button>
                 </p>
 
                 <p class="control">
@@ -156,12 +156,12 @@
               {{ csrf_field() }}
 
               <p class="control">
-                <textarea name="body" class="textarea" placeholder="Reply Body"></textarea>
+                <textarea name="reply_body" class="textarea" placeholder="Reply Body"></textarea>
               </p>
 
               <div class="control is-grouped">
                 <p class="control">
-                  <button class="button is-primary">Reply To Ticket</button>
+                  <button class="button is-primary" name="reply_submit">Reply To Ticket</button>
                 </p>
 
                 <p class="control">
@@ -188,12 +188,19 @@
               {{ csrf_field() }}
 
               <p class="control">
-                <textarea name="body" class="textarea" placeholder="Note Body"></textarea>
+                <textarea id='note-body' name="note_body" class="textarea" placeholder="Note Body"></textarea>
+              </p>
+
+              <p class="control">
+                <label class="checkbox">
+                  <input type="checkbox" name="note_is_visible" value="1">
+                  Ticket is visible to the customer
+                </label>
               </p>
 
               <div class="control is-grouped">
                 <p class="control">
-                  <button class="button is-primary">Add Note</button>
+                  <button class="button is-primary" name="note_submit">Add Note</button>
                 </p>
 
                 <p class="control">
@@ -206,7 +213,7 @@
         <button class="modal-close" @click="toggle('note')"></button>
       </div>
 
-      {{-- CLOSE A TICKET --}}
+      {{-- OPEN A TICKET --}}
       <div class="modal" v-bind:class="{
         'is-active': modals.open.visible
       }" v-if="modals.open.visible"
@@ -225,7 +232,7 @@
 
               <div class="control is-grouped">
                 <p class="control">
-                  <button class="button is-primary">Open Ticket</button>
+                  <button class="button is-primary" name="open_submit">Open Ticket</button>
                 </p>
 
                 <p class="control">

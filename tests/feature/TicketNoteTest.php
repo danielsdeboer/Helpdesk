@@ -49,7 +49,7 @@ class TicketNotesTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/note/' . $ticket->id, [
-            'body' => 'test note'
+            'note_body' => 'test note'
         ]);
 
         $this->assertResponseStatus(403);
@@ -67,14 +67,13 @@ class TicketNotesTest extends TestCase
         $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
 
         $this->be($agent->user);
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . $ticket->id, [
-            'note' => 'test body'
+        $response = $this->call('POST', 'helpdesk/tickets/note/' . $ticket->id, [
+            'note_body' => 'test body'
         ]);
 
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isClosed());
-        $this->assertEquals('test body', $ticket->closing->note);
+        $this->assertEquals('test body', $ticket->notes->first()->body);
     }
 }

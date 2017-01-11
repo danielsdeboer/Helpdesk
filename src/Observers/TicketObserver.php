@@ -25,6 +25,7 @@ class TicketObserver
             'ticket_id' => $ticket->id,
             'agent_id' => $ticket->agent ? $ticket->agent->id : null,
             'user_id' => $ticket->user ? $ticket->user->id : null,
+            'is_visible' => true,
         ]);
     }
 }

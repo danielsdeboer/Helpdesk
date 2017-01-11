@@ -45,10 +45,7 @@ class TicketsController extends Controller
         if ($this->for === 'user') {
             return view('helpdesk::tickets.show')->with([
                 'for' => 'user',
-                'ticket' => Ticket::with([
-                    'actions' => function($query) {
-                        $query->where('visibility', 1);
-                    }])->find($ticket),
+                'ticket' => Ticket::with('actions')->find($ticket),
                 'withOpen' => true,
                 'withClose' => true,
                 'withReply' => true,
@@ -99,7 +96,7 @@ class TicketsController extends Controller
             return true;
         }
 
-        if ($agent && $ticket->assignment->assignee->id == $agent->id) {
+        if ($agent && $ticket->assignment && $ticket->assignment->assignee->id == $agent->id) {
             $this->for = 'agent';
             return true;
         }
