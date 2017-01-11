@@ -3,11 +3,11 @@
 @section('action-content')
   <strong>{{ $action->name }}</strong>
   <br>
-  <em>By</em>: {{ $action->object->creator->name }}
+  <em>By</em>: {{ $action->object->agent ? $action->object->agent->user->name : $action->object->user->name }}
 @overwrite
 
 @section('action-note')
-  @include('tickets.internal.show.note', [
+  @include('helpdesk::tickets.show.note', [
     'note' => $action->object->body
   ])
 @overwrite
