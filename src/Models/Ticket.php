@@ -256,6 +256,8 @@ class Ticket extends Model
     {
         $this->content()->associate($content);
 
+        $this->save();
+
         return $this;
     }
 
@@ -269,6 +271,8 @@ class Ticket extends Model
         $content = $class::create($attributes);
 
         $this->content()->associate($content);
+
+        $this->save();
 
         return $this;
     }
