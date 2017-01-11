@@ -53,7 +53,7 @@ class AssignedToAgent extends Notification implements ShouldQueue
         $message->subject(config('helpdesk.notifications.internal.assignedToUser.subject'));
         $message->greeting(config('helpdesk.notifications.internal.assignedToUser.greeting'));
         $message->line('You have been assigned a ticket from ' . $this->ticket->user->name);
-        $message->action('View your ticket', route(config('helpdesk.notifications.internal.assignedToUser.route'), $this->ticket->id));
+        $message->action('View your ticket', route(config('helpdesk.notifications.internal.assignedToAgent.route'), $this->ticket->id));
 
         return $message;
     }
