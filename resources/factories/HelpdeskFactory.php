@@ -22,6 +22,7 @@ use Carbon\Carbon;
 
 $factory->define(config('helpdesk.userModel'), function (Faker\Generator $faker) {
     return [
+        'name' => $faker->name,
         'email' => $faker->email,
     ];
 });

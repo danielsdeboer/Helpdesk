@@ -22,7 +22,8 @@ class AdminAgentsShowTest extends TestCase
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents-show
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
     public function guests_cant_visit()
@@ -37,7 +38,8 @@ class AdminAgentsShowTest extends TestCase
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents-show
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
     public function users_cant_visit()
@@ -53,7 +55,8 @@ class AdminAgentsShowTest extends TestCase
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
     public function agents_cant_visit()
@@ -69,55 +72,69 @@ class AdminAgentsShowTest extends TestCase
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents-show
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
     public function supervisors_can_visit()
     {
         $user = factory(Agent::class)->states('isSuper')->create()->user;
+        $agent = factory(Agent::class)->create();
 
         $this->be($user);
-        $this->visit('helpdesk/admin/agents/1');
+        $this->visit('helpdesk/admin/agents/2');
 
         $this->see('id="tab-admin-agents"')
-            ->see('Add Agent');
+            ->see('<strong>' . $agent->user->name . '</strong>')
+            ->see('<h2 class="subtitle">Added on ' . $agent->created_at->toDateString() . '</h2>')
+            ->see('In 0 teams')
+            ->see('0 open tickets');
     }
 
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
-    public function it_has_a_list_of_agents_with_emails_and_teams()
+    public function it_has_a_list_of_the_agents_teams()
     {
         $user = factory(Agent::class)->states('isSuper')->create()->user;
         $team = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create()->addToTeam($team);
+        $team2 = factory(Pool::class)->create();
+        $agent = factory(Agent::class)->create()->addToTeams([$team, $team2]);
 
         $this->be($user);
-        $this->visit('helpdesk/admin');
+        $this->visit('helpdesk/admin/agents/2');
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent->name . '</a>')
-            ->see('<td>' . $agent->user->email . '</td>')
-            ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
+        $this->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>')
+            ->see('<a href="http://localhost/helpdesk/admin/teams/2">' . $team2->name . '</a>');
     }
 
     /**
      * @group acc
      * @group acc.admin
-     * @group acc.admin.agents
+     * @group acc.admin.agent
+     * @group acc.admin.agent.show
      * @test
      */
-    public function the_list_of_agents_does_not_include_the_supervisor()
+    public function it_has_a_list_of_the_agents_open_tickets()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create()->addToTeam($team);
+        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $agent = factory(Agent::class)->create();
+        $agent2 = factory(Agent::class)->create();
 
-        $this->be($user);
-        $this->visit('helpdesk/admin');
+        $ticket1 = factory(Ticket::class)->create()->assignToAgent($agent);
+        $ticket2 = factory(Ticket::class)->create()->assignToAgent($agent);
+        $ticket3 = factory(Ticket::class)->create()->assignToAgent($agent2);
 
-        $this->dontSee('<a href="http://localhost/helpdesk/admin/agents/1">' . $user->name . '</a>');
+        $this->be($super);
+        $this->visit('helpdesk/admin/agents/2');
+
+        $this->see('<a href="http://localhost/helpdesk/tickets/1">' . $ticket1->content->title . '</a>')
+            ->see('<a href="http://localhost/helpdesk/tickets/2">' . $ticket2->content->title . '</a>')
+            ->dontSee('<a href="http://localhost/helpdesk/tickets/3">' . $ticket3->content->title . '</a>');
     }
+
 }

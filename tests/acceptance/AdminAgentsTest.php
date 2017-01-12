@@ -98,7 +98,7 @@ class AdminAgentsTest extends TestCase
         $this->be($user);
         $this->visit('helpdesk/admin');
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent->name . '</a>')
+        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent->user->name . '</a>')
             ->see('<td>' . $agent->user->email . '</td>')
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
     }

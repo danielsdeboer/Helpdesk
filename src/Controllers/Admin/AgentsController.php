@@ -73,12 +73,13 @@ class AgentsController extends Controller
     public function show($id)
     {
         $agent = Agent::findOrFail($id);
+        $tickets = Ticket::whereHas('assignment', function($query) use ($agent) {
+            $query->where('assigned_to', $agent->id);
+        })->get();
 
         return view('helpdesk::admin.agents.show')->with([
             'agent' => $agent,
-            'tickets' => Ticket::whereHas('assignment', function($query) use ($agent) {
-                $query->where('agent_id', $agent->id);
-            })->get(),
+            'tickets' => $tickets,
         ]);
     }
 
