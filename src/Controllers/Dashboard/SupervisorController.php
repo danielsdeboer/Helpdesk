@@ -29,6 +29,7 @@ class SupervisorController extends Controller
             'overdue' => Tickets::forSuper($super)->overdue(),
             'open' => Tickets::forSuper($super)->all(),
             'tab' => 'dashboard',
+            'isSuper' => true,
         ]);
     }
 }

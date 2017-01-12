@@ -7,6 +7,48 @@ Route::group([
     'middleware' => 'web',
 ], function() {
 
+    Route::get('admin', function() {
+        return redirect( route('helpdesk.admin.agents.index') );
+    })->name('admin')->middleware(['auth', 'helpdesk.supervisors']);
+
+    // Admin Group
+    Route::group([
+        'as' => config('helpdesk.routes.admin.prefix') . '.',
+        'prefix' => config('helpdesk.routes.admin.prefix'),
+    ], function() {
+
+        // Team Members Group
+        Route::group([
+            'as' => 'team-members.',
+            'prefix' => 'team-members',
+        ], function() {
+            Route::post(
+                config('helpdesk.routes.admin.team-members.store'),
+                config('helpdesk.controllers.admin.team-members.store')
+            )->name(config('helpdesk.routes.admin.team-members.store'));
+        });
+
+        Route::resource(
+            config('helpdesk.routes.admin.agents'),
+            config('helpdesk.controllers.admin.agents'),
+            [
+                'except' => [
+                    'create',
+                    'edit',                ]
+            ]
+        );
+
+        Route::resource(
+            config('helpdesk.routes.admin.teams'),
+            config('helpdesk.controllers.admin.teams'),
+            [
+                'except' => [
+                    'create',
+                    'edit',                ]
+            ]
+        );
+    });
+
     // Dashboard Group
     Route::group([
         'as' => config('helpdesk.routes.dashboard.prefix') . '.',

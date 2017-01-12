@@ -1,9 +1,23 @@
 <nav class="nav has-shadow">
   <div class="container is-fluid">
     <div class="nav-left">
-      <a href="{{ route('helpdesk.dashboard.router') }}" class="nav-item is-tab @if(isset($tab) && $tab == 'dashboard') is-active @endif">
+      <a
+        href="{{ route('helpdesk.dashboard.router') }}"
+        class="nav-item is-tab @if(isset($tab) && $tab == 'dashboard') is-active @endif"
+        id="header-tab-dashboard"
+      >
         Dashboard
       </a>
+
+      @if (isset($isSuper) && $isSuper)
+        <a
+          href="{{ route('helpdesk.admin') }}"
+          class="nav-item is-tab @if(isset($tab) && $tab == 'admin') is-active @endif"
+          id="header-tab-admin"
+        >
+          Admin
+        </a>
+      @endif
     </div>
 
     <div class="nav-center">

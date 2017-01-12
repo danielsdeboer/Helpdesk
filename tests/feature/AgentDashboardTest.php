@@ -11,8 +11,8 @@ class AgentDashboardTest extends TestCase
 {
     /**
      * @group feature
-     * @group dashboard
-     * @group agent
+     * @group feature.dash
+     * @group feature.dash.agents
      * @test
      */
     public function a_user_cannot_visit_the_agent_dashboard()
@@ -26,8 +26,8 @@ class AgentDashboardTest extends TestCase
 
     /**
      * @group feature
-     * @group dashboard
-     * @group agent
+     * @group feature.dash
+     * @group feature.dash.agents
      * @test
      */
     public function an_agent_can_visit_their_dashboard()
@@ -41,8 +41,8 @@ class AgentDashboardTest extends TestCase
 
     /**
      * @group feature
-     * @group dashboard
-     * @group agent
+     * @group feature.dash
+     * @group feature.dash.agents
      * @test
      */
     public function an_agent_can_see_their_dashboard()
@@ -54,6 +54,7 @@ class AgentDashboardTest extends TestCase
             ->see('Assigned to team')
             ->see('Overdue')
             ->see('Open')
-            ->see('Nothing to see here!');
+            ->see('Nothing to see here!')
+            ->dontSee('id="header-tab-admin"');
     }
 }
