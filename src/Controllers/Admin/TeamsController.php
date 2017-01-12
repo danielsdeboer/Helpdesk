@@ -75,6 +75,7 @@ class TeamsController extends Controller
         return view('helpdesk::admin.teams.show')->with([
             'team' => $team,
             'tickets' => $tickets,
+            'agents' => Agent::all(),
         ]);
     }
 

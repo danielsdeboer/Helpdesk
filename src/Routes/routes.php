@@ -30,12 +30,22 @@ Route::group([
 
         Route::resource(
             config('helpdesk.routes.admin.agents'),
-            config('helpdesk.controllers.admin.agents')
+            config('helpdesk.controllers.admin.agents'),
+            [
+                'except' => [
+                    'create',
+                    'edit',                ]
+            ]
         );
 
         Route::resource(
             config('helpdesk.routes.admin.teams'),
-            config('helpdesk.controllers.admin.teams')
+            config('helpdesk.controllers.admin.teams'),
+            [
+                'except' => [
+                    'create',
+                    'edit',                ]
+            ]
         );
     });
 
