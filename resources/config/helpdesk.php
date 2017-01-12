@@ -150,6 +150,7 @@ return [
     'controllers' => [
         'admin' => [
             'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
+            'teams' => '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
         ],
         'dashboard' => [
             'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
