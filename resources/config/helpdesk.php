@@ -101,6 +101,9 @@ return [
             'prefix' => 'admin',
             'agents' => 'agents',
             'teams' => 'teams',
+            'team-members' => [
+                'store' => 'store',
+            ],
         ],
 
         'dashboard' => [
@@ -151,6 +154,9 @@ return [
         'admin' => [
             'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
             'teams' => '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
+            'team-members' => [
+                'store' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@store'
+            ],
         ],
         'dashboard' => [
             'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',

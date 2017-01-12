@@ -66,13 +66,14 @@ class TeamsController extends Controller
      */
     public function show($id)
     {
-        $agent = Agent::findOrFail($id);
-        $tickets = Ticket::whereHas('assignment', function($query) use ($agent) {
-            $query->where('assigned_to', $agent->id);
+        $team = Pool::findOrFail($id);
+
+        $tickets = Ticket::whereHas('poolAssignment', function($query) use ($team) {
+            $query->where('pool_id', $team->id);
         })->get();
 
-        return view('helpdesk::admin.agents.show')->with([
-            'agent' => $agent,
+        return view('helpdesk::admin.teams.show')->with([
+            'team' => $team,
             'tickets' => $tickets,
         ]);
     }
@@ -109,5 +110,10 @@ class TeamsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addAgentToTeam($id)
+    {
+
     }
 }

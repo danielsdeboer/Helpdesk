@@ -1,7 +1,9 @@
 @extends('helpdesk::layout.main')
 
 @section('content')
-  @include('helpdesk::admin.tabs')
+  @include('helpdesk::admin.tabs', [
+    'adminTab' => 'teams'
+  ])
 
   @include('helpdesk::admin.teams.index.toolbar')
 

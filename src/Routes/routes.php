@@ -17,6 +17,16 @@ Route::group([
         'prefix' => config('helpdesk.routes.admin.prefix'),
     ], function() {
 
+        // Team Members Group
+        Route::group([
+            'as' => 'team-members.',
+            'prefix' => 'team-members',
+        ], function() {
+            Route::post(
+                config('helpdesk.routes.admin.team-members.store'),
+                config('helpdesk.controllers.admin.team-members.store')
+            )->name(config('helpdesk.routes.admin.team-members.store'));
+        });
 
         Route::resource(
             config('helpdesk.routes.admin.agents'),
