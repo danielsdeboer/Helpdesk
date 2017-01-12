@@ -22,14 +22,13 @@ class HelpdeskServiceProvider extends ServiceProvider
         );
 
         $this->registerObservers();
-
         $this->pushMiddleware($kernel, $router);
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'helpdesk');
         $this->loadRoutesFrom(__DIR__ . '/Routes/routes.php');
 
         $this->publishFactories();
-
+        $this->registerCommands();
     }
 
     /**
@@ -93,5 +92,18 @@ class HelpdeskServiceProvider extends ServiceProvider
         \Aviator\Helpdesk\Models\Closing::observe(\Aviator\Helpdesk\Observers\ClosingObserver::class);
         \Aviator\Helpdesk\Models\Opening::observe(\Aviator\Helpdesk\Observers\OpeningObserver::class);
         \Aviator\Helpdesk\Models\Note::observe(\Aviator\Helpdesk\Observers\NoteObserver::class);
+    }
+
+    /**
+     * Register artisan commands
+     * @return void
+     */
+    public function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Aviator\Helpdesk\Commands\MakeSupervisor::class,
+            ]);
+        }
     }
 }
