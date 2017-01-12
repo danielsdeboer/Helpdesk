@@ -10,8 +10,8 @@ class SuperDashboardTest extends TestCase
 {
     /**
      * @group feature
-     * @group dashboard
-     * @group super
+     * @group feature.dash
+     * @group feature.dash.super
      * @test
      */
     public function a_guest_cannot_visit_the_supervisor_dashboard()
@@ -23,8 +23,8 @@ class SuperDashboardTest extends TestCase
 
     /**
      * @group feature
-     * @group dashboard
-     * @group super
+     * @group feature.dash
+     * @group feature.dash.super
      * @test
      */
     public function an_agent_cannot_visit_the_supervisor_dashboard()
@@ -38,8 +38,8 @@ class SuperDashboardTest extends TestCase
 
     /**
      * @group feature
-     * @group dashboard
-     * @group super
+     * @group feature.dash
+     * @group feature.dash.super
      * @test
      */
     public function a_supervisor_can_visit_their_dashboard()
@@ -53,8 +53,8 @@ class SuperDashboardTest extends TestCase
 
     /**
      * @group feature
-     * @group dashboard
-     * @group super
+     * @group feature.dash
+     * @group feature.dash.super
      * @test
     */
     public function a_supervisor_can_see_their_dashboard()
@@ -66,6 +66,7 @@ class SuperDashboardTest extends TestCase
             ->see('Unassigned')
             ->see('Overdue')
             ->see('Open')
-            ->see('Nothing to see here!');
+            ->see('Nothing to see here!')
+            ->see('id="header-tab-admin"');
     }
 }

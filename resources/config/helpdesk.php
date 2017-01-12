@@ -97,6 +97,12 @@ return [
             'prefix' => 'helpdesk',
         ],
 
+        'admin' => [
+            'prefix' => 'admin',
+            'agents' => 'agents',
+            'teams' => 'teams',
+        ],
+
         'dashboard' => [
             'prefix' => 'dashboard',
             'user' => 'user',
@@ -142,6 +148,9 @@ return [
     ],
 
     'controllers' => [
+        'admin' => [
+            'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
+        ],
         'dashboard' => [
             'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
             'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
@@ -161,4 +170,8 @@ return [
             'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
         ]
     ],
+
+    'footerText' => '<strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>',
+
+    'footerCopyrightText' => '&copy; 2017 Aviator Creative</a>',
 ];
