@@ -16,7 +16,7 @@ class Pool extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.pool'));
+        $this->setTable(config('helpdesk.tables.pools'));
     }
 
     public function agents() {
