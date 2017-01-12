@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\ActionBase;
 use Illuminate\Database\Eloquent\Model;
 
 class Pool extends Model
@@ -25,7 +24,7 @@ class Pool extends Model
     }
 
     public function teamLeads() {
-        return $this->belongsToMany(Agent::class)
+        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))
             ->withPivot('is_team_lead')
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);

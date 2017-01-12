@@ -34,7 +34,8 @@ Route::group([
             [
                 'except' => [
                     'create',
-                    'edit',                ]
+                    'edit',
+                ],
             ]
         );
 
@@ -44,7 +45,8 @@ Route::group([
             [
                 'except' => [
                     'create',
-                    'edit',                ]
+                    'edit',
+                ],
             ]
         );
     });
