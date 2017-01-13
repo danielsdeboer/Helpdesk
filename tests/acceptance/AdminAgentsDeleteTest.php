@@ -2,27 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\User;
-use Illuminate\Support\Facades\Route;
+use Aviator\Helpdesk\Tests\AdminBase;
 
-class AdminAgentsDeleteTest extends TestCase
+class AdminAgentsDeleteTest extends AdminBase
 {
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.delete
-     * @test
-     */
-    public function guests_cant_visit()
-    {
-        $this->call('DELETE', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('302');
-        $this->assertRedirectedTo('login');
-
-    }
+    const VERB = 'DELETE';
+    const URI = 'helpdesk/admin/agents/2';
 
     /**
      * @group acc
@@ -31,31 +16,11 @@ class AdminAgentsDeleteTest extends TestCase
      * @group acc.admin.agent.delete
      * @test
      */
-    public function users_cant_visit()
+    public function access_test()
     {
-        $user = factory(User::class)->create();
-
-        $this->be($user);
-        $this->call('DELETE', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('403');
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.delete
-     * @test
-     */
-    public function agents_cant_visit()
-    {
-        $user = factory(Agent::class)->create()->user;
-
-        $this->be($user);
-        $this->call('DELETE', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('403');
+        $this->noGuests();
+        $this->noUsers();
+        $this->noAgents();
     }
 
     /**
@@ -67,12 +32,12 @@ class AdminAgentsDeleteTest extends TestCase
      */
     public function supervisors_can_delete()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $agent = factory(Agent::class)->create();
+        $super = $this->makeSuper();
+        $agent = $this->makeAgent();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('DELETE', 'helpdesk/admin/agents/2', [
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents/2', [
             'delete_agent_confirmed' => 1
         ]);
 
@@ -89,11 +54,11 @@ class AdminAgentsDeleteTest extends TestCase
      */
     public function the_super_cant_delete_themselves()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $super = $this->makeSuper();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('DELETE', 'helpdesk/admin/agents/1', [
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents/1', [
             'delete_agent_confirmed' => 1
         ]);
 
@@ -109,11 +74,11 @@ class AdminAgentsDeleteTest extends TestCase
      */
     public function a_non_existent_user_cant_be_deleted()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $super = $this->makeSuper();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('DELETE', 'helpdesk/admin/agents/1234', [
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents/1234', [
             'delete_agent_confirmed' => 1
         ]);
 
@@ -129,11 +94,11 @@ class AdminAgentsDeleteTest extends TestCase
      */
     public function delete_must_be_confirmed()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $super = $this->makeSuper();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('DELETE', 'helpdesk/admin/agents/1234');
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents/1234');
 
         $this->assertResponseStatus(302);
         $this->assertSessionHasErrors(['delete_agent_confirmed']);

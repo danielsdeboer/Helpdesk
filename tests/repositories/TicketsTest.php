@@ -12,8 +12,8 @@ use Aviator\Helpdesk\Tests\User;
 class TicketsTest extends TestCase
 {
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_foruser_static_returns_an_instance_with_the_user_set()
@@ -27,8 +27,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_foragent_static_returns_an_instance_with_the_agent_and_user_set()
@@ -43,8 +43,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_forsuper_static_return_an_instance_with_agent_user_and_super_set()
@@ -60,8 +60,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_forsuper_static_only_sets_super_to_true_if_the_agent_is_the_supervisor()
@@ -77,8 +77,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_all_method_returns_only_open_tickets_owned_by_the_user()
@@ -100,8 +100,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_all_method_returns_only_open_tickets_assigned_to_the_agent()
@@ -123,8 +123,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_all_method_returns_all_open_tickets_in_supervisor_context()
@@ -147,8 +147,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_overdue_method_returns_only_overdue_tickets_owned_by_the_user()
@@ -180,8 +180,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_overdue_method_returns_only_overdue_tickets_assigned_to_the_agent()
@@ -211,8 +211,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_overdue_method_returns_all_overdue_tickets_in_supervisor_context()
@@ -243,8 +243,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_team_method_returns_null_if_agent_is_not_set()
@@ -261,8 +261,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_team_method_returns_tickets_assigned_to_the_agents_team()
@@ -286,8 +286,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_team_method_returns_all_team_assigned_in_supervisor_context()
@@ -312,8 +312,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_team_method_returns_tickets_assigned_to_multiple_agent_teams()
@@ -342,8 +342,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_unassigned_method_returns_null_for_users()
@@ -358,8 +358,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_unassigned_method_returns_null_for_agents()
@@ -374,8 +374,8 @@ class TicketsTest extends TestCase
     }
 
     /**
-     * @group repositories
-     * @group tickets
+     * @group repo
+     * @group repo.tickets
      * @test
      */
     public function the_unassigned_method_return_unassigned_tickets_for_supers()

@@ -3,11 +3,13 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\User;
-use Illuminate\Support\Facades\Route;
+use Aviator\Helpdesk\Tests\AdminBase;
 
-class AdminAgentsStoreTest extends TestCase
+class AdminAgentsStoreTest extends AdminBase
 {
+    const VERB = 'POST';
+    const URI = 'helpdesk/admin/agents';
+
     /**
      * @group acc
      * @group acc.admin
@@ -15,13 +17,11 @@ class AdminAgentsStoreTest extends TestCase
      * @group acc.admin.agent.store
      * @test
      */
-    public function guests_cant_visit()
+    public function access_test()
     {
-        $this->call('POST', 'helpdesk/admin/agents');
-
-        $this->assertResponseStatus('302');
-        $this->assertRedirectedTo('login');
-
+        $this->noGuests();
+        $this->noUsers();
+        $this->noAgents();
     }
 
     /**
@@ -31,49 +31,14 @@ class AdminAgentsStoreTest extends TestCase
      * @group acc.admin.agent.store
      * @test
      */
-    public function users_cant_visit()
+    public function supervisors_can_create_agents()
     {
-        $user = factory(User::class)->create();
-
-        $this->be($user);
-        $this->call('POST', 'helpdesk/admin/agents');
-
-        $this->assertResponseStatus('403');
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function agents_cant_visit()
-    {
-        $user = factory(Agent::class)->create()->user;
-
-        $this->be($user);
-        $this->call('POST', 'helpdesk/admin/agents');
-
-        $this->assertResponseStatus('403');
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function supervisors_can_create_users()
-    {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $user = factory(User::class)->create();
+        $super = $this->makeSuper();
+        $user = $this->makeUser();
 
         $this->be($super);
-
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('POST', 'helpdesk/admin/agents', [
+        $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => $user->id
         ]);
 
@@ -90,13 +55,13 @@ class AdminAgentsStoreTest extends TestCase
      */
     public function the_same_user_cant_be_added_as_an_agent_twice()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $agent = factory(Agent::class)->create();
+        $super = $this->makeSuper();
+        $agent = $this->makeAgent();
 
         $this->be($super);
 
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('POST', 'helpdesk/admin/agents', [
+        $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => $agent->user->id
         ]);
 
@@ -114,11 +79,11 @@ class AdminAgentsStoreTest extends TestCase
      */
     public function a_non_existent_user_cant_be_added()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $super = $this->makeSuper();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call('POST', 'helpdesk/admin/agents', [
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => 999999
         ]);
 
@@ -136,12 +101,12 @@ class AdminAgentsStoreTest extends TestCase
      */
     public function an_agent_can_be_deleted_and_then_created_again()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $user = factory(User::class)->create();
+        $super = $this->makeSuper();
+        $user = $this->makeUser();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call('POST', 'helpdesk/admin/agents', [
+        $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => $user->id
         ]);
 
@@ -151,7 +116,7 @@ class AdminAgentsStoreTest extends TestCase
         ]);
 
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call('POST', 'helpdesk/admin/agents', [
+        $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => $user->id
         ]);
 

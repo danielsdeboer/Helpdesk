@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Notification;
 class AssignmentTest extends TestCase {
 
     /**
-     * @group assignment
+     * @group model
+     * @group model.assignment
      * @test
      */
     public function creating_an_assignment_creates_an_action_via_the_assignment_observer()
@@ -20,7 +21,8 @@ class AssignmentTest extends TestCase {
     }
 
     /**
-     * @group assignment
+     * @group model
+     * @group model.assignment
      * @test
      */
     public function create_an_assignment_fires_a_notification_to_the_assignee()

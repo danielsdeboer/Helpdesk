@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Notification;
 class ReplyTest extends TestCase {
 
     /**
-     * @group reply
+     * @group model
+     * @group model.reply
      * @test
      */
     public function it_creates_an_action_via_its_observer()
@@ -22,7 +23,8 @@ class ReplyTest extends TestCase {
     }
 
     /**
-     * @group reply
+     * @group model
+     * @group model.reply
      * @test
      */
     public function it_is_visible_by_default()
@@ -33,7 +35,8 @@ class ReplyTest extends TestCase {
     }
 
     /**
-     * @group reply
+     * @group model
+     * @group model.reply
      * @test
      */
     public function it_sends_a_notification_to_the_user_if_created_by_an_agent()
@@ -47,7 +50,8 @@ class ReplyTest extends TestCase {
     }
 
     /**
-     * @group reply
+     * @group model
+     * @group model.reply
      * @test
      */
     public function it_sends_a_notification_to_the_agent_if_created_by_an_user_and_assigned()

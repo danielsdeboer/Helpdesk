@@ -18,7 +18,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_belongs_to_a_user()
@@ -29,7 +30,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_belong_to_many_teams()
@@ -49,7 +51,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_added_to_a_team()
@@ -63,7 +66,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_removed_from_a_team()
@@ -82,7 +86,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_added_to_many_teams()
@@ -97,7 +102,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_removed_from_many_teams()
@@ -118,7 +124,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_made_team_lead_of_a_team()
@@ -132,7 +139,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_made_team_lead_of_a_team_it_already_belongs_to()
@@ -148,7 +156,8 @@ class AgentTest extends TestCase {
     }
 
     /**
-     * @group agent
+     * @group model
+     * @group model.agent
      * @test
      */
     public function it_may_be_made_team_lead_and_then_removed_as_team_lead()

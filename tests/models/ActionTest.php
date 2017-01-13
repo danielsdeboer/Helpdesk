@@ -8,7 +8,8 @@ use Aviator\Helpdesk\Tests\TestCase;
 class ActionTest extends TestCase {
 
     /**
-     * @group action
+     * @group model
+     * @group model.action
      * @test
      */
     public function it_has_an_object()
@@ -19,7 +20,8 @@ class ActionTest extends TestCase {
     }
 
     /**
-     * @group action
+     * @group model
+     * @group model.action
      * @test
      */
     public function it_has_an_subject()

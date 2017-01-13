@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Notification;
 class OpeningTest extends TestCase {
 
     /**
-     * @group opening
+     * @group model
+     * @group model.opening
      * @test
      */
     public function creating_an_opening_creates_an_action_via_its_observer()
@@ -20,7 +21,8 @@ class OpeningTest extends TestCase {
     }
 
     /**
-     * @group opening
+     * @group model
+     * @group model.opening
      * @test
      */
     public function creating_an_opening_fires_a_notification_to_the_end_user()

@@ -2,22 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\User;
-use Illuminate\Support\Facades\Route;
+use Aviator\Helpdesk\Tests\AdminBase;
 
-class AdminAgentsShowTest extends TestCase
+class AdminAgentsShowTest extends AdminBase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        Route::any('login', function() {
-            return;
-        });
-    }
+    const VERB = 'GET';
+    const URI = 'helpdesk/admin/agents/1';
 
     /**
      * @group acc
@@ -26,47 +16,11 @@ class AdminAgentsShowTest extends TestCase
      * @group acc.admin.agent.show
      * @test
      */
-    public function guests_cant_visit()
+    public function access_test()
     {
-        $this->call('GET', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('302');
-        $this->assertRedirectedTo('login');
-
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.show
-     * @test
-     */
-    public function users_cant_visit()
-    {
-        $user = factory(User::class)->create();
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('403');
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.show
-     * @test
-     */
-    public function agents_cant_visit()
-    {
-        $user = factory(Agent::class)->create()->user;
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/agents/1');
-
-        $this->assertResponseStatus('403');
+        $this->noGuests();
+        $this->noUsers();
+        $this->noAgents();
     }
 
     /**
@@ -78,10 +32,10 @@ class AdminAgentsShowTest extends TestCase
      */
     public function supervisors_can_visit()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $agent = factory(Agent::class)->create();
+        $super = $this->makeSuper();
+        $agent = $this->makeAgent();
 
-        $this->be($user);
+        $this->be($super);
         $this->visit('helpdesk/admin/agents/2');
 
         $this->see('id="tab-admin-agents"')
@@ -100,12 +54,12 @@ class AdminAgentsShowTest extends TestCase
      */
     public function it_has_a_list_of_the_agents_teams()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create()->addToTeams([$team, $team2]);
+        $super = $this->makeSuper();
+        $team = $this->makeTeam();
+        $team2 = $this->makeTeam();
+        $agent = $this->makeAgent()->addToTeams([$team, $team2]);
 
-        $this->be($user);
+        $this->be($super);
         $this->visit('helpdesk/admin/agents/2');
 
         $this->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>')
@@ -121,13 +75,13 @@ class AdminAgentsShowTest extends TestCase
      */
     public function it_has_a_list_of_the_agents_open_tickets()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $agent = factory(Agent::class)->create();
-        $agent2 = factory(Agent::class)->create();
+        $super = $this->makeSuper();
+        $agent = $this->makeAgent();
+        $agent2 = $this->makeAgent();
 
-        $ticket1 = factory(Ticket::class)->create()->assignToAgent($agent);
-        $ticket2 = factory(Ticket::class)->create()->assignToAgent($agent);
-        $ticket3 = factory(Ticket::class)->create()->assignToAgent($agent2);
+        $ticket1 = $this->makeTicket()->assignToAgent($agent);
+        $ticket2 = $this->makeTicket()->assignToAgent($agent);
+        $ticket3 = $this->makeTicket()->assignToAgent($agent2);
 
         $this->be($super);
         $this->visit('helpdesk/admin/agents/2');

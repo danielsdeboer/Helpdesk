@@ -8,7 +8,8 @@ use Carbon\Carbon;
 class DueDateTest extends TestCase {
 
     /**
-     * @group duedate
+     * @group model
+     * @group model.duedate
      * @test
      */
     public function creating_a_due_date_creates_an_action_via_its_observer()
@@ -19,7 +20,8 @@ class DueDateTest extends TestCase {
     }
 
     /**
-     * @group duedate
+     * @group model
+     * @group model.duedate
      * @test
      */
     public function the_due_on_field_is_cast_to_a_carbon_instance()

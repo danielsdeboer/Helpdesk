@@ -7,7 +7,8 @@ use Aviator\Helpdesk\Models\Note;
 class NoteTest extends TestCase {
 
     /**
-     * @group note
+     * @group model
+     * @group model.note
      * @test
      */
     public function creating_a_note_creates_an_action_via_its_observer()

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Notification;
 class PoolTest extends TestCase {
 
     /**
-     * @group pool
+     * @group model
+     * @group model.pool
      * @test
      */
     public function a_pool_has_team_leads()
@@ -25,7 +26,8 @@ class PoolTest extends TestCase {
     }
 
     /**
-     * @group pool
+     * @group model
+     * @group model.pool
      * @test
      */
     public function a_pool_has_many_agents()

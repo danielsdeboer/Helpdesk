@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Notification;
 class ClosingTest extends TestCase {
 
     /**
-     * @group closing
+     * @group model
+     * @group model.closing
      * @test
      */
     public function creating_a_closing_creates_an_action_via_its_observer()
@@ -20,7 +21,8 @@ class ClosingTest extends TestCase {
     }
 
     /**
-     * @group closing
+     * @group model
+     * @group model.closing
      * @test
      */
     public function creating_an_closing_fires_a_notification_to_the_end_user()

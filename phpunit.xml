@@ -23,8 +23,8 @@
       </whitelist>
     </filter>
 
-<!--     <logging>
+    <logging>
       <log type="testdox-html" target="./test_logs/testdox.html"/>
-      <log type="coverage-html" target="./test_logs/report" lowUpperBound="35" highLowerBound="70"/>
-    </logging> -->
+      <!-- <log type="coverage-html" target="./test_logs/report" lowUpperBound="35" highLowerBound="70"/> -->
+    </logging>
 </phpunit>
