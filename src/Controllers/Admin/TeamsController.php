@@ -5,11 +5,14 @@ namespace Aviator\Helpdesk\Controllers\Admin;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
 
 class TeamsController extends Controller
 {
+    use ValidatesRequests;
 
     /**
      * Add middleware
@@ -34,17 +37,8 @@ class TeamsController extends Controller
 
         return view('helpdesk::admin.teams.index')->with([
             'teams' => Pool::all(),
+            'isSuper' => true,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -55,7 +49,13 @@ class TeamsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->val($request);
+
+        $team = Pool::create([
+            'name' => $request->name,
+        ]);
+
+        return $this->toShow($team);
     }
 
     /**
@@ -76,18 +76,8 @@ class TeamsController extends Controller
             'team' => $team,
             'tickets' => $tickets,
             'agents' => Agent::all(),
+            'isSuper' => true,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -99,7 +89,15 @@ class TeamsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->val($request);
+
+        $team = Pool::findOrFail($id);
+
+        $team->update([
+            'name' => $request->name,
+        ]);
+
+        return $this->toShow($team);
     }
 
     /**
@@ -108,13 +106,41 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'delete_team_confirmed' => 'required|in:1'
+        ]);
+
+        $team = Pool::findOrFail($id);
+
+        $team->delete();
+
+        return redirect( route('helpdesk.admin.teams.index') );
     }
 
-    public function addAgentToTeam($id)
+    /**
+     * Perform request validation
+     * @param  Request $request
+     * @return void
+     */
+    protected function val(Request $request)
     {
+        $this->validate($request, [
+            'name' => [
+                'required',
+                Rule::unique(config('helpdesk.tables.pools'), 'name'),
+            ]
+        ]);
+    }
 
+    /**
+     * Redirect to the show route with param
+     * @param  Pool   $team
+     * @return Response
+     */
+    protected function toShow(Pool $team)
+    {
+        return redirect( route('helpdesk.admin.teams.show', $team->id) );
     }
 }

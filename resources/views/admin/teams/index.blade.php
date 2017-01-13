@@ -1,6 +1,8 @@
 @extends('helpdesk::layout.main')
 
 @section('content')
+  @include('helpdesk::partials.errors')
+
   @include('helpdesk::admin.tabs', [
     'adminTab' => 'teams'
   ])

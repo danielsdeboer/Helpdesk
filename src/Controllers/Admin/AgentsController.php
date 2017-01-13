@@ -45,6 +45,7 @@ class AgentsController extends Controller
             'users' => $userModel::all(),
             'email' => $email,
             'teams' => Pool::all(),
+            'isSuper' => true,
         ]);
     }
 
@@ -90,6 +91,7 @@ class AgentsController extends Controller
             'agent' => $agent,
             'tickets' => $tickets,
             'teams' => Pool::all(),
+            'isSuper' => true,
         ]);
     }
 
