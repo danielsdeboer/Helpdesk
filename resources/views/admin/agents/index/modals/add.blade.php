@@ -21,7 +21,7 @@
 
         <div class="control is-grouped">
           <p class="control">
-            <button class="button is-primary">Add Team</button>
+            <button class="button is-primary">Add Agent</button>
           </p>
 
           <p class="control">
