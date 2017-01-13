@@ -36,7 +36,7 @@ class AgentsController extends Controller
         $email = config('helpdesk.userModelEmailColumn');
 
         return view('helpdesk::admin.agents.index')->with([
-            'agents' => Agent::whereHas('user', function($query) use ($email) {
+            'agents' => Agent::with('user', 'teams')->whereHas('user', function($query) use ($email) {
 
                 $superEmail = config('helpdesk.supervisor.email');
 
@@ -44,7 +44,6 @@ class AgentsController extends Controller
             })->get(),
             'users' => $userModel::all(),
             'email' => $email,
-            'teams' => Pool::all(),
             'isSuper' => true,
         ]);
     }
@@ -82,15 +81,15 @@ class AgentsController extends Controller
      */
     public function show($id)
     {
-        $agent = Agent::findOrFail($id);
-        $tickets = Ticket::whereHas('assignment', function($query) use ($agent) {
+        $agent = Agent::with('user', 'teams')->findOrFail($id);
+        $tickets = Ticket::with('content')->whereHas('assignment', function($query) use ($agent) {
             $query->where('assigned_to', $agent->id);
         })->get();
 
         return view('helpdesk::admin.agents.show')->with([
             'agent' => $agent,
             'tickets' => $tickets,
-            'teams' => Pool::all(),
+            'teams' => Pool::all()->toJson(),
             'isSuper' => true,
         ]);
     }
