@@ -2,6 +2,8 @@
 
 @section('content')
 
+  @include('helpdesk::partials.errors')
+
   @include('helpdesk::admin.tabs', [
     'adminTab' => 'agents'
   ])

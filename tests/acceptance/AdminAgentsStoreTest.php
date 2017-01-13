@@ -126,4 +126,35 @@ class AdminAgentsStoreTest extends TestCase
         $this->assertRedirectedToRoute('helpdesk.admin.agents.index');
         $this->assertSessionHasErrors('user_id');
     }
+
+    /**
+     * @group acc
+     * @group acc.admin
+     * @group acc.admin.agent
+     * @group acc.admin.agent.store
+     * @test
+     */
+    public function an_agent_can_be_deleted_and_then_created_again()
+    {
+        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $user = factory(User::class)->create();
+
+        $this->be($super);
+        $this->visitRoute('helpdesk.admin.agents.index');
+        $this->call('POST', 'helpdesk/admin/agents', [
+            'user_id' => $user->id
+        ]);
+
+        $this->visitRoute('helpdesk.admin.agents.index');
+        $this->call('DELETE', 'helpdesk/admin/agents/2', [
+            'delete_agent_confirmed' => 1
+        ]);
+
+        $this->visitRoute('helpdesk.admin.agents.index');
+        $this->call('POST', 'helpdesk/admin/agents', [
+            'user_id' => $user->id
+        ]);
+
+        $this->assertEquals(3, Agent::withTrashed()->get()->count());
+    }
 }
