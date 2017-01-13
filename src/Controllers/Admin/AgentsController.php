@@ -89,7 +89,7 @@ class AgentsController extends Controller
         return view('helpdesk::admin.agents.show')->with([
             'agent' => $agent,
             'tickets' => $tickets,
-            'teams' => Pool::all()->toJson(),
+            'teams' => Pool::all(),
             'isSuper' => true,
         ]);
     }
