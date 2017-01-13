@@ -58,7 +58,7 @@ class AgentsController extends Controller
         $this->validate($request, [
             'user_id' => [
                 'required',
-                Rule::unique('agents'),
+                Rule::unique(config('helpdesk.tables.agents')),
                 Rule::exists(config('helpdesk.tables.users'), 'id'),
             ],
         ]);
