@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Controllers\Admin;
 
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -85,30 +86,8 @@ class AgentsController extends Controller
         return view('helpdesk::admin.agents.show')->with([
             'agent' => $agent,
             'tickets' => $tickets,
+            'teams' => Pool::all(),
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -117,8 +96,19 @@ class AgentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'delete_agent_confirmed' => 'required|in:1'
+        ]);
+
+        $super = Agent::where('user_id', auth()->user()->id)->first();
+
+        // Super can't delete themselves
+        $agent = Agent::where('id', '!=', $super->id)->whereId($id)->firstOrFail();
+
+        $agent->delete();
+
+        return redirect( route('helpdesk.admin.agents.index') );
     }
 }
