@@ -28,7 +28,7 @@ class CreateHelpdeskTables extends Migration
 
         Schema::create($tables['agents'], function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->unique();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
         });
