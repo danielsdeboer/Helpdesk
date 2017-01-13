@@ -12,7 +12,7 @@
 
         <label>Team Name</label>
         <p class="control">
-          <input class="input" name="team_name" placeholder="Team Name">
+          <input class="input" name="name" placeholder="Team Name">
         </p>
 
         <div class="control is-grouped">
