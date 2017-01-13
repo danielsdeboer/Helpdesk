@@ -4,11 +4,14 @@ namespace Aviator\Helpdesk\Controllers\Admin;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
 
 class AgentsController extends Controller
 {
+    use ValidatesRequests;
 
     /**
      * Add middleware
@@ -44,16 +47,6 @@ class AgentsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -61,7 +54,19 @@ class AgentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'user_id' => [
+                'required',
+                Rule::unique('agents'),
+                Rule::exists(config('helpdesk.tables.users'), 'id'),
+            ],
+        ]);
+
+        $agent = Agent::create([
+            'user_id' => request()->user_id,
+        ]);
+
+        return redirect( route('helpdesk.admin.agents.show', $agent->id));
     }
 
     /**

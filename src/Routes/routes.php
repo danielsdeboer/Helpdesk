@@ -35,6 +35,7 @@ Route::group([
                 'except' => [
                     'create',
                     'edit',
+                    'update',
                 ],
             ]
         );
