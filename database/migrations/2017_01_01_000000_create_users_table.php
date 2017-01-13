@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('email');
+            $table->boolean('is_internal')->default(0);
             $table->timestamps();
         });
 

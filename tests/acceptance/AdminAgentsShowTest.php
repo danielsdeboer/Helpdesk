@@ -90,5 +90,4 @@ class AdminAgentsShowTest extends AdminBase
             ->see('<a href="http://localhost/helpdesk/tickets/2">' . $ticket2->content->title . '</a>')
             ->dontSee('<a href="http://localhost/helpdesk/tickets/3">' . $ticket3->content->title . '</a>');
     }
-
 }

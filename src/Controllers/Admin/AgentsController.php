@@ -32,8 +32,9 @@ class AgentsController extends Controller
      */
     public function index()
     {
-        $userModel = config('helpdesk.userModel');
         $email = config('helpdesk.userModelEmailColumn');
+
+        $users = $this->getUsers();
 
         return view('helpdesk::admin.agents.index')->with([
             'agents' => Agent::with('user', 'teams')->whereHas('user', function($query) use ($email) {
@@ -42,7 +43,7 @@ class AgentsController extends Controller
 
                 $query->where($email, '<>', $superEmail);
             })->get(),
-            'users' => $userModel::all(),
+            'users' => $users,
             'email' => $email,
             'isSuper' => true,
         ]);
@@ -114,5 +115,16 @@ class AgentsController extends Controller
         $agent->delete();
 
         return redirect( route('helpdesk.admin.agents.index') );
+    }
+
+    protected function getUsers()
+    {
+        $userModel = config('helpdesk.userModel');
+
+        if (! config('helpdesk.callbacks.user')) {
+            return $userModel::all();
+        }
+
+        return $userModel::where(config('helpdesk.callbacks.user'))->get();
     }
 }

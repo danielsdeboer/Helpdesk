@@ -80,4 +80,27 @@ class AdminAgentsIndexTest extends AdminBase
 
         $this->dontSee('<a href="http://localhost/helpdesk/admin/agents/1">' . $super->name . '</a>');
     }
+
+    /**
+     * @group acc
+     * @group acc.admin
+     * @group acc.admin.agent
+     * @group acc.admin.agent.index
+     * @test
+     */
+    public function the_user_listing_is_filtered_by_the_user_callback()
+    {
+        $super = $this->makeSuper();
+        $agent = $this->makeAgent();
+        $user1 = factory(User::class)->states('isInternal')->create();
+        $user2 = $this->makeUser();
+        $user3 = $this->makeUser();
+        $user4 = $this->makeUser();
+        $user5 = factory(User::class)->states('isInternal')->create();
+
+        $this->be($super);
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents');
+
+        $this->assertEquals(2, $response->getOriginalContent()->getData()['users']->count());
+    }
 }

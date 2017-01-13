@@ -75,7 +75,7 @@ abstract class TestCase extends Orchestra
 
         $userModel::create([
             'name' => 'Super Visor',
-            'email' => config('helpdesk.supervisor.email')
+            'email' => config('helpdesk.supervisor.email'),
         ]);
     }
 }

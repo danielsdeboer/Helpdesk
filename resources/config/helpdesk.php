@@ -12,6 +12,22 @@ return [
      */
     'userModelEmailColumn' => 'email',
 
+    /**
+     * Callbacks. These are used to easily change what queries are executed when looking up
+     * users, etc.
+     */
+    'callbacks' => [
+        /**
+         * The user query callback. In order to guard against adding any type of user being
+         * added as an agent, you can modify this callback to fit your database use case.
+         * If you don't care about this at all, simply remove this config key or change
+         * the value to null.
+         */
+        'user' => function($query) {
+            $query->where('is_internal', 1);
+        },
+    ],
+
     'supervisor' => [
         'email' => 'supervisor@test.com',
     ],
