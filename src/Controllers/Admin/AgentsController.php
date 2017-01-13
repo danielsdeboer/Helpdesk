@@ -44,6 +44,7 @@ class AgentsController extends Controller
             })->get(),
             'users' => $userModel::all(),
             'email' => $email,
+            'teams' => Pool::all(),
         ]);
     }
 
