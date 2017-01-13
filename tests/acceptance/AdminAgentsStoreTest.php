@@ -38,7 +38,7 @@ class AdminAgentsStoreTest extends AdminBase
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call(self::VERB, 'helpdesk/admin/agents', [
+        $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
             'user_id' => $user->id
         ]);
 

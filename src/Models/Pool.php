@@ -23,7 +23,7 @@ class Pool extends Model
     }
 
     public function agents() {
-        return $this->belongsToMany(Agent::class)->withPivot('is_team_lead')->withTimestamps();
+        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();
     }
 
     public function teamLeads() {

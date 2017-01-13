@@ -57,13 +57,16 @@ class AgentsController extends Controller
      */
     public function store(Request $request)
     {
+        $agentsTable = config('helpdesk.tables.agents');
+        $usersTable = config('helpdesk.tables.users');
+
         $this->validate($request, [
             'user_id' => [
                 'required',
-                Rule::unique(config('helpdesk.tables.agents'))->where(function($query) {
+                Rule::unique($agentsTable)->where(function($query) {
                     $query->whereNull('deleted_at');
                 }),
-                Rule::exists(config('helpdesk.tables.users'), 'id'),
+                Rule::exists($usersTable, 'id'),
             ],
         ]);
 

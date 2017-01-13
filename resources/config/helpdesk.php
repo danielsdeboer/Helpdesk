@@ -24,7 +24,8 @@ return [
          * the value to null.
          */
         'user' => function($query) {
-            $query->where('is_internal', 1);
+            $query
+                ->where('is_internal', 1);
         },
     ],
 

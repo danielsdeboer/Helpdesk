@@ -54,6 +54,10 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        if (isset($GLOBALS['altdb']) && $GLOBALS['altdb'] === true) {
+            $this->setAlternateTablesInConfig($app);
+        }
     }
 
     protected function setUpDatabase()
@@ -77,5 +81,31 @@ abstract class TestCase extends Orchestra
             'name' => 'Super Visor',
             'email' => config('helpdesk.supervisor.email'),
         ]);
+    }
+
+    /**
+     * Set alternate table names for testing that the database names
+     * are properly variable everywhere
+     * @param $app
+     * @return void
+     */
+    protected function setAlternateTablesInConfig($app)
+    {
+        $prefix = 'hd_';
+
+        $app->config->set('helpdesk.tables.users', 'users');
+        $app->config->set('helpdesk.tables.tickets', $prefix . 'tickets');
+        $app->config->set('helpdesk.tables.agents', $prefix . 'agents');
+        $app->config->set('helpdesk.tables.agent_pool', $prefix . 'agent_pool');
+        $app->config->set('helpdesk.tables.actions', $prefix . 'actions');
+        $app->config->set('helpdesk.tables.generic_contents', $prefix . 'generic_contents');
+        $app->config->set('helpdesk.tables.assignments', $prefix . 'assignments');
+        $app->config->set('helpdesk.tables.due_dates', $prefix . 'due_dates');
+        $app->config->set('helpdesk.tables.replies', $prefix . 'replies');
+        $app->config->set('helpdesk.tables.pools', $prefix . 'pools');
+        $app->config->set('helpdesk.tables.pool_assignments', $prefix . 'pool_assignments');
+        $app->config->set('helpdesk.tables.closings', $prefix . 'closings');
+        $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
+        $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
     }
 }
