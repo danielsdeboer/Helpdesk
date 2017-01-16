@@ -2,20 +2,11 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GenericContent extends Model implements TicketContent
+class GenericContent extends ContentBase
 {
-    use SoftDeletes;
-
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     protected $fillable = [
         'title',
         'body'
@@ -36,14 +27,5 @@ class GenericContent extends Model implements TicketContent
         parent::__construct($attributes);
 
         $this->setTable(config('helpdesk.tables.generic_contents'));
-    }
-
-    /**
-     * Getter for $this->partial
-     * @return string
-     */
-    public function partial()
-    {
-        return $this->partial;
     }
 }
