@@ -26,4 +26,13 @@ class ContentBase extends Model implements TicketContent
     {
         return $this->partial;
     }
+
+    /**
+     * Getter for $this->title
+     * @return string
+     */
+    public function title()
+    {
+        return $this->title;
+    }
 }

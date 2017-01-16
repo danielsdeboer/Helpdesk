@@ -20,7 +20,7 @@
   <tbody>
     @foreach($tickets as $ticket)
       <tr>
-        <td><a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ str_limit($ticket->content->title, 30) }}</a></td>
+        <td><a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ str_limit($ticket->content->title(), 30) }}</a></td>
 
         <td>{{ $ticket->user->name }}</td>
 
