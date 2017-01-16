@@ -25,7 +25,7 @@ class AssignmentController extends Controller
     {
         $agent = Agent::findOrFail($request->agent_id);
 
-        $ticket->assignToAgent($agent);
+        $ticket->assignToAgent($agent, null, true);
 
         return redirect( route('helpdesk.tickets.show', $ticket->id) );
     }
