@@ -28,13 +28,4 @@ class GenericContent extends ContentBase
 
         $this->setTable(config('helpdesk.tables.generic_contents'));
     }
-
-    /**
-     * The title of the content
-     * @return string
-     */
-    public function title()
-    {
-        return 'Custom Quote Request';
-    }
 }
