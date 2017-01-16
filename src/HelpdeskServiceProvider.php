@@ -29,6 +29,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
         $this->publishFactories();
         $this->registerCommands();
+        $this->publishImages();
     }
 
     /**
@@ -105,5 +106,16 @@ class HelpdeskServiceProvider extends ServiceProvider
                 \Aviator\Helpdesk\Commands\MakeSupervisor::class,
             ]);
         }
+    }
+
+    /**
+     * Publish avatar images
+     * @return void
+     */
+    protected function publishImages()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/images' => public_path('vendor/aviator'),
+        ], 'public');
     }
 }
