@@ -72,7 +72,7 @@
             @foreach($tickets as $ticket)
               <tr>
                 <td>
-                  <a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ $ticket->content->title }}</a>
+                  <a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ $ticket->content->title() }}</a>
                 </td>
 
                 <td>
