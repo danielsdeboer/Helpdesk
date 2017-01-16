@@ -22,6 +22,12 @@ class GenericContent extends Model implements TicketContent
     ];
 
     /**
+     * The partial that displays this content
+     * @var string
+     */
+    protected $partial = 'helpdesk::tickets.show.content.generic';
+
+    /**
      * Set the table name from the Helpdesk config
      * @param array $attributes
      */
@@ -30,5 +36,14 @@ class GenericContent extends Model implements TicketContent
         parent::__construct($attributes);
 
         $this->setTable(config('helpdesk.tables.generic_contents'));
+    }
+
+    /**
+     * Getter for $this->partial
+     * @return string
+     */
+    public function partial()
+    {
+        return $this->partial;
     }
 }

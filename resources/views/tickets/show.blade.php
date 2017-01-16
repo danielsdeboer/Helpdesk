@@ -9,8 +9,7 @@
       <h2 class="subtitle">For Ticket # {{ $ticket->id }}</h2>
 
       @if($ticket->content)
-        <?php $contentName = strtolower(str_replace('Aviator\Helpdesk\Models\\', '', $ticket->content_type)); ?>
-        @include('helpdesk::tickets.show.content.' . $contentName)
+        @include($ticket->content->partial())
       @endif
 
       <a href="{{ route('helpdesk.tickets.public', $ticket->uuid) }}">Permalink</a>
