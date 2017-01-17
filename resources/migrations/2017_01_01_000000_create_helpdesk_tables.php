@@ -151,6 +151,9 @@ class CreateHelpdeskTables extends Migration
     {
         $tables = config('helpdesk.tables');
 
+        // Prevent dropping the users table
+        unset($tables['users']);
+
         foreach ($tables as $table) {
             Schema::drop($table);
         }
