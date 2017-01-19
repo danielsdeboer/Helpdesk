@@ -9,6 +9,14 @@
         Dashboard
       </a>
 
+      <a
+        href="{{ route('helpdesk.tickets.index') }}"
+        class="nav-item is-tab @if(isset($tab) && $tab == 'tickets') is-active @endif"
+        id="header-tab-tickets"
+      >
+        Tickets
+      </a>
+
       @if (isset($isSuper) && $isSuper)
         <a
           href="{{ route('helpdesk.admin') }}"

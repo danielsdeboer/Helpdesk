@@ -28,7 +28,17 @@ class TicketsController extends Controller
      */
     public function index()
     {
+        $agent = Agent::where('user_id', auth()->user()->id)->first();
 
+        $open = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'open');
+        $closed = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'closed');
+
+        return view('helpdesk::tickets.index')->with([
+            'open' => $open->paginate(25),
+            'openCount' => $open->count(),
+            'closed' => $closed->paginate(25),
+            'closedCount' => $closed->count(),
+        ]);
     }
 
     /**
