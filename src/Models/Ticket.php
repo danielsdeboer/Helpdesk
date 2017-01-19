@@ -475,10 +475,13 @@ class Ticket extends Model
             return $item->pivot->is_team_lead;
         });
 
-        return $query->whereHas('assignment', function($query) use ($agent) {
-            $query->where('assigned_to', $agent->id);
-        })->orWhereHas('poolAssignment', function($query) use ($isTeamLeadOf) {
-            $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+        return $query->where(function($query) use ($agent, $isTeamLeadOf) {
+            $query->whereHas('assignment', function($query) use ($agent) {
+                $query->where('assigned_to', $agent->id);
+            })
+            ->orWhereHas('poolAssignment', function($query) use ($isTeamLeadOf) {
+                $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+            });
         });
     }
 
