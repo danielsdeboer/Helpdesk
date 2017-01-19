@@ -136,6 +136,14 @@ return [
                 'route' => '/',
                 'name' => 'index',
             ],
+            'opened' => [
+                'route' => 'open',
+                'name' => 'opened',
+            ],
+            'closed' => [
+                'route' => 'closed',
+                'name' => 'closed',
+            ],
             'show' => [
                 'route' => '{ticket}',
                 'name' => 'show'
@@ -183,6 +191,8 @@ return [
 
         'tickets' => [
             'index' => '\Aviator\Helpdesk\Controllers\TicketsController@index',
+            'opened' => '\Aviator\Helpdesk\Controllers\TicketsController@opened',
+            'closed' => '\Aviator\Helpdesk\Controllers\TicketsController@closed',
             'show' => '\Aviator\Helpdesk\Controllers\TicketsController@show',
             'uuid' => [
                 'show' => '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show',

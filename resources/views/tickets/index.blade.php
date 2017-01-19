@@ -35,7 +35,11 @@
         'withDue' => true,
       ])
 
-      <a class="button" href="">See more...</a>
+      @if ($open->hasMorePages())
+        <a id="open-see-more" class="button" href="{{ route('helpdesk.tickets.opened') }}">See {{ $closedCount - 25 }} more...</a>
+      @else
+        <a id="open-see-more" class="button is-disabled">See 0 more...</a>
+      @endif
     </div>
   </div>
 
@@ -44,11 +48,15 @@
       <h1 class="title">Closed</h1>
 
       @include('helpdesk::dashboard.sections.table', [
-        'tickets' => $open,
+        'tickets' => $closed,
         'withLastAction' => true
       ])
 
-      <a class="button" href="">See more...</a>
+      @if ($closed->hasMorePages())
+        <a id="closed-see-more" class="button" href="{{ route('helpdesk.tickets.closed') }}">See {{ $closedCount - 25 }} more...</a>
+      @else
+        <a id="closed-see-more" class="button is-disabled">See 0 more...</a>
+      @endif
     </div>
   </div>
 @endsection

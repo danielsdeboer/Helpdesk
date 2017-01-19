@@ -38,6 +38,39 @@ class TicketsController extends Controller
             'openCount' => $open->count(),
             'closed' => $closed->paginate(25),
             'closedCount' => $closed->count(),
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show an index of open tickets
+     * @return Response
+     */
+    public function opened()
+    {
+        $agent = Agent::where('user_id', auth()->user()->id)->first();
+
+        $open = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'open');
+
+        return view('helpdesk::tickets.opened')->with([
+            'open' => $open->paginate(25),
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show an index of closed tickets
+     * @return Response
+     */
+    public function closed()
+    {
+        $agent = Agent::where('user_id', auth()->user()->id)->first();
+
+        $closed = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'closed');
+
+        return view('helpdesk::tickets.closed')->with([
+            'closed' => $closed->paginate(25),
+            'tab' => 'tickets',
         ]);
     }
 
@@ -60,6 +93,7 @@ class TicketsController extends Controller
                 'withClose' => true,
                 'withReply' => true,
                 'showPrivate' => false,
+                'tab' => 'tickets',
             ]);
         }
 
@@ -72,6 +106,7 @@ class TicketsController extends Controller
                 'withReply' => true,
                 'withNote' => true,
                 'showPrivate' => true,
+                'tab' => 'tickets',
             ]);
         }
 
@@ -86,6 +121,7 @@ class TicketsController extends Controller
                 'withNote' => true,
                 'withAssign' => true,
                 'showPrivate' => true,
+                'tab' => 'tickets',
             ]);
         }
     }

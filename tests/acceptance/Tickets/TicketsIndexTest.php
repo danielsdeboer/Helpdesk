@@ -187,4 +187,44 @@ class TicketsIndexTest extends AdminBase
             ->see($userTicket->content->title())
             ->see($agent2Ticket->content->title());
     }
+
+    /**
+     * @group acc
+     * @group acc.ticket
+     * @group acc.ticket.index
+     * @test
+     */
+    public function for_less_than_25_tickets_the_see_more_button_is_disabled()
+    {
+        $user = $this->makeUser();
+
+        $tickets = factory(Ticket::class, 24)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user)
+            ->visit(self::URI)
+            ->assertResponseOk()
+            ->see('<a id="open-see-more" class="button is-disabled">See 0 more...</a>');
+    }
+
+    /**
+     * @group acc
+     * @group acc.ticket
+     * @group acc.ticket.index
+     * @test
+     */
+    public function for_more_than_25_tickets_the_see_more_button_is_enabled()
+    {
+        $user = $this->makeUser();
+
+        $tickets = factory(Ticket::class, 26)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user)
+            ->visit(self::URI)
+            ->assertResponseOk()
+            ->see('<a id="open-see-more" class="button" href=');
+    }
 }

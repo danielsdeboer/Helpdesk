@@ -96,6 +96,18 @@ Route::group([
             config('helpdesk.controllers.tickets.index')
         )->name(config('helpdesk.routes.tickets.index.name'));
 
+        // Opened index
+        Route::get(
+            config('helpdesk.routes.tickets.opened.route'),
+            config('helpdesk.controllers.tickets.opened')
+        )->name(config('helpdesk.routes.tickets.opened.name'));
+
+        // Closed index
+        Route::get(
+            config('helpdesk.routes.tickets.closed.route'),
+            config('helpdesk.controllers.tickets.closed')
+        )->name(config('helpdesk.routes.tickets.closed.name'));
+
         // Show
         Route::get(
             config('helpdesk.routes.tickets.show.route'),
