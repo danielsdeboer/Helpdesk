@@ -76,19 +76,30 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource
-     * @param  Ticket $ticket
+     * @param  int $id
      * @return Reponse
      */
-    public function show($ticket)
+    public function show($id)
     {
-        if (! $this->permitted($ticket)) {
-            abort(403, 'You are not permitted to access this resource.');
+        $supervisorEmail = config('helpdesk.supervisor.email');
+        $email = config('helpdesk.userModelEmailColumn');
+
+        $agent = Agent::where('user_id', auth()->user()->id)->first();
+
+        if (! $agent) {
+            $for = 'user';
+        } elseif ($agent && $agent->user->$email == $supervisorEmail) {
+            $for = 'super';
+        } else {
+            $for = 'agent';
         }
 
-        if ($this->for === 'user') {
+        $ticket = Ticket::accessible($agent ? $agent : auth()->user())->findOrFail($id);
+
+        if ($for === 'user') {
             return view('helpdesk::tickets.show')->with([
                 'for' => 'user',
-                'ticket' => Ticket::with('actions')->find($ticket),
+                'ticket' => $ticket,
                 'withOpen' => true,
                 'withClose' => true,
                 'withReply' => true,
@@ -97,10 +108,10 @@ class TicketsController extends Controller
             ]);
         }
 
-        if ($this->for === 'agent') {
+        if ($for === 'agent') {
             return view('helpdesk::tickets.show')->with([
                 'for' => 'agent',
-                'ticket' => Ticket::with('actions')->find($ticket),
+                'ticket' => $ticket,
                 'withOpen' => true,
                 'withClose' => true,
                 'withReply' => true,
@@ -110,10 +121,10 @@ class TicketsController extends Controller
             ]);
         }
 
-        if ($this->for === 'super') {
+        if ($for === 'super') {
             return view('helpdesk::tickets.show')->with([
                 'for' => 'agent',
-                'ticket' => Ticket::with('actions')->find($ticket),
+                'ticket' => $ticket,
                 'agents' => Agent::with('user')->get()->toJson(),
                 'withOpen' => true,
                 'withClose' => true,
