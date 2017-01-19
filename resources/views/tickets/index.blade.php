@@ -36,7 +36,7 @@
       ])
 
       @if ($open->hasMorePages())
-        <a id="open-see-more" class="button" href="{{ route('helpdesk.tickets.opened') }}">See {{ $closedCount - 25 }} more...</a>
+        <a id="open-see-more" class="button" href="{{ route('helpdesk.tickets.opened') }}">See {{ $openCount - 25 }} more...</a>
       @else
         <a id="open-see-more" class="button is-disabled">See 0 more...</a>
       @endif
