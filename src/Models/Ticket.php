@@ -7,7 +7,6 @@ use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 use Aviator\Helpdesk\Interfaces\TicketContent;
-use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -429,6 +428,61 @@ class Ticket extends Model
             $query->orderBy('id', 'asc');
         }]);
     }
+
+    /**
+     * Return tickets that are accessible to the current user
+     * @param User | Agent $user
+     * @return ticket
+     */
+    public function scopeAccessible($query, $user)
+    {
+        $userModel = config('helpdesk.userModel');
+
+        if ($user instanceof $userModel) {
+            return $this->accessibleToUser($user);
+        }
+
+        if ($user instanceof Agent) {
+            return $this->accessibleToAgent($user);
+        }
+    }
+
+    /**
+     * Return tickets that are accessible to the current user
+     * @param User $user
+     * @return ticket
+     */
+    public function scopeAccessibleToUser($query, $user)
+    {
+        return $query->where('user_id', $user->id);
+    }
+
+    /**
+     * Return tickets that are accessible to the current agent
+     * @param Agent $agent
+     * @return ticket
+     */
+    public function scopeAccessibleToAgent($query, $agent)
+    {
+        $supervisorEmail = config('helpdesk.supervisor.email');
+        $email = config('helpdesk.userModelEmailColumn');
+
+        if ($agent->user->$email == $supervisorEmail) {
+            return $query;
+        }
+
+        $isTeamLeadOf = $agent->teams->filter(function($item) {
+            return $item->pivot->is_team_lead;
+        });
+
+        return $query->whereHas('assignment', function($query) use ($agent) {
+            $query->where('assigned_to', $agent->id);
+        })->orWhereHas('poolAssignment', function($query) use ($isTeamLeadOf) {
+            $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+        });
+    }
+
+
 
     ///////////////////
     // RELATIONSHIPS //

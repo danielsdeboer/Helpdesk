@@ -686,4 +686,105 @@ class TicketTest extends TestCase {
 
         $this->assertTrue($ticket->isClosed());
     }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function the_owned_scope_returns_tickets_accessible_to_a_user()
+    {
+        $user = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
+
+        // User should be able to see this
+        $userTicket = factory(Ticket::class)->create([
+            'user_id' => $user->id,
+        ]);
+        // But not this
+        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
+
+        // And not this
+        $nobodyTicket = factory(Ticket::class)->create();
+
+        $tickets = Ticket::accessible($user)->get();
+
+        $this->assertEquals(1, $tickets->count());
+        $this->assertEquals($userTicket->content->title(), $tickets->first()->content->title());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function the_owned_scope_returns_tickets_accessible_to_an_agent()
+    {
+        $user = factory(User::class)->create();
+        $agent = factory(Agent::class)->create();
+
+        $userTicket = factory(Ticket::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
+        $nobodyTicket = factory(Ticket::class)->create();
+
+        $tickets = Ticket::accessible($agent)->get();
+
+        $this->assertEquals(1, $tickets->count());
+        $this->assertEquals($agentTicket->content->title(), $tickets->first()->content->title());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function the_owned_scope_returns_tickets_accessible_to_an_agent_who_is_a_team_lead()
+    {
+        $user = factory(User::class)->create();
+        $team = factory(Pool::class)->create();
+        $team2 = factory(Pool::class)->create();
+        $agent = factory(Agent::class)->create()->makeTeamLeadOf($team)->addToTeam($team2);
+
+        $userTicket = factory(Ticket::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
+        $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
+        $team2Ticket = factory(Ticket::class)->create()->assignToPool($team2);
+
+        $tickets = Ticket::accessible($agent)->get();
+
+        $this->assertEquals(2, $tickets->count());
+        $this->assertEquals($agentTicket->content->title(), $tickets->first()->content->title());
+        $this->assertEquals($teamTicket->content->title(), $tickets->splice(1, 1)->first()->content->title());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function the_owned_scope_returns_tickets_accessible_to_a_supervisor()
+    {
+        $user = factory(User::class)->create();
+        $team = factory(Pool::class)->create();
+        $team2 = factory(Pool::class)->create();
+        $agent = factory(Agent::class)->create();
+        $super = factory(Agent::class)->states('isSuper')->create();
+
+        $userTicket = factory(Ticket::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $agentTicket = factory(Ticket::class)->create();
+        $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
+        $team2Ticket = factory(Ticket::class)->create()->assignToPool($team2);
+
+        $tickets = Ticket::accessible($super)->get();
+
+        $this->assertEquals(4, $tickets->count());
+    }
+
+
 }

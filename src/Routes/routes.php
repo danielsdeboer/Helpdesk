@@ -7,10 +7,12 @@ Route::group([
     'middleware' => 'web',
 ], function() {
 
+    // Helpdesk splash page
     Route::get('/', function() {
         return view('helpdesk::splash.index');
     });
 
+    // Helpdesk admin redirect
     Route::get('admin', function() {
         return redirect( route('helpdesk.admin.agents.index') );
     })->name('admin')->middleware(['auth', 'helpdesk.supervisors']);

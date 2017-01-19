@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Facades\Route;
 
-class DashboardRouterTest extends TestCase {
+class TicketsRouterTest extends TestCase {
 
     public function setUp()
     {
@@ -17,12 +17,13 @@ class DashboardRouterTest extends TestCase {
 
     /**
      * @group middle
-     * @group middle.dash
+     * @group middle.tickets
+     * @test
      * @test
      */
-    public function it_routes_guests_to_the_login_page()
+    public function the_tickets_router_sends_guests_to_the_login_page()
     {
-        $this->route('GET', 'helpdesk.dashboard.router');
+        $this->route('GET', 'helpdesk.tickets.router');
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
@@ -30,7 +31,8 @@ class DashboardRouterTest extends TestCase {
 
     /**
      * @group middle
-     * @group middle.dash
+     * @group middle.tickets
+     * @test
      * @test
      */
     public function it_routes_users_to_the_public_dashboard()
@@ -45,7 +47,8 @@ class DashboardRouterTest extends TestCase {
 
     /**
      * @group middle
-     * @group middle.dash
+     * @group middle.tickets
+     * @test
      * @test
      */
     public function it_routes_agents_to_the_agent_dashboard()
@@ -60,7 +63,8 @@ class DashboardRouterTest extends TestCase {
 
     /**
      * @group middle
-     * @group middle.dash
+     * @group middle.tickets
+     * @test
      * @test
      */
     public function it_routes_supervisors_to_the_supervisor_dashboard()
