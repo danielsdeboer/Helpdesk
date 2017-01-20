@@ -57,11 +57,15 @@
                 </td>
 
                 <td>
-                  <form class="form">
+                  <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
+                    {{ csrf_field() }}
+
                     <input type="hidden" name="agent_id" value="{{ $agent->id }}">
                     <input type="hidden" name="team_id" value="{{ $team->id }}">
                     <input type="hidden" name="from" value="agent">
-                    <button>Remove From Team</button>
+                    <p class="control has-addons has-addons-right">
+                      <button class="button">Remove From Team</button>
+                    </p>
                   </form>
                 </td>
               </tr>

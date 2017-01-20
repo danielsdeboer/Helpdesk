@@ -13,7 +13,7 @@
     <table class="table">
       <thead>
         <th>Name</th>
-        <th>Teams</th>
+        <th>Agents</th>
       </thead>
 
       <tbody>

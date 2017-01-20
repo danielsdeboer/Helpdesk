@@ -42,6 +42,7 @@
             <tr>
               <th>Agent Name</th>
               <th>Added</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -54,6 +55,20 @@
 
                 <td>
                   {{ $agent->pivot->created_at->toDateString() }}
+                </td>
+
+
+                <td>
+                  <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
+                    {{ csrf_field() }}
+
+                    <input type="hidden" name="agent_id" value="{{ $agent->id }}">
+                    <input type="hidden" name="team_id" value="{{ $team->id }}">
+                    <input type="hidden" name="from" value="agent">
+                    <p class="control has-addons has-addons-right">
+                      <button class="button">Remove From Team</button>
+                    </p>
+                  </form>
                 </td>
               </tr>
             @endforeach

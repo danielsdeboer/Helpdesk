@@ -78,31 +78,4 @@ class AdminTeamsStoreTest extends TestCase
         $this->assertResponseStatus(302);
         $this->assertRedirectedToRoute('helpdesk.admin.teams.show', 1);
     }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.store
-     * @test
-     */
-    public function team_names_must_be_unique()
-    {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create([
-            'name' => 'test team',
-        ]);
-
-        $this->be($super);
-        $this->visitRoute('helpdesk.admin.teams.index');
-        $response = $this->call('POST', 'helpdesk/admin/teams', [
-            'name' => 'test team'
-        ]);
-
-        $this->assertResponseStatus(302);
-        $this->assertRedirectedToRoute('helpdesk.admin.teams.index');
-        $this->assertSessionHasErrors(['name']);
-    }
-
-
 }

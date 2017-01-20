@@ -40,31 +40,6 @@ class AdminTeamsUpdateTest extends TestCase
      * @group acc.admin.team.update
      * @test
      */
-    public function team_names_must_be_unique()
-    {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create([
-            'name' => 'test team',
-        ]);
-
-        $this->be($super);
-        $this->visitRoute('helpdesk.admin.teams.index');
-        $response = $this->call('PATCH', 'helpdesk/admin/teams/1', [
-            'name' => 'test team'
-        ]);
-
-        $this->assertResponseStatus(302);
-        $this->assertRedirectedToRoute('helpdesk.admin.teams.index');
-        $this->assertSessionHasErrors(['name']);
-    }
-
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.update
-     * @test
-     */
     public function nonexistent_teams_throw_a_404()
     {
         $super = factory(Agent::class)->states('isSuper')->create()->user;

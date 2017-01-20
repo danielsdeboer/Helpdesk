@@ -11,6 +11,9 @@
       <form method="post" action="{{ route('helpdesk.admin.team-members.add') }}">
         {{ csrf_field() }}
 
+        <input type="hidden" name="team_id" value="{{ $team->id }}">
+        <input type="hidden" name="from" value="team">
+
         <p class="control">
           <select name="agent_id" class="select">
             <option
