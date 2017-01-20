@@ -16,7 +16,7 @@
       <div class="box">
         <h1 class="title">Add This Agent To A Team</h1>
 
-        <form method="post" action="{{ route('helpdesk.admin.team-members.store', $agent->id) }}">
+        <form method="post" action="{{ route('helpdesk.admin.team-members.add') }}">
           {{ csrf_field() }}
 
           <p class="control">
