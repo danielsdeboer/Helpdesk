@@ -39,6 +39,7 @@ class CreateHelpdeskTables extends Migration
             $table->unsignedInteger('pool_id');
             $table->boolean('is_team_lead')->default(false);
             $table->timestamps();
+            $table->unique(['agent_id', 'pool_id']);
         });
 
         Schema::create($tables['generic_contents'], function (Blueprint $table) {

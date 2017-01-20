@@ -119,7 +119,8 @@ return [
             'agents' => 'agents',
             'teams' => 'teams',
             'team-members' => [
-                'store' => 'store',
+                'add' => 'add',
+                'remove' => 'remove',
             ],
         ],
 
@@ -180,7 +181,8 @@ return [
             'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
             'teams' => '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
             'team-members' => [
-                'store' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@store'
+                'add' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@add',
+                'remove' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@remove',
             ],
         ],
         'dashboard' => [

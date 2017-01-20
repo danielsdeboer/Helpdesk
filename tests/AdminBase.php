@@ -56,6 +56,39 @@ abstract class AdminBase extends TestCase
     }
 
     /**
+     * Act as the supervisor
+     * @return void
+     */
+    protected function beSuper()
+    {
+        $this->be($this->makeSuper());
+    }
+
+    /**
+     * Call the uri with the verb and optional request
+     * @return void
+     */
+    protected function callUri($request = [])
+    {
+        $this->call(static::VERB, static::URI, $request);
+    }
+
+    /**
+     * Die and dump witht the response content
+     * @return void
+     */
+    protected function ddc()
+    {
+        dd($this->response->getContent());
+    }
+
+    protected function assertValidationFailed($errors)
+    {
+        $this->assertResponseStatus(302);
+        $this->assertSessionHasErrors($errors);
+    }
+
+    /**
      * Deny guests
      * @return void
      */

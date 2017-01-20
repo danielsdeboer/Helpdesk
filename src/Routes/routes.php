@@ -29,9 +29,14 @@ Route::group([
             'prefix' => 'team-members',
         ], function() {
             Route::post(
-                config('helpdesk.routes.admin.team-members.store'),
-                config('helpdesk.controllers.admin.team-members.store')
-            )->name(config('helpdesk.routes.admin.team-members.store'));
+                config('helpdesk.routes.admin.team-members.add'),
+                config('helpdesk.controllers.admin.team-members.add')
+            )->name(config('helpdesk.routes.admin.team-members.add'));
+
+            Route::post(
+                config('helpdesk.routes.admin.team-members.remove'),
+                config('helpdesk.controllers.admin.team-members.remove')
+            )->name(config('helpdesk.routes.admin.team-members.remove'));
         });
 
         Route::resource(
