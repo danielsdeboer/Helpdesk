@@ -19,8 +19,11 @@
         <form method="post" action="{{ route('helpdesk.admin.team-members.add') }}">
           {{ csrf_field() }}
 
+          <input type="hidden" name="agent_id" value="{{ $agent->id }}">
+          <input type="hidden" name="from" value="agent">
+
           <p class="control">
-            <select name="agent_id" class="select">
+            <select name="team_id" class="select">
               <option
                 v-for="team in teams"
                 :value="team.id"
