@@ -14,7 +14,7 @@
 
         <p class="control">
           <label class="checkbox">
-            <input type="checkbox" class="checkbox" name="delete_confirmed" value="1">
+            <input type="checkbox" class="checkbox" name="delete_team_confirmed" value="1">
             Do you really want to delete this team?
           </label>
         </p>

@@ -43,4 +43,30 @@ class RemoveTest extends AdminBase
 
         $this->assertValidationFailed(['agent_id', 'team_id', 'from']);
     }
+
+    /**
+     * @group acc
+     * @group acc.admin
+     * @group acc.admin.member
+     * @group acc.admin.member.remove
+     * @test
+     */
+    public function an_agent_can_be_removed_from_a_team()
+    {
+        $agent = $this->makeAgent();
+        $team = $this->makeTeam();
+
+        $agent->addToTeam($team);
+
+        $this->beSuper();
+        $this->callUri([
+            'agent_id' => $agent->id,
+            'team_id' => $team->id,
+            'from' => 'agent'
+        ]);
+
+        $agent = $agent->fresh();
+
+        $this->assertEquals(0, $agent->teams->count());
+    }
 }

@@ -22,7 +22,7 @@
 
 <script>
   var app = new Vue({
-    el: '.modal-app',
+    el: '#modal-app',
     data: {
       modals: {
         add: {

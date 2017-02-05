@@ -15,7 +15,7 @@
 
         <label>Team Name</label>
         <p class="control">
-          <input class="input" name="team_name" placeholder="Team Name" value="{{ $team->name }}">
+          <input class="input" name="name" placeholder="Team Name" value="{{ $team->name }}">
         </p>
 
         <div class="control is-grouped">

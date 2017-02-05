@@ -38,6 +38,7 @@ class TeamsController extends Controller
         return view('helpdesk::admin.teams.index')->with([
             'teams' => Pool::all(),
             'isSuper' => true,
+            'tab' => 'admin',
         ]);
     }
 
@@ -72,11 +73,18 @@ class TeamsController extends Controller
             $query->where('pool_id', $team->id);
         })->get();
 
+        // Get all agents who are not assigned to this team (or who
+        // are assigned to no team)
+        $agents = Agent::with('user')->doesntHave('teams', 'or', function($query) use ($team) {
+            $query->where('pool_id', $team->id);
+        })->get();
+
         return view('helpdesk::admin.teams.show')->with([
             'team' => $team,
             'tickets' => $tickets,
-            'agents' => Agent::all(),
+            'agents' => $agents,
             'isSuper' => true,
+            'tab' => 'admin',
         ]);
     }
 
@@ -129,7 +137,6 @@ class TeamsController extends Controller
         $this->validate($request, [
             'name' => [
                 'required',
-                Rule::unique(config('helpdesk.tables.pools'), 'name'),
             ]
         ]);
     }
