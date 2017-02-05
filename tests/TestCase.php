@@ -7,7 +7,7 @@ use Aviator\Database\Migrations\CreateUsersTable;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Notification;
-use Orchestra\Testbench\TestCase as Orchestra;
+use Orchestra\Testbench\BrowserKit\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
@@ -19,7 +19,9 @@ abstract class TestCase extends Orchestra
 
         $this->setUpDatabase();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../resources/migrations');
+        $this->artisan('migrate', [
+            '--database'    => 'testing',
+        ]);
 
         $this->createSupervisorUser();
 

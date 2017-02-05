@@ -8,7 +8,7 @@
     <div class="box">
       <h1 class="title">Add An Agent To This Team</h1>
 
-      <form method="post" action="{{ route('helpdesk.admin.team-members.store') }}">
+      <form method="post" action="{{ route('helpdesk.admin.team-members.add') }}">
         {{ csrf_field() }}
 
         <p class="control">

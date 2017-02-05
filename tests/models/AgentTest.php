@@ -14,6 +14,10 @@ class AgentTest extends TestCase {
      */
     protected function agent($numberOfAgents = 1)
     {
+        if ($numberOfAgents == 1) {
+            return factory(Agent::class)->create();
+        }
+
         return factory(Agent::class, $numberOfAgents)->create();
     }
 

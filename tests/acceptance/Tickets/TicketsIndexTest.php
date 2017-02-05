@@ -31,8 +31,9 @@ class TicketsIndexTest extends AdminBase
      */
     public function users_can_visit()
     {
-        $this->be($this->makeUser())
-            ->visit(self::URI)
+        $this->be($this->makeUser());
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
@@ -45,8 +46,9 @@ class TicketsIndexTest extends AdminBase
      */
     public function agents_can_visit()
     {
-        $this->be($this->makeAgent()->user)
-            ->visit(self::URI)
+        $this->be($this->makeAgent()->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
@@ -65,8 +67,10 @@ class TicketsIndexTest extends AdminBase
             'user_id' => $user->id
         ]);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title());
     }
@@ -90,8 +94,9 @@ class TicketsIndexTest extends AdminBase
             'user_id' => $user2->id
         ]);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title())
             ->dontSee($ticket2->content->title());
@@ -117,8 +122,9 @@ class TicketsIndexTest extends AdminBase
 
         $agent2Ticket = factory(Ticket::class)->create()->assignToAgent($agent2);
 
-        $this->be($agent->user)
-            ->visit(self::URI)
+        $this->be($agent->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($agentTicket->content->title())
             ->dontSee($userTicket->content->title())
@@ -147,8 +153,9 @@ class TicketsIndexTest extends AdminBase
         $agent2Ticket = factory(Ticket::class)->create()->assignToAgent($agent2);
         $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
 
-        $this->be($agent->user)
-            ->visit(self::URI)
+        $this->be($agent->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($agentTicket->content->title())
             ->see($teamTicket->content->title())
@@ -179,8 +186,9 @@ class TicketsIndexTest extends AdminBase
         $agent2Ticket = factory(Ticket::class)->create()->assignToAgent($agent2);
         $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
 
-        $this->be($super->user)
-            ->visit(self::URI)
+        $this->be($super->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($agentTicket->content->title())
             ->see($teamTicket->content->title())
@@ -202,8 +210,9 @@ class TicketsIndexTest extends AdminBase
             'user_id' => $user->id
         ]);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('<a id="open-see-more" class="button is-disabled">See 0 more...</a>');
     }
@@ -222,8 +231,9 @@ class TicketsIndexTest extends AdminBase
             'user_id' => $user->id
         ]);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('<a id="open-see-more" class="button" href=');
     }

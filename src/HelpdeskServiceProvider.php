@@ -42,19 +42,19 @@ class HelpdeskServiceProvider extends ServiceProvider
     protected function pushMiddleware($kernel, $router)
     {
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\AgentsOnly::class);
-        $router->middleware('helpdesk.agents', \Aviator\Helpdesk\Middleware\AgentsOnly::class);
+        $router->aliasMiddleware('helpdesk.agents', \Aviator\Helpdesk\Middleware\AgentsOnly::class);
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
-        $router->middleware('helpdesk.supervisors', \Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
+        $router->aliasMiddleware('helpdesk.supervisors', \Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class);
-        $router->middleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
+        $router->aliasMiddleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
-        $router->middleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
+        $router->aliasMiddleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketAssignee::class);
-        $router->middleware('helpdesk.ticket.assignee', \Aviator\Helpdesk\Middleware\TicketAssignee::class);
+        $router->aliasMiddleware('helpdesk.ticket.assignee', \Aviator\Helpdesk\Middleware\TicketAssignee::class);
     }
 
     /**

@@ -37,8 +37,9 @@ class TicketsShowTest extends AdminBase
             'user_id' => $user->id
         ]);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title());
     }
@@ -71,8 +72,9 @@ class TicketsShowTest extends AdminBase
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
 
-        $this->be($agent->user)
-            ->visit(self::URI)
+        $this->be($agent->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title());
     }

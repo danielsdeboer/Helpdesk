@@ -31,8 +31,10 @@ class TicketsClosedTest extends AdminBase
      */
     public function users_can_visit()
     {
-        $this->be($this->makeUser())
-            ->visit(self::URI)
+        $user = $this->makeUser();
+
+        $this->be($user);
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
@@ -45,8 +47,9 @@ class TicketsClosedTest extends AdminBase
      */
     public function agents_can_visit()
     {
-        $this->be($this->makeAgent()->user)
-            ->visit(self::URI)
+        $this->be($this->makeAgent()->user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
@@ -66,8 +69,9 @@ class TicketsClosedTest extends AdminBase
             'user_id' => $user->id
         ])->close(null, $agent);
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title());
     }
@@ -88,8 +92,9 @@ class TicketsClosedTest extends AdminBase
             $item->close(null, $agent);
         });
 
-        $this->be($user)
-            ->visit(self::URI)
+        $this->be($user);
+
+        $this->visit(self::URI)
             ->assertResponseOk()
             ->see('<ul class="pagination-list">');
     }
