@@ -8,20 +8,20 @@ use Aviator\Helpdesk\Models\Ticket;
 class Tickets
 {
     /**
-     * The user
+     * The user.
      * @var mixed User
      */
     protected $user;
 
     /**
-     * The agent
+     * The agent.
      * @var Agent
      */
     protected $agent;
 
     /**
-     * Is the agent a supervisor
-     * @var boolean | null
+     * Is the agent a supervisor.
+     * @var bool | null
      */
     protected $super;
 
@@ -30,7 +30,7 @@ class Tickets
     ////////////////////////
 
     /**
-     * Static constructor with agent
+     * Static constructor with agent.
      * @param  Agent $agent
      * @return Tickets
      */
@@ -40,7 +40,7 @@ class Tickets
     }
 
     /**
-     * Static constructor with user
+     * Static constructor with user.
      * @param  mixed $agent
      * @return Tickets
      */
@@ -50,7 +50,7 @@ class Tickets
     }
 
     /**
-     * Static constructor with user
+     * Static constructor with user.
      * @param  mixed $agent
      * @return Tickets
      */
@@ -64,7 +64,7 @@ class Tickets
     ////////////////
 
     /**
-     * Return tickets assigned to the agent's team
+     * Return tickets assigned to the agent's team.
      * @return Collection
      */
     public function team()
@@ -76,12 +76,10 @@ class Tickets
         if ($this->agent) {
             return $this->agentTeam();
         }
-
-        return null;
     }
 
     /**
-     * Return overdue tickets
+     * Return overdue tickets.
      * @return Collection
      */
     public function overdue()
@@ -98,7 +96,7 @@ class Tickets
     }
 
     /**
-     * Get overdue tickets for a super
+     * Get overdue tickets for a super.
      * @return Collection
      */
     protected function superOverdue()
@@ -107,13 +105,13 @@ class Tickets
             ->overdue()
             ->opened()
             ->get()
-            ->sortBy(function($item) {
+            ->sortBy(function ($item) {
                 return $item->dueDate->due_on;
             });
     }
 
     /**
-     * Return all open tickets
+     * Return all open tickets.
      * @return Collection
      */
     public function all()
@@ -122,19 +120,19 @@ class Tickets
             return Ticket::with('user')
                 ->opened()
                 ->get()
-                ->sortBy(function($item) {
+                ->sortBy(function ($item) {
                     return isset($item->dueDate->due_on) ? $item->dueDate->due_on->toDateString() : 9999999;
                 });
         }
 
         if ($this->agent) {
             return Ticket::with('user')
-                ->whereHas('assignment', function($query) {
+                ->whereHas('assignment', function ($query) {
                     $query->where('assigned_to', $this->agent->id);
                 })
                 ->opened()
                 ->get()
-                ->sortBy(function($item) {
+                ->sortBy(function ($item) {
                     return isset($item->dueDate->due_on) ? $item->dueDate->due_on->toDateString() : 9999999;
                 });
         }
@@ -146,7 +144,7 @@ class Tickets
     }
 
     /**
-     * Get unassigned tickets
+     * Get unassigned tickets.
      * @return Collection | null
      */
     public function unassigned()
@@ -157,8 +155,6 @@ class Tickets
                 ->unassigned()
                 ->get();
         }
-
-        return null;
     }
 
     /////////////
@@ -166,7 +162,7 @@ class Tickets
     /////////////
 
     /**
-     * Get the ids of this agent's teams
+     * Get the ids of this agent's teams.
      * @return array
      */
     protected function teamIds()
@@ -175,27 +171,27 @@ class Tickets
     }
 
     /**
-     * Get overdue tickets for an agent
+     * Get overdue tickets for an agent.
      * @return Collection
      */
     protected function agentOverdue()
     {
         return Ticket::with('user', 'dueDate')
-            ->whereHas('assignment', function($query) {
+            ->whereHas('assignment', function ($query) {
                 $query->where('assigned_to', $this->agent->id);
             })
-            ->orWhereHas('poolAssignment', function($query) {
+            ->orWhereHas('poolAssignment', function ($query) {
                 $query->whereIn('pool_id', $this->teamIds());
             })
             ->overdue()
             ->get()
-            ->sortBy(function($item) {
+            ->sortBy(function ($item) {
                 return $item->dueDate->due_on;
             });
     }
 
     /**
-     * Get overdue tickets for a user
+     * Get overdue tickets for a user.
      * @return Collection
      */
     protected function userOverdue()
@@ -207,13 +203,13 @@ class Tickets
     }
 
     /**
-     * Get tickets assigned to an agents teams
+     * Get tickets assigned to an agents teams.
      * @return Collection
      */
     protected function agentTeam()
     {
         return Ticket::with('user', 'opening')
-            ->whereHas('poolAssignment', function($query) {
+            ->whereHas('poolAssignment', function ($query) {
                 $query->whereIn('pool_id', $this->teamIds());
             })
             ->opened()
@@ -222,7 +218,7 @@ class Tickets
     }
 
     /**
-     * Get tickets assigned to an agents teams
+     * Get tickets assigned to an agents teams.
      * @return Collection
      */
     protected function superTeam()
@@ -239,7 +235,7 @@ class Tickets
     ///////////////////////
 
     /**
-     * Set the agent
+     * Set the agent.
      * @param Agent $agent
      */
     public function setAgent(Agent $agent)
@@ -251,7 +247,7 @@ class Tickets
     }
 
     /**
-     * User getter
+     * User getter.
      * @return User
      */
     public function getUser()
@@ -260,7 +256,7 @@ class Tickets
     }
 
     /**
-     * Super setter
+     * Super setter.
      * @param Agent $agent
      */
     public function setSuper(Agent $agent)
@@ -273,8 +269,8 @@ class Tickets
     }
 
     /**
-     * Super getter
-     * @return boolean | null
+     * Super getter.
+     * @return bool | null
      */
     public function getSuper()
     {
@@ -282,7 +278,7 @@ class Tickets
     }
 
     /**
-     * Agent getter
+     * Agent getter.
      * @return Agent
      */
     public function getAgent()
@@ -291,7 +287,7 @@ class Tickets
     }
 
     /**
-     * Set the user
+     * Set the user.
      * @param mixed $user
      */
     public function setUser($user)
@@ -301,7 +297,7 @@ class Tickets
         if ($user instanceof $userModel) {
             $this->user = $user;
         } else {
-            throw new \Exception('You must provide an instance of '. $userModel);
+            throw new \Exception('You must provide an instance of ' . $userModel);
         }
 
         return $this;

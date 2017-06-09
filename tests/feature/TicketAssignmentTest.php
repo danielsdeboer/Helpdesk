@@ -5,7 +5,6 @@ namespace Aviator\Helpdesk\Tests\Feature;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketAssignmentTest extends TestCase
 {

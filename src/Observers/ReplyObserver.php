@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
 
@@ -22,7 +22,7 @@ class ReplyObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Reply  $observed
      * @return void
      */

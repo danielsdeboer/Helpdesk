@@ -2,14 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Database\Migrations\CreateHelpdeskTables;
-use Aviator\Database\Migrations\CreateUsersTable;
-use Aviator\Helpdesk\HelpdeskServiceProvider;
-use Aviator\Helpdesk\Tests\Handler;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\HelpdeskServiceProvider;
+use Aviator\Database\Migrations\CreateUsersTable;
 use Orchestra\Testbench\BrowserKit\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -94,7 +90,7 @@ abstract class TestCase extends Orchestra
 
     /**
      * Set alternate table names for testing that the database names
-     * are properly variable everywhere
+     * are properly variable everywhere.
      * @param $app
      * @return void
      */

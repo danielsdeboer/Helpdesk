@@ -2,22 +2,16 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Assignment;
-use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Notifications\External\Created;
+use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Notifications\External\Opened;
-use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 
-class TicketTest extends TestCase {
 
+class TicketTest extends TestCase
+{
     protected $ticket;
     protected $content;
 
@@ -250,7 +244,6 @@ class TicketTest extends TestCase {
         $this->ticket->close(null, $user);
         $this->ticket->open('here is an opening note', $user);
 
-
         $this->assertEquals('open', $this->ticket->status);
         $this->assertEquals('here is an opening note', $this->ticket->opening->note);
     }
@@ -268,7 +261,6 @@ class TicketTest extends TestCase {
 
         try {
             $this->ticket->open(null, null);
-
         } catch (CreatorRequiredException $e) {
             return;
         }
@@ -467,7 +459,7 @@ class TicketTest extends TestCase {
     {
         $agent = factory(Agent::class)->create();
 
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) use ($agent) {
+        $tickets = factory(Ticket::class, 2)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent);
         });
 
@@ -500,7 +492,7 @@ class TicketTest extends TestCase {
      */
     public function the_overdue_scope_returns_only_open_tickets()
     {
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+        $tickets = factory(Ticket::class, 2)->create()->each(function ($item) {
             $item->dueOn('yesterday');
         });
 
@@ -533,7 +525,7 @@ class TicketTest extends TestCase {
      */
     public function the_ontime_scope_returns_only_open_tickets()
     {
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+        $tickets = factory(Ticket::class, 2)->create()->each(function ($item) {
             $item->dueOn('tomorrow');
         });
 
@@ -566,7 +558,7 @@ class TicketTest extends TestCase {
      */
     public function the_duetoday_scope_returns_only_open_tickets()
     {
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+        $tickets = factory(Ticket::class, 2)->create()->each(function ($item) {
             $item->dueOn('now');
         });
 
@@ -576,7 +568,6 @@ class TicketTest extends TestCase {
         $this->assertEquals(1, $today->count());
         $this->assertEquals('open', $today->first()->status);
     }
-
 
     /**
      * @group model
@@ -617,7 +608,7 @@ class TicketTest extends TestCase {
      */
     public function the_pooled_scope_returns_only_open_tickets()
     {
-        $tickets = factory(Ticket::class, 2)->create()->each(function($item) {
+        $tickets = factory(Ticket::class, 2)->create()->each(function ($item) {
             $pool = factory(Pool::class)->create();
 
             $item->assignToPool($pool);
@@ -648,7 +639,7 @@ class TicketTest extends TestCase {
 
         $previousId = 0;
 
-        $ticket->actions->each(function($item) use (&$previousId) {
+        $ticket->actions->each(function ($item) use (&$previousId) {
             $previousId++;
 
             $this->assertEquals($previousId, $item->id);
@@ -785,6 +776,4 @@ class TicketTest extends TestCase {
 
         $this->assertEquals(4, $tickets->count());
     }
-
-
 }

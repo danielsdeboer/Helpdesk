@@ -5,11 +5,10 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Facades\Notification;
 
-class ReplyTest extends TestCase {
-
+class ReplyTest extends TestCase
+{
     /**
      * @group model
      * @group model.reply

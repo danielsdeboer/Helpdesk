@@ -2,26 +2,25 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Agent;
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Aviator\Helpdesk\Models\Agent;
 
 class TicketAssignee
 {
     /**
-     * The supervisor's email
+     * The supervisor's email.
      * @var string
      */
     protected $supervisorEmail;
 
     /**
-     * The user model's email column
+     * The user model's email column.
      * @var string
      */
     protected $emailColumn;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {

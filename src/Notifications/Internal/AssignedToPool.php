@@ -2,18 +2,18 @@
 
 namespace Aviator\Helpdesk\Notifications\Internal;
 
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Bus\Queueable;
+use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class AssignedToPool extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * The ticket
+     * The ticket.
      * @var \Aviator\Helpdesk\Models\Ticket
      */
     public $ticket;

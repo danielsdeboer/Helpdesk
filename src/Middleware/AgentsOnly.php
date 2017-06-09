@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Agent;
 use Closure;
+use Aviator\Helpdesk\Models\Agent;
 
 class AgentsOnly
 {

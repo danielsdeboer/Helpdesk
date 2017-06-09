@@ -1,22 +1,20 @@
 <?php
 
-use Aviator\Helpdesk\Models\Action;
+use Carbon\Carbon;
+use Aviator\Helpdesk\Models\Note;
+use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Models\Action;
+use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
-use Aviator\Helpdesk\Models\ExternalReply;
-use Aviator\Helpdesk\Models\GenericContent;
-use Aviator\Helpdesk\Models\InternalReply;
-use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Opening;
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\PoolAssignment;
-use Aviator\Helpdesk\Models\Reply;
-use Aviator\Helpdesk\Models\Ticket;
-use Carbon\Carbon;
 
-/**
+/*
  * User factory facilities
  */
 
@@ -35,7 +33,7 @@ $factory->state(config('helpdesk.userModel'), 'isInternal', function (Faker\Gene
     ];
 });
 
-/**
+/*
  * Helpdesk factory facilities
  */
 
@@ -71,7 +69,6 @@ $factory->state(Agent::class, 'isSuper', function (Faker\Generator $faker) {
         ])->id,
     ];
 });
-
 
 $factory->define(GenericContent::class, function (Faker\Generator $faker) {
     return [
@@ -133,7 +130,7 @@ $factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
 $factory->define(Closing::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create([
-            'status' => 'closed'
+            'status' => 'closed',
         ])->id,
         'note' => 'Test note',
         'agent_id' => factory(Agent::class)->create()->id,

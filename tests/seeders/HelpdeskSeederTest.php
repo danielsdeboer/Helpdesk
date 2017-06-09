@@ -2,13 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests\Seeders;
 
-use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
 
-class HelpdeskSeederTest extends TestCase {
-
+class HelpdeskSeederTest extends TestCase
+{
     /**
      * @group seeders
      * @test

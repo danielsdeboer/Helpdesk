@@ -3,11 +3,11 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Opening;
-use Aviator\Helpdesk\Notifications\External\Opened;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\External\Opened;
 
-class OpeningTest extends TestCase {
-
+class OpeningTest extends TestCase
+{
     /**
      * @group model
      * @group model.opening

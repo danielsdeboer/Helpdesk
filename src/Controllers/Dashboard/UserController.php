@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
-use Aviator\Helpdesk\Repositories\Tickets;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Repositories\Tickets;
 
 class UserController extends Controller
 {
     /**
-     * Construct with agents only middleware
+     * Construct with agents only middleware.
      */
     public function __construct()
     {
@@ -16,7 +16,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display an index of the controller
+     * Display an index of the controller.
      * @return Response
      */
     public function index()
@@ -24,7 +24,7 @@ class UserController extends Controller
         return view('helpdesk::dashboard.index', [
             'open' => Tickets::forUser(auth()->user())->all(),
             'overdue' => Tickets::forUser(auth()->user())->overdue(),
-            'tab' => 'dashboard'
+            'tab' => 'dashboard',
         ]);
     }
 }

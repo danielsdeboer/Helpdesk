@@ -2,14 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Models\Agent;
 
-class AgentTest extends TestCase {
-
+class AgentTest extends TestCase
+{
     /**
-     * Build up an agent
+     * Build up an agent.
      * @return Agent
      */
     protected function agent($numberOfAgents = 1)

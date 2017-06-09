@@ -5,7 +5,6 @@ namespace Aviator\Helpdesk\Tests\Admin\TeamMembers;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\AdminBase;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 
 class AddTest extends AdminBase
 {
@@ -60,7 +59,7 @@ class AddTest extends AdminBase
         $this->callUri([
             'agent_id' => $agent->id,
             'team_id' => $team->id,
-            'from' => 'agent'
+            'from' => 'agent',
         ]);
 
         $this->assertEquals(1, $agent->teams->count());
