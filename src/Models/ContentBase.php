@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 
 class ContentBase extends Model implements TicketContent
 {
@@ -19,7 +19,7 @@ class ContentBase extends Model implements TicketContent
     protected $partial;
 
     /**
-     * Getter for $this->partial
+     * Getter for $this->partial.
      * @return string
      */
     public function partial()
@@ -28,7 +28,7 @@ class ContentBase extends Model implements TicketContent
     }
 
     /**
-     * Getter for $this->title
+     * Getter for $this->title.
      * @return string
      */
     public function title()

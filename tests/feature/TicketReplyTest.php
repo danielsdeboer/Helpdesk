@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketReplyTest extends TestCase
 {
@@ -46,12 +46,12 @@ class TicketReplyTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
         $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
-            'reply_body' => 'test body'
+            'reply_body' => 'test body',
         ]);
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
@@ -71,7 +71,7 @@ class TicketReplyTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
-            'body' => 'test body'
+            'body' => 'test body',
         ]);
 
         $this->assertResponseStatus(403);
@@ -90,11 +90,10 @@ class TicketReplyTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
-            'reply_body' => 'test body'
+            'reply_body' => 'test body',
         ]);
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
         $this->assertEquals('test body', $ticket->internalReplies->first()->body);
     }
-
 }

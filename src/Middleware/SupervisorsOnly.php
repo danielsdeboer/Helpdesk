@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Agent;
 use Closure;
 
 class SupervisorsOnly

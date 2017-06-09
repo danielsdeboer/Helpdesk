@@ -2,14 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Models\Agent;
 
-class AgentTest extends TestCase {
-
+class AgentTest extends TestCase
+{
     /**
-     * Build up an agent
+     * Build up an agent.
      * @return Agent
      */
     protected function agent($numberOfAgents = 1)
@@ -178,5 +177,33 @@ class AgentTest extends TestCase {
         $agent->removeTeamLeadOf($team);
 
         $this->assertEquals(0, $agent->teams->first()->pivot->is_team_lead);
+    }
+
+    /**
+     * @group model
+     * @group model.agent
+     * @test
+     */
+    public function isMemberOfReturnsTrueIfAnAgentIsAMemberOfThatTeam()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $agent->makeTeamLeadOf($team);
+
+        $this->assertTrue($agent->isMemberOf($team));
+    }
+
+    /**
+     * @group model
+     * @group model.agent
+     * @test
+     */
+    public function isMemberOfReturnsFalseIfAnAgentIsntAMemberOfThatTeam()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $this->assertFalse($agent->isMemberOf($team));
     }
 }

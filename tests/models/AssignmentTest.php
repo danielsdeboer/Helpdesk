@@ -3,11 +3,11 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Assignment;
-use Aviator\Helpdesk\Notifications\Internal\AssignedToAgent;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\Internal\AssignedToAgent;
 
-class AssignmentTest extends TestCase {
-
+class AssignmentTest extends TestCase
+{
     /**
      * @group model
      * @group model.assignment

@@ -2,16 +2,14 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 abstract class AdminBase extends TestCase
 {
     /**
-     * Make a super user
+     * Make a super user.
      * @return Agent
      */
     protected function makeSuper()
@@ -20,7 +18,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Make a team
+     * Make a team.
      * @return Pool
      */
     protected function makeTeam()
@@ -29,7 +27,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Make a user
+     * Make a user.
      * @return User
      */
     protected function makeUser()
@@ -38,7 +36,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Make an agent
+     * Make an agent.
      * @return Agent
      */
     protected function makeAgent()
@@ -47,7 +45,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Make a ticket
+     * Make a ticket.
      * @return Ticket
      */
     protected function makeTicket()
@@ -56,7 +54,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Act as the supervisor
+     * Act as the supervisor.
      * @return void
      */
     protected function beSuper()
@@ -65,7 +63,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Call the uri with the verb and optional request
+     * Call the uri with the verb and optional request.
      * @return void
      */
     protected function callUri($request = [])
@@ -74,7 +72,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Die and dump witht the response content
+     * Die and dump witht the response content.
      * @return void
      */
     protected function ddc()
@@ -89,7 +87,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Deny guests
+     * Deny guests.
      * @return void
      */
     protected function noGuests()
@@ -101,7 +99,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Deny users
+     * Deny users.
      * @return void
      */
     protected function noUsers()
@@ -115,7 +113,7 @@ abstract class AdminBase extends TestCase
     }
 
     /**
-     * Deny agents
+     * Deny agents.
      * @return void
      */
     protected function noAgents()

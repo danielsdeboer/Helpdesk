@@ -2,10 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\AdminBase;
 
 class TicketsOpenedTest extends AdminBase
 {
@@ -63,7 +60,7 @@ class TicketsOpenedTest extends AdminBase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -83,7 +80,7 @@ class TicketsOpenedTest extends AdminBase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class, 26)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);

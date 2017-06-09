@@ -2,16 +2,15 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\ActionBase;
-
 class Assignment extends ActionBase
 {
-    public function assignee() {
+    public function assignee()
+    {
         return $this->belongsTo(Agent::class, 'assigned_to');
     }
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])

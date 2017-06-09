@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\Pool;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agent extends Model
 {
@@ -24,7 +23,7 @@ class Agent extends Model
     ];
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -33,6 +32,10 @@ class Agent extends Model
 
         $this->setTable(config('helpdesk.tables.agents'));
     }
+
+    ////////////////
+    // Public API //
+    ////////////////
 
     /**
      * Route notifications for the mail channel.
@@ -47,7 +50,7 @@ class Agent extends Model
     }
 
     /**
-     * Make the Agent a team lead
+     * Make the Agent a team lead.
      * @return $this
      */
     public function makeTeamLeadOf(Pool $team)
@@ -64,7 +67,7 @@ class Agent extends Model
     }
 
     /**
-     * Make the Agent a team lead
+     * Make the Agent a team lead.
      * @return $this
      */
     public function removeTeamLeadOf(Pool $team)
@@ -79,7 +82,7 @@ class Agent extends Model
     }
 
     /**
-     * Add the agent to a team
+     * Add the agent to a team.
      * @param Pool $team
      * @return $this
      */
@@ -91,7 +94,7 @@ class Agent extends Model
     }
 
     /**
-     * Remove the agent from a team
+     * Remove the agent from a team.
      * @param  Pool   $team
      * @return $this
      */
@@ -103,7 +106,7 @@ class Agent extends Model
     }
 
     /**
-     * Add the agent to multiple teams
+     * Add the agent to multiple teams.
      * @param array $teams
      * @return $this
      */
@@ -117,7 +120,7 @@ class Agent extends Model
     }
 
     /**
-     * Remove the agent from multiple teams
+     * Remove the agent from multiple teams.
      * @param  array $teams
      * @return $this
      */
@@ -130,11 +133,37 @@ class Agent extends Model
         return $this;
     }
 
-    public function user() {
+    /**
+     * Is this agent a member of this pool.
+     * @param  Pool    $team
+     * @return bool
+     */
+    public function isMemberOf(Pool $team)
+    {
+        return $team->agents->pluck('id')->contains($this->id);
+    }
+
+    ///////////////////
+    // Relationships //
+    ///////////////////
+
+    public function user()
+    {
         return $this->belongsTo(config('helpdesk.userModel'));
     }
 
-    public function teams() {
-        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();;
+    public function teams()
+    {
+        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
+            ->withPivot('is_team_lead')
+            ->withTimestamps();
+    }
+
+    public function teamLeads()
+    {
+        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
+            ->withPivot('is_team_lead')
+            ->withTimestamps()
+            ->wherePivot('is_team_lead', 1);
     }
 }

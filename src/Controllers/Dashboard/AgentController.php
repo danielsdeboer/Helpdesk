@@ -3,15 +3,14 @@
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Repositories\Tickets;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Aviator\Helpdesk\Repositories\Tickets;
 
 class AgentController extends Controller
 {
     /**
-     * Construct with agents only middleware
+     * Construct with agents only middleware.
      */
     public function __construct()
     {
@@ -19,7 +18,7 @@ class AgentController extends Controller
     }
 
     /**
-     * Display an index of the controller
+     * Display an index of the controller.
      * @return Response
      */
     public function index()

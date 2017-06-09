@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketViewTest extends TestCase
 {
@@ -18,7 +17,7 @@ class TicketViewTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -36,7 +35,7 @@ class TicketViewTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -58,7 +57,7 @@ class TicketViewTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -80,7 +79,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent);
 
         $this->be($agent->user);
@@ -100,7 +99,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent);
 
         $this->be($agent->user);
@@ -125,7 +124,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent);
 
         $this->be($agent->user);
@@ -151,7 +150,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent);
 
         $this->be($agent->user);
@@ -176,7 +175,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent);
 
         $this->be($agent->user);
@@ -186,7 +185,7 @@ class TicketViewTest extends TestCase
             ->press('close_submit')
             ->seePageIs('helpdesk/tickets/' . $ticket->id)
             ->see('<strong id="action-header-3">Closed</strong>')
-            ->see('id="action-3-public"');;
+            ->see('id="action-3-public"');
     }
 
     /**
@@ -200,7 +199,7 @@ class TicketViewTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->assignToAgent($agent)->close(null, $agent);
 
         $this->be($agent->user);

@@ -2,15 +2,14 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Aviator\Helpdesk\Interfaces\TicketContent;
-use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
+use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 class Ticket extends Model
 {
@@ -25,7 +24,7 @@ class Ticket extends Model
     protected $guarded = [];
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -86,6 +85,16 @@ class Ticket extends Model
     }
 
     /**
+     * Alias for assignToTeam.
+     * @param  mixed[] $args
+     * @return $this
+     */
+    public function assignToTeam(...$args)
+    {
+        return $this->assignToPool(...$args);
+    }
+
+    /**
      * Add a due date. Optionally set the creator.
      *
      * Visibility is assumed true for due dates since
@@ -116,7 +125,7 @@ class Ticket extends Model
      * @param  User | Agent $creator
      * @return $this
      */
-    public function close($note = null, $creator)
+    public function close($note, $creator)
     {
         if (! $creator) {
             throw new CreatorRequiredException;
@@ -127,8 +136,8 @@ class Ticket extends Model
         Closing::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -148,7 +157,7 @@ class Ticket extends Model
      * @param  User | Agent $creator
      * @return $this
      */
-    public function open($note = null, $creator)
+    public function open($note, $creator)
     {
         if (! $creator) {
             throw new CreatorRequiredException;
@@ -159,8 +168,8 @@ class Ticket extends Model
         Opening::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -189,8 +198,8 @@ class Ticket extends Model
         Note::create([
             'ticket_id' => $this->id,
             'body' => $body,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -248,7 +257,7 @@ class Ticket extends Model
     }
 
     /**
-     * Associate the content model with a ticket
+     * Associate the content model with a ticket.
      * @param TicketContent $content
      */
     public function withContent(TicketContent $content)
@@ -261,7 +270,7 @@ class Ticket extends Model
     }
 
     /**
-     * Create and assocate the ticket content
+     * Create and assocate the ticket content.
      * @param string $class
      * @param array $attribute
      */
@@ -311,8 +320,8 @@ class Ticket extends Model
     }
 
     /**
-     * Is the ticket open
-     * @return boolean
+     * Is the ticket open.
+     * @return bool
      */
     public function isOpen()
     {
@@ -320,8 +329,8 @@ class Ticket extends Model
     }
 
     /**
-     * Is the ticket closed
-     * @return boolean
+     * Is the ticket closed.
+     * @return bool
      */
     public function isClosed()
     {
@@ -344,7 +353,7 @@ class Ticket extends Model
     }
 
     /**
-     * Find a single model with actions
+     * Find a single model with actions.
      * @param  int $id
      */
     public function scopeFindWithActions($query, $id)
@@ -372,7 +381,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get tickets assigned to pools
+     * Get tickets assigned to pools.
      */
     public function scopePooled($query)
     {
@@ -380,31 +389,31 @@ class Ticket extends Model
     }
 
     /**
-     * Get overdue tickets
+     * Get overdue tickets.
      */
     public function scopeOverdue($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', '<', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets
+     * Get on time tickets. Due Today is a subet of on time tickets.
      */
     public function scopeOnTime($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', '>=', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets
+     * Get on time tickets. Due Today is a subet of on time tickets.
      */
     public function scopeDueToday($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
@@ -412,7 +421,7 @@ class Ticket extends Model
     /**
      * Get open tickets. This method name is a bit silly but we're already
      * using open() above. This can be refactored once the open() method
-     * is refactored to a builder or domain object
+     * is refactored to a builder or domain object.
      */
     public function scopeOpened($query)
     {
@@ -420,17 +429,17 @@ class Ticket extends Model
     }
 
     /**
-     * Get the ticket with actions, sorted oldest to newest
+     * Get the ticket with actions, sorted oldest to newest.
      */
     public function scopeWithActions($query)
     {
-        return $query->with(['actions' => function($query) {
+        return $query->with(['actions' => function ($query) {
             $query->orderBy('id', 'asc');
         }]);
     }
 
     /**
-     * Return tickets that are accessible to the current user
+     * Return tickets that are accessible to the current user.
      * @param User | Agent $user
      * @return ticket
      */
@@ -448,7 +457,7 @@ class Ticket extends Model
     }
 
     /**
-     * Return tickets that are accessible to the current user
+     * Return tickets that are accessible to the current user.
      * @param User $user
      * @return ticket
      */
@@ -458,7 +467,7 @@ class Ticket extends Model
     }
 
     /**
-     * Return tickets that are accessible to the current agent
+     * Return tickets that are accessible to the current agent.
      * @param Agent $agent
      * @return ticket
      */
@@ -471,27 +480,26 @@ class Ticket extends Model
             return $query;
         }
 
-        $isTeamLeadOf = $agent->teams->filter(function($item) {
+        $isTeamLeadOf = $agent->teams->filter(function ($item) {
             return $item->pivot->is_team_lead;
         });
 
-        return $query->where(function($query) use ($agent, $isTeamLeadOf) {
-            $query->whereHas('assignment', function($query) use ($agent) {
+        return $query->where(function ($query) use ($agent, $isTeamLeadOf) {
+            $query->whereHas('assignment', function ($query) use ($agent) {
                 $query->where('assigned_to', $agent->id);
             })
-            ->orWhereHas('poolAssignment', function($query) use ($isTeamLeadOf) {
+            ->orWhereHas('poolAssignment', function ($query) use ($isTeamLeadOf) {
                 $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
             });
         });
     }
 
-
-
     ///////////////////
     // RELATIONSHIPS //
     ///////////////////
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(
             config('helpdesk.userModel')
         );
@@ -507,55 +515,68 @@ class Ticket extends Model
         return $this->morphMany(Action::class, 'subject');
     }
 
-    public function assignments() {
+    public function assignments()
+    {
         return $this->hasMany(Assignment::class);
     }
 
-    public function assignment() {
+    public function assignment()
+    {
         return $this->hasOne(Assignment::class)->latest();
     }
 
-    public function poolAssignments() {
+    public function poolAssignments()
+    {
         return $this->hasMany(PoolAssignment::class);
     }
 
-    public function poolAssignment() {
+    public function poolAssignment()
+    {
         return $this->hasOne(PoolAssignment::class)->latest();
     }
 
-    public function dueDates() {
+    public function dueDates()
+    {
         return $this->hasMany(DueDate::class);
     }
 
-    public function dueDate() {
+    public function dueDate()
+    {
         return $this->hasOne(DueDate::class)->latest();
     }
 
-    public function internalReplies() {
+    public function internalReplies()
+    {
         return $this->hasMany(Reply::class)->whereNotNull('agent_id');
     }
 
-    public function externalReplies() {
+    public function externalReplies()
+    {
         return $this->hasMany(Reply::class)->whereNotNull('user_id');
     }
 
-    public function closing() {
+    public function closing()
+    {
         return $this->hasOne(Closing::class)->latest();
     }
 
-    public function closings() {
+    public function closings()
+    {
         return $this->hasMany(Closing::class);
     }
 
-    public function opening() {
+    public function opening()
+    {
         return $this->hasOne(Opening::class)->orderBy('id', 'desc');
     }
 
-    public function openings() {
+    public function openings()
+    {
         return $this->hasMany(Opening::class);
     }
 
-    public function notes() {
+    public function notes()
+    {
         return $this->hasMany(Note::class);
     }
 }

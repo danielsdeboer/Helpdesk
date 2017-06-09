@@ -1,29 +1,29 @@
 <?php
 
 return [
-    /**
+    /*
      * Define the user model
      */
     'userModel' => \Aviator\Helpdesk\Tests\User::class,
 
-    /**
+    /*
      * The email address column on the user model. When we need to look up the supervisor's
      * user model for sending notifications.
      */
     'userModelEmailColumn' => 'email',
 
-    /**
+    /*
      * Callbacks. These are used to easily change what queries are executed when looking up
      * users, etc.
      */
     'callbacks' => [
-        /**
+        /*
          * The user query callback. In order to guard against adding any type of user being
          * added as an agent, you can modify this callback to fit your database use case.
          * If you don't care about this at all, simply remove this config key or change
          * the value to null.
          */
-        'user' => function($query) {
+        'user' => function ($query) {
             $query
                 ->where('is_internal', 1);
         },
@@ -62,7 +62,7 @@ return [
                 'subject' => 'Your ticket has been opened!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-                'route' => 'helpdesk.tickets.public'
+                'route' => 'helpdesk.tickets.public',
             ],
 
             'replied' => [
@@ -70,7 +70,7 @@ return [
                 'subject' => 'Your ticket has been replied to!',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-                'route' => 'helpdesk.tickets.public'
+                'route' => 'helpdesk.tickets.public',
             ],
 
             'closed' => [
@@ -78,7 +78,7 @@ return [
                 'subject' => 'Your ticket has been closed.',
                 'greeting' => 'Hey there.',
                 'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
-                'route' => 'helpdesk.tickets.public'
+                'route' => 'helpdesk.tickets.public',
             ],
         ],
 
@@ -106,7 +106,7 @@ return [
                 'line' => '',
                 'route' => 'helpdesk.tickets.show',
             ],
-        ]
+        ],
     ],
 
     'routes' => [
@@ -147,7 +147,7 @@ return [
             ],
             'show' => [
                 'route' => '{ticket}',
-                'name' => 'show'
+                'name' => 'show',
             ],
             'uuid' => [
                 'route' => 'public/{uuid}',
@@ -204,7 +204,7 @@ return [
             'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
             'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
             'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
-        ]
+        ],
     ],
 
     'footerText' => '<strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>',

@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\AdminBase;
-
 class AdminAgentsShowTest extends AdminBase
 {
     const VERB = 'GET';

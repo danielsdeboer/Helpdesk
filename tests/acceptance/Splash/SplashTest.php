@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\AdminBase;
-
 class SplashTest extends TestCase
 {
     /**

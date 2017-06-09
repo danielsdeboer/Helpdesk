@@ -2,26 +2,25 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Agent;
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Aviator\Helpdesk\Models\Agent;
 
 class TicketOwnerOrAssignee
 {
     /**
-     * The supervisor's email
+     * The supervisor's email.
      * @var string
      */
     protected $supervisorEmail;
 
     /**
-     * The user model's email column
+     * The user model's email column.
      * @var string
      */
     protected $emailColumn;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -51,6 +50,10 @@ class TicketOwnerOrAssignee
         }
 
         if ($agent && $ticket->assignment && $ticket->assignment->assigned_to == $agent->id) {
+            return $next($request);
+        }
+
+        if ($agent && $ticket->poolAssignment && $agent->isMemberOf($ticket->poolAssignment->pool)) {
             return $next($request);
         }
 

@@ -3,13 +3,13 @@
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Repositories\Tickets;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Repositories\Tickets;
 
 class SupervisorController extends Controller
 {
     /**
-     * Construct with agents only middleware
+     * Construct with agents only middleware.
      */
     public function __construct()
     {
@@ -17,7 +17,7 @@ class SupervisorController extends Controller
     }
 
     /**
-     * Display an index of the controller
+     * Display an index of the controller.
      * @return Response
      */
     public function index()

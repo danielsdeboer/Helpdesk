@@ -2,18 +2,17 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Models\Agent;
 
-class PoolTest extends TestCase {
-
+class PoolTest extends TestCase
+{
     /**
      * @group model
      * @group model.pool
      * @test
      */
-    public function a_pool_has_team_leads()
+    public function aPoolHasTeamLeads()
     {
         $pool = factory(Pool::class)->create();
         $agent = factory(Agent::class)->create();
@@ -30,7 +29,7 @@ class PoolTest extends TestCase {
      * @group model.pool
      * @test
      */
-    public function a_pool_has_many_agents()
+    public function aPoolHasManyAgents()
     {
         $pool = factory(Pool::class)->create();
         $agent = factory(Agent::class)->create();
@@ -39,5 +38,33 @@ class PoolTest extends TestCase {
         $pool->agents()->attach([$agent->id, $agent2->id]);
 
         $this->assertEquals(2, $pool->agents->count());
+    }
+
+    /**
+     * @group model
+     * @group model.pool
+     * @test
+     */
+    public function theIsTeamLeadMethodReturnsTrueIfAnAgentIsALeadOfThatTeam()
+    {
+        $pool = factory(Pool::class)->create();
+        $agent = factory(Agent::class)->create();
+
+        $agent->makeTeamLeadOf($pool);
+
+        $this->assertTrue($pool->isTeamLead($agent));
+    }
+
+    /**
+     * @group model
+     * @group model.pool
+     * @test
+     */
+    public function theIsTeamLeadMethodReturnsFalseIfAnAgentIsNotALeadOfThatTeam()
+    {
+        $pool = factory(Pool::class)->create();
+        $agent = factory(Agent::class)->create();
+
+        $this->assertFalse($pool->isTeamLead($agent));
     }
 }
