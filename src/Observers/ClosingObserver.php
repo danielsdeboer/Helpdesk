@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Closing;
 use Illuminate\Support\Facades\Notification;
 
 class ClosingObserver
@@ -22,7 +22,7 @@ class ClosingObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Closing  $observed
      * @return void
      */
@@ -39,7 +39,7 @@ class ClosingObserver
     }
 
     /**
-     * Send the notification
+     * Send the notification.
      * @param  Closing $observed
      * @return void
      */

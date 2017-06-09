@@ -12,7 +12,7 @@ class Pool extends Model
     protected $guarded = [];
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -27,9 +27,9 @@ class Pool extends Model
     ////////////////
 
     /**
-     * Check if an agent is a team lead of this team
+     * Check if an agent is a team lead of this team.
      * @param  Agent   $agent
-     * @return boolean
+     * @return bool
      */
     public function isTeamLead(Agent $agent)
     {

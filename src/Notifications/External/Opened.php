@@ -2,18 +2,18 @@
 
 namespace Aviator\Helpdesk\Notifications\External;
 
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Bus\Queueable;
+use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class Opened extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * The ticket
+     * The ticket.
      * @var \Aviator\Helpdesk\Ticket
      */
     public $ticket;

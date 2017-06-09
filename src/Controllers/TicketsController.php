@@ -3,19 +3,19 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
 
 class TicketsController extends Controller
 {
     /**
-     * Who is the reponse for
+     * Who is the reponse for.
      * @var string
      */
     protected $for;
 
     /**
-     * Construct with agents only middleware
+     * Construct with agents only middleware.
      */
     public function __construct()
     {
@@ -23,7 +23,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Display an index of the resource
+     * Display an index of the resource.
      * @return Response
      */
     public function index()
@@ -43,7 +43,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show an index of open tickets
+     * Show an index of open tickets.
      * @return Response
      */
     public function opened()
@@ -59,7 +59,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show an index of closed tickets
+     * Show an index of closed tickets.
      * @return Response
      */
     public function closed()
@@ -75,7 +75,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Display a instance of the resource
+     * Display a instance of the resource.
      * @param  int $id
      * @return Reponse
      */
@@ -138,8 +138,8 @@ class TicketsController extends Controller
     }
 
     /**
-     * Is the user allowed to access the ticket
-     * @return boolean
+     * Is the user allowed to access the ticket.
+     * @return bool
      */
     protected function permitted($ticket)
     {
@@ -150,16 +150,19 @@ class TicketsController extends Controller
 
         if ($user->$email == config('helpdesk.supervisor.email')) {
             $this->for = 'super';
+
             return true;
         }
 
         if ($agent && $ticket->assignment && $ticket->assignment->assignee->id == $agent->id) {
             $this->for = 'agent';
+
             return true;
         }
 
         if (! $agent && $ticket->user->id == $user->id) {
             $this->for = 'user';
+
             return true;
         }
 

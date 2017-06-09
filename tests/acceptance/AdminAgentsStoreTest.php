@@ -3,7 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\AdminBase;
 
 class AdminAgentsStoreTest extends AdminBase
 {
@@ -39,7 +38,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->assertResponseStatus(302);
@@ -62,7 +61,7 @@ class AdminAgentsStoreTest extends AdminBase
 
         $this->visitRoute('helpdesk.admin.agents.index');
         $this->call(self::VERB, 'helpdesk/admin/agents', [
-            'user_id' => $agent->user->id
+            'user_id' => $agent->user->id,
         ]);
 
         $this->assertResponseStatus(302);
@@ -84,7 +83,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
-            'user_id' => 999999
+            'user_id' => 999999,
         ]);
 
         $this->assertResponseStatus(302);
@@ -107,17 +106,17 @@ class AdminAgentsStoreTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $this->call(self::VERB, 'helpdesk/admin/agents', [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->visitRoute('helpdesk.admin.agents.index');
         $this->call('DELETE', 'helpdesk/admin/agents/2', [
-            'delete_agent_confirmed' => 1
+            'delete_agent_confirmed' => 1,
         ]);
 
         $this->visitRoute('helpdesk.admin.agents.index');
         $this->call(self::VERB, 'helpdesk/admin/agents', [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->assertEquals(3, Agent::withTrashed()->get()->count());

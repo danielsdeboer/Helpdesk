@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\DueDate;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Models\DueDate;
 
-class DueDateTest extends TestCase {
-
+class DueDateTest extends TestCase
+{
     /**
      * @group model
      * @group model.duedate

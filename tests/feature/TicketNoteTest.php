@@ -2,12 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
-class TicketNotesTest extends TestCase
+class TicketNoteTest extends TestCase
 {
     /**
      * @group feature
@@ -41,7 +41,7 @@ class TicketNotesTest extends TestCase
      * @group feature.tickets
      * @group feature.tickets.notes
      * @test
-    */
+     */
     public function an_agent_cant_add_notes_to_tickets_not_assigned_to_them()
     {
         $agent = factory(Agent::class)->create();
@@ -49,7 +49,7 @@ class TicketNotesTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/note/' . $ticket->id, [
-            'note_body' => 'test note'
+            'note_body' => 'test note',
         ]);
 
         $this->assertResponseStatus(403);
@@ -68,7 +68,7 @@ class TicketNotesTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/note/' . $ticket->id, [
-            'note_body' => 'test body'
+            'note_body' => 'test body',
         ]);
 
         $ticket = $ticket->fresh();

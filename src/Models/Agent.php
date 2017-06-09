@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\Pool;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agent extends Model
 {
@@ -24,7 +23,7 @@ class Agent extends Model
     ];
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -51,7 +50,7 @@ class Agent extends Model
     }
 
     /**
-     * Make the Agent a team lead
+     * Make the Agent a team lead.
      * @return $this
      */
     public function makeTeamLeadOf(Pool $team)
@@ -68,7 +67,7 @@ class Agent extends Model
     }
 
     /**
-     * Make the Agent a team lead
+     * Make the Agent a team lead.
      * @return $this
      */
     public function removeTeamLeadOf(Pool $team)
@@ -83,7 +82,7 @@ class Agent extends Model
     }
 
     /**
-     * Add the agent to a team
+     * Add the agent to a team.
      * @param Pool $team
      * @return $this
      */
@@ -95,7 +94,7 @@ class Agent extends Model
     }
 
     /**
-     * Remove the agent from a team
+     * Remove the agent from a team.
      * @param  Pool   $team
      * @return $this
      */
@@ -107,7 +106,7 @@ class Agent extends Model
     }
 
     /**
-     * Add the agent to multiple teams
+     * Add the agent to multiple teams.
      * @param array $teams
      * @return $this
      */
@@ -121,7 +120,7 @@ class Agent extends Model
     }
 
     /**
-     * Remove the agent from multiple teams
+     * Remove the agent from multiple teams.
      * @param  array $teams
      * @return $this
      */
@@ -145,6 +144,7 @@ class Agent extends Model
 
     public function teams()
     {
+<<<<<<< HEAD
         return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
             ->withPivot('is_team_lead')
             ->withTimestamps();
@@ -156,5 +156,8 @@ class Agent extends Model
             ->withPivot('is_team_lead')
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);
+=======
+        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();
+>>>>>>> 202d4e6d71c3f9f3963568cb052f0bf3d1a8378f
     }
 }

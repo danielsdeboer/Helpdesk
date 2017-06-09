@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Opening;
 use Illuminate\Support\Facades\Notification;
 
 class OpeningObserver
@@ -22,7 +22,7 @@ class OpeningObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Opening  $observed
      * @return void
      */
@@ -39,7 +39,7 @@ class OpeningObserver
     }
 
     /**
-     * Send the notification
+     * Send the notification.
      * @param  Opening $observed
      * @return void
      */

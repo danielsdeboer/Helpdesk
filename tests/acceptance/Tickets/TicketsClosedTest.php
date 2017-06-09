@@ -3,9 +3,7 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\AdminBase;
 
 class TicketsClosedTest extends AdminBase
 {
@@ -66,7 +64,7 @@ class TicketsClosedTest extends AdminBase
         $agent = factory(Agent::class)->create();
 
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->close(null, $agent);
 
         $this->be($user);
@@ -87,8 +85,8 @@ class TicketsClosedTest extends AdminBase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class, 26)->create([
-            'user_id' => $user->id
-        ])->each(function($item) use ($agent) {
+            'user_id' => $user->id,
+        ])->each(function ($item) use ($agent) {
             $item->close(null, $agent);
         });
 

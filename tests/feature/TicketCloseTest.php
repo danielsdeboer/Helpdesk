@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketCloseTest extends TestCase
 {
@@ -46,7 +46,7 @@ class TicketCloseTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -63,7 +63,7 @@ class TicketCloseTest extends TestCase
      * @group feature.tickets
      * @group feature.tickets.closings
      * @test
-    */
+     */
     public function an_agent_cannot_close_an_unassigned_ticket()
     {
         $agent = factory(Agent::class)->create();
@@ -88,7 +88,7 @@ class TicketCloseTest extends TestCase
 
         $this->be($agent->user);
         $response = $this->call('POST', 'helpdesk/tickets/close/' . $ticket->id, [
-            'note' => 'test body'
+            'note' => 'test body',
         ]);
 
         $ticket = $ticket->fresh();
@@ -97,5 +97,4 @@ class TicketCloseTest extends TestCase
         $this->assertTrue($ticket->isClosed());
         $this->assertEquals('test body', $ticket->closing->note);
     }
-
 }

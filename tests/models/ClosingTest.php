@@ -3,11 +3,11 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Closing;
-use Aviator\Helpdesk\Notifications\External\Closed;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\External\Closed;
 
-class ClosingTest extends TestCase {
-
+class ClosingTest extends TestCase
+{
     /**
      * @group model
      * @group model.closing

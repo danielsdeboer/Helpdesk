@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Commands;
 
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Console\Command;
+use Aviator\Helpdesk\Models\Agent;
 
 class MakeSupervisor extends Command
 {
@@ -45,7 +45,7 @@ class MakeSupervisor extends Command
 
         if ($user && ! Agent::where('user_id', $user->id)->first()) {
             Agent::create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
         }
     }

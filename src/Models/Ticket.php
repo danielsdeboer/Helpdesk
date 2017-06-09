@@ -2,15 +2,14 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAnAgentException;
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Aviator\Helpdesk\Interfaces\TicketContent;
-use Aviator\Helpdesk\Traits\AutoUuids;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
+use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 class Ticket extends Model
 {
@@ -25,7 +24,7 @@ class Ticket extends Model
     protected $guarded = [];
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -86,7 +85,7 @@ class Ticket extends Model
     }
 
     /**
-     * Alias for assignToTeam
+     * Alias for assignToTeam.
      * @param  mixed[] $args
      * @return $this
      */
@@ -126,7 +125,7 @@ class Ticket extends Model
      * @param  User | Agent $creator
      * @return $this
      */
-    public function close($note = null, $creator)
+    public function close($note, $creator)
     {
         if (! $creator) {
             throw new CreatorRequiredException;
@@ -158,7 +157,7 @@ class Ticket extends Model
      * @param  User | Agent $creator
      * @return $this
      */
-    public function open($note = null, $creator)
+    public function open($note, $creator)
     {
         if (! $creator) {
             throw new CreatorRequiredException;
@@ -258,7 +257,7 @@ class Ticket extends Model
     }
 
     /**
-     * Associate the content model with a ticket
+     * Associate the content model with a ticket.
      * @param TicketContent $content
      */
     public function withContent(TicketContent $content)
@@ -271,7 +270,7 @@ class Ticket extends Model
     }
 
     /**
-     * Create and assocate the ticket content
+     * Create and assocate the ticket content.
      * @param string $class
      * @param array $attribute
      */
@@ -321,8 +320,8 @@ class Ticket extends Model
     }
 
     /**
-     * Is the ticket open
-     * @return boolean
+     * Is the ticket open.
+     * @return bool
      */
     public function isOpen()
     {
@@ -330,8 +329,8 @@ class Ticket extends Model
     }
 
     /**
-     * Is the ticket closed
-     * @return boolean
+     * Is the ticket closed.
+     * @return bool
      */
     public function isClosed()
     {
@@ -354,7 +353,7 @@ class Ticket extends Model
     }
 
     /**
-     * Find a single model with actions
+     * Find a single model with actions.
      * @param  int $id
      */
     public function scopeFindWithActions($query, $id)
@@ -382,7 +381,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get tickets assigned to pools
+     * Get tickets assigned to pools.
      */
     public function scopePooled($query)
     {
@@ -390,7 +389,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get overdue tickets
+     * Get overdue tickets.
      */
     public function scopeOverdue($query)
     {
@@ -400,7 +399,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets
+     * Get on time tickets. Due Today is a subet of on time tickets.
      */
     public function scopeOnTime($query)
     {
@@ -410,7 +409,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets
+     * Get on time tickets. Due Today is a subet of on time tickets.
      */
     public function scopeDueToday($query)
     {
@@ -422,7 +421,7 @@ class Ticket extends Model
     /**
      * Get open tickets. This method name is a bit silly but we're already
      * using open() above. This can be refactored once the open() method
-     * is refactored to a builder or domain object
+     * is refactored to a builder or domain object.
      */
     public function scopeOpened($query)
     {
@@ -430,7 +429,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get the ticket with actions, sorted oldest to newest
+     * Get the ticket with actions, sorted oldest to newest.
      */
     public function scopeWithActions($query)
     {
@@ -440,7 +439,7 @@ class Ticket extends Model
     }
 
     /**
-     * Return tickets that are accessible to the current user
+     * Return tickets that are accessible to the current user.
      * @param User | Agent $user
      * @return ticket
      */
@@ -458,7 +457,7 @@ class Ticket extends Model
     }
 
     /**
-     * Return tickets that are accessible to the current user
+     * Return tickets that are accessible to the current user.
      * @param User $user
      * @return ticket
      */
@@ -468,7 +467,7 @@ class Ticket extends Model
     }
 
     /**
-     * Return tickets that are accessible to the current agent
+     * Return tickets that are accessible to the current agent.
      * @param Agent $agent
      * @return ticket
      */
@@ -494,8 +493,6 @@ class Ticket extends Model
             });
         });
     }
-
-
 
     ///////////////////
     // RELATIONSHIPS //

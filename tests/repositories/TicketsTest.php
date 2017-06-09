@@ -2,12 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Repositories\Tickets;
-use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketsTest extends TestCase
 {
@@ -86,10 +84,10 @@ class TicketsTest extends TestCase
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
         $userTickets = factory(Ticket::class, 10)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $user2Tickets = factory(Ticket::class, 10)->create([
-            'user_id' => $user2->id
+            'user_id' => $user2->id,
         ]);
 
         $userTickets = Ticket::with('user')->whereIn('id', $userTickets->pluck('id'))->get();
@@ -109,11 +107,11 @@ class TicketsTest extends TestCase
         $agent = factory(Agent::class)->create();
         $agent2 = factory(Agent::class)->create();
 
-        $agentTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($agent) {
+        $agentTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent);
         });
 
-        $agent2Tickets = factory(Ticket::class, 6)->create()->each(function($item) use ($agent2) {
+        $agent2Tickets = factory(Ticket::class, 6)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2);
         });
 
@@ -133,11 +131,11 @@ class TicketsTest extends TestCase
         $agent = factory(Agent::class)->create();
         $agent2 = factory(Agent::class)->create();
 
-        $agentTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($agent) {
+        $agentTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent);
         });
 
-        $agent2Tickets = factory(Ticket::class, 6)->create()->each(function($item) use ($agent2) {
+        $agent2Tickets = factory(Ticket::class, 6)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2);
         });
 
@@ -157,18 +155,18 @@ class TicketsTest extends TestCase
         $user2 = factory(User::class)->create();
 
         $overdueTickets = factory(Ticket::class, 5)->create([
-            'user_id' => $user->id
-        ])->each(function($item) {
+            'user_id' => $user->id,
+        ])->each(function ($item) {
             $item->dueOn('yesterday');
         });
 
         $notOverdueTickets = factory(Ticket::class, 10)->create([
-            'user_id' => $user2->id
-        ])->each(function($item) {
+            'user_id' => $user2->id,
+        ])->each(function ($item) {
             $item->dueOn('tomorrow');
         });
 
-        $otherOverdueTickets = factory(Ticket::class, 6)->create()->each(function($item) {
+        $otherOverdueTickets = factory(Ticket::class, 6)->create()->each(function ($item) {
             $item->dueOn('yesterday');
         });
 
@@ -189,19 +187,19 @@ class TicketsTest extends TestCase
         $agent = factory(Agent::class)->create();
         $agent2 = factory(Agent::class)->create();
 
-        $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($agent) {
+        $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent)->dueOn('yesterday');
         });
 
-        $agentOnTimeTickets = factory(Ticket::class, 2)->create()->each(function($item) use ($agent) {
+        $agentOnTimeTickets = factory(Ticket::class, 2)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent)->dueOn('tomorrow');
         });
 
-        $agent2OverdueTickets = factory(Ticket::class, 6)->create()->each(function($item) use ($agent2) {
+        $agent2OverdueTickets = factory(Ticket::class, 6)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2)->dueOn('yesterday');
         });
 
-        $agent2OnTimeTickets = factory(Ticket::class, 3)->create()->each(function($item) use ($agent2) {
+        $agent2OnTimeTickets = factory(Ticket::class, 3)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2)->dueOn('tomorrow');
         });
 
@@ -221,19 +219,19 @@ class TicketsTest extends TestCase
         $agent = factory(Agent::class)->create();
         $agent2 = factory(Agent::class)->create();
 
-        $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($agent) {
+        $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent)->dueOn('yesterday');
         });
 
-        $agentOnTimeTickets = factory(Ticket::class, 2)->create()->each(function($item) use ($agent) {
+        $agentOnTimeTickets = factory(Ticket::class, 2)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent)->dueOn('tomorrow');
         });
 
-        $agent2OverdueTickets = factory(Ticket::class, 6)->create()->each(function($item) use ($agent2) {
+        $agent2OverdueTickets = factory(Ticket::class, 6)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2)->dueOn('yesterday');
         });
 
-        $agent2OnTimeTickets = factory(Ticket::class, 3)->create()->each(function($item) use ($agent2) {
+        $agent2OnTimeTickets = factory(Ticket::class, 3)->create()->each(function ($item) use ($agent2) {
             $item->assignToAgent($agent2)->dueOn('tomorrow');
         });
 
@@ -252,7 +250,7 @@ class TicketsTest extends TestCase
         $user = factory(User::class)->create();
 
         $userTickets = factory(Ticket::class, 5)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $tickets = Tickets::forUser($user)->team();
@@ -271,11 +269,11 @@ class TicketsTest extends TestCase
         $team = factory(Pool::class)->create();
         $team2 = factory(Pool::class)->create();
 
-        $teamTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team) {
+        $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
             $item->assignToPool($team);
         });
 
-        $team2Tickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team2) {
+        $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
             $item->assignToPool($team2);
         });
 
@@ -297,11 +295,11 @@ class TicketsTest extends TestCase
         $team = factory(Pool::class)->create();
         $team2 = factory(Pool::class)->create();
 
-        $teamTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team) {
+        $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
             $item->assignToPool($team);
         });
 
-        $team2Tickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team2) {
+        $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
             $item->assignToPool($team2);
         });
 
@@ -323,15 +321,15 @@ class TicketsTest extends TestCase
         $team2 = factory(Pool::class)->create();
         $team3 = factory(Pool::class)->create();
 
-        $teamTickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team) {
+        $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
             $item->assignToPool($team);
         });
 
-        $team2Tickets = factory(Ticket::class, 5)->create()->each(function($item) use ($team2) {
+        $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
             $item->assignToPool($team2);
         });
 
-        $team3Tickets = factory(Ticket::class, 3)->create()->each(function($item) use ($team3) {
+        $team3Tickets = factory(Ticket::class, 3)->create()->each(function ($item) use ($team3) {
             $item->assignToPool($team3);
         });
 

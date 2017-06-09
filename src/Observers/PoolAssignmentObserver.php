@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\PoolAssignment;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\PoolAssignment;
 use Illuminate\Support\Facades\Notification;
 
 class PoolAssignmentObserver
@@ -22,7 +22,7 @@ class PoolAssignmentObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Assignment $observed
      * @return void
      */
@@ -39,7 +39,7 @@ class PoolAssignmentObserver
     }
 
     /**
-     * Send the notification
+     * Send the notification.
      * @param  Assignment $observed
      * @return void
      */

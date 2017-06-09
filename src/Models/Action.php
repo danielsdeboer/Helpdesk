@@ -20,7 +20,7 @@ class Action extends Model
     }
 
     /**
-     * Set the table name from the Helpdesk config
+     * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])

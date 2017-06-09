@@ -2,20 +2,20 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rule;
 
 class AgentsController extends Controller
 {
     use ValidatesRequests;
 
     /**
-     * Add middleware
+     * Add middleware.
      */
     public function __construct()
     {
@@ -37,8 +37,7 @@ class AgentsController extends Controller
         $users = $this->getUsers();
 
         return view('helpdesk::admin.agents.index')->with([
-            'agents' => Agent::with('user', 'teams')->whereHas('user', function($query) use ($email) {
-
+            'agents' => Agent::with('user', 'teams')->whereHas('user', function ($query) use ($email) {
                 $superEmail = config('helpdesk.supervisor.email');
 
                 $query->where($email, '<>', $superEmail);
@@ -64,7 +63,7 @@ class AgentsController extends Controller
         $this->validate($request, [
             'user_id' => [
                 'required',
-                Rule::unique($agentsTable)->where(function($query) {
+                Rule::unique($agentsTable)->where(function ($query) {
                     $query->whereNull('deleted_at');
                 }),
                 Rule::exists($usersTable, 'id'),
@@ -75,7 +74,7 @@ class AgentsController extends Controller
             'user_id' => request()->user_id,
         ]);
 
-        return redirect( route('helpdesk.admin.agents.show', $agent->id));
+        return redirect(route('helpdesk.admin.agents.show', $agent->id));
     }
 
     /**
@@ -87,7 +86,7 @@ class AgentsController extends Controller
     public function show($id)
     {
         $agent = Agent::with('user', 'teams')->findOrFail($id);
-        $tickets = Ticket::with('content')->whereHas('assignment', function($query) use ($agent) {
+        $tickets = Ticket::with('content')->whereHas('assignment', function ($query) use ($agent) {
             $query->where('assigned_to', $agent->id);
         })->get();
 
@@ -109,7 +108,7 @@ class AgentsController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->validate($request, [
-            'delete_agent_confirmed' => 'required|in:1'
+            'delete_agent_confirmed' => 'required|in:1',
         ]);
 
         $super = Agent::where('user_id', auth()->user()->id)->first();
@@ -119,7 +118,7 @@ class AgentsController extends Controller
 
         $agent->delete();
 
-        return redirect( route('helpdesk.admin.agents.index') );
+        return redirect(route('helpdesk.admin.agents.index'));
     }
 
     protected function getUsers()

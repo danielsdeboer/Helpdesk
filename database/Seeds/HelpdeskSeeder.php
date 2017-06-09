@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Database\Seeds;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Ticket;
 
 class HelpdeskSeeder extends Seeder
 {
@@ -32,7 +32,7 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Create a batch of tickets
+     * Create a batch of tickets.
      * @param  int $numberOfTickets
      * @return $this
      */
@@ -44,7 +44,7 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Create a batch of agents
+     * Create a batch of agents.
      * @param  int $numberOfUsers
      * @return $this
      */
@@ -56,7 +56,7 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Create a batch of pools
+     * Create a batch of pools.
      * @param  int $numberOfPools
      * @return $this
      */
@@ -68,12 +68,12 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Assign every other ticket to a random agent
+     * Assign every other ticket to a random agent.
      * @return $this
      */
     protected function assignTicketsToUsers()
     {
-        $this->tickets->each(function($item, $key) {
+        $this->tickets->each(function ($item, $key) {
             if ($key % 2 === 0) {
                 $item->assignToAgent($this->agents->random());
             }
@@ -83,12 +83,12 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Assign half the unassigned tickets to assignment pools
+     * Assign half the unassigned tickets to assignment pools.
      * @return $this
      */
     protected function assignTicketsToPools()
     {
-        Ticket::unassigned()->get()->each(function($item, $key) {
+        Ticket::unassigned()->get()->each(function ($item, $key) {
             if ($key % 2 === 0) {
                 $item->assignToPool($this->pools->random());
             }
@@ -98,12 +98,12 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Add a due date for each assigned or pooled tickets
+     * Add a due date for each assigned or pooled tickets.
      * @return $this
      */
     protected function addDueDatesToAssignedOrPooledTickets()
     {
-        Ticket::has('assignment')->orHas('poolAssignment')->get()->each(function($item) {
+        Ticket::has('assignment')->orHas('poolAssignment')->get()->each(function ($item) {
             $days = rand(-5, 5);
 
             $item->dueOn(Carbon::parse('now')->addDays($days));
@@ -113,13 +113,13 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Add internal replies to some assigned tickets
+     * Add internal replies to some assigned tickets.
      * @param int $numberOfReplies
      * @return $this
      */
     protected function addInternalRepliesToAssignedTickets($numberOfReplies)
     {
-        Ticket::assigned()->take($numberOfReplies)->get()->each(function($item) {
+        Ticket::assigned()->take($numberOfReplies)->get()->each(function ($item) {
             $item->internalReply('This is a test reply from the seeder.', $item->assignment->assignee);
         });
 
@@ -127,13 +127,13 @@ class HelpdeskSeeder extends Seeder
     }
 
     /**
-     * Close some random tickets
+     * Close some random tickets.
      * @param  int $numberOfTickets
      * @return $this
      */
     protected function closeRandomTickets($numberOfTickets)
     {
-        Ticket::inRandomOrder()->take($numberOfTickets)->get()->each(function($item) {
+        Ticket::inRandomOrder()->take($numberOfTickets)->get()->each(function ($item) {
             $item->close(null, $item->user);
         });
 

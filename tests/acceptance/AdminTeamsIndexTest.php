@@ -2,10 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
 
 class AdminTeamsIndexTest extends TestCase
@@ -14,8 +12,7 @@ class AdminTeamsIndexTest extends TestCase
     {
         parent::setUp();
 
-        Route::any('login', function() {
-            return;
+        Route::any('login', function () {
         });
     }
 
@@ -32,7 +29,6 @@ class AdminTeamsIndexTest extends TestCase
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');
-
     }
 
     /**
@@ -86,7 +82,7 @@ class AdminTeamsIndexTest extends TestCase
 
         $this->see('id="tab-admin-agents"')
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
-        }
+    }
 
     /**
      * @group acc
@@ -129,5 +125,4 @@ class AdminTeamsIndexTest extends TestCase
         $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent2->user->name . '</a>')
             ->see('<a href="http://localhost/helpdesk/admin/agents/3">' . $agent3->user->name . '</a>');
     }
-
 }

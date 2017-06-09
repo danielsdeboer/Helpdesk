@@ -4,8 +4,8 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Note;
 
-class NoteTest extends TestCase {
-
+class NoteTest extends TestCase
+{
     /**
      * @group model
      * @group model.note

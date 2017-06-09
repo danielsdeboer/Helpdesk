@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Note;
+use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Support\Facades\Notification;
 
 class NoteObserver
 {
@@ -21,7 +20,7 @@ class NoteObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Note  $observed
      * @return void
      */
