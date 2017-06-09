@@ -86,6 +86,16 @@ class Ticket extends Model
     }
 
     /**
+     * Alias for assignToTeam
+     * @param  mixed[] $args
+     * @return $this
+     */
+    public function assignToTeam(...$args)
+    {
+        return $this->assignToPool(...$args);
+    }
+
+    /**
      * Add a due date. Optionally set the creator.
      *
      * Visibility is assumed true for due dates since
@@ -127,8 +137,8 @@ class Ticket extends Model
         Closing::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -159,8 +169,8 @@ class Ticket extends Model
         Opening::create([
             'ticket_id' => $this->id,
             'note' => $note,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => true,
         ]);
 
@@ -189,8 +199,8 @@ class Ticket extends Model
         Note::create([
             'ticket_id' => $this->id,
             'body' => $body,
-            'agent_id' => $creator instanceOf Agent ? $creator->id : null,
-            'user_id' => $creator instanceOf $userClass ? $creator->id : null,
+            'agent_id' => $creator instanceof Agent ? $creator->id : null,
+            'user_id' => $creator instanceof $userClass ? $creator->id : null,
             'is_visible' => $isVisible,
         ]);
 
@@ -384,7 +394,7 @@ class Ticket extends Model
      */
     public function scopeOverdue($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', '<', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
@@ -394,7 +404,7 @@ class Ticket extends Model
      */
     public function scopeOnTime($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', '>=', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
@@ -404,7 +414,7 @@ class Ticket extends Model
      */
     public function scopeDueToday($query)
     {
-        return $query->whereHas('dueDate', function($query) {
+        return $query->whereHas('dueDate', function ($query) {
             $query->where('due_on', Carbon::now()->toDateString());
         })->whereStatus('open');
     }
@@ -424,7 +434,7 @@ class Ticket extends Model
      */
     public function scopeWithActions($query)
     {
-        return $query->with(['actions' => function($query) {
+        return $query->with(['actions' => function ($query) {
             $query->orderBy('id', 'asc');
         }]);
     }
@@ -471,15 +481,15 @@ class Ticket extends Model
             return $query;
         }
 
-        $isTeamLeadOf = $agent->teams->filter(function($item) {
+        $isTeamLeadOf = $agent->teams->filter(function ($item) {
             return $item->pivot->is_team_lead;
         });
 
-        return $query->where(function($query) use ($agent, $isTeamLeadOf) {
-            $query->whereHas('assignment', function($query) use ($agent) {
+        return $query->where(function ($query) use ($agent, $isTeamLeadOf) {
+            $query->whereHas('assignment', function ($query) use ($agent) {
                 $query->where('assigned_to', $agent->id);
             })
-            ->orWhereHas('poolAssignment', function($query) use ($isTeamLeadOf) {
+            ->orWhereHas('poolAssignment', function ($query) use ($isTeamLeadOf) {
                 $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
             });
         });
@@ -491,7 +501,8 @@ class Ticket extends Model
     // RELATIONSHIPS //
     ///////////////////
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(
             config('helpdesk.userModel')
         );
@@ -507,55 +518,68 @@ class Ticket extends Model
         return $this->morphMany(Action::class, 'subject');
     }
 
-    public function assignments() {
+    public function assignments()
+    {
         return $this->hasMany(Assignment::class);
     }
 
-    public function assignment() {
+    public function assignment()
+    {
         return $this->hasOne(Assignment::class)->latest();
     }
 
-    public function poolAssignments() {
+    public function poolAssignments()
+    {
         return $this->hasMany(PoolAssignment::class);
     }
 
-    public function poolAssignment() {
+    public function poolAssignment()
+    {
         return $this->hasOne(PoolAssignment::class)->latest();
     }
 
-    public function dueDates() {
+    public function dueDates()
+    {
         return $this->hasMany(DueDate::class);
     }
 
-    public function dueDate() {
+    public function dueDate()
+    {
         return $this->hasOne(DueDate::class)->latest();
     }
 
-    public function internalReplies() {
+    public function internalReplies()
+    {
         return $this->hasMany(Reply::class)->whereNotNull('agent_id');
     }
 
-    public function externalReplies() {
+    public function externalReplies()
+    {
         return $this->hasMany(Reply::class)->whereNotNull('user_id');
     }
 
-    public function closing() {
+    public function closing()
+    {
         return $this->hasOne(Closing::class)->latest();
     }
 
-    public function closings() {
+    public function closings()
+    {
         return $this->hasMany(Closing::class);
     }
 
-    public function opening() {
+    public function opening()
+    {
         return $this->hasOne(Opening::class)->orderBy('id', 'desc');
     }
 
-    public function openings() {
+    public function openings()
+    {
         return $this->hasMany(Opening::class);
     }
 
-    public function notes() {
+    public function notes()
+    {
         return $this->hasMany(Note::class);
     }
 }

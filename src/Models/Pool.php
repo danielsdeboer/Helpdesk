@@ -22,11 +22,23 @@ class Pool extends Model
         $this->setTable(config('helpdesk.tables.pools'));
     }
 
-    public function agents() {
+    /**
+     * Check if an agent is a team lead of this team
+     * @param  Agent   $agent
+     * @return boolean
+     */
+    public function isTeamLead(Agent $agent)
+    {
+        return $agent->teamLeads->pluck('id')->contains($this->id);
+    }
+
+    public function agents()
+    {
         return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();
     }
 
-    public function teamLeads() {
+    public function teamLeads()
+    {
         return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))
             ->withPivot('is_team_lead')
             ->withTimestamps()

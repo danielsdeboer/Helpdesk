@@ -34,6 +34,10 @@ class Agent extends Model
         $this->setTable(config('helpdesk.tables.agents'));
     }
 
+    ////////////////
+    // Public API //
+    ////////////////
+
     /**
      * Route notifications for the mail channel.
      *
@@ -130,11 +134,17 @@ class Agent extends Model
         return $this;
     }
 
-    public function user() {
+    ///////////////////
+    // Relationships //
+    ///////////////////
+
+    public function user()
+    {
         return $this->belongsTo(config('helpdesk.userModel'));
     }
 
-    public function teams() {
+    public function teams()
+    {
         return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();;
     }
 }
