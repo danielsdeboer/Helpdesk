@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\Pool;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agent extends Model
 {
@@ -135,9 +134,9 @@ class Agent extends Model
     }
 
     /**
-     * Is this agent a member of this pool
+     * Is this agent a member of this pool.
      * @param  Pool    $team
-     * @return boolean
+     * @return bool
      */
     public function isMemberOf(Pool $team)
     {
