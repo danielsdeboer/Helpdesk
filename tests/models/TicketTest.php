@@ -9,7 +9,6 @@ use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 
-
 class TicketTest extends TestCase
 {
     protected $ticket;
