@@ -29,7 +29,6 @@ class Bug5 extends AdminBase
 
         $ticket->assignToTeam($team, null, true);
         $agent->makeTeamLeadOf($team);
-
         $this->assertTrue($team->isTeamLead($agent));
 
         $this->be($agent->user);

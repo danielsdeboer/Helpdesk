@@ -22,6 +22,10 @@ class Pool extends Model
         $this->setTable(config('helpdesk.tables.pools'));
     }
 
+    ////////////////
+    // Public API //
+    ////////////////
+
     /**
      * Check if an agent is a team lead of this team
      * @param  Agent   $agent
@@ -29,12 +33,18 @@ class Pool extends Model
      */
     public function isTeamLead(Agent $agent)
     {
-        return $agent->teamLeads->pluck('id')->contains($this->id);
+        return $agent->teamLeads && $agent->teamLeads->pluck('id')->contains($this->id);
     }
+
+    ///////////////////
+    // Relationships //
+    ///////////////////
 
     public function agents()
     {
-        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();
+        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))
+            ->withPivot('is_team_lead')
+            ->withTimestamps();
     }
 
     public function teamLeads()
@@ -44,6 +54,4 @@ class Pool extends Model
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);
     }
-
-
 }
