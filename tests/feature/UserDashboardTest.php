@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-
-
 class UserDashboardTest extends TestCase
 {
     /**

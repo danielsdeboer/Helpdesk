@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 
-
 class DashboardRouterTest extends TestCase
 {
     public function setUp()
