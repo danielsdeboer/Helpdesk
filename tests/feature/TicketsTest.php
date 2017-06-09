@@ -80,12 +80,18 @@ class TicketsTest extends TestCase
     }
 
     /**
+     * @group feature
      * @group feature.tickets
      * @test
      */
-    public function open_public_tickets_have_an_close_action()
+    public function openPublicTicketsHaveACloseAction()
     {
-        $ticket = factory(Ticket::class)->create();
+        $user = factory(User::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user);
 
         $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
 
@@ -96,9 +102,14 @@ class TicketsTest extends TestCase
      * @group feature.tickets
      * @test
      */
-    public function open_public_tickets_have_an_reply_action()
+    public function openPublicTicketsHaveAReplyAction()
     {
-        $ticket = factory(Ticket::class)->create();
+        $user = factory(User::class)->create();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->be($user);
 
         $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
 
@@ -123,10 +134,12 @@ class TicketsTest extends TestCase
      * @group feature.tickets
      * @test
      */
-    public function closed_public_tickets_have_an_open_action()
+    public function closedPublicTicketsHaveAnOpenAction()
     {
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create()->close('with note', $agent);
+
+        $this->be($agent->user);
 
         $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
 
