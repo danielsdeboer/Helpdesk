@@ -53,6 +53,10 @@ class TicketOwnerOrAssignee
             return $next($request);
         }
 
+        if ($agent && $ticket->poolAssignment && $agent->isMemberOf($ticket->poolAssignment->pool)) {
+            return $next($request);
+        }
+
         abort(403);
     }
 }

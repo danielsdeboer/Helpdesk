@@ -2,9 +2,10 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Models\Pool;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Agent extends Model
 {
@@ -131,6 +132,16 @@ class Agent extends Model
         }
 
         return $this;
+    }
+
+    /**
+     * Is this agent a member of this pool
+     * @param  Pool    $team
+     * @return boolean
+     */
+    public function isMemberOf(Pool $team)
+    {
+        return $team->agents->pluck('id')->contains($this->id);
     }
 
     ///////////////////

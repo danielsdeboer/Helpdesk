@@ -178,4 +178,32 @@ class AgentTest extends TestCase
 
         $this->assertEquals(0, $agent->teams->first()->pivot->is_team_lead);
     }
+
+    /**
+     * @group model
+     * @group model.agent
+     * @test
+     */
+    public function isMemberOfReturnsTrueIfAnAgentIsAMemberOfThatTeam()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $agent->makeTeamLeadOf($team);
+
+        $this->assertTrue($agent->isMemberOf($team));
+    }
+
+    /**
+     * @group model
+     * @group model.agent
+     * @test
+     */
+    public function isMemberOfReturnsFalseIfAnAgentIsntAMemberOfThatTeam()
+    {
+        $agent = $this->agent();
+        $team = factory(Pool::class)->create();
+
+        $this->assertFalse($agent->isMemberOf($team));
+    }
 }

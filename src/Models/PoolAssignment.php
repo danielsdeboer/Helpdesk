@@ -12,7 +12,9 @@ class PoolAssignment extends ActionBase
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.pool_assignments'));
+        $this->setTable(
+            config('helpdesk.tables.pool_assignments')
+        );
     }
 
     public function pool()
