@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Assignment;
 use Illuminate\Support\Facades\Notification;
 
 class AssignmentObserver
@@ -22,7 +22,7 @@ class AssignmentObserver
     }
 
     /**
-     * Create the action
+     * Create the action.
      * @param  Assignment $observed
      * @return void
      */
@@ -39,7 +39,7 @@ class AssignmentObserver
     }
 
     /**
-     * Send the notification
+     * Send the notification.
      * @param  Assignment $assignment
      * @return void
      */

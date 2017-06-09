@@ -2,10 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\AdminBase;
 
 class Bug5 extends AdminBase
 {
@@ -24,7 +21,7 @@ class Bug5 extends AdminBase
         $agent = $this->makeAgent();
         $team = $this->makeTeam();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $ticket->assignToTeam($team, null, true);

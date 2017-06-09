@@ -2,12 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Models\Agent;
 
-class PoolTest extends TestCase {
-
+class PoolTest extends TestCase
+{
     /**
      * @group model
      * @group model.pool

@@ -3,8 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
 
 class SuperDashboardTest extends TestCase
 {
@@ -56,7 +54,7 @@ class SuperDashboardTest extends TestCase
      * @group feature.dash
      * @group feature.dash.super
      * @test
-    */
+     */
     public function a_supervisor_can_see_their_dashboard()
     {
         $this->be(factory(Agent::class)->states('isSuper')->create()->user);

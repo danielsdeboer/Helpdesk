@@ -3,9 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AgentDashboardTest extends TestCase
 {

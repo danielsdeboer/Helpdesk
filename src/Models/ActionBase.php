@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -11,7 +10,7 @@ class ActionBase extends Model
     use SoftDeletes;
 
     /**
-     * Properties to be mutated to dates
+     * Properties to be mutated to dates.
      * @var array
      */
     protected $dates = [
@@ -27,28 +26,31 @@ class ActionBase extends Model
     ];
 
     /**
-     * Owned by ticket
+     * Owned by ticket.
      */
-    public function ticket() {
+    public function ticket()
+    {
         return $this->belongsTo(Ticket::class);
     }
 
     /**
-     * Owned by an agent
+     * Owned by an agent.
      */
-    public function agent() {
+    public function agent()
+    {
         return $this->belongsTo(Agent::class);
     }
 
     /**
-     * Owned by an user
+     * Owned by an user.
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(config('helpdesk.userModel'));
     }
 
     /**
-     * Associated with one action
+     * Associated with one action.
      */
     public function action()
     {

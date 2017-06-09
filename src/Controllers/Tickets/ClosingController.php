@@ -2,15 +2,15 @@
 
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Http\Request;
+use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
 
 class ClosingController extends Controller
 {
     /**
-     * Construct with agents only middleware
+     * Construct with agents only middleware.
      */
     public function __construct()
     {
@@ -18,7 +18,7 @@ class ClosingController extends Controller
     }
 
     /**
-     * Create a new assignment
+     * Create a new assignment.
      * @return Response
      */
     protected function create(Request $request, Ticket $ticket)
@@ -31,7 +31,6 @@ class ClosingController extends Controller
             $ticket->close($request->note, auth()->user());
         }
 
-
-        return redirect( route('helpdesk.tickets.show', $ticket->id) );
+        return redirect(route('helpdesk.tickets.show', $ticket->id));
     }
 }

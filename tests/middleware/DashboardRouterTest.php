@@ -3,16 +3,13 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
-use Illuminate\Support\Facades\Route;
 
-class DashboardRouterTest extends TestCase {
 
+class DashboardRouterTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
-
     }
 
     /**

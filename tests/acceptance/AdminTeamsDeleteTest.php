@@ -2,9 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Models\Agent;
 
 class AdminTeamsDeleteTest extends TestCase
 {
@@ -23,7 +22,7 @@ class AdminTeamsDeleteTest extends TestCase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
         $response = $this->call('DELETE', 'helpdesk/admin/teams/1', [
-            'delete_team_confirmed' => 1
+            'delete_team_confirmed' => 1,
         ]);
 
         $this->assertResponseStatus(302);
@@ -45,7 +44,7 @@ class AdminTeamsDeleteTest extends TestCase
 
         $this->be($super);
         $response = $this->call('DELETE', 'helpdesk/admin/teams/1', [
-            'delete_team_confirmed' => 1
+            'delete_team_confirmed' => 1,
         ]);
 
         $this->assertResponseStatus(404);
@@ -66,7 +65,7 @@ class AdminTeamsDeleteTest extends TestCase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
         $response = $this->call('DELETE', 'helpdesk/admin/teams/1', [
-            'delete_team_confirmed' => 0
+            'delete_team_confirmed' => 0,
         ]);
 
         $this->assertResponseStatus(302);

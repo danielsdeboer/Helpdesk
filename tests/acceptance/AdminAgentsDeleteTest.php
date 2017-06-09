@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\AdminBase;
-
 class AdminAgentsDeleteTest extends AdminBase
 {
     const VERB = 'DELETE';
@@ -38,7 +36,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $response = $this->call(self::VERB, 'helpdesk/admin/agents/2', [
-            'delete_agent_confirmed' => 1
+            'delete_agent_confirmed' => 1,
         ]);
 
         $this->assertResponseStatus(302);
@@ -59,7 +57,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $response = $this->call(self::VERB, 'helpdesk/admin/agents/1', [
-            'delete_agent_confirmed' => 1
+            'delete_agent_confirmed' => 1,
         ]);
 
         $this->assertResponseStatus(404);
@@ -79,7 +77,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
         $response = $this->call(self::VERB, 'helpdesk/admin/agents/1234', [
-            'delete_agent_confirmed' => 1
+            'delete_agent_confirmed' => 1,
         ]);
 
         $this->assertResponseStatus(404);

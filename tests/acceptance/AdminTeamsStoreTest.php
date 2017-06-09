@@ -3,8 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Tests\User;
 
 class AdminTeamsStoreTest extends TestCase
 {
@@ -21,7 +19,6 @@ class AdminTeamsStoreTest extends TestCase
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');
-
     }
 
     /**
@@ -72,7 +69,7 @@ class AdminTeamsStoreTest extends TestCase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
         $response = $this->call('POST', 'helpdesk/admin/teams', [
-            'name' => 'test team'
+            'name' => 'test team',
         ]);
 
         $this->assertResponseStatus(302);

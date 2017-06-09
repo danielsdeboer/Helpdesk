@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\AdminBase;
 
 class TicketsIndexTest extends AdminBase
 {
@@ -64,11 +63,10 @@ class TicketsIndexTest extends AdminBase
         $user = $this->makeUser();
 
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
-
 
         $this->visit(self::URI)
             ->assertResponseOk()
@@ -87,11 +85,11 @@ class TicketsIndexTest extends AdminBase
         $user2 = $this->makeUser();
 
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $ticket2 = factory(Ticket::class)->create([
-            'user_id' => $user2->id
+            'user_id' => $user2->id,
         ]);
 
         $this->be($user);
@@ -115,7 +113,7 @@ class TicketsIndexTest extends AdminBase
         $agent2 = $this->makeAgent();
 
         $userTicket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
@@ -147,7 +145,7 @@ class TicketsIndexTest extends AdminBase
         $agent->makeTeamLeadOf($team);
 
         $userTicket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
         $agent2Ticket = factory(Ticket::class)->create()->assignToAgent($agent2);
@@ -180,7 +178,7 @@ class TicketsIndexTest extends AdminBase
         $agent->makeTeamLeadOf($team);
 
         $userTicket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
         $agent2Ticket = factory(Ticket::class)->create()->assignToAgent($agent2);
@@ -207,7 +205,7 @@ class TicketsIndexTest extends AdminBase
         $user = $this->makeUser();
 
         $tickets = factory(Ticket::class, 24)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -228,7 +226,7 @@ class TicketsIndexTest extends AdminBase
         $user = $this->makeUser();
 
         $tickets = factory(Ticket::class, 26)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);

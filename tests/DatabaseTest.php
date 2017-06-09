@@ -2,11 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
-
-class DatabaseTest extends TestCase {
-
+class DatabaseTest extends TestCase
+{
     /**
      * @group database
      * @test
@@ -25,7 +22,7 @@ class DatabaseTest extends TestCase {
     public function a_persisted_user_has_an_email()
     {
         $user = User::create([
-            'email' => 'test@user.com'
+            'email' => 'test@user.com',
         ]);
 
         $this->assertEquals($user->email, 'test@user.com');

@@ -2,9 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Models\Agent;
 
 class AdminTeamsUpdateTest extends TestCase
 {
@@ -23,7 +22,7 @@ class AdminTeamsUpdateTest extends TestCase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
         $response = $this->call('PATCH', 'helpdesk/admin/teams/1', [
-            'name' => 'test team update'
+            'name' => 'test team update',
         ]);
 
         $team = $team->fresh();
@@ -47,7 +46,7 @@ class AdminTeamsUpdateTest extends TestCase
         $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
         $response = $this->call('PATCH', 'helpdesk/admin/teams/1', [
-            'name' => 'test team'
+            'name' => 'test team',
         ]);
 
         $this->assertResponseStatus(404);

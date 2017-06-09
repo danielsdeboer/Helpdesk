@@ -2,20 +2,20 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rule;
 
 class TeamMembersController extends Controller
 {
     use ValidatesRequests;
 
     /**
-     * Add middleware
+     * Add middleware.
      */
     public function __construct()
     {
@@ -26,7 +26,7 @@ class TeamMembersController extends Controller
     }
 
     /**
-     * Add an agent to a team
+     * Add an agent to a team.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,7 +48,7 @@ class TeamMembersController extends Controller
             'from' => [
                 'required',
                 Rule::in(['agent', 'team']),
-            ]
+            ],
         ]);
 
         $agent = Agent::find($request->agent_id);
@@ -61,14 +61,14 @@ class TeamMembersController extends Controller
         }
 
         if ($request->from == 'agent') {
-            return redirect( route('helpdesk.admin.agents.show', $request->agent_id) );
+            return redirect(route('helpdesk.admin.agents.show', $request->agent_id));
         }
 
-        return redirect( route('helpdesk.admin.teams.show', $request->team_id) );
+        return redirect(route('helpdesk.admin.teams.show', $request->team_id));
     }
 
     /**
-     * Remove an agent from a team
+     * Remove an agent from a team.
      *
      * @return \Illuminate\Http\Response
      */
@@ -89,7 +89,7 @@ class TeamMembersController extends Controller
             'from' => [
                 'required',
                 Rule::in(['agent', 'team']),
-            ]
+            ],
         ]);
 
         $agent = Agent::find($request->agent_id);
@@ -98,9 +98,9 @@ class TeamMembersController extends Controller
         $agent->removeFromTeam($team);
 
         if ($request->from == 'agent') {
-            return redirect( route('helpdesk.admin.agents.show', $request->agent_id) );
+            return redirect(route('helpdesk.admin.agents.show', $request->agent_id));
         }
 
-        return redirect( route('helpdesk.admin.teams.show', $request->team_id) );
+        return redirect(route('helpdesk.admin.teams.show', $request->team_id));
     }
 }

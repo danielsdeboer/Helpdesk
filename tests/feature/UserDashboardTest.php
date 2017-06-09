@@ -2,11 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\User;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class UserDashboardTest extends TestCase
 {
@@ -44,7 +40,7 @@ class UserDashboardTest extends TestCase
      * @group feature.dash
      * @group feature.dash.user
      * @test
-    */
+     */
     public function a_user_can_see_their_dashboard()
     {
         $this->be(factory(User::class)->create());

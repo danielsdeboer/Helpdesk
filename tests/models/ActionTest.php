@@ -3,10 +3,9 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Tests\TestCase;
 
-class ActionTest extends TestCase {
-
+class ActionTest extends TestCase
+{
     /**
      * @group model
      * @group model.action

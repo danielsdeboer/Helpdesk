@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
 
 class TicketsTest extends TestCase
 {
@@ -88,7 +88,7 @@ class TicketsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -106,7 +106,7 @@ class TicketsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -156,7 +156,7 @@ class TicketsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -173,7 +173,7 @@ class TicketsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -190,7 +190,7 @@ class TicketsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->be($user);
@@ -209,12 +209,11 @@ class TicketsTest extends TestCase
         $user = factory(User::class)->create();
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->close('with note', $agent);
 
         $this->be($user);
         $this->visit('helpdesk/tickets/' . $ticket->id);
-
 
         $this->dontSee('<i class="material-icons">reply</i>');
         $this->dontSee('<i class="material-icons">lock_outline</i>');

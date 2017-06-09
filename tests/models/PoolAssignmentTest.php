@@ -2,14 +2,14 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\PoolAssignment;
-use Aviator\Helpdesk\Notifications\Internal\AssignedToPool;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\Internal\AssignedToPool;
 
-class PoolAssignmentTest extends TestCase {
-
+class PoolAssignmentTest extends TestCase
+{
     /**
      * @group model
      * @group model.poolassignment

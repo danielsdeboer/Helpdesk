@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk;
 
-use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Routing\Router;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
 class HelpdeskServiceProvider extends ServiceProvider
@@ -34,7 +34,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
     /**
      * Push the middleware into the kernel middleware stack
-     * and make them available via an alias
+     * and make them available via an alias.
      * @param  Kernel $kernel
      * @param  Router $router
      * @return void
@@ -58,7 +58,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     }
 
     /**
-     * Make the configuration file available for publishing
+     * Make the configuration file available for publishing.
      * @return void
      */
     protected function publishConfig()
@@ -69,7 +69,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     }
 
     /**
-     * Make the helpdesk factory available for publishing
+     * Make the helpdesk factory available for publishing.
      * @return void
      */
     protected function publishFactories()
@@ -80,7 +80,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register model observers
+     * Register model observers.
      * @return void
      */
     protected function registerObservers()
@@ -96,7 +96,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register artisan commands
+     * Register artisan commands.
      * @return void
      */
     public function registerCommands()
@@ -109,7 +109,7 @@ class HelpdeskServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish avatar images
+     * Publish avatar images.
      * @return void
      */
     protected function publishImages()
