@@ -144,7 +144,6 @@ class Agent extends Model
 
     public function teams()
     {
-<<<<<<< HEAD
         return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
             ->withPivot('is_team_lead')
             ->withTimestamps();
@@ -156,8 +155,5 @@ class Agent extends Model
             ->withPivot('is_team_lead')
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);
-=======
-        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))->withPivot('is_team_lead')->withTimestamps();
->>>>>>> 202d4e6d71c3f9f3963568cb052f0bf3d1a8378f
     }
 }
