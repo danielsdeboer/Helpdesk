@@ -18,8 +18,17 @@ class Bug4 extends AdminBase
      * @group bugs.4
      * @test
      */
-    public function accessTest()
+    public function aGuestCantSeePublicTicketActions()
     {
-        $this->noGuests();
+        $user = $this->makeUser();
+        $ticket = factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->visit(self::URIBASE . 'public/' . $ticket->uuid)
+            ->assertResponseOk()
+            ->see($ticket->content->title())
+            ->dontSee('add reply')
+            ->dontSee('close ticket');
     }
 }
