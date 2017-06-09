@@ -79,7 +79,7 @@ abstract class AdminBase extends TestCase
      */
     protected function ddc()
     {
-        dd($this->response->getContent());
+        dd($this->response->content());
     }
 
     protected function assertValidationFailed($errors)
@@ -94,7 +94,7 @@ abstract class AdminBase extends TestCase
      */
     protected function noGuests()
     {
-        $this->call(static::VERB, static::URI);
+        $response = $this->call(static::VERB, static::URI);
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');

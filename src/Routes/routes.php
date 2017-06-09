@@ -5,29 +5,33 @@ Route::group([
     'as' => config('helpdesk.routes.helpdesk.prefix') . '.',
     'prefix' => config('helpdesk.routes.helpdesk.prefix'),
     'middleware' => 'web',
-], function() {
+], function () {
 
     // Helpdesk splash page
-    Route::get('/', function() {
+    Route::get('/', function () {
         return view('helpdesk::splash.index');
     });
 
     // Helpdesk admin redirect
-    Route::get('admin', function() {
-        return redirect( route('helpdesk.admin.agents.index') );
-    })->name('admin')->middleware(['auth', 'helpdesk.supervisors']);
+    Route::get('admin', function () {
+        return redirect(
+            route('helpdesk.admin.agents.index')
+        );
+    })
+        ->name('admin')
+        ->middleware(['auth', 'helpdesk.supervisors']);
 
     // Admin Group
     Route::group([
         'as' => config('helpdesk.routes.admin.prefix') . '.',
         'prefix' => config('helpdesk.routes.admin.prefix'),
-    ], function() {
+    ], function () {
 
         // Team Members Group
         Route::group([
             'as' => 'team-members.',
             'prefix' => 'team-members',
-        ], function() {
+        ], function () {
             Route::post(
                 config('helpdesk.routes.admin.team-members.add'),
                 config('helpdesk.controllers.admin.team-members.add')
@@ -67,11 +71,13 @@ Route::group([
     Route::group([
         'as' => config('helpdesk.routes.dashboard.prefix') . '.',
         'prefix' => config('helpdesk.routes.dashboard.prefix'),
-    ], function() {
+    ], function () {
 
-        Route::get('/', function() {
+        Route::get('/', function () {
             return;
-        })->middleware(\Aviator\Helpdesk\Middleware\DashboardRouter::class)->name('router');
+        })
+            ->middleware(\Aviator\Helpdesk\Middleware\DashboardRouter::class)
+            ->name('router');
 
         Route::get(
             config('helpdesk.routes.dashboard.user'),
@@ -93,7 +99,7 @@ Route::group([
     Route::group([
         'as' => config('helpdesk.routes.tickets.prefix') . '.',
         'prefix' => config('helpdesk.routes.tickets.prefix'),
-    ], function() {
+    ], function () {
 
         // Index
         Route::get(
@@ -156,4 +162,3 @@ Route::group([
         )->name(config('helpdesk.routes.tickets.open.name'));
     });
 });
-

@@ -39,17 +39,25 @@ class DashboardRouter
     public function handle($request, Closure $next)
     {
         if (Auth::guest()) {
-            return redirect('login');
+            return redirect(
+                route('login')
+            );
         }
 
         if ($request->user()->{$this->emailColumn} == $this->supervisorEmail) {
-            return redirect( route('helpdesk.dashboard.supervisor') );
+            return redirect(
+                route('helpdesk.dashboard.supervisor')
+            );
         }
 
         if (Agent::where('user_id', $request->user()->id)->first()) {
-            return redirect( route('helpdesk.dashboard.agent') );
+            return redirect(
+                route('helpdesk.dashboard.agent')
+            );
         }
 
-        return redirect( route('helpdesk.dashboard.user') );
+        return redirect(
+            route('helpdesk.dashboard.user')
+        );
     }
 }

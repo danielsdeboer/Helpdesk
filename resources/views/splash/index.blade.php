@@ -2,7 +2,14 @@
 <html>
 <head>
   <title>Tickets</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css"
+    integrity="sha256-5MiG346KC5bVXrbDQQU0cjus8r2Yxh07eorYOPNUcmw="
+    crossorigin="anonymous"
+  />
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <style>
