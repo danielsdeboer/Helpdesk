@@ -85,16 +85,21 @@ class TicketsController extends Controller
         $email = config('helpdesk.userModelEmailColumn');
 
         $agent = Agent::where('user_id', auth()->user()->id)->first();
-
-        if (! $agent) {
-            $for = 'user';
-        } elseif ($agent && $agent->user->$email == $supervisorEmail) {
-            $for = 'super';
-        } else {
-            $for = 'agent';
-        }
-
         $ticket = Ticket::accessible($agent ? $agent : auth()->user())->findOrFail($id);
+
+        switch (true) {
+            case !$agent:
+                $for = 'user';
+                break;
+            case $agent && $agent->user->$email == $supervisorEmail:
+                $for = 'super';
+                break;
+            case $agent && $ticket->poolAssignment && $agent->isMemberOf($ticket->poolAssignment->pool):
+                $for = 'teamLead';
+                break;
+            default:
+                $for = 'agent';
+        }
 
         if ($for === 'user') {
             return view('helpdesk::tickets.show')->with([
@@ -121,11 +126,11 @@ class TicketsController extends Controller
             ]);
         }
 
-        if ($for === 'super') {
+        if ($for === 'super' || $for === 'teamLead') {
             return view('helpdesk::tickets.show')->with([
                 'for' => 'agent',
+                'agents' => Agent::with('user')->orderBy('name', 'asc')->get()->toJson(),
                 'ticket' => $ticket,
-                'agents' => Agent::with('user')->get()->toJson(),
                 'withOpen' => true,
                 'withClose' => true,
                 'withReply' => true,
