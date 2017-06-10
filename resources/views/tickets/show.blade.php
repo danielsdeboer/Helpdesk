@@ -8,8 +8,8 @@
       <div class="level">
         <div class="level-left">
           <div>
-            <p class="title">Timeline</p>
-            <p class="subtitle">For Ticket # {{ $ticket->id }}</p>
+            <p class="title">{{ $ticket->content->title() }}</p>
+            <p class="subtitle">Timeline For Ticket # {{ $ticket->id }}</p>
           </div>
         </div>
 
@@ -43,9 +43,6 @@
           @endif
         </div>
       </div>
-
-      <h1 class="title">Timeline</h1>
-      <h2 class="subtitle">For Ticket # {{ $ticket->id }}</h2>
 
       @if($ticket->content)
         @include($ticket->content->partial())
