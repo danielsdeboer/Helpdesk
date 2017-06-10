@@ -337,6 +337,42 @@ class Ticket extends Model
         return $this->status == 'closed';
     }
 
+    /**
+     * Is the ticket overdue.
+     * @return bool
+     */
+    public function isOverdue()
+    {
+        return $this->dueDate && $this->dueDate->due_on->lte(Carbon::now());
+    }
+
+    /**
+     * Is the ticket assigned to an agent or team.
+     * @return bool
+     */
+    public function isAssigned()
+    {
+        return $this->assignment || $this->poolAssignment;
+    }
+
+    /**
+     * Is the ticket assigned to an agent.
+     * @return bool
+     */
+    public function isAssignedToAgent()
+    {
+        return (bool) $this->assignment;
+    }
+
+    /**
+     * Is the ticket assigned to a team.
+     * @return bool
+     */
+    public function isAssignedToTeam()
+    {
+        return $this->poolAssignment && ! $this->assignment;
+    }
+
     ////////////
     // SCOPES //
     ////////////

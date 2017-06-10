@@ -21,6 +21,16 @@ class TicketsController extends Controller
     protected $ticket;
 
     /**
+     * Default relationships to get with the ticket.
+     * @var array
+     */
+    protected $relations = [
+        'assignment',
+        'poolAssignment',
+        'dueDate',
+    ];
+
+    /**
      * Construct with agents only middleware.
      */
     public function __construct()
@@ -36,8 +46,13 @@ class TicketsController extends Controller
     {
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
-        $open = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'open');
-        $closed = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'closed');
+        $open = Ticket::with($this->relations)
+            ->accessible($agent ? $agent : auth()->user())
+            ->where('status', 'open');
+
+        $closed = Ticket::with($this->relations)
+            ->accessible($agent ? $agent : auth()->user())
+            ->where('status', 'closed');
 
         return view('helpdesk::tickets.index')->with([
             'open' => $open->paginate(25),
@@ -56,7 +71,9 @@ class TicketsController extends Controller
     {
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
-        $open = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'open');
+        $open = Ticket::with($this->relations)
+            ->accessible($agent ? $agent : auth()->user())
+            ->where('status', 'open');
 
         return view('helpdesk::tickets.opened')->with([
             'open' => $open->paginate(25),
@@ -72,7 +89,9 @@ class TicketsController extends Controller
     {
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
-        $closed = Ticket::accessible($agent ? $agent : auth()->user())->where('status', 'closed');
+        $closed = Ticket::with($this->relations)
+            ->accessible($agent ? $agent : auth()->user())
+            ->where('status', 'closed');
 
         return view('helpdesk::tickets.closed')->with([
             'closed' => $closed->paginate(25),
@@ -91,7 +110,10 @@ class TicketsController extends Controller
         $email = config('helpdesk.userModelEmailColumn');
 
         $agent = Agent::where('user_id', auth()->user()->id)->first();
-        $this->ticket = Ticket::accessible($agent ? $agent : auth()->user())->findOrFail($id);
+
+        $this->ticket = Ticket::with($this->relations)
+            ->accessible($agent ? $agent : auth()->user())
+            ->findOrFail($id);
 
         switch (true) {
             case ! $agent:
