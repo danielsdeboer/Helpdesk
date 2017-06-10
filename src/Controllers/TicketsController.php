@@ -214,12 +214,12 @@ class TicketsController extends Controller
     {
         if ($this->ticket->poolAssignment) {
             return $this->ticket->poolAssignment->pool->agents()
+                ->with('user')
                 ->get()
                 ->sortBy('user.name');
         }
 
         return Agent::with('user')
-            ->orderBy('name')
             ->get()
             ->sortBy('user.name');
     }
