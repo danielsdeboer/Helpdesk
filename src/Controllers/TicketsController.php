@@ -15,6 +15,12 @@ class TicketsController extends Controller
     protected $for;
 
     /**
+     * The ticket.
+     * @var Ticket
+     */
+    protected $ticket;
+
+    /**
      * Construct with agents only middleware.
      */
     public function __construct()
@@ -85,56 +91,115 @@ class TicketsController extends Controller
         $email = config('helpdesk.userModelEmailColumn');
 
         $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $this->ticket = Ticket::accessible($agent ? $agent : auth()->user())->findOrFail($id);
 
-        if (! $agent) {
-            $for = 'user';
-        } elseif ($agent && $agent->user->$email == $supervisorEmail) {
-            $for = 'super';
-        } else {
-            $for = 'agent';
+        switch (true) {
+            case ! $agent:
+                return $this->showForUser();
+            case $agent && $agent->user->$email == $supervisorEmail:
+                return $this->showForSuper();
+            case $agent && $this->ticket->poolAssignment && $agent->isMemberOf($this->ticket->poolAssignment->pool):
+                return $this->showForTeamLead();
+            default:
+                return $this->showForAgent();
+        }
+    }
+
+    /////////////////
+    // Interal Api //
+    /////////////////
+
+    /**
+     * Show a ticket for a user.
+     * @return Response
+     */
+    protected function showForUser()
+    {
+        return view('helpdesk::tickets.show')->with([
+            'for' => 'user',
+            'ticket' => $this->ticket,
+            'withOpen' => true,
+            'withClose' => true,
+            'withReply' => true,
+            'showPrivate' => false,
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show a ticket for an agent.
+     * @return Response
+     */
+    protected function showForAgent()
+    {
+        return view('helpdesk::tickets.show')->with([
+            'for' => 'agent',
+            'ticket' => $this->ticket,
+            'withOpen' => true,
+            'withClose' => true,
+            'withReply' => true,
+            'withNote' => true,
+            'showPrivate' => true,
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show a ticket for a superuser.
+     * @return Response
+     */
+    protected function showForSuper()
+    {
+        return view('helpdesk::tickets.show')->with([
+            'for' => 'agent',
+            'agents' => $this->getUsers()->toJson(),
+            'ticket' => $this->ticket,
+            'withOpen' => true,
+            'withClose' => true,
+            'withReply' => true,
+            'withNote' => true,
+            'withAssign' => true,
+            'showPrivate' => true,
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show a ticket for a team lead.
+     * @return Response
+     */
+    public function showForTeamLead()
+    {
+        return view('helpdesk::tickets.show')->with([
+            'for' => 'agent',
+            'ticket' => $this->ticket,
+            'agents' => $this->getUsers()->toJson(),
+            'withOpen' => true,
+            'withClose' => true,
+            'withReply' => true,
+            'withNote' => true,
+            'withAssign' => true,
+            'showPrivate' => true,
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Get users based on context, sorted by name.
+     * @return Collection
+     */
+    protected function getUsers()
+    {
+        if ($this->ticket->poolAssignment) {
+            return $this->ticket->poolAssignment->pool->agents()
+                ->get()
+                ->sortBy('user.name');
         }
 
-        $ticket = Ticket::accessible($agent ? $agent : auth()->user())->findOrFail($id);
-
-        if ($for === 'user') {
-            return view('helpdesk::tickets.show')->with([
-                'for' => 'user',
-                'ticket' => $ticket,
-                'withOpen' => true,
-                'withClose' => true,
-                'withReply' => true,
-                'showPrivate' => false,
-                'tab' => 'tickets',
-            ]);
-        }
-
-        if ($for === 'agent') {
-            return view('helpdesk::tickets.show')->with([
-                'for' => 'agent',
-                'ticket' => $ticket,
-                'withOpen' => true,
-                'withClose' => true,
-                'withReply' => true,
-                'withNote' => true,
-                'showPrivate' => true,
-                'tab' => 'tickets',
-            ]);
-        }
-
-        if ($for === 'super') {
-            return view('helpdesk::tickets.show')->with([
-                'for' => 'agent',
-                'ticket' => $ticket,
-                'agents' => Agent::with('user')->get()->toJson(),
-                'withOpen' => true,
-                'withClose' => true,
-                'withReply' => true,
-                'withNote' => true,
-                'withAssign' => true,
-                'showPrivate' => true,
-                'tab' => 'tickets',
-            ]);
-        }
+        return Agent::with('user')
+            ->orderBy('name')
+            ->get()
+            ->sortBy('user.name');
     }
 
     /**

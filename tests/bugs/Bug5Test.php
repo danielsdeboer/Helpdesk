@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
 
-class Bug5 extends AdminBase
+class Bug5Test extends AdminBase
 {
     const VERB = 'GET';
     const URIBASE = 'helpdesk/tickets/';
