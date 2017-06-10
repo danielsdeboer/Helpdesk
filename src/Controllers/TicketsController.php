@@ -110,7 +110,7 @@ class TicketsController extends Controller
     /////////////////
 
     /**
-     * Show a ticket for a suer
+     * Show a ticket for a user.
      * @return Response
      */
     protected function showForUser()
@@ -127,7 +127,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show a ticket for an agent
+     * Show a ticket for an agent.
      * @return Response
      */
     protected function showForAgent()
@@ -145,7 +145,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show a ticket for a superuer
+     * Show a ticket for a superuser.
      * @return Response
      */
     protected function showForSuper()
@@ -165,7 +165,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show a ticket for a team lead
+     * Show a ticket for a team lead.
      * @return Response
      */
     public function showForTeamLead()
@@ -185,7 +185,7 @@ class TicketsController extends Controller
     }
 
     /**
-     * Get users based on context, sorted by name
+     * Get users based on context, sorted by name.
      * @return Collection
      */
     protected function getUsers()
