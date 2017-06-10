@@ -15,7 +15,7 @@ class TicketsController extends Controller
     protected $for;
 
     /**
-     * The ticket
+     * The ticket.
      * @var Ticket
      */
     protected $ticket;
