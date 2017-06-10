@@ -18,21 +18,29 @@ class Bug10Test extends AdminBase
     public function whenAssigningAPoolAssignedTicketToAnAgentOnlyAgentsFromThatTeamShouldShowInTheSelect()
     {
         $user = $this->makeUser();
-        $agent = $this->makeAgent();
+        $agent1 = $this->makeAgent();
+        $agent2 = $this->makeAgent();
+        $agent3 = $this->makeAgent();
+        $agent4 = $this->makeAgent();
         $team = $this->makeTeam();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
 
         $ticket->assignToTeam($team, null, true);
-        $agent->makeTeamLeadOf($team);
+        $agent1->makeTeamLeadOf($team);
+        $agent2->addToTeam($team);
 
-        $this->be($agent->user);
+        $this->be($agent1->user);
 
         $this->visit(self::URI)
             ->assertResponseOk()
             ->see($ticket->content->title())
             ->see('<p class="heading">Assign</p>')
+            ->see($agent1->user->name)
+            ->see($agent2->user->name)
+            ->dontSee($agent3->user->name)
+            ->dontSee($agent4->user->name)
             ->assertResponseOk();
     }
 }
