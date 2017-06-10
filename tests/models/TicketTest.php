@@ -682,6 +682,153 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
+    public function isOverdueReturnsTrueIfOverdue()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $ticket->dueOn('-1 day');
+        $this->assertTrue($ticket->isOverdue());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isOverdueReturnsFalseIfNotOverdue()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $ticket->dueOn('+1 day');
+        $this->assertFalse($ticket->isOverdue());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedReturnsFalseIfNotAssigned()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->assertFalse($ticket->isAssigned());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedReturnsTrueIfAssignedToAnAgent()
+    {
+        $agent = factory(Agent::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToAgent($agent);
+
+        $this->assertTrue($ticket->isAssigned());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedReturnsTrueIfAssignedToATeam()
+    {
+        $team = factory(Pool::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToTeam($team);
+
+        $this->assertTrue($ticket->isAssigned());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToAgentReturnsTrueIfAssignedToAnAgent()
+    {
+        $agent = factory(Agent::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToAgent($agent);
+
+        $this->assertTrue($ticket->isAssignedToAgent());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToAgentReturnsFalseIfUnassigned()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $this->assertFalse($ticket->isAssignedToAgent());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToAgentReturnsFalseIfAssignedToTeam()
+    {
+        $team = factory(Pool::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToTeam($team);
+
+        $this->assertFalse($ticket->isAssignedToAgent());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToTeamReturnsTrueIfAssignedToTeam()
+    {
+        $team = factory(Pool::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToTeam($team);
+
+        $this->assertTrue($ticket->isAssignedToTeam());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToTeamReturnsFalseIfUnassigned()
+    {
+        $team = factory(Pool::class)->create();
+        $ticket = factory(Ticket::class)->create();
+
+        $this->assertFalse($ticket->isAssignedToTeam());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
+    public function isAssignedToTeamReturnsFalseIfAssignedToAgent()
+    {
+        $agent = factory(Agent::class)->create();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->assignToAgent($agent);
+
+        $this->assertFalse($ticket->isAssignedToTeam());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @test
+     */
     public function the_owned_scope_returns_tickets_accessible_to_a_user()
     {
         $user = factory(User::class)->create();

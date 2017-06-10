@@ -5,6 +5,45 @@
 
   <div class="section">
     <div class="container">
+      <div class="level">
+        <div class="level-left">
+          <div>
+            <p class="title">Timeline</p>
+            <p class="subtitle">For Ticket # {{ $ticket->id }}</p>
+          </div>
+        </div>
+
+        <div class="level-right">
+          @if ($ticket->isOverdue())
+            <div class="level-item">
+              <span class="tag is-danger is-medium">Overdue</span>
+            </div>
+          @else
+            <div class="level-item">
+              <span class="tag is-success is-medium">On Time</span>
+            </div>
+          @endif
+
+          @if (!$ticket->isAssigned())
+            <div class="level-item">
+              <span class="tag is-danger is-medium">Not Assigned</span>
+            </div>
+          @endif
+
+          @if ($ticket->isAssignedToAgent())
+            <div class="level-item">
+              <span class="tag is-success is-medium">Assigned</span>
+            </div>
+          @endif
+
+          @if ($ticket->isAssignedToTeam())
+            <div class="level-item">
+              <span class="tag is-warning is-medium">Assigned To Team</span>
+            </div>
+          @endif
+        </div>
+      </div>
+
       <h1 class="title">Timeline</h1>
       <h2 class="subtitle">For Ticket # {{ $ticket->id }}</h2>
 
