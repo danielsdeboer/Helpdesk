@@ -39,6 +39,11 @@
     .is-mi-large {
       font-size: 3rem;
     }
+
+    .select,
+    .select select {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
