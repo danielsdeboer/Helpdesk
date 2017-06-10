@@ -15,12 +15,14 @@
         <input type="hidden" name="from" value="team">
 
         <p class="control">
-          <select name="agent_id" class="select">
-            <option
-              v-for="agent in agents"
-              :value="agent.id"
-            >@{{ agent.user.name }}</option>
-          </select>
+          <span class="select">
+            <select name="agent_id">
+              <option
+                v-for="agent in agents"
+                :value="agent.id"
+              >@{{ agent.user.name }}</option>
+            </select>
+          </span>
         </p>
 
         <div class="control is-grouped">

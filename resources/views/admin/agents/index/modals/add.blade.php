@@ -11,12 +11,14 @@
         {{ csrf_field() }}
 
         <p class="control">
-          <select class="select" name="user_id">
-            <option
-              v-for="user in users"
-              :value="user.id"
-            >@{{ user.name }}</option>
-          </select>
+          <span class="select">
+            <select name="user_id">
+              <option
+                v-for="user in users"
+                :value="user.id"
+              >@{{ user.name }}</option>
+            </select>
+          </span>
         </p>
 
         <div class="control is-grouped">
