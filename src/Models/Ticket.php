@@ -361,7 +361,7 @@ class Ticket extends Model
      */
     public function isAssignedToAgent()
     {
-        return !!$this->assignment;
+        return (bool) $this->assignment;
     }
 
     /**
@@ -370,7 +370,7 @@ class Ticket extends Model
      */
     public function isAssignedToTeam()
     {
-        return $this->poolAssignment && !$this->assignment;
+        return $this->poolAssignment && ! $this->assignment;
     }
 
     ////////////

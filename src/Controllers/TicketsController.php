@@ -21,7 +21,7 @@ class TicketsController extends Controller
     protected $ticket;
 
     /**
-     * Default relationships to get with the ticket
+     * Default relationships to get with the ticket.
      * @var array
      */
     protected $relations = [
