@@ -421,7 +421,7 @@ class Ticket extends Model
      */
     public function scopePooled($query)
     {
-        return $query->has('poolAssignment')->whereStatus('open');
+        return $query->has('poolAssignment')->whereDoesntHave('assignment')->whereStatus('open');
     }
 
     /**

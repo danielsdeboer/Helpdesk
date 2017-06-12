@@ -93,7 +93,7 @@ return [
 
             'assignedToPool' => [
                 'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToPool::class,
-                'subject' => 'A ticket has been assigned to your pool',
+                'subject' => 'A ticket has been assigned to your team',
                 'greeting' => 'Hey there.',
                 'line' => '',
                 'route' => 'helpdesk.tickets.show',
