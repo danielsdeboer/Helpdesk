@@ -14,31 +14,37 @@
         </div>
 
         <div class="level-right">
-          @if ($ticket->isOverdue())
-            <div class="level-item">
-              <span class="tag is-danger is-medium">Overdue</span>
-            </div>
+          @if ($ticket->isOpen())
+            @if ($ticket->isOverdue())
+              <div class="level-item">
+                <span class="tag is-danger is-medium">Overdue</span>
+              </div>
+            @else
+              <div class="level-item">
+                <span class="tag is-success is-medium">On Time</span>
+              </div>
+            @endif
+
+            @if (!$ticket->isAssigned())
+              <div class="level-item">
+                <span class="tag is-danger is-medium">Not Assigned</span>
+              </div>
+            @endif
+
+            @if ($ticket->isAssignedToAgent())
+              <div class="level-item">
+                <span class="tag is-success is-medium">Assigned</span>
+              </div>
+            @endif
+
+            @if ($ticket->isAssignedToTeam())
+              <div class="level-item">
+                <span class="tag is-warning is-medium">Assigned To Team</span>
+              </div>
+            @endif
           @else
             <div class="level-item">
-              <span class="tag is-success is-medium">On Time</span>
-            </div>
-          @endif
-
-          @if (!$ticket->isAssigned())
-            <div class="level-item">
-              <span class="tag is-danger is-medium">Not Assigned</span>
-            </div>
-          @endif
-
-          @if ($ticket->isAssignedToAgent())
-            <div class="level-item">
-              <span class="tag is-success is-medium">Assigned</span>
-            </div>
-          @endif
-
-          @if ($ticket->isAssignedToTeam())
-            <div class="level-item">
-              <span class="tag is-warning is-medium">Assigned To Team</span>
+              <span class="tag is-info is-medium">Closed</span>
             </div>
           @endif
         </div>

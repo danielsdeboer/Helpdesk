@@ -1,5 +1,3 @@
 <div class="content">
-  <blockquote>
-    {{ $note }}
-  </blockquote>
+  <blockquote name="note-body">@para($note)</blockquote>
 </div>

@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk;
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +31,10 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->publishFactories();
         $this->registerCommands();
         $this->publishImages();
+
+        Blade::directive('para', function ($var) {
+            return "<?php echo nl2br($var); ?>";
+        });
     }
 
     /**

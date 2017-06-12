@@ -6,6 +6,6 @@
   </p>
 
   <blockquote>
-    {{ $ticket->content->body }}
+    @para($ticket->content->body)
   </blockquote>
 </div>
