@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk;
 
-use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
 class HelpdeskServiceProvider extends ServiceProvider
