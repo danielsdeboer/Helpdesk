@@ -465,7 +465,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get tickets with closed status
+     * Get tickets with closed status.
      */
     public function scopeClosed($query)
     {
