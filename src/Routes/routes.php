@@ -8,16 +8,10 @@ Route::group([
 ], function () {
 
     // Helpdesk splash page
-    Route::get('/', function () {
-        return view('helpdesk::splash.index');
-    });
+    Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@splash');
 
     // Helpdesk admin redirect
-    Route::get('admin', function () {
-        return redirect(
-            route('helpdesk.admin.agents.index')
-        );
-    })
+    Route::get('admin', '\Aviator\Helpdesk\Controllers\PublicController@redirectToAdmin')
         ->name('admin')
         ->middleware(['auth', 'helpdesk.supervisors']);
 

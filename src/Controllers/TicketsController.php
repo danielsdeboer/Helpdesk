@@ -3,8 +3,9 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Routing\Controller;
 
 class TicketsController extends Controller
 {
@@ -46,13 +47,31 @@ class TicketsController extends Controller
     {
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
+        $ticketTable = config('helpdesk.tables.tickets');
+
         $open = Ticket::with($this->relations)
             ->accessible($agent ? $agent : auth()->user())
-            ->where('status', 'open');
+            ->opened()
+            ->leftJoin(
+                config('helpdesk.tables.due_dates'),
+                $ticketTable . '.id',
+                config('helpdesk.tables.due_dates') . '.ticket_id'
+            )
+            ->orderBy('due_on', 'asc');
 
         $closed = Ticket::with($this->relations)
             ->accessible($agent ? $agent : auth()->user())
-            ->where('status', 'closed');
+            ->closed()
+            ->leftJoin(
+                config('helpdesk.tables.closings'),
+                $ticketTable . '.id',
+                config('helpdesk.tables.closings') . '.ticket_id'
+            )
+            ->orderBy(config('helpdesk.tables.closings') . '.created_at', 'desc');
+
+        if ($closed->get()->count() > 0) {
+            dd($closed->get);
+        }
 
         return view('helpdesk::tickets.index')->with([
             'open' => $open->paginate(25),

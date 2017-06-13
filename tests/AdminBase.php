@@ -96,6 +96,8 @@ abstract class AdminBase extends TestCase
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');
+
+        return $response;
     }
 
     /**
