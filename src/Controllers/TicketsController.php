@@ -69,10 +69,6 @@ class TicketsController extends Controller
             )
             ->orderBy(config('helpdesk.tables.closings') . '.created_at', 'desc');
 
-        if ($closed->get()->count() > 0) {
-            dd($closed->get);
-        }
-
         return view('helpdesk::tickets.index')->with([
             'open' => $open->paginate(25),
             'openCount' => $open->count(),
