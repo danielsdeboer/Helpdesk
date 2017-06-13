@@ -66,8 +66,7 @@ Route::group([
         'as' => config('helpdesk.routes.dashboard.prefix') . '.',
         'prefix' => config('helpdesk.routes.dashboard.prefix'),
     ], function () {
-        Route::get('/', function () {
-        })
+        Route::get('/')
             ->middleware(\Aviator\Helpdesk\Middleware\DashboardRouter::class)
             ->name('router');
 
