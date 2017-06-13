@@ -465,6 +465,14 @@ class Ticket extends Model
     }
 
     /**
+     * Get tickets with closed status.
+     */
+    public function scopeClosed($query)
+    {
+        return $query->whereStatus('closed');
+    }
+
+    /**
      * Get the ticket with actions, sorted oldest to newest.
      */
     public function scopeWithActions($query)
@@ -499,7 +507,7 @@ class Ticket extends Model
      */
     public function scopeAccessibleToUser($query, $user)
     {
-        return $query->where('user_id', $user->id);
+        return $query->where(config('helpdesk.tables.tickets') . '.user_id', $user->id);
     }
 
     /**
