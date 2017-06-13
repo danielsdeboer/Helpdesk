@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 class PublicController extends Controller
 {
     /**
-     * Display the splash page
+     * Display the splash page.
      * @return Response
      */
     public function splash()
@@ -16,7 +16,7 @@ class PublicController extends Controller
     }
 
     /**
-     * Redirect to the admin page
+     * Redirect to the admin page.
      * @return Response
      */
     public function redirectToAdmin()
