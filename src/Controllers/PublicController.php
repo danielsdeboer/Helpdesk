@@ -25,4 +25,8 @@ class PublicController extends Controller
             route('helpdesk.admin.agents.index')
         );
     }
+
+    public function doNothing()
+    {
+    }
 }
