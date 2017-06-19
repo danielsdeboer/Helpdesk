@@ -4,50 +4,48 @@ namespace Aviator\Helpdesk\Queries;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Queries\QueryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class TicketsQuery implements QueryInterface
 {
     /**
-     * The query builder
+     * The query builder.
      * @var Builder
      */
     protected $query;
 
     /**
-     * Optional relations to eager load
+     * Optional relations to eager load.
      * @var array
      */
     protected $relations = [];
 
     /**
-     * Optional agent
+     * Optional agent.
      * @var Agent
      */
     protected $agent;
 
     /**
-     * The current user
+     * The current user.
      * @var User
      */
     protected $user;
 
     /**
-     * The tickets table from config
+     * The tickets table from config.
      * @var string
      */
     protected $ticketsTable;
 
     /**
-     * The due dates table from config
+     * The due dates table from config.
      * @var string
      */
     protected $dueDatesTable;
 
     /**
-     * Query selects
+     * Query selects.
      * @var array
      */
     protected $selects = [];
@@ -57,7 +55,7 @@ class TicketsQuery implements QueryInterface
     //////////////////
 
     /**
-     * Constructor
+     * Constructor.
      * @param Model $model
      */
     public function __construct(Agent $agent = null)
@@ -73,7 +71,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Static constructor
+     * Static constructor.
      * @param  mixed[] ...$args
      * @return $this
      */
@@ -83,7 +81,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Static actor - get the builder instance
+     * Static actor - get the builder instance.
      * @param  mixed[]
      * @return Builder
      */
@@ -97,7 +95,7 @@ class TicketsQuery implements QueryInterface
     ////////////////
 
     /**
-     * Return the builder instance
+     * Return the builder instance.
      * @return Builder
      */
     public function query()
@@ -108,7 +106,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Set the relations array
+     * Set the relations array.
      * @param array $relations
      */
     public function withRelations(array $relations)
@@ -120,7 +118,7 @@ class TicketsQuery implements QueryInterface
 
     /**
      * Add an order by clause to the query builder, returning
-     * results ordered by due soonest first
+     * results ordered by due soonest first.
      * @return $this
      */
     public function orderByDueSoonest()
@@ -131,7 +129,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Get open tickets only
+     * Get open tickets only.
      * @return $this
      */
     public function openOnly()
@@ -142,7 +140,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Get open tickets only
+     * Get open tickets only.
      * @return $this
      */
     public function closedOnly()
@@ -153,7 +151,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Push a select onto the select stack
+     * Push a select onto the select stack.
      * @param string $select
      */
     public function addSelect($select)

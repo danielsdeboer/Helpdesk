@@ -82,7 +82,7 @@ class TicketsQueryTest extends TestCase
         $user = factory(User::class)->create();
 
         $ticket1 = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $ticket2 = factory(Ticket::class)->create()->dueOn('yesterday');
