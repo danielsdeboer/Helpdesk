@@ -48,15 +48,13 @@ class TicketsController extends Controller
     {
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
-        $open = TicketsQuery::make()
-            ->withAgent($agent)
+        $open = TicketsQuery::make($agent)
             ->withRelations($this->relations)
             ->openOnly()
             ->orderByDueSoonest()
             ->query();
 
-        $closed = TicketsQuery::make()
-            ->withAgent($agent)
+        $closed = TicketsQuery::make($agent)
             ->withRelations($this->relations)
             ->closedOnly()
             ->orderByDueSoonest()
