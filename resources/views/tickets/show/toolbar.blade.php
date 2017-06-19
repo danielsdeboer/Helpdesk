@@ -197,7 +197,7 @@
                 <p class="control">
                   <label class="checkbox">
                     <input type="checkbox" name="note_is_visible" value="1">
-                    Ticket is visible to the customer
+                    Note is visible to the customer
                   </label>
                 </p>
 
