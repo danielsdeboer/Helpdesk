@@ -3,10 +3,10 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\DueDate;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Queries\TicketsQuery;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\DueDate;
+use Aviator\Helpdesk\Queries\TicketsQuery;
 
 class TicketsController extends Controller
 {
