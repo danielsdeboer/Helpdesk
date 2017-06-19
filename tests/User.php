@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -24,4 +25,9 @@ class User extends Model implements AuthorizableContract, AuthenticatableContrac
     public $timestamps = false;
 
     protected $table = 'users';
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
