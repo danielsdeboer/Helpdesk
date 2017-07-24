@@ -121,7 +121,7 @@ class TicketsQuery implements QueryInterface
      * results ordered by due soonest first.
      * @return $this
      */
-    public function orderByDueSoonest ()
+    public function orderByDueSoonest()
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'asc');
 
@@ -129,10 +129,10 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Order by due date descending, eg latest first
+     * Order by due date descending, eg latest first.
      * @return $this
      */
-    public function orderByDueOnDesc ()
+    public function orderByDueOnDesc()
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'desc');
 
@@ -178,7 +178,7 @@ class TicketsQuery implements QueryInterface
     //////////////////
 
     /**
-     * Build the query base
+     * Build the query base.
      * @return void
      */
     protected function build()
@@ -193,7 +193,7 @@ class TicketsQuery implements QueryInterface
     }
 
     /**
-     * Generate the selects to use for this query
+     * Generate the selects to use for this query.
      * @return void
      */
     protected function generateSelects()

@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
+use Illuminate\Contracts\View\View;
 use Aviator\Helpdesk\Repositories\Tickets;
 
 class SupervisorController extends Controller
