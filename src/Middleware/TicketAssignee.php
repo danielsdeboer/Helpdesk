@@ -40,7 +40,7 @@ class TicketAssignee
         $ticket = $request->route('ticket');
         $agent = Agent::where('user_id', $request->user()->id)->first();
 
-        /**
+        /*
          * Supervisors can access any ticket
          */
         if (in_array($request->user()->{$this->emailColumn}, $this->supervisorEmails)) {

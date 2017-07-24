@@ -2,14 +2,14 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Traits\FetchesUsers;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Aviator\Helpdesk\Traits\FetchesUsers;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AgentsController extends Controller
