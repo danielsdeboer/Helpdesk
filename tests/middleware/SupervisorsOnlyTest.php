@@ -50,11 +50,9 @@ class SupervisorsOnlyTest extends TestCase
      */
     public function it_passes_if_the_user_is_a_supervisor()
     {
-        $supervisor = factory(User::class)->create([
-            'email' => config('helpdesk.supervisor.email'),
-        ]);
-
-        $this->be($supervisor);
+        $this->be(
+            factory(Agent::class)->states('isSuper')->create()->user
+        );
         $response = $this->call('GET', '/guarded');
 
         $this->assertEquals('Guarded.', $response->getContent());

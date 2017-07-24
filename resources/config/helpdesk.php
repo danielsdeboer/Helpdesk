@@ -29,8 +29,9 @@ return [
         },
     ],
 
-    'supervisor' => [
-        'email' => 'supervisor@test.com',
+    'supervisors' => [
+        'supervisor@test.com',
+        'supervisor2@test.com',
     ],
 
     'tables' => [

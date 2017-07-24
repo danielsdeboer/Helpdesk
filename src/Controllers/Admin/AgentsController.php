@@ -2,7 +2,9 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use Aviator\Helpdesk\Traits\FetchesUsers;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Agent;
@@ -12,10 +14,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AgentsController extends Controller
 {
-    use ValidatesRequests;
+    use ValidatesRequests, FetchesUsers;
 
     /**
-     * Add middleware.
+     * AgentsController constructor.
      */
     public function __construct()
     {
@@ -27,20 +29,17 @@ class AgentsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
         $email = config('helpdesk.userModelEmailColumn');
 
-        $users = $this->getUsers();
+        $users = $this->fetchUsers();
 
         return view('helpdesk::admin.agents.index')->with([
             'agents' => Agent::with('user', 'teams')->whereHas('user', function ($query) use ($email) {
-                $superEmail = config('helpdesk.supervisor.email');
-
-                $query->where($email, '<>', $superEmail);
+                $query->whereNotIn($email, config('helpdesk.supervisors'));
             })->get(),
             'users' => $users,
             'email' => $email,
@@ -51,16 +50,14 @@ class AgentsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store()
     {
         $agentsTable = config('helpdesk.tables.agents');
         $usersTable = config('helpdesk.tables.users');
 
-        $this->validate($request, [
+        $this->validate(request(), [
             'user_id' => [
                 'required',
                 Rule::unique($agentsTable)->where(function ($query) {
@@ -71,7 +68,7 @@ class AgentsController extends Controller
         ]);
 
         $agent = Agent::create([
-            'user_id' => request()->user_id,
+            'user_id' => request('user_id'),
         ]);
 
         return redirect(route('helpdesk.admin.agents.show', $agent->id));
@@ -79,9 +76,8 @@ class AgentsController extends Controller
 
     /**
      * Display the specified resource.
-     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function show($id)
     {
@@ -101,13 +97,12 @@ class AgentsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $this->validate($request, [
+        $this->validate(request(), [
             'delete_agent_confirmed' => 'required|in:1',
         ]);
 
@@ -118,17 +113,8 @@ class AgentsController extends Controller
 
         $agent->delete();
 
-        return redirect(route('helpdesk.admin.agents.index'));
-    }
-
-    protected function getUsers()
-    {
-        $userModel = config('helpdesk.userModel');
-
-        if (! config('helpdesk.callbacks.user')) {
-            return $userModel::all();
-        }
-
-        return $userModel::where(config('helpdesk.callbacks.user'))->get();
+        return redirect(
+            route('helpdesk.admin.agents.index')
+        );
     }
 }

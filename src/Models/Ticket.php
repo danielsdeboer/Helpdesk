@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Tests\User;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -44,7 +45,7 @@ class Ticket extends Model
      *
      * Visibility for assignments is assumed to be false as
      * this isn't relevant for the end user but this can
-     * be overriden.
+     * be overridden.
      * @param  Agent $agent
      * @param  Agent $creator
      * @return $this
@@ -67,10 +68,12 @@ class Ticket extends Model
      *
      * Visibility for assignments is assumed to be false as
      * this isn't relevant for the end user but this can
-     * be overriden.
-     * @param  User $user
+     * be overridden.
+     * @param int $pool
      * @param  Agent $creator
+     * @param bool $isVisible
      * @return $this
+     * @internal param User $user
      */
     public function assignToPool($pool, Agent $creator = null, $isVisible = false)
     {
@@ -124,6 +127,7 @@ class Ticket extends Model
      * @param  string $note
      * @param  User | Agent $creator
      * @return $this
+     * @throws CreatorRequiredException
      */
     public function close($note, $creator)
     {
@@ -156,6 +160,7 @@ class Ticket extends Model
      * @param  string $note
      * @param  User | Agent $creator
      * @return $this
+     * @throws CreatorRequiredException
      */
     public function open($note, $creator)
     {
@@ -185,7 +190,9 @@ class Ticket extends Model
      *
      * @param  string $body
      * @param  User | Agent $creator
+     * @param bool $isVisible
      * @return $this
+     * @throws CreatorRequiredException
      */
     public function note($body, $creator, $isVisible = true)
     {
@@ -233,16 +240,19 @@ class Ticket extends Model
      *
      * Visibility is always true for replies
      * @param  string $body
-     * @param  User $creator
+     * @param $user
      * @return $this
+     * @throws CreatorMustBeAUserException
      */
     public function externalReply($body, $user)
     {
         $userClass = config('helpdesk.userModel');
 
-        // Can't user a type hint as the user class
-        // is variable
-        if (! $user instanceof $userClass) {
+        /**
+         * Since the user class can vary, throw an exception if something
+         * else is provided.
+         */
+        if (!$user instanceof $userClass) {
             throw new CreatorMustBeAUserException;
         }
 
@@ -259,6 +269,7 @@ class Ticket extends Model
     /**
      * Associate the content model with a ticket.
      * @param TicketContent $content
+     * @return $this
      */
     public function withContent(TicketContent $content)
     {
@@ -273,6 +284,7 @@ class Ticket extends Model
      * Create and assocate the ticket content.
      * @param string $class
      * @param array $attribute
+     * @return $this
      */
     public function createContent($class, array $attributes)
     {
@@ -292,13 +304,14 @@ class Ticket extends Model
     /**
      * Find the internal user who should receive notifications for
      * external user replies, etc.
-     * @return User
+     * @return mixed
+     * @throws SupervisorNotFoundException
      */
     public function getInternalUser()
     {
         $userModel = config('helpdesk.userModel');
         $emailColumn = config('helpdesk.userModelEmailColumn');
-        $supervisorEmail = config('helpdesk.supervisor.email');
+        $supervisorEmails = config('helpdesk.supervisors');
 
         // Check if the ticket is assigned to a particular user
         if (isset($this->assignment->assignee)) {
@@ -311,7 +324,7 @@ class Ticket extends Model
         }
 
         // Notify the supervisor
-        if ($super = $userModel::where($emailColumn, $supervisorEmail)->first()) {
+        if ($super = $userModel::whereIn($emailColumn, $supervisorEmails)->first()) {
             return $super;
         }
 
@@ -517,10 +530,10 @@ class Ticket extends Model
      */
     public function scopeAccessibleToAgent($query, $agent)
     {
-        $supervisorEmail = config('helpdesk.supervisor.email');
+        $supervisorEmails = config('helpdesk.supervisors');
         $email = config('helpdesk.userModelEmailColumn');
 
-        if ($agent->user->$email == $supervisorEmail) {
+        if (in_array($agent->user->$email, $supervisorEmails)) {
             return $query;
         }
 

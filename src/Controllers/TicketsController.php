@@ -3,15 +3,16 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Queries\TicketsQuery;
 
 class TicketsController extends Controller
 {
     /**
-     * Who is the reponse for.
+     * Who is the response for.
      * @var string
      */
     protected $for;
@@ -42,7 +43,7 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
-     * @return Response
+     * @return View
      */
     public function index()
     {
@@ -71,7 +72,7 @@ class TicketsController extends Controller
 
     /**
      * Show an index of open tickets.
-     * @return Response
+     * @return View
      */
     public function opened()
     {
@@ -89,7 +90,7 @@ class TicketsController extends Controller
 
     /**
      * Show an index of closed tickets.
-     * @return Response
+     * @return View
      */
     public function closed()
     {
@@ -108,11 +109,11 @@ class TicketsController extends Controller
     /**
      * Display a instance of the resource.
      * @param  int $id
-     * @return Reponse
+     * @return View
      */
     public function show($id)
     {
-        $supervisorEmail = config('helpdesk.supervisor.email');
+        $supervisorEmails = config('helpdesk.supervisors');
         $email = config('helpdesk.userModelEmailColumn');
 
         $agent = Agent::where('user_id', auth()->user()->id)->first();
@@ -124,7 +125,7 @@ class TicketsController extends Controller
         switch (true) {
             case ! $agent:
                 return $this->showForUser();
-            case $agent && $agent->user->$email == $supervisorEmail:
+            case $agent && in_array($agent->user->$email, $supervisorEmails):
                 return $this->showForSuper();
             case $agent && $this->ticket->poolAssignment && $agent->isMemberOf($this->ticket->poolAssignment->pool):
                 return $this->showForTeamLead();
@@ -133,13 +134,11 @@ class TicketsController extends Controller
         }
     }
 
-    /////////////////
-    // Interal Api //
-    /////////////////
+    // Internal Api ----------------------------------------------------------------------------------------------------
 
     /**
      * Show a ticket for a user.
-     * @return Response
+     * @return View
      */
     protected function showForUser()
     {
@@ -156,7 +155,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for an agent.
-     * @return Response
+     * @return View
      */
     protected function showForAgent()
     {
@@ -174,7 +173,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for a superuser.
-     * @return Response
+     * @return View
      */
     protected function showForSuper()
     {
@@ -194,7 +193,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for a team lead.
-     * @return Response
+     * @return View
      */
     public function showForTeamLead()
     {
@@ -240,8 +239,9 @@ class TicketsController extends Controller
         $user = auth()->user();
         $agent = Agent::where('user_id', $user->id)->first();
         $email = config('helpdesk.userModelEmailColumn');
+        $supervisors = config('helpdesk.supervisors');
 
-        if ($user->$email == config('helpdesk.supervisor.email')) {
+        if (in_array($user->$email, $supervisors)) {
             $this->for = 'super';
 
             return true;

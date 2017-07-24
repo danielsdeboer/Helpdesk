@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Repositories;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Database\Eloquent\Collection;
 
 class Tickets
 {
@@ -237,6 +238,7 @@ class Tickets
     /**
      * Set the agent.
      * @param Agent $agent
+     * @return $this
      */
     public function setAgent(Agent $agent)
     {
@@ -248,7 +250,7 @@ class Tickets
 
     /**
      * User getter.
-     * @return User
+     * @return mixed
      */
     public function getUser()
     {
@@ -258,10 +260,11 @@ class Tickets
     /**
      * Super setter.
      * @param Agent $agent
+     * @return $this
      */
     public function setSuper(Agent $agent)
     {
-        if ($agent->user->{config('helpdesk.userModelEmailColumn')} == config('helpdesk.supervisor.email')) {
+        if (in_array($agent->user->{config('helpdesk.userModelEmailColumn')}, config('helpdesk.supervisors'))) {
             $this->super = true;
         }
 
@@ -289,6 +292,8 @@ class Tickets
     /**
      * Set the user.
      * @param mixed $user
+     * @return $this
+     * @throws \Exception
      */
     public function setUser($user)
     {

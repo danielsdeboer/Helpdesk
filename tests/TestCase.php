@@ -22,7 +22,7 @@ abstract class TestCase extends Orchestra
             '--database'    => 'testing',
         ]);
 
-        $this->createSupervisorUser();
+        $this->createSupervisorUsers();
 
         Notification::fake();
     }
@@ -78,14 +78,16 @@ abstract class TestCase extends Orchestra
      * are not set.
      * @return void
      */
-    protected function createSupervisorUser()
+    protected function createSupervisorUsers()
     {
         $userModel = config('helpdesk.userModel');
 
-        $userModel::create([
-            'name' => 'Super Visor',
-            'email' => config('helpdesk.supervisor.email'),
-        ]);
+        foreach (config('helpdesk.supervisors') as $email) {
+            $userModel::create([
+                'name' => 'Super Visor',
+                'email' => $email,
+            ]);
+        }
     }
 
     /**

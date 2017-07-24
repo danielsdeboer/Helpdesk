@@ -24,7 +24,7 @@ class TicketOwnerOrAssignee
      */
     public function __construct()
     {
-        $this->supervisorEmail = config('helpdesk.supervisor.email');
+        $this->supervisorEmails = config('helpdesk.supervisors');
         $this->emailColumn = config('helpdesk.userModelEmailColumn');
     }
 
@@ -41,7 +41,7 @@ class TicketOwnerOrAssignee
         $agent = Agent::where('user_id', $request->user()->id)->first();
 
         // Supervisor can access any ticket
-        if ($request->user()->{$this->emailColumn} == $this->supervisorEmail) {
+        if (in_array($request->user()->{$this->emailColumn}, $this->supervisorEmails)) {
             return $next($request);
         }
 

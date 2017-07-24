@@ -16,9 +16,10 @@ class SupervisorsOnly
     public function handle($request, Closure $next)
     {
         $email = config('helpdesk.userModelEmailColumn');
+        $supervisorEmails = config('helpdesk.supervisors');
 
-        if ($request->user() && $request->user()->$email == config('helpdesk.supervisor.email')) {
-            return $next($request);
+        if ($request->user() && in_array($request->user()->$email, $supervisorEmails)) {
+            return $next ($request);
         }
 
         abort(403, 'You are not permitted to access this resource.');
