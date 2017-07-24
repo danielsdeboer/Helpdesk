@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\Tickets;
 
@@ -18,7 +19,7 @@ class SupervisorController extends Controller
 
     /**
      * Display an index of the controller.
-     * @return Response
+     * @return View
      */
     public function index()
     {

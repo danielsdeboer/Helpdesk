@@ -58,7 +58,7 @@ class TicketsController extends Controller
         $closed = TicketsQuery::make($agent)
             ->withRelations($this->relations)
             ->closedOnly()
-            ->orderByDueSoonest()
+            ->orderByDueOnDesc()
             ->query();
 
         return view('helpdesk::tickets.index')->with([

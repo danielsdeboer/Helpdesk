@@ -28,7 +28,7 @@ class TicketsQuery implements QueryInterface
 
     /**
      * The current user.
-     * @var User
+     * @var mixed
      */
     protected $user;
 
@@ -55,8 +55,8 @@ class TicketsQuery implements QueryInterface
     //////////////////
 
     /**
-     * Constructor.
-     * @param Model $model
+     * TicketsQuery constructor.
+     * @param Agent|null $agent
      */
     public function __construct(Agent $agent = null)
     {
@@ -66,7 +66,6 @@ class TicketsQuery implements QueryInterface
 
         $this->ticketsTable = config('helpdesk.tables.tickets');
         $this->dueDatesTable = config('helpdesk.tables.due_dates');
-        $this->usersTable = config('helpdesk.tables.tickets');
         $this->generateSelects();
     }
 
@@ -108,6 +107,7 @@ class TicketsQuery implements QueryInterface
     /**
      * Set the relations array.
      * @param array $relations
+     * @return $this
      */
     public function withRelations(array $relations)
     {
@@ -121,9 +121,20 @@ class TicketsQuery implements QueryInterface
      * results ordered by due soonest first.
      * @return $this
      */
-    public function orderByDueSoonest()
+    public function orderByDueSoonest ()
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'asc');
+
+        return $this;
+    }
+
+    /**
+     * Order by due date descending, eg latest first
+     * @return $this
+     */
+    public function orderByDueOnDesc ()
+    {
+        $this->query->orderBy($this->dueDatesTable . '.due_on', 'desc');
 
         return $this;
     }
@@ -153,6 +164,7 @@ class TicketsQuery implements QueryInterface
     /**
      * Push a select onto the select stack.
      * @param string $select
+     * @return $this
      */
     public function addSelect($select)
     {
@@ -165,6 +177,10 @@ class TicketsQuery implements QueryInterface
     // Internal API //
     //////////////////
 
+    /**
+     * Build the query base
+     * @return void
+     */
     protected function build()
     {
         $this->query
@@ -176,6 +192,10 @@ class TicketsQuery implements QueryInterface
             );
     }
 
+    /**
+     * Generate the selects to use for this query
+     * @return void
+     */
     protected function generateSelects()
     {
         $this->selects = [

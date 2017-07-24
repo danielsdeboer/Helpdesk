@@ -204,7 +204,7 @@ class TicketsIndexTest extends AdminBase
     {
         $user = $this->makeUser();
 
-        $tickets = factory(Ticket::class, 24)->create([
+        factory(Ticket::class, 24)->create([
             'user_id' => $user->id,
         ]);
 
@@ -212,7 +212,7 @@ class TicketsIndexTest extends AdminBase
 
         $this->visit(self::URI)
             ->assertResponseOk()
-            ->see('<a id="open-see-more" class="button is-disabled">See 0 more...</a>');
+            ->see('<a id="open-see-more" class="button is-disabled">No more to show...</a>');
     }
 
     /**
@@ -225,7 +225,7 @@ class TicketsIndexTest extends AdminBase
     {
         $user = $this->makeUser();
 
-        $tickets = factory(Ticket::class, 26)->create([
+        factory(Ticket::class, 26)->create([
             'user_id' => $user->id,
         ]);
 
