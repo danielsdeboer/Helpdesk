@@ -17,7 +17,7 @@
     @foreach($tickets as $ticket)
       <tr>
         <td><a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ str_limit($ticket->content->title(), 50) }}</a></td>
-        <td>{{ $ticket->user->name }}</td>
+        <td>{{ $ticket->user->name or '(deleted)' }}</td>
         @if (isset($withOpened))
           <td>{{ $ticket->opening->created_at->diffForHumans() }}</td>
         @endif
