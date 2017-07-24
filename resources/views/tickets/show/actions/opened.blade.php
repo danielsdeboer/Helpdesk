@@ -2,10 +2,14 @@
 
 @section('action-content')
   <strong id="action-header-{{ $action->id }}">{{ $action->name }}</strong>
+
   <br>
+
   <em>When</em>: {{ $action->created_at->diffForHumans() }}
+
   <br>
-  <em>By</em>: {{ $action->object->agent ? $action->object->agent->user->name : $action->object->user->name }}
+
+  <em>By</em>: {{ \Aviator\Helpdesk\Helpers\Helpers::actionCreator($action) }}
 @overwrite
 
 @section('action-note')

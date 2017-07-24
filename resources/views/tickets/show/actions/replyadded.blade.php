@@ -3,7 +3,7 @@
 @section('action-content')
   <strong id="action-header-{{ $action->id }}">{{ $action->name }}</strong>
   <br>
-  <em name="reply-by">By</em>: {{ $action->object->agent ? $action->object->agent->user->name : $action->object->user->name }}
+  <em name="reply-by">By</em>: {{ \Aviator\Helpdesk\Helpers\Helpers::actionCreator($action) }}
 @overwrite
 
 @section('action-note')

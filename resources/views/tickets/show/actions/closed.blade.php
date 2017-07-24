@@ -5,7 +5,7 @@
   <br>
   <em>When</em>: {{ $action->created_at->diffForHumans() }}
   <br>
-  <em name="closed-by">By</em>: {{ $action->object->agent ? $action->object->agent->user->name : $action->object->user->name }}
+  <em name="closed-by">By</em>: {{ \Aviator\Helpdesk\Helpers\Helpers::actionCreator($action) }}
 @overwrite
 
 @section('action-note')
