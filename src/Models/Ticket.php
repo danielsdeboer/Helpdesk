@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Tests\User;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -248,11 +248,11 @@ class Ticket extends Model
     {
         $userClass = config('helpdesk.userModel');
 
-        /**
+        /*
          * Since the user class can vary, throw an exception if something
          * else is provided.
          */
-        if (!$user instanceof $userClass) {
+        if (! $user instanceof $userClass) {
             throw new CreatorMustBeAUserException;
         }
 

@@ -3,11 +3,11 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Contracts\View\View;
 use Aviator\Helpdesk\Queries\TicketsQuery;
+use Illuminate\Database\Eloquent\Collection;
 
 class TicketsController extends Controller
 {
