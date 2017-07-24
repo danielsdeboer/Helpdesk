@@ -10,7 +10,7 @@ abstract class AdminBase extends TestCase
 {
     /**
      * Make a super user.
-     * @return Agent
+     * @return User
      */
     protected function makeSuper()
     {

@@ -16,8 +16,9 @@ class SupervisorsOnly
     public function handle($request, Closure $next)
     {
         $email = config('helpdesk.userModelEmailColumn');
+        $supervisorEmails = config('helpdesk.supervisors');
 
-        if ($request->user() && $request->user()->$email == config('helpdesk.supervisor.email')) {
+        if ($request->user() && in_array($request->user()->$email, $supervisorEmails)) {
             return $next($request);
         }
 

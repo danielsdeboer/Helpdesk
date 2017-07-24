@@ -41,12 +41,20 @@ class MakeSupervisor extends Command
         $userModel = config('helpdesk.userModel');
         $emailColumn = config('helpdesk.userModelEmailColumn');
 
-        $user = $userModel::where($emailColumn, config('helpdesk.supervisor.email'))->first();
-
-        if ($user && ! Agent::where('user_id', $user->id)->first()) {
-            Agent::create([
-                'user_id' => $user->id,
-            ]);
-        }
+        /*
+         * Get a collection of users that match the helpdesk.supervisors array
+         */
+        $userModel::whereIn($emailColumn, config('helpdesk.supervisors'))
+            ->get()
+            ->each(function ($user) {
+                /*
+                 * If the user exists and the agent doesn't, create a supervisor users
+                 */
+                if ($user && ! Agent::where('user_id', $user->id)->first()) {
+                    Agent::create([
+                        'user_id' => $user->id,
+                    ]);
+                }
+            });
     }
 }

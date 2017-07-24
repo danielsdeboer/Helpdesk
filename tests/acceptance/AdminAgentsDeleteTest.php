@@ -31,7 +31,7 @@ class AdminAgentsDeleteTest extends AdminBase
     public function supervisors_can_delete()
     {
         $super = $this->makeSuper();
-        $agent = $this->makeAgent();
+        $this->makeAgent();
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
@@ -56,7 +56,7 @@ class AdminAgentsDeleteTest extends AdminBase
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call(self::VERB, 'helpdesk/admin/agents/1', [
+        $this->call(self::VERB, 'helpdesk/admin/agents/1', [
             'delete_agent_confirmed' => 1,
         ]);
 
@@ -76,7 +76,7 @@ class AdminAgentsDeleteTest extends AdminBase
 
         $this->be($super);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call(self::VERB, 'helpdesk/admin/agents/1234', [
+        $this->call(self::VERB, 'helpdesk/admin/agents/1234', [
             'delete_agent_confirmed' => 1,
         ]);
 

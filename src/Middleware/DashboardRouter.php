@@ -25,7 +25,7 @@ class DashboardRouter
      */
     public function __construct()
     {
-        $this->supervisorEmail = config('helpdesk.supervisor.email');
+        $this->supervisorEmails = config('helpdesk.supervisors');
         $this->emailColumn = config('helpdesk.userModelEmailColumn');
     }
 
@@ -44,7 +44,7 @@ class DashboardRouter
             );
         }
 
-        if ($request->user()->{$this->emailColumn} == $this->supervisorEmail) {
+        if (in_array($request->user()->{$this->emailColumn}, $this->supervisorEmails)) {
             return redirect(
                 route('helpdesk.dashboard.supervisor')
             );

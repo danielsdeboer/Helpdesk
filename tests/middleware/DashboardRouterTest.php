@@ -61,9 +61,9 @@ class DashboardRouterTest extends TestCase
      */
     public function it_routes_supervisors_to_the_supervisor_dashboard()
     {
-        $this->be(factory(User::class)->create([
-            'email' => config('helpdesk.supervisor.email'),
-        ]));
+        $this->be(
+            factory(Agent::class)->states('isSuper')->create()->user
+        );
 
         $this->route('GET', 'helpdesk.dashboard.router');
 

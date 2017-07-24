@@ -11,6 +11,8 @@ class HelpdeskServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
+     * @param Kernel $kernel
+     * @param Router $router
      */
     public function boot(Kernel $kernel, Router $router)
     {
