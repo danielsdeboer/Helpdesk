@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Helpers\Helpers;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Helpers\Helpers;
 
 class HelpersTest extends TestCase
 {
@@ -34,7 +34,7 @@ class HelpersTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $ticket->close(null, $user);
@@ -54,7 +54,7 @@ class HelpersTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $ticket->close(null, $user);

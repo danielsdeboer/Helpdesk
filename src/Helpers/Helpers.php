@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Models\Action;
 class Helpers
 {
     /**
-     * Get the name of the user or agent who created a ticket
+     * Get the name of the user or agent who created a ticket.
      * @param Action $action
      * @return string
      */
