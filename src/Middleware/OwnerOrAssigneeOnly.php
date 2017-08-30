@@ -5,13 +5,13 @@ namespace Aviator\Helpdesk\Middleware;
 use Closure;
 use Aviator\Helpdesk\Models\Agent;
 
-class TicketOwnerOrAssignee
+class OwnerOrAssigneeOnly
 {
     /**
      * The supervisor's email.
-     * @var string
+     * @var array
      */
-    protected $supervisorEmail;
+    protected $supervisorEmails = [];
 
     /**
      * The user model's email column.
@@ -31,32 +31,55 @@ class TicketOwnerOrAssignee
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $ticket = $request->route('ticket');
-        $agent = Agent::where('user_id', $request->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', $request->user()->id)
+            ->first();
 
-        // Supervisor can access any ticket
+        /*
+         * A supervisor can access any ticket.
+         */
         if (in_array($request->user()->{$this->emailColumn}, $this->supervisorEmails)) {
             return $next($request);
         }
 
+        /*
+         * The ticket creator can access this ticket.
+         */
         if ($ticket->user_id == $request->user()->id) {
             return $next($request);
         }
 
-        if ($agent && $ticket->assignment && $ticket->assignment->assigned_to == $agent->id) {
+        /*
+         * The collaborators can access this ticket.
+         */
+        if ($agent && $ticket->collaborators && $ticket->collaborators->is($agent)) {
             return $next($request);
         }
 
+        /*
+         * The team lead for this team can access this ticket.
+         */
         if ($agent && $ticket->poolAssignment && $agent->isMemberOf($ticket->poolAssignment->pool)) {
             return $next($request);
         }
 
-        abort(403);
+        /*
+         * The assigned agent can access this ticket.
+         */
+        if ($agent && $ticket->assignment && $ticket->assignment->assigned_to == $agent->id) {
+            return $next($request);
+        }
+
+        /*
+         * Abort if all else fails.
+         */
+        return abort(403);
     }
 }

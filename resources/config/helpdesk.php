@@ -49,6 +49,7 @@ return [
         'closings' => 'closings',
         'openings' => 'openings',
         'notes' => 'notes',
+        'collaborators' => 'collaborators',
     ],
 
     'from' => [
@@ -103,6 +104,14 @@ return [
             'replied' => [
                 'class' => \Aviator\Helpdesk\Notifications\Internal\Replied::class,
                 'subject' => 'A ticket has been replied to',
+                'greeting' => 'Hey there.',
+                'line' => '',
+                'route' => 'helpdesk.tickets.show',
+            ],
+
+            'collaborator' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\Collaborator::class,
+                'subject' => 'You\'ve been added as a collaborator',
                 'greeting' => 'Hey there.',
                 'line' => '',
                 'route' => 'helpdesk.tickets.show',

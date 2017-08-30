@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Models;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Aviator\Helpdesk\Interfaces\TicketContent;
@@ -12,6 +13,14 @@ use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
+/**
+ * Class Ticket
+ * @property \Aviator\Helpdesk\Models\PoolAssignment poolAssignment
+ * @property mixed user
+ * @package Aviator\Helpdesk\Models
+ * @property int id
+ * @method Builder accessible($user)
+ */
 class Ticket extends Model
 {
     use SoftDeletes, AutoUuids;
@@ -577,9 +586,13 @@ class Ticket extends Model
         return $this->hasMany(Assignment::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function assignment()
     {
-        return $this->hasOne(Assignment::class)->latest();
+        return $this->hasOne(Assignment::class)
+            ->latest();
     }
 
     public function poolAssignments()
@@ -589,7 +602,8 @@ class Ticket extends Model
 
     public function poolAssignment()
     {
-        return $this->hasOne(PoolAssignment::class)->latest();
+        return $this->hasOne(PoolAssignment::class)
+            ->latest();
     }
 
     public function dueDates()

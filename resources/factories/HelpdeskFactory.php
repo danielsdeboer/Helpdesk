@@ -1,5 +1,6 @@
 <?php
 
+use Aviator\Helpdesk\Models\Collaborator;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Pool;
@@ -175,5 +176,12 @@ $factory->state(Note::class, 'isUser', function (Faker\Generator $faker) {
     return [
         'agent_id' => null,
         'user_id' => factory(config('helpdesk.userModel'))->create()->id,
+    ];
+});
+
+$factory->define(Collaborator::class, function (Faker\Generator $faker) {
+    return [
+        'agent_id' => factory(Agent::class)->create()->id,
+        'ticket_id' => factory(Ticket::class)->create()->id,
     ];
 });

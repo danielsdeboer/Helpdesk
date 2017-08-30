@@ -10,7 +10,7 @@ class ActionBase extends Model
     use SoftDeletes;
 
     /**
-     * Properties to be mutated to dates.
+     * Fields to be mutated to dates.
      * @var array
      */
     protected $dates = [
@@ -19,8 +19,16 @@ class ActionBase extends Model
         'deleted_at',
     ];
 
+    /**
+     * Fields exempt from mass assignment.
+     * @var array
+     */
     protected $guarded = [];
 
+    /**
+     * Fields to cast as types.
+     * @var array
+     */
     protected $casts = [
         'is_visible' => 'boolean',
     ];

@@ -40,6 +40,9 @@ class Pool extends Model
     // Relationships //
     ///////////////////
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function agents()
     {
         return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))

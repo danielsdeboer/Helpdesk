@@ -141,6 +141,14 @@ class CreateHelpdeskTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create($tables['collaborators'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('ticket_id');
+            $table->unsignedInteger('agent_id');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**

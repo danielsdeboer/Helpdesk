@@ -2,6 +2,24 @@
 
 namespace Aviator\Helpdesk;
 
+use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Closing;
+use Aviator\Helpdesk\Models\Collaborator;
+use Aviator\Helpdesk\Models\DueDate;
+use Aviator\Helpdesk\Models\Note;
+use Aviator\Helpdesk\Models\Opening;
+use Aviator\Helpdesk\Models\PoolAssignment;
+use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Observers\AssignmentObserver;
+use Aviator\Helpdesk\Observers\ClosingObserver;
+use Aviator\Helpdesk\Observers\CollaboratorObserver;
+use Aviator\Helpdesk\Observers\DueDateObserver;
+use Aviator\Helpdesk\Observers\NoteObserver;
+use Aviator\Helpdesk\Observers\OpeningObserver;
+use Aviator\Helpdesk\Observers\PoolAssignmentObserver;
+use Aviator\Helpdesk\Observers\ReplyObserver;
+use Aviator\Helpdesk\Observers\TicketObserver;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\Http\Kernel;
@@ -57,8 +75,8 @@ class HelpdeskServiceProvider extends ServiceProvider
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class);
         $router->aliasMiddleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
 
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
-        $router->aliasMiddleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\TicketOwnerOrAssignee::class);
+        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\OwnerOrAssigneeOnly::class);
+        $router->aliasMiddleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\OwnerOrAssigneeOnly::class);
 
         $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketAssignee::class);
         $router->aliasMiddleware('helpdesk.ticket.assignee', \Aviator\Helpdesk\Middleware\TicketAssignee::class);
@@ -92,14 +110,15 @@ class HelpdeskServiceProvider extends ServiceProvider
      */
     protected function registerObservers()
     {
-        \Aviator\Helpdesk\Models\Ticket::observe(\Aviator\Helpdesk\Observers\TicketObserver::class);
-        \Aviator\Helpdesk\Models\Assignment::observe(\Aviator\Helpdesk\Observers\AssignmentObserver::class);
-        \Aviator\Helpdesk\Models\DueDate::observe(\Aviator\Helpdesk\Observers\DueDateObserver::class);
-        \Aviator\Helpdesk\Models\Reply::observe(\Aviator\Helpdesk\Observers\ReplyObserver::class);
-        \Aviator\Helpdesk\Models\PoolAssignment::observe(\Aviator\Helpdesk\Observers\PoolAssignmentObserver::class);
-        \Aviator\Helpdesk\Models\Closing::observe(\Aviator\Helpdesk\Observers\ClosingObserver::class);
-        \Aviator\Helpdesk\Models\Opening::observe(\Aviator\Helpdesk\Observers\OpeningObserver::class);
-        \Aviator\Helpdesk\Models\Note::observe(\Aviator\Helpdesk\Observers\NoteObserver::class);
+        Ticket::observe(TicketObserver::class);
+        Assignment::observe(AssignmentObserver::class);
+        DueDate::observe(DueDateObserver::class);
+        Reply::observe(ReplyObserver::class);
+        PoolAssignment::observe(PoolAssignmentObserver::class);
+        Closing::observe(ClosingObserver::class);
+        Opening::observe(OpeningObserver::class);
+        Note::observe(NoteObserver::class);
+        Collaborator::observe(CollaboratorObserver::class);
     }
 
     /**

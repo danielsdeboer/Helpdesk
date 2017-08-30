@@ -5,7 +5,6 @@ namespace Aviator\Helpdesk\Controllers;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Contracts\View\View;
 use Aviator\Helpdesk\Queries\TicketsQuery;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,7 +18,7 @@ class TicketsController extends Controller
 
     /**
      * The ticket.
-     * @var Ticket
+     * @var \Aviator\Helpdesk\Models\Ticket
      */
     protected $ticket;
 
@@ -43,11 +42,13 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
 
         $open = TicketsQuery::make($agent)
             ->withRelations($this->relations)
@@ -72,11 +73,13 @@ class TicketsController extends Controller
 
     /**
      * Show an index of open tickets.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     public function opened()
     {
-        $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
 
         $open = Ticket::with($this->relations)
             ->accessible($agent ? $agent : auth()->user())
@@ -90,11 +93,13 @@ class TicketsController extends Controller
 
     /**
      * Show an index of closed tickets.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     public function closed()
     {
-        $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
 
         $closed = Ticket::with($this->relations)
             ->accessible($agent ? $agent : auth()->user())
@@ -109,14 +114,16 @@ class TicketsController extends Controller
     /**
      * Display a instance of the resource.
      * @param  int $id
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
         $supervisorEmails = config('helpdesk.supervisors');
         $email = config('helpdesk.userModelEmailColumn');
 
-        $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
 
         $this->ticket = Ticket::with($this->relations)
             ->accessible($agent ? $agent : auth()->user())
@@ -138,7 +145,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for a user.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     protected function showForUser()
     {
@@ -155,7 +162,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for an agent.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     protected function showForAgent()
     {
@@ -173,7 +180,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for a superuser.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     protected function showForSuper()
     {
@@ -193,7 +200,7 @@ class TicketsController extends Controller
 
     /**
      * Show a ticket for a team lead.
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
     public function showForTeamLead()
     {
@@ -231,13 +238,20 @@ class TicketsController extends Controller
 
     /**
      * Is the user allowed to access the ticket.
+     * @param \Aviator\Helpdesk\Models\Ticket $ticket
      * @return bool
      */
-    protected function permitted($ticket)
+    protected function permitted(Ticket $ticket)
     {
-        $ticket = Ticket::find($ticket);
+        $ticket = Ticket::query()
+            ->find($ticket);
+
         $user = auth()->user();
-        $agent = Agent::where('user_id', $user->id)->first();
+
+        $agent = Agent::query()
+            ->where('user_id', $user->id)
+            ->first();
+
         $email = config('helpdesk.userModelEmailColumn');
         $supervisors = config('helpdesk.supervisors');
 
