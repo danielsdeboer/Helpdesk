@@ -1,5 +1,5 @@
 @if (auth()->user())
-  <div class="section {{ $withClass or '' }}">
+  <div class="section {{ $withClass or '' }}" id="ticket-toolbar">
     <div class="container">
       <div class="modal-app nav">
 

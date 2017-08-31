@@ -21,6 +21,7 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @property mixed collaborators
  * @property string status
  * @property \Aviator\Helpdesk\Models\Assignment assignment
+ * @property mixed uuid
  * @method Builder accessible($user)
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
@@ -644,6 +645,9 @@ class Ticket extends Model
             })
             ->orWhereHas('poolAssignment', function (Builder $query) use ($isTeamLeadOf) {
                 $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+            })
+            ->orWhereHas('collaborators', function (Builder $query) use ($agent) {
+                $query->where('agent_id', $agent->id);
             });
         });
     }
