@@ -1051,6 +1051,4 @@ class TicketTest extends TestCase
 
         $this->assertTrue($ticket->collaborators->first()->is_visible);
     }
-
-
 }
