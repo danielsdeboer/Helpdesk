@@ -14,7 +14,7 @@ class TicketViewTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    protected function createAgent ()
+    protected function createAgent()
     {
         return factory(Agent::class)->create();
     }
@@ -22,7 +22,7 @@ class TicketViewTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Tests\User
      */
-    protected function createUser ()
+    protected function createUser()
     {
         return factory(User::class)->create();
     }
@@ -31,7 +31,7 @@ class TicketViewTest extends TestCase
      * @param \Aviator\Helpdesk\Tests\User $user
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    protected function createTicketForUser (User $user)
+    protected function createTicketForUser(User $user)
     {
         return factory(Ticket::class)->create([
             'user_id' => $user->id,
@@ -41,6 +41,7 @@ class TicketViewTest extends TestCase
     /*
      * Tests -----------------------------------------------------------------------------------------------------------
      */
+
     /**
      * @group acc
      * @group acc.ticket
@@ -267,8 +268,6 @@ class TicketViewTest extends TestCase
             ->press('collab_submit')
             ->seePageIs('helpdesk/tickets/' . $ticket->id)
             ->see('<strong id="action-header-3">Collaborator Added</strong>')
-            ->see('id="action-3-private"')
-        ;
-
+            ->see('id="action-3-private"');
     }
 }
