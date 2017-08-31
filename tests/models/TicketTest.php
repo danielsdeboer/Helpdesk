@@ -990,10 +990,10 @@ class TicketTest extends TestCase
         $ticket = $this->createTicket();
         $agent = $this->createAgent();
 
-        $ticket = $ticket->addCollaborator($agent);
-        $ticket = $ticket->addCollaborator($agent);
+        $ticket->addCollaborator($agent);
+        $ticket->addCollaborator($agent);
 
-        $this->assertEquals(1, $ticket->collaborators->count());
+        $this->assertEquals(1, $ticket->fresh()->collaborators->count());
     }
 
     /**
