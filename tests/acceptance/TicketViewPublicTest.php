@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 
-class TicketViewPublicTestTest extends TestCase
+class TicketViewPublicTest extends TestCase
 {
     /*
      * Setup -----------------------------------------------------------------------------------------------------------
