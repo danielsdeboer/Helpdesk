@@ -1,6 +1,5 @@
 <?php
 
-use Aviator\Helpdesk\Models\Collaborator;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Pool;
@@ -12,6 +11,7 @@ use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\PoolAssignment;
 

@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Ticket;
 use Closure;
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Http\Request;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Ticket;
 
 class OwnerOrAssigneeOnly
 {
@@ -39,7 +39,7 @@ class OwnerOrAssigneeOnly
      */
     public function handle($request, Closure $next)
     {
-        if (!isset($request->user()->id)) {
+        if (! isset($request->user()->id)) {
             return abort(403);
         }
 
@@ -94,12 +94,12 @@ class OwnerOrAssigneeOnly
      * @param \Illuminate\Http\Request $request
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    protected function getTicket (Request $request)
+    protected function getTicket(Request $request)
     {
         /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
         $ticket = $request->route('ticket');
 
-        if ($ticket instanceOf Ticket) {
+        if ($ticket instanceof Ticket) {
             return $ticket;
         }
 
