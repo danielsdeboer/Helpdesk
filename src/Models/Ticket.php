@@ -645,6 +645,9 @@ class Ticket extends Model
             })
             ->orWhereHas('poolAssignment', function (Builder $query) use ($isTeamLeadOf) {
                 $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+            })
+            ->orWhereHas('collaborators', function (Builder $query) use ($agent) {
+                $query->where('agent_id', $agent->id);
             });
         });
     }

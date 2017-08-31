@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 
-class TicketViewPublicTestTest extends TestCase
+class TicketViewCollaboratorTest extends TestCase
 {
     /*
      * Setup -----------------------------------------------------------------------------------------------------------
@@ -46,9 +46,13 @@ class TicketViewPublicTestTest extends TestCase
         return factory(Ticket::class)->create();
     }
 
+    /**
+     * @param \Aviator\Helpdesk\Models\Ticket $ticket
+     * @return string
+     */
     protected function buildRoute(Ticket $ticket)
     {
-        return 'helpdesk/tickets/public/' . $ticket->uuid;
+        return 'helpdesk/tickets/' . $ticket->id;
     }
 
     /*
@@ -57,29 +61,25 @@ class TicketViewPublicTestTest extends TestCase
 
     /**
      * @group acc
-     * @group acc.public
-     * @group acc.public.ticket
+     * @group acc.collab
+     * @group acc.collab.ticket
      * @test
      */
-    public function anyone_can_visit()
+    public function collaborators_may_reply()
     {
-        $ticket = $this->createTicket();
+        $agent = $this->createAgent();
+        $ticket = factory(Ticket::class)->create();
+        $ticket->addCollaborator($agent);
+
+        $this->be($agent->user);
 
         $this->visit($this->buildRoute($ticket))
-            ->see('<strong id="action-header-1">Opened</strong>');
-    }
-
-    /**
-     * @group acc
-     * @group acc.public
-     * @group acc.public.ticket
-     * @test
-     */
-    public function unauthenticated_users_see_no_actions()
-    {
-        $ticket = $this->createTicket();
-
-        $this->visit($this->buildRoute($ticket))
-            ->dontSee('id="ticket-toolbar"');
+            ->see('id="ticket-toolbar"')
+            ->see('<p class="heading">Add Reply</p>')
+            ->see('<p class="heading">Add Note</p>')
+            ->dontSee('<p class="heading">Assign</p>')
+            ->dontSee('<p class="heading">Close Ticket</p>')
+            ->dontSee('<p class="heading">Reopen Ticket</p>')
+            ->dontSee('<p class="heading">Add Collaborator</p>');
     }
 }

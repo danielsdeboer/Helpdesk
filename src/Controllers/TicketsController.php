@@ -137,6 +137,8 @@ class TicketsController extends Controller
                 return $this->showForSuper();
             case $agent && $this->ticket->poolAssignment && $agent->isMemberOf($this->ticket->poolAssignment->pool):
                 return $this->showForTeamLead();
+            case $agent && $this->ticket->isCollaborator($agent):
+                return $this->showForCollab();
             default:
                 return $this->showForAgent();
         }
@@ -221,6 +223,24 @@ class TicketsController extends Controller
             'withNote' => true,
             'withAssign' => true,
             'withCollab' => true,
+            'showPrivate' => true,
+            'tab' => 'tickets',
+        ]);
+    }
+
+    /**
+     * Show a ticket for a team lead.
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function showForCollab()
+    {
+        return view('helpdesk::tickets.show')->with([
+            'for' => 'agent',
+            'ticket' => $this->ticket,
+            'agents' => $this->getUsers(),
+            'agentsJson' => $this->getUsers()->toJson(),
+            'withReply' => true,
+            'withNote' => true,
             'showPrivate' => true,
             'tab' => 'tickets',
         ]);
