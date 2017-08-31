@@ -11,6 +11,25 @@ namespace Aviator\Helpdesk\Models;
 class Collaborator extends ActionBase
 {
     /**
+     * Fields to be cast.
+     * @var array
+     */
+    protected $casts = [
+        'is_visible' => 'boolean',
+    ];
+
+    /**
+     * Set the table name from the Helpdesk config.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setTable(config('helpdesk.tables.collaborators'));
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function agent()
@@ -24,16 +43,5 @@ class Collaborator extends ActionBase
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
-    }
-
-    /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.collaborators'));
     }
 }

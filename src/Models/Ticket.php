@@ -324,10 +324,13 @@ class Ticket extends Model
      */
     public function addCollaborator(Agent $agent)
     {
-        Collaborator::query()->create([
-            'ticket_id' => $this->id,
-            'agent_id' => $agent->id,
-        ]);
+        if (! $this->collaborators->pluck('id')->contains($agent->id)) {
+            Collaborator::query()->create([
+                'ticket_id' => $this->id,
+                'agent_id' => $agent->id,
+                'is_visible' => 1,
+            ]);
+        }
 
         return $this->fresh('collaborators');
     }
@@ -338,7 +341,7 @@ class Ticket extends Model
      */
     public function removeCollaborator(Agent $agent)
     {
-        $this->collaborators()->detach($agent);
+        $this->collaborators()->where('agent_id', $agent->id)->delete();
 
         return $this->fresh('collaborators');
     }
@@ -439,7 +442,7 @@ class Ticket extends Model
      */
     public function isCollaborator(Agent $agent)
     {
-        return $this->collaborators->pluck('id')->contains($agent->id);
+        return $this->collaborators->pluck('agent.id')->contains($agent->id);
     }
 
     ////////////
@@ -740,15 +743,10 @@ class Ticket extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function collaborators()
     {
-        return $this->belongsToMany(
-            Agent::class,
-            config('helpdesk.tables.collaborators'),
-            'ticket_id',
-            'agent_id'
-        );
+        return $this->hasMany(Collaborator::class);
     }
 }

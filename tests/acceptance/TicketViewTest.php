@@ -268,6 +268,6 @@ class TicketViewTest extends TestCase
             ->press('collab_submit')
             ->seePageIs('helpdesk/tickets/' . $ticket->id)
             ->see('<strong id="action-header-3">Collaborator Added</strong>')
-            ->see('id="action-3-private"');
+            ->see('id="action-3-public"');
     }
 }
