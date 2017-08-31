@@ -42,7 +42,7 @@ class NoteController extends Controller
         $ticket->note(
             request('note_body'),
             $agent,
-            !!request('note_is_visible')
+            (bool) request('note_is_visible')
         );
 
         return redirect(
