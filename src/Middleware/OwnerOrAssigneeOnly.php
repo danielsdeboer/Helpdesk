@@ -92,15 +92,24 @@ class OwnerOrAssigneeOnly
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return mixed
+     * @return \Aviator\Helpdesk\Models\Ticket
      */
     protected function getTicket (Request $request)
     {
-        $ticket = Ticket::query()
-            ->find($request->route('ticket'));
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
+        $ticket = $request->route('ticket');
 
-        return $ticket
-            ? $ticket
-            : abort(403);
+        if ($ticket instanceOf Ticket) {
+            return $ticket;
+        }
+
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
+        $ticket = Ticket::query()->find($ticket);
+
+        if ($ticket) {
+            return $ticket;
+        }
+
+        abort(403);
     }
 }

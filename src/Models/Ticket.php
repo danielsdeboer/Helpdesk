@@ -576,7 +576,7 @@ class Ticket extends Model
     public function scopeWithActions($query)
     {
         return $query->with([
-            'actions' => function (Builder $query) {
+            'actions' => function ($query) {
                 $query->orderBy('id', 'asc');
             }
         ]);

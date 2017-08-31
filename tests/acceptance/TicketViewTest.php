@@ -34,11 +34,13 @@ class TicketViewTest extends TestCase
     public function users_can_add_replies()
     {
         $user = factory(User::class)->create();
+
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
 
         $this->be($user);
+
         $this->visit('helpdesk/tickets/' . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->type('test reply body', 'reply_body')

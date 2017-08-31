@@ -12,6 +12,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * Set up ----------------------------------------------------------------------------------------------------------
      */
 
+    protected $baseRoute = 'guarded';
     protected $route = 'guarded/1';
 
     /**
@@ -31,7 +32,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      */
     protected function makeAgent ()
     {
-        return factory(Agent::class)->make();
+        return factory(Agent::class)->create();
     }
 
     /**
@@ -39,8 +40,39 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      */
     protected function makeUser ()
     {
-        return factory(User::class)->make();
+        return factory(User::class)->create();
     }
+
+    /**
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
+    protected function makeTicket ()
+    {
+        return factory(Ticket::class)->create();
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Tests\User $user
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
+    protected function makeTicketForUser (User $user)
+    {
+        return factory(Ticket::class)->create([
+            'user_id' => $user->id
+        ]);
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Models\Ticket|null $ticket
+     * @return string
+     */
+    protected function makeRoute (Ticket $ticket = null)
+    {
+        return $ticket
+            ? $this->baseRoute . '/' . $ticket->id
+            : 'guarded/1';
+    }
+
 
     /*
      * Tests -----------------------------------------------------------------------------------------------------------
@@ -95,11 +127,13 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     public function it_proceeds_if_the_user_owns_the_ticket ()
     {
         $user = $this->makeUser();
-        $this->be(factory(User::class)->create());
+        $ticket = $this->makeTicketForUser($user);
 
-        $response = $this->call('GET', $this->route);
+        $this->be($user);
 
-        $this->assertResponseStatus(403);
+        $response = $this->call('GET', $this->makeRoute($ticket));
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -110,13 +144,30 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     public function it_aborts_if_the_agent_isnt_assigned_to_the_ticket ()
     {
         $agent = $this->makeAgent();
+        $ticket = $this->makeTicket();
 
         $this->be($agent->user);
 
-        $response = $this->call('GET', '/guarded');
+        $response = $this->call('GET', $this->makeRoute($ticket));
 
         $this->assertResponseStatus(403);
     }
 
+    /**
+     * @group middleware
+     * @group middleware.owner
+     * @test
+     */
+    public function it_proceeds_if_the_agent_is_assigned_to_the_ticket ()
+    {
+        $agent = $this->makeAgent();
+        $ticket = $this->makeTicket();
 
+        $ticket->assignToAgent($agent);
+        $this->be($agent->user);
+
+        $response = $this->call('GET', $this->makeRoute($ticket));
+
+        $this->assertResponseOk();
+    }
 }
