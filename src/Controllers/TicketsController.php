@@ -30,6 +30,7 @@ class TicketsController extends Controller
         'assignment',
         'poolAssignment',
         'dueDate',
+        'collaborators',
     ];
 
     /**

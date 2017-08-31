@@ -2,8 +2,10 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
+use Aviator\Helpdesk\Models\Ticket;
 use Closure;
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
 
 class OwnerOrAssigneeOnly
 {
@@ -37,7 +39,12 @@ class OwnerOrAssigneeOnly
      */
     public function handle($request, Closure $next)
     {
-        $ticket = $request->route('ticket');
+        if (!isset($request->user()->id)) {
+            return abort(403);
+        }
+
+        $ticket = $this->getTicket($request);
+
         $agent = Agent::query()
             ->where('user_id', $request->user()->id)
             ->first();
@@ -59,7 +66,7 @@ class OwnerOrAssigneeOnly
         /*
          * The collaborators can access this ticket.
          */
-        if ($agent && $ticket->collaborators && $ticket->collaborators->is($agent)) {
+        if ($agent && $ticket->collaborators && $ticket->isCollaborator($agent)) {
             return $next($request);
         }
 
@@ -81,5 +88,19 @@ class OwnerOrAssigneeOnly
          * Abort if all else fails.
          */
         return abort(403);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    protected function getTicket (Request $request)
+    {
+        $ticket = Ticket::query()
+            ->find($request->route('ticket'));
+
+        return $ticket
+            ? $ticket
+            : abort(403);
     }
 }

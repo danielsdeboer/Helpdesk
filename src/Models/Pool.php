@@ -5,6 +5,9 @@ namespace Aviator\Helpdesk\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed id
+ */
 class Pool extends Model
 {
     use SoftDeletes;

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed user
+ * @property int id
  */
 class Agent extends Model
 {

@@ -19,7 +19,11 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @property mixed user
  * @package Aviator\Helpdesk\Models
  * @property int id
+ * @property mixed collaborators
+ * @property string status
  * @method Builder accessible($user)
+ * @method Builder accessibleToUser($user)
+ * @method Builder accessibleToAgent($user)
  */
 class Ticket extends Model
 {
@@ -61,12 +65,13 @@ class Ticket extends Model
      */
     public function assignToAgent(Agent $agent, Agent $creator = null, $isVisible = false)
     {
-        Assignment::create([
-            'ticket_id' => $this->id,
-            'assigned_to' => $agent->id,
-            'agent_id' => $creator ? $creator->id : null,
-            'is_visible' => $isVisible,
-        ]);
+        Assignment::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'assigned_to' => $agent->id,
+                'agent_id' => $creator ? $creator->id : null,
+                'is_visible' => $isVisible,
+            ]);
 
         return $this;
     }
@@ -78,20 +83,21 @@ class Ticket extends Model
      * Visibility for assignments is assumed to be false as
      * this isn't relevant for the end user but this can
      * be overridden.
-     * @param int $pool
-     * @param  Agent $creator
+     * @param \Aviator\Helpdesk\Models\Pool $pool
+     * @param \Aviator\Helpdesk\Models\Agent $creator
      * @param bool $isVisible
      * @return $this
      * @internal param User $user
      */
     public function assignToPool($pool, Agent $creator = null, $isVisible = false)
     {
-        PoolAssignment::create([
-            'ticket_id' => $this->id,
-            'pool_id' => $pool->id,
-            'agent_id' => $creator ? $creator->id : null,
-            'is_visible' => $isVisible,
-        ]);
+        PoolAssignment::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'pool_id' => $pool->id,
+                'agent_id' => $creator ? $creator->id : null,
+                'is_visible' => $isVisible,
+            ]);
 
         return $this;
     }
@@ -118,12 +124,13 @@ class Ticket extends Model
      */
     public function dueOn($date, Agent $creator = null, $isVisible = true)
     {
-        DueDate::create([
-            'ticket_id' => $this->id,
-            'due_on' => Carbon::parse($date),
-            'agent_id' => $creator ? $creator->id : null,
-            'is_visible' => $isVisible,
-        ]);
+        DueDate::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'due_on' => Carbon::parse($date),
+                'agent_id' => $creator ? $creator->id : null,
+                'is_visible' => $isVisible,
+            ]);
 
         return $this;
     }
@@ -146,13 +153,14 @@ class Ticket extends Model
 
         $userClass = config('helpdesk.userModel');
 
-        Closing::create([
-            'ticket_id' => $this->id,
-            'note' => $note,
-            'agent_id' => $creator instanceof Agent ? $creator->id : null,
-            'user_id' => $creator instanceof $userClass ? $creator->id : null,
-            'is_visible' => true,
-        ]);
+        Closing::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'note' => $note,
+                'agent_id' => $creator instanceof Agent ? $creator->id : null,
+                'user_id' => $creator instanceof $userClass ? $creator->id : null,
+                'is_visible' => true,
+            ]);
 
         $this->status = 'closed';
 
@@ -179,13 +187,14 @@ class Ticket extends Model
 
         $userClass = config('helpdesk.userModel');
 
-        Opening::create([
-            'ticket_id' => $this->id,
-            'note' => $note,
-            'agent_id' => $creator instanceof Agent ? $creator->id : null,
-            'user_id' => $creator instanceof $userClass ? $creator->id : null,
-            'is_visible' => true,
-        ]);
+        Opening::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'note' => $note,
+                'agent_id' => $creator instanceof Agent ? $creator->id : null,
+                'user_id' => $creator instanceof $userClass ? $creator->id : null,
+                'is_visible' => true,
+            ]);
 
         $this->status = 'open';
 
@@ -211,13 +220,14 @@ class Ticket extends Model
 
         $userClass = config('helpdesk.userModel');
 
-        Note::create([
-            'ticket_id' => $this->id,
-            'body' => $body,
-            'agent_id' => $creator instanceof Agent ? $creator->id : null,
-            'user_id' => $creator instanceof $userClass ? $creator->id : null,
-            'is_visible' => $isVisible,
-        ]);
+        Note::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'body' => $body,
+                'agent_id' => $creator instanceof Agent ? $creator->id : null,
+                'user_id' => $creator instanceof $userClass ? $creator->id : null,
+                'is_visible' => $isVisible,
+            ]);
 
         return $this;
     }
@@ -234,12 +244,13 @@ class Ticket extends Model
      */
     public function internalReply($body, Agent $agent)
     {
-        Reply::create([
-            'ticket_id' => $this->id,
-            'body' => $body,
-            'agent_id' => $agent->id,
-            'is_visible' => true,
-        ]);
+        Reply::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'body' => $body,
+                'agent_id' => $agent->id,
+                'is_visible' => true,
+            ]);
 
         return $this;
     }
@@ -265,12 +276,13 @@ class Ticket extends Model
             throw new CreatorMustBeAUserException;
         }
 
-        Reply::create([
-            'ticket_id' => $this->id,
-            'body' => $body,
-            'user_id' => $user->id,
-            'is_visible' => true,
-        ]);
+        Reply::query()
+            ->create([
+                'ticket_id' => $this->id,
+                'body' => $body,
+                'user_id' => $user->id,
+                'is_visible' => true,
+            ]);
 
         return $this;
     }
@@ -290,9 +302,9 @@ class Ticket extends Model
     }
 
     /**
-     * Create and assocate the ticket content.
+     * Create and associate the ticket content.
      * @param string $class
-     * @param array $attribute
+     * @param array $attributes
      * @return $this
      */
     public function createContent($class, array $attributes)
@@ -304,6 +316,28 @@ class Ticket extends Model
         $this->save();
 
         return $this;
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return $this;
+     */
+    public function addCollaborator (Agent $agent)
+    {
+        $this->collaborators()->attach($agent);
+
+        return $this->fresh('collaborators');
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return $this;
+     */
+    public function removeCollaborator (Agent $agent)
+    {
+        $this->collaborators()->detach($agent);
+
+        return $this->fresh('collaborators');
     }
 
     ////////////////////////
@@ -395,6 +429,16 @@ class Ticket extends Model
         return $this->poolAssignment && ! $this->assignment;
     }
 
+    /**
+     * Is the given agent a collaborator on this ticket?
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return bool
+     */
+    public function isCollaborator (Agent $agent)
+    {
+        return $this->collaborators->pluck('id')->contains($agent->id);
+    }
+
     ////////////
     // SCOPES //
     ////////////
@@ -403,7 +447,9 @@ class Ticket extends Model
      * Find a model by uuid. It doesn't make sense to call
      * anything other than first() here so the call is
      * made here automatically.
-     * @param  string $uuid
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $uuid
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeUuid($query, $uuid)
     {
@@ -412,7 +458,9 @@ class Ticket extends Model
 
     /**
      * Find a single model with actions.
-     * @param  int $id
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $id
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFindWithActions($query, $id)
     {
@@ -424,90 +472,121 @@ class Ticket extends Model
      * considered an assignment for these purposes since
      * a pool assignment is an automatic intermediary
      * to an assignment to an actual user.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeUnassigned($query)
     {
-        return $query->whereDoesntHave('assignment')->whereStatus('open');
+        return $query->whereDoesntHave('assignment')
+            ->where('status', 'open');
     }
 
     /**
-     * Get asssigned tickets.
+     * Get assigned tickets.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAssigned($query)
     {
-        return $query->has('assignment')->whereStatus('open');
+        return $query->has('assignment')
+            ->where('status', 'open');
     }
 
     /**
      * Get tickets assigned to pools.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePooled($query)
     {
-        return $query->has('poolAssignment')->whereDoesntHave('assignment')->whereStatus('open');
+        return $query->has('poolAssignment')
+            ->whereDoesntHave('assignment')
+            ->where('status', 'open');
     }
 
     /**
      * Get overdue tickets.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOverdue($query)
     {
-        return $query->whereHas('dueDate', function ($query) {
-            $query->where('due_on', '<', Carbon::now()->toDateString());
-        })->whereStatus('open');
+        return $query
+            ->whereHas('dueDate', function (Builder $query) {
+                $query->where('due_on', '<', Carbon::now()->toDateString());
+            })
+            ->where('status', 'open');
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets.
+     * Get on time tickets. Due Today is a subset of on time tickets.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOnTime($query)
     {
-        return $query->whereHas('dueDate', function ($query) {
-            $query->where('due_on', '>=', Carbon::now()->toDateString());
-        })->whereStatus('open');
+        return $query
+            ->whereHas('dueDate', function (Builder $query) {
+                $query->where('due_on', '>=', Carbon::now()->toDateString());
+            })
+            ->where('status', 'open');
     }
 
     /**
-     * Get on time tickets. Due Today is a subet of on time tickets.
+     * Get on time tickets. Due Today is a subset of on time tickets.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDueToday($query)
     {
-        return $query->whereHas('dueDate', function ($query) {
-            $query->where('due_on', Carbon::now()->toDateString());
-        })->whereStatus('open');
+        return $query
+            ->whereHas('dueDate', function (Builder $query) {
+                $query->where('due_on', Carbon::now()->toDateString());
+            })
+            ->where('status', 'open');
     }
 
     /**
      * Get open tickets. This method name is a bit silly but we're already
      * using open() above. This can be refactored once the open() method
      * is refactored to a builder or domain object.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOpened($query)
     {
-        return $query->whereStatus('open');
+        return $query->where('status', 'open');
     }
 
     /**
      * Get tickets with closed status.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeClosed($query)
     {
-        return $query->whereStatus('closed');
+        return $query->where('status', 'closed');
     }
 
     /**
      * Get the ticket with actions, sorted oldest to newest.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithActions($query)
     {
-        return $query->with(['actions' => function ($query) {
-            $query->orderBy('id', 'asc');
-        }]);
+        return $query->with([
+            'actions' => function (Builder $query) {
+                $query->orderBy('id', 'asc');
+            }
+        ]);
     }
 
     /**
      * Return tickets that are accessible to the current user.
+     * @param \Illuminate\Database\Eloquent\Builder$query
      * @param User | Agent $user
-     * @return ticket
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAccessible($query, $user)
     {
@@ -524,8 +603,9 @@ class Ticket extends Model
 
     /**
      * Return tickets that are accessible to the current user.
-     * @param User $user
-     * @return ticket
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param User|Agent $user
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAccessibleToUser($query, $user)
     {
@@ -534,8 +614,9 @@ class Ticket extends Model
 
     /**
      * Return tickets that are accessible to the current agent.
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param Agent $agent
-     * @return ticket
+     * @return Builder
      */
     public function scopeAccessibleToAgent($query, $agent)
     {
@@ -546,15 +627,16 @@ class Ticket extends Model
             return $query;
         }
 
+        /** @var \Illuminate\Support\Collection $isTeamLeadOf */
         $isTeamLeadOf = $agent->teams->filter(function ($item) {
             return $item->pivot->is_team_lead;
         });
 
-        return $query->where(function ($query) use ($agent, $isTeamLeadOf) {
-            $query->whereHas('assignment', function ($query) use ($agent) {
+        return $query->where(function (Builder $query) use ($agent, $isTeamLeadOf) {
+            $query->whereHas('assignment', function (Builder $query) use ($agent) {
                 $query->where('assigned_to', $agent->id);
             })
-            ->orWhereHas('poolAssignment', function ($query) use ($isTeamLeadOf) {
+            ->orWhereHas('poolAssignment', function (Builder $query) use ($isTeamLeadOf) {
                 $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
             });
         });
@@ -571,6 +653,9 @@ class Ticket extends Model
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function content()
     {
         return $this->morphTo()->withTrashed();
@@ -649,5 +734,18 @@ class Ticket extends Model
     public function notes()
     {
         return $this->hasMany(Note::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collaborators()
+    {
+        return $this->belongsToMany(
+            Agent::class,
+            'collaborators',
+            'ticket_id',
+            'agent_id'
+        );
     }
 }
