@@ -331,7 +331,7 @@
         },
         open: {
           visible: false,
-        }
+        },
         collab: {
           visible: false,
         }
