@@ -16,9 +16,9 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     protected $route = 'guarded/1';
 
     /**
-     * Setup
+     * Setup.
      */
-    public function setUp ()
+    public function setUp()
     {
         parent::setUp();
 
@@ -30,7 +30,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    protected function makeAgent ()
+    protected function makeAgent()
     {
         return factory(Agent::class)->create();
     }
@@ -38,7 +38,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Tests\User
      */
-    protected function makeUser ()
+    protected function makeUser()
     {
         return factory(User::class)->create();
     }
@@ -46,7 +46,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    protected function makeTicket ()
+    protected function makeTicket()
     {
         return factory(Ticket::class)->create();
     }
@@ -55,10 +55,10 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @param \Aviator\Helpdesk\Tests\User $user
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    protected function makeTicketForUser (User $user)
+    protected function makeTicketForUser(User $user)
     {
         return factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 
@@ -66,13 +66,12 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @param \Aviator\Helpdesk\Models\Ticket|null $ticket
      * @return string
      */
-    protected function makeRoute (Ticket $ticket = null)
+    protected function makeRoute(Ticket $ticket = null)
     {
         return $ticket
             ? $this->baseRoute . '/' . $ticket->id
             : 'guarded/1';
     }
-
 
     /*
      * Tests -----------------------------------------------------------------------------------------------------------
@@ -83,7 +82,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_aborts_with_403_for_guests ()
+    public function it_aborts_with_403_for_guests()
     {
         $response = $this->call('GET', $this->route);
 
@@ -95,7 +94,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_aborts_if_the_ticket_isnt_found ()
+    public function it_aborts_if_the_ticket_isnt_found()
     {
         $this->be(factory(User::class)->create());
 
@@ -109,7 +108,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_aborts_if_the_user_doesnt_own_the_ticket ()
+    public function it_aborts_if_the_user_doesnt_own_the_ticket()
     {
         $user = $this->makeUser();
         $this->be(factory(User::class)->create());
@@ -124,7 +123,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_proceeds_if_the_user_owns_the_ticket ()
+    public function it_proceeds_if_the_user_owns_the_ticket()
     {
         $user = $this->makeUser();
         $ticket = $this->makeTicketForUser($user);
@@ -141,7 +140,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_aborts_if_the_agent_isnt_assigned_to_the_ticket ()
+    public function it_aborts_if_the_agent_isnt_assigned_to_the_ticket()
     {
         $agent = $this->makeAgent();
         $ticket = $this->makeTicket();
@@ -158,7 +157,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
      * @group middleware.owner
      * @test
      */
-    public function it_proceeds_if_the_agent_is_assigned_to_the_ticket ()
+    public function it_proceeds_if_the_agent_is_assigned_to_the_ticket()
     {
         $agent = $this->makeAgent();
         $ticket = $this->makeTicket();

@@ -5,8 +5,8 @@ namespace Aviator\Helpdesk\Models;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
@@ -14,10 +14,9 @@ use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 /**
- * Class Ticket
+ * Class Ticket.
  * @property \Aviator\Helpdesk\Models\PoolAssignment poolAssignment
  * @property mixed user
- * @package Aviator\Helpdesk\Models
  * @property int id
  * @property mixed collaborators
  * @property string status
@@ -322,7 +321,7 @@ class Ticket extends Model
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return $this;
      */
-    public function addCollaborator (Agent $agent)
+    public function addCollaborator(Agent $agent)
     {
         $this->collaborators()->attach($agent);
 
@@ -333,7 +332,7 @@ class Ticket extends Model
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return $this;
      */
-    public function removeCollaborator (Agent $agent)
+    public function removeCollaborator(Agent $agent)
     {
         $this->collaborators()->detach($agent);
 
@@ -434,7 +433,7 @@ class Ticket extends Model
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return bool
      */
-    public function isCollaborator (Agent $agent)
+    public function isCollaborator(Agent $agent)
     {
         return $this->collaborators->pluck('id')->contains($agent->id);
     }
@@ -578,7 +577,7 @@ class Ticket extends Model
         return $query->with([
             'actions' => function ($query) {
                 $query->orderBy('id', 'asc');
-            }
+            },
         ]);
     }
 

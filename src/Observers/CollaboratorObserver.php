@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Collaborator;
 use Illuminate\Support\Facades\Notification;
 
 class CollaboratorObserver

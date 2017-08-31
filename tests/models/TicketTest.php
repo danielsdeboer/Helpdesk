@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
@@ -969,7 +969,7 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_add_a_collaborating_agent ()
+    public function a_ticket_can_add_a_collaborating_agent()
     {
         $ticket = $this->createTicket();
         $agent = $this->createAgent();
@@ -985,7 +985,7 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_remove_a_collaborating_agent ()
+    public function a_ticket_can_remove_a_collaborating_agent()
     {
         $ticket = $this->createTicket();
         $agent = $this->createAgent();
@@ -1005,7 +1005,7 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_evaluate_whether_an_agent_is_a_collaborator ()
+    public function a_ticket_can_evaluate_whether_an_agent_is_a_collaborator()
     {
         $ticket = $this->createTicket();
         $agent = $this->createAgent();

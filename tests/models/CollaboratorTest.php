@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Collaborator;
 use Illuminate\Support\Facades\Notification;
 
 class CollaboratorTest extends TestCase
@@ -41,7 +41,7 @@ class CollaboratorTest extends TestCase
      * @group model.collab
      * @test
      */
-    public function a_collaborator_has_an_agent ()
+    public function a_collaborator_has_an_agent()
     {
         $collaborator = $this->buildCollaborator();
 
@@ -53,7 +53,7 @@ class CollaboratorTest extends TestCase
      * @group model.collab
      * @test
      */
-    public function a_collaborator_has_a_ticket ()
+    public function a_collaborator_has_a_ticket()
     {
         $collaborator = $this->buildCollaborator();
 
@@ -63,7 +63,7 @@ class CollaboratorTest extends TestCase
     /**
      * @return mixed
      */
-    protected function buildCollaborator ()
+    protected function buildCollaborator()
     {
         $collaborator = factory(Collaborator::class)->create();
 
