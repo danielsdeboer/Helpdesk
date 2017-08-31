@@ -746,7 +746,7 @@ class Ticket extends Model
     {
         return $this->belongsToMany(
             Agent::class,
-            'collaborators',
+            config('helpdesk.tables.collaborators'),
             'ticket_id',
             'agent_id'
         );
