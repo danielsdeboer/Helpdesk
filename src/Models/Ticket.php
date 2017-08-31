@@ -325,7 +325,9 @@ class Ticket extends Model
      */
     public function addCollaborator(Agent $agent)
     {
-        if (! $this->collaborators->pluck('id')->contains($agent->id)) {
+        $collabs = $this->collaborators()->with('agent')->get();
+
+        if (! $collabs->pluck('agent.id')->contains($agent->id)) {
             Collaborator::query()->create([
                 'ticket_id' => $this->id,
                 'agent_id' => $agent->id,
