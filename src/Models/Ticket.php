@@ -21,6 +21,7 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @property mixed collaborators
  * @property string status
  * @property \Aviator\Helpdesk\Models\Assignment assignment
+ * @property mixed uuid
  * @method Builder accessible($user)
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
