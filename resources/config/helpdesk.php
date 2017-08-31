@@ -183,6 +183,10 @@ return [
                 'route' => 'open/{ticket}',
                 'name' => 'open',
             ],
+            'collab' => [
+                'route' => 'collab/{ticket}',
+                'name' => 'collab',
+            ],
         ],
     ],
 
@@ -214,6 +218,7 @@ return [
             'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
             'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
             'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
+            'collab' => '\Aviator\Helpdesk\Controllers\Tickets\CollaboratorController@create',
         ],
     ],
 

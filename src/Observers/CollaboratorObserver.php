@@ -29,7 +29,7 @@ class CollaboratorObserver
     {
         $action = new Action;
 
-        $action->name = 'Added';
+        $action->name = 'Collaborator Added';
         $action->subject_id = $observed->ticket_id;
         $action->subject_type = Ticket::class;
         $action->object_id = $observed->id;

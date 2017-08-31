@@ -1,6 +1,8 @@
 <?php
 
 // Helpdesk Group
+use Illuminate\Support\Facades\Route;
+
 Route::group([
     'as' => config('helpdesk.routes.helpdesk.prefix') . '.',
     'prefix' => config('helpdesk.routes.helpdesk.prefix'),
@@ -151,5 +153,11 @@ Route::group([
             config('helpdesk.routes.tickets.open.route'),
             config('helpdesk.controllers.tickets.open')
         )->name(config('helpdesk.routes.tickets.open.name'));
+
+        // Add Collaborator
+        Route::post(
+            config('helpdesk.routes.tickets.collab.route'),
+            config('helpdesk.controllers.tickets.collab')
+        )->name(config('helpdesk.routes.tickets.collab.name'));
     });
 });

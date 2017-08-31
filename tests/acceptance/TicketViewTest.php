@@ -7,6 +7,40 @@ use Aviator\Helpdesk\Models\Ticket;
 
 class TicketViewTest extends TestCase
 {
+    /*
+     * Setup -----------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * @return \Aviator\Helpdesk\Models\Agent
+     */
+    protected function createAgent ()
+    {
+        return factory(Agent::class)->create();
+    }
+
+    /**
+     * @return \Aviator\Helpdesk\Tests\User
+     */
+    protected function createUser ()
+    {
+        return factory(User::class)->create();
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Tests\User $user
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
+    protected function createTicketForUser (User $user)
+    {
+        return factory(Ticket::class)->create([
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /*
+     * Tests -----------------------------------------------------------------------------------------------------------
+     */
     /**
      * @group acc
      * @group acc.ticket
@@ -15,10 +49,8 @@ class TicketViewTest extends TestCase
      */
     public function users_can_visit()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->createUser();
+        $ticket = $this->createTicketForUser($user);
 
         $this->be($user);
         $this->visit('helpdesk/tickets/' . $ticket->id)
@@ -33,11 +65,9 @@ class TicketViewTest extends TestCase
      */
     public function users_can_add_replies()
     {
-        $user = factory(User::class)->create();
+        $user = $this->createUser();
 
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $ticket = $this->createTicketForUser($user);
 
         $this->be($user);
 
@@ -57,10 +87,8 @@ class TicketViewTest extends TestCase
      */
     public function users_can_close()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->createUser();
+        $ticket = $this->createTicketForUser($user);
 
         $this->be($user);
         $this->visit('helpdesk/tickets/' . $ticket->id)
@@ -78,8 +106,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_visit()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent);
@@ -98,8 +126,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_add_private_notes()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent);
@@ -123,8 +151,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_add_public_notes()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent);
@@ -149,8 +177,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_add_replies()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent);
@@ -174,8 +202,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_close()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent);
@@ -198,8 +226,8 @@ class TicketViewTest extends TestCase
      */
     public function agents_can_reopen()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $user = $this->createUser();
+        $agent = $this->createAgent();
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ])->assignToAgent($agent)->close(null, $agent);
@@ -213,5 +241,34 @@ class TicketViewTest extends TestCase
             ->seePageIs('helpdesk/tickets/' . $ticket->id)
             ->see('<strong id="action-header-4">Opened</strong>')
             ->see('id="action-4-public"');
+    }
+
+    /**
+     * @group acc
+     * @group acc.ticket
+     * @group acc.ticket.agent
+     * @test
+     */
+    public function agents_can_add_collaborators()
+    {
+        $user = $this->createUser();
+        $assignee = $this->createAgent();
+        $collaborator = $this->createAgent();
+
+        $ticket = $this->createTicketForUser($user);
+        $ticket = $ticket->assignToAgent($assignee)->fresh();
+
+        $this->be($assignee->user);
+
+        $this->visit('helpdesk/tickets/' . $ticket->id)
+            ->see('<strong id="action-header-1">Opened</strong>')
+            ->see('<strong id="action-header-2">Assigned</strong>')
+            ->select($collaborator->id, 'collab_id')
+            ->press('collab_submit')
+            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->see('<strong id="action-header-3">Collaborator Added</strong>')
+            ->see('id="action-3-private"')
+        ;
+
     }
 }

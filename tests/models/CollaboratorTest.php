@@ -18,7 +18,7 @@ class CollaboratorTest extends TestCase
     {
         $collaborator = $this->buildCollaborator();
 
-        $this->assertEquals('Added', $collaborator->action->name);
+        $this->assertEquals('Collaborator Added', $collaborator->action->name);
     }
 
     /**

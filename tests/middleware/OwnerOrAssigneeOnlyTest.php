@@ -169,4 +169,26 @@ class OwnerOrAssigneeOnlyTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    /**
+     * @group middleware
+     * @group middleware.owner
+     * @test
+     */
+    public function it_proceeds_if_the_agent_is_a_collaborator()
+    {
+        $agent = $this->makeAgent();
+        $agent2 = $this->makeAgent();
+
+        $ticket = $this->makeTicket();
+
+        $ticket->assignToAgent($agent);
+        $ticket->addCollaborator($agent2);
+
+        $this->be($agent2->user);
+
+        $response = $this->call('GET', $this->makeRoute($ticket));
+
+        $this->assertResponseOk();
+    }
 }

@@ -170,10 +170,13 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
             'ticket' => $this->ticket,
+            'agents' => $this->getUsers(),
+            'agentsJson' => $this->getUsers()->toJson(),
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,
             'withNote' => true,
+            'withCollab' => true,
             'showPrivate' => true,
             'tab' => 'tickets',
         ]);
@@ -187,13 +190,15 @@ class TicketsController extends Controller
     {
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
-            'agents' => $this->getUsers()->toJson(),
+            'agents' => $this->getUsers(),
+            'agentsJson' => $this->getUsers()->toJson(),
             'ticket' => $this->ticket,
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,
             'withNote' => true,
             'withAssign' => true,
+            'withCollab' => true,
             'showPrivate' => true,
             'tab' => 'tickets',
         ]);
@@ -208,12 +213,14 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
             'ticket' => $this->ticket,
-            'agents' => $this->getUsers()->toJson(),
+            'agents' => $this->getUsers(),
+            'agentsJson' => $this->getUsers()->toJson(),
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,
             'withNote' => true,
             'withAssign' => true,
+            'withCollab' => true,
             'showPrivate' => true,
             'tab' => 'tickets',
         ]);
@@ -244,6 +251,7 @@ class TicketsController extends Controller
      */
     protected function permitted(Ticket $ticket)
     {
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
         $ticket = Ticket::query()
             ->find($ticket);
 

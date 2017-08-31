@@ -17,9 +17,10 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * Class Ticket.
  * @property \Aviator\Helpdesk\Models\PoolAssignment poolAssignment
  * @property mixed user
- * @property int id
+ * @property mixed id
  * @property mixed collaborators
  * @property string status
+ * @property \Aviator\Helpdesk\Models\Assignment assignment
  * @method Builder accessible($user)
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
@@ -323,7 +324,10 @@ class Ticket extends Model
      */
     public function addCollaborator(Agent $agent)
     {
-        $this->collaborators()->attach($agent);
+        Collaborator::query()->create([
+            'ticket_id' => $this->id,
+            'agent_id' => $agent->id,
+        ]);
 
         return $this->fresh('collaborators');
     }
