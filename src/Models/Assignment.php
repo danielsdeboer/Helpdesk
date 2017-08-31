@@ -2,6 +2,12 @@
 
 namespace Aviator\Helpdesk\Models;
 
+/**
+ * @property mixed assignee
+ * @property mixed ticket_id
+ * @property mixed id
+ * @property mixed ticket
+ */
 class Assignment extends ActionBase
 {
     public function assignee()

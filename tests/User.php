@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
+/**
+ * @property mixed id
+ */
 class User extends Model implements AuthorizableContract, AuthenticatableContract
 {
     use Authorizable, Authenticatable;
@@ -19,7 +22,7 @@ class User extends Model implements AuthorizableContract, AuthenticatableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'id', 'name', 'email',
     ];
 
     public $timestamps = false;

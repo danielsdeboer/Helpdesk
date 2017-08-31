@@ -5,6 +5,13 @@ namespace Aviator\Helpdesk\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string name
+ * @property mixed subject_id
+ * @property string subject_type
+ * @property mixed object_id
+ * @property string object_type
+ */
 class Action extends Model
 {
     use SoftDeletes;

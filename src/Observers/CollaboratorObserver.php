@@ -4,17 +4,17 @@ namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Collaborator;
 use Illuminate\Support\Facades\Notification;
 
-class AssignmentObserver
+class CollaboratorObserver
 {
     /**
      * Listen to the created event.
-     * @param \Aviator\Helpdesk\Models\Assignment $observed
+     * @param \Aviator\Helpdesk\Models\Collaborator $observed
      * @return void
      */
-    public function created(Assignment $observed)
+    public function created(Collaborator $observed)
     {
         $this->createAction($observed);
         $this->sendNotification($observed);
@@ -22,33 +22,33 @@ class AssignmentObserver
 
     /**
      * Create the action.
-     * @param  Assignment $observed
+     * @param \Aviator\Helpdesk\Models\Collaborator $observed
      * @return void
      */
-    protected function createAction(Assignment $observed)
+    protected function createAction(Collaborator $observed)
     {
         $action = new Action;
 
-        $action->name = 'Assigned';
+        $action->name = 'Collaborator Added';
         $action->subject_id = $observed->ticket_id;
         $action->subject_type = Ticket::class;
         $action->object_id = $observed->id;
-        $action->object_type = Assignment::class;
+        $action->object_type = Collaborator::class;
         $action->save();
     }
 
     /**
      * Send the notification.
-     * @param  Assignment $assignment
+     * @param \Aviator\Helpdesk\Models\Collaborator $collaborator
      * @return void
      */
-    protected function sendNotification(Assignment $assignment)
+    protected function sendNotification(Collaborator $collaborator)
     {
-        $notification = config('helpdesk.notifications.internal.assignedToAgent.class');
+        $notification = config('helpdesk.notifications.internal.collaborator.class');
 
         Notification::send(
-            $assignment->assignee->user,
-            new $notification($assignment->ticket)
+            $collaborator->agent->user,
+            new $notification($collaborator->ticket)
         );
     }
 }

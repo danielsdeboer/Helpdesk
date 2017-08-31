@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed user
+ * @property int id
+ */
 class Agent extends Model
 {
     use SoftDeletes, Notifiable;

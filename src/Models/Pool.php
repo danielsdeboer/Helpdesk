@@ -5,6 +5,9 @@ namespace Aviator\Helpdesk\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed id
+ */
 class Pool extends Model
 {
     use SoftDeletes;
@@ -40,6 +43,9 @@ class Pool extends Model
     // Relationships //
     ///////////////////
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function agents()
     {
         return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))

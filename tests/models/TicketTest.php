@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Pool;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
@@ -14,14 +15,39 @@ class TicketTest extends TestCase
     protected $ticket;
     protected $content;
 
+    /**
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
     protected function createTicket()
     {
-        $this->ticket = factory(Ticket::class)->create();
+        $ticket = factory(Ticket::class)->create();
+
+        $this->ticket = $ticket;
+
+        return $ticket;
+    }
+
+    /**
+     * @return \Aviator\Helpdesk\Models\Agent
+     */
+    protected function createAgent()
+    {
+        return factory(Agent::class)->create();
     }
 
     protected function createContent()
     {
         $this->content = factory(GenericContent::class)->create();
+    }
+
+    /**
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
+    protected function createTicketWithCollaborator()
+    {
+        $collaborator = factory(Collaborator::class)->create();
+
+        return $collaborator->ticket;
     }
 
     /**
@@ -921,5 +947,76 @@ class TicketTest extends TestCase
         $tickets = Ticket::accessible($super)->get();
 
         $this->assertEquals(4, $tickets->count());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
+    public function a_ticket_has_collaborators()
+    {
+        $ticket = $this->createTicketWithCollaborator();
+
+        $this->assertEquals(1, $ticket->collaborators->count());
+        $this->assertInstanceOf(Agent::class, $ticket->collaborators->first());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
+    public function a_ticket_can_add_a_collaborating_agent()
+    {
+        $ticket = $this->createTicket();
+        $agent = $this->createAgent();
+
+        $ticket = $ticket->addCollaborator($agent);
+
+        $this->assertEquals($agent->id, $ticket->collaborators->first()->id);
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
+    public function a_ticket_can_remove_a_collaborating_agent()
+    {
+        $ticket = $this->createTicket();
+        $agent = $this->createAgent();
+
+        $ticket = $ticket->addCollaborator($agent);
+
+        $this->assertEquals($agent->id, $ticket->collaborators->first()->id);
+
+        $ticket = $ticket->removeCollaborator($agent);
+
+        $this->assertEquals(0, $ticket->collaborators->count());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
+    public function a_ticket_can_evaluate_whether_an_agent_is_a_collaborator()
+    {
+        $ticket = $this->createTicket();
+        $agent = $this->createAgent();
+
+        $bool = $ticket->isCollaborator($agent);
+
+        $this->assertFalse($bool);
+
+        $ticket = $ticket->addCollaborator($agent);
+        $bool2 = $ticket->isCollaborator($agent);
+
+        $this->assertTrue($bool2);
     }
 }

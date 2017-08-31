@@ -2,6 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
+/**
+ * @property \Aviator\Helpdesk\Models\Pool pool
+ */
 class PoolAssignment extends ActionBase
 {
     /**
