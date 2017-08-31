@@ -960,7 +960,7 @@ class TicketTest extends TestCase
         $ticket = $this->createTicketWithCollaborator();
 
         $this->assertEquals(1, $ticket->collaborators->count());
-        $this->assertInstanceOf(Agent::class, $ticket->collaborators->first());
+        $this->assertInstanceOf(Collaborator::class, $ticket->collaborators->first());
     }
 
     /**
@@ -985,11 +985,29 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
+    public function a_ticket_can_add_a_collaborating_agent_only_once()
+    {
+        $ticket = $this->createTicket();
+        $agent = $this->createAgent();
+
+        $ticket = $ticket->addCollaborator($agent);
+        $ticket = $ticket->addCollaborator($agent);
+
+        $this->assertEquals(1, $ticket->collaborators->count());
+    }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
     public function a_ticket_can_remove_a_collaborating_agent()
     {
         $ticket = $this->createTicket();
         $agent = $this->createAgent();
 
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
         $ticket = $ticket->addCollaborator($agent);
 
         $this->assertEquals($agent->id, $ticket->collaborators->first()->id);
@@ -1019,4 +1037,20 @@ class TicketTest extends TestCase
 
         $this->assertTrue($bool2);
     }
+
+    /**
+     * @group model
+     * @group model.ticket
+     * @group model.ticket.collab
+     * @test
+     */
+    public function a_collaborator_created_via_the_ticket_is_visible_by_default()
+    {
+        $agent = $this->createAgent();
+        $ticket = $this->createTicket()->addCollaborator($agent);
+
+        $this->assertTrue($ticket->collaborators->first()->is_visible);
+    }
+
+
 }
