@@ -25,6 +25,7 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @method Builder accessible($user)
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
+ * @method Builder opened()
  */
 class Ticket extends Model
 {

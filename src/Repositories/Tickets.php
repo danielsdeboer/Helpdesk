@@ -4,36 +4,37 @@ namespace Aviator\Helpdesk\Repositories;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class Tickets
 {
     /**
      * The user.
-     * @var mixed User
+     * @var mixed
      */
     protected $user;
 
     /**
      * The agent.
-     * @var Agent
+     * @var \Aviator\Helpdesk\Models\Agent
      */
     protected $agent;
 
     /**
      * Is the agent a supervisor.
-     * @var bool | null
+     * @var bool
      */
     protected $super;
 
-    ////////////////////////
-    // NAMED CONSTRUCTORS //
-    ////////////////////////
+    /*
+     * Named Constructors ----------------------------------------------------------------------------------------------
+     */
 
     /**
      * Static constructor with agent.
-     * @param  Agent $agent
-     * @return Tickets
+     * @param  \Aviator\Helpdesk\Models\Agent $agent
+     * @return \Aviator\Helpdesk\Repositories\Tickets
      */
     public static function forAgent($agent)
     {
@@ -42,8 +43,8 @@ class Tickets
 
     /**
      * Static constructor with user.
-     * @param  mixed $agent
-     * @return Tickets
+     * @param mixed $user
+     * @return \Aviator\Helpdesk\Repositories\Tickets
      */
     public static function forUser($user)
     {
@@ -53,16 +54,16 @@ class Tickets
     /**
      * Static constructor with user.
      * @param  mixed $agent
-     * @return Tickets
+     * @return \Aviator\Helpdesk\Repositories\Tickets
      */
     public static function forSuper(Agent $agent)
     {
         return (new self)->setAgent($agent)->setSuper($agent);
     }
 
-    ////////////////
-    // PUBLIC API //
-    ////////////////
+    /*
+     * Public Api ------------------------------------------------------------------------------------------------------
+     */
 
     /**
      * Return tickets assigned to the agent's team.
@@ -102,9 +103,8 @@ class Tickets
      */
     protected function superOverdue()
     {
-        return Ticket::with('user')
+        return $this->ticketQuery()
             ->overdue()
-            ->opened()
             ->get()
             ->sortBy(function ($item) {
                 return $item->dueDate->due_on;
@@ -118,8 +118,7 @@ class Tickets
     public function all()
     {
         if ($this->super) {
-            return Ticket::with('user')
-                ->opened()
+            return $this->ticketQuery()
                 ->get()
                 ->sortBy(function ($item) {
                     return isset($item->dueDate->due_on) ? $item->dueDate->due_on->toDateString() : 9999999;
@@ -127,20 +126,18 @@ class Tickets
         }
 
         if ($this->agent) {
-            return Ticket::with('user')
+            return $this->ticketQuery()
                 ->whereHas('assignment', function ($query) {
                     $query->where('assigned_to', $this->agent->id);
                 })
-                ->opened()
                 ->get()
                 ->sortBy(function ($item) {
                     return isset($item->dueDate->due_on) ? $item->dueDate->due_on->toDateString() : 9999999;
                 });
         }
 
-        return Ticket::with('user')
+        return $this->ticketQuery()
             ->where('user_id', $this->user->id)
-            ->opened()
             ->get();
     }
 
@@ -151,16 +148,52 @@ class Tickets
     public function unassigned()
     {
         if ($this->super) {
-            return Ticket::with('user')
-                ->opened()
+            return $this->ticketQuery()
                 ->unassigned()
                 ->get();
         }
     }
 
-    /////////////
-    // HELPERS //
-    /////////////
+    /**
+     * Get all tickets the agent is collaborating on.
+     * @return \Illuminate\Support\Collection
+     */
+    public function collaborating()
+    {
+        return $this->ticketQuery()
+            ->whereHas('collaborators', $this->collabCb())
+            ->get();
+    }
+
+    /*
+     * Callbacks -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Get the collaborator callback. Laravel wants a Closure here to we can't just use
+     * this method as the callback. Instead we return a Closure.
+     * @return \Closure
+     */
+    protected function collabCb()
+    {
+        return function (Builder $query) {
+            $query->where('agent_id', $this->agent->id);
+        };
+    }
+
+    /*
+     * Helpers ---------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Get a base ticket query with the opened scope.
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function ticketQuery()
+    {
+        return Ticket::with('user')
+            ->opened();
+    }
 
     /**
      * Get the ids of this agent's teams.
@@ -231,9 +264,9 @@ class Tickets
             ->get();
     }
 
-    ///////////////////////
-    // SETTERS & GETTERS //
-    ///////////////////////
+    /*
+     * Setters and Getters ---------------------------------------------------------------------------------------------
+     */
 
     /**
      * Set the agent.
