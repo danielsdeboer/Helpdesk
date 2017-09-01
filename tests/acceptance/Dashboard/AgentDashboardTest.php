@@ -3,9 +3,9 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Tests\Traits\CallsAs;
+use Aviator\Helpdesk\Tests\Traits\VisitsAs;
 use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
 use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
-use Aviator\Helpdesk\Tests\Traits\VisitsAs;
 
 class AgentDashboardTest extends TestCase
 {

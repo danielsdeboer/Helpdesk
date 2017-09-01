@@ -2,11 +2,10 @@
 
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Traits\FetchesAuthorizedAgent;
 use Illuminate\Routing\Controller;
 use Illuminate\Contracts\View\View;
 use Aviator\Helpdesk\Repositories\Tickets;
+use Aviator\Helpdesk\Traits\FetchesAuthorizedAgent;
 
 class SupervisorController extends Controller
 {

@@ -3,10 +3,10 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Tests\Traits\CallsAs;
+use Aviator\Helpdesk\Tests\Traits\VisitsAs;
+use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
 use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
 use Aviator\Helpdesk\Tests\Traits\CreatesSupervisors;
-use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
-use Aviator\Helpdesk\Tests\Traits\VisitsAs;
 
 class SuperDashboardTest extends TestCase
 {
@@ -83,7 +83,7 @@ class SuperDashboardTest extends TestCase
             ->see('Nothing to see here!')
             ->see('id="header-tab-admin"');
     }
-    
+
     /**
      * @group acc
      * @group acc.dash
