@@ -332,6 +332,7 @@ class Ticket extends Model
                 'ticket_id' => $this->id,
                 'agent_id' => $agent->id,
                 'is_visible' => 1,
+                'created_by' => auth()->user()->id,
             ]);
         }
 

@@ -147,6 +147,7 @@ class CreateHelpdeskTables extends Migration
             $table->unsignedInteger('ticket_id');
             $table->unsignedInteger('agent_id');
             $table->boolean('is_visible')->default(0);
+            $table->unsignedInteger('created_by');
             $table->timestamps();
             $table->softDeletes();
         });

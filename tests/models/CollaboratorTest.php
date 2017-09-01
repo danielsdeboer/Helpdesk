@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Notification;
 
 class CollaboratorTest extends TestCase
 {
+    /*
+     * Setup -----------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * @return \Aviator\Helpdesk\Models\Collaborator
+     */
+    protected function createCollab()
+    {
+        return factory(Collaborator::class)->create();
+    }
+
+    /*
+     * Tests -----------------------------------------------------------------------------------------------------------
+     */
+
     /**
      * @group model
      * @group model.collab
@@ -16,9 +32,9 @@ class CollaboratorTest extends TestCase
      */
     public function creating_an_collaborator_creates_an_action_via_the_collaborator_observer()
     {
-        $collaborator = $this->buildCollaborator();
+        $collab = $this->createCollab();
 
-        $this->assertEquals('Collaborator Added', $collaborator->action->name);
+        $this->assertEquals('Collaborator Added', $collab->action->name);
     }
 
     /**
@@ -28,10 +44,10 @@ class CollaboratorTest extends TestCase
      */
     public function create_an_assignment_fires_a_notification_to_the_assignee()
     {
-        $collaborator = $this->buildCollaborator();
+        $collab = $this->createCollab();
 
         Notification::assertSentTo(
-            $collaborator->agent->user,
+            $collab->agent->user,
             \Aviator\Helpdesk\Notifications\Internal\Collaborator::class
         );
     }
@@ -43,9 +59,9 @@ class CollaboratorTest extends TestCase
      */
     public function a_collaborator_has_an_agent()
     {
-        $collaborator = $this->buildCollaborator();
+        $collab = $this->createCollab();
 
-        $this->assertInstanceOf(Agent::class, $collaborator->agent);
+        $this->assertInstanceOf(Agent::class, $collab->agent);
     }
 
     /**
@@ -55,18 +71,20 @@ class CollaboratorTest extends TestCase
      */
     public function a_collaborator_has_a_ticket()
     {
-        $collaborator = $this->buildCollaborator();
+        $collab = $this->createCollab();
 
-        $this->assertInstanceOf(Ticket::class, $collaborator->ticket);
+        $this->assertInstanceOf(Ticket::class, $collab->ticket);
     }
 
     /**
-     * @return mixed
+     * @group model
+     * @group model.collab
+     * @test
      */
-    protected function buildCollaborator()
+    public function a_collaborator_has_a_creator()
     {
-        $collaborator = factory(Collaborator::class)->create();
+        $collab = $this->createCollab();
 
-        return $collaborator;
+        $this->assertInstanceOf(User::class, $collab->createdBy);
     }
 }
