@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
 use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
+use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
 
 class AgentDashboardTest extends TestCase
 {
@@ -79,7 +79,6 @@ class AgentDashboardTest extends TestCase
             ->see('<p class="heading">Collaborating On</p>')
             ->see('<p class="title"><strong>0</strong></p>')
             ->see('<h1 class="title" id="collab-title">Collaborating On</h1>')
-            ->see('<div class="hero-body is-small has-text-centered" id="collab-no-results">')
-            ;
+            ->see('<div class="hero-body is-small has-text-centered" id="collab-no-results">');
     }
 }

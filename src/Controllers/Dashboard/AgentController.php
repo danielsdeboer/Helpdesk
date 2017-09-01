@@ -2,11 +2,9 @@
 
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Traits\FetchesAuthorizedAgent;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Aviator\Helpdesk\Repositories\Tickets;
+use Aviator\Helpdesk\Traits\FetchesAuthorizedAgent;
 
 class AgentController extends Controller
 {

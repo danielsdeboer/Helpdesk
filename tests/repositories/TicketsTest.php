@@ -16,7 +16,7 @@ class TicketsTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    protected function createAgent ()
+    protected function createAgent()
     {
         return factory(Agent::class)->create();
     }
@@ -24,7 +24,7 @@ class TicketsTest extends TestCase
     /**
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    protected function createTicket ()
+    protected function createTicket()
     {
         return factory(Ticket::class)->create();
     }
