@@ -65,7 +65,7 @@
 
   @if (isset($unassigned))
     <section class="section" id="unassigned">
-      <div class="container is-fluid">
+      <div class="container">
         <h1 class="title">Unassigned</h1>
 
         @if($unassigned->count() > 0)
@@ -85,7 +85,7 @@
 
   @if (isset($team))
     <section class="section" id="team">
-      <div class="container is-fluid">
+      <div class="container">
         <h1 class="title">Assigned To Team</h1>
 
         @if($team->count() > 0)
@@ -105,7 +105,7 @@
 
   @if (isset($overdue))
     <section class="section" id="overdue">
-      <div class="container is-fluid">
+      <div class="container">
         <h1 class="title">Overdue</h1>
 
         @if($overdue->count() > 0)
@@ -125,7 +125,7 @@
 
   @if (isset($open))
     <section class="section" id="open">
-      <div class="container is-fluid">
+      <div class="container">
         <h1 class="title">Open</h1>
 
         @if($open->count() > 0)
@@ -143,7 +143,7 @@
 
   @if (isset($collab))
     <section class="section" id="collab">
-      <div class="container is-fluid">
+      <div class="container">
         <h1 class="title" id="collab-title">Collaborating On</h1>
 
         @if($collab->count() > 0)
