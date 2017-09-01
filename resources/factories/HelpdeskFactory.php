@@ -183,8 +183,8 @@ $factory->define(Collaborator::class, function (Faker\Generator $faker) {
     $agent = factory(Agent::class)->create();
 
     return [
-        'agent_id' => $agent->id,
+        'agent_id' => factory(Agent::class)->create(),
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'created_by' => $agent->user->id,
+        'created_by' => factory(Agent::class)->create(),
     ];
 });

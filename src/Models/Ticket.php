@@ -320,19 +320,20 @@ class Ticket extends Model
     }
 
     /**
-     * @param \Aviator\Helpdesk\Models\Agent $agent
-     * @return $this;
+     * @param \Aviator\Helpdesk\Models\Agent $collab
+     * @param \Aviator\Helpdesk\Models\Agent $creator
+     * @return $this
      */
-    public function addCollaborator(Agent $agent)
+    public function addCollaborator(Agent $collab, Agent $creator)
     {
-        $collaborators = $this->collaborators()->with('agent')->get();
+        $collabs = $this->collaborators()->with('agent')->get();
 
-        if (! $collaborators->pluck('agent.id')->contains($agent->id)) {
+        if (! $collabs->pluck('agent.id')->contains($collab->id)) {
             Collaborator::query()->create([
                 'ticket_id' => $this->id,
-                'agent_id' => $agent->id,
+                'agent_id' => $collab->id,
                 'is_visible' => 1,
-                'created_by' => auth()->user()->id,
+                'created_by' => $creator->id,
             ]);
         }
 

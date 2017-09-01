@@ -271,4 +271,31 @@ class TicketViewTest extends TestCase
             ->see('<em>By</em>: ' . $assignee->user->name)
             ->see('id="action-3-public"');
     }
+
+    /**
+     * @group acc
+     * @group acc.ticket
+     * @group acc.ticket.agent
+     * @test
+     */
+    public function agents_cant_add_themselves_as_collaborator()
+    {
+        $user = $this->createUser();
+        $assignee = $this->createAgent();
+
+        $ticket = $this->createTicketForUser($user);
+        $ticket = $ticket->assignToAgent($assignee)->fresh();
+
+        $this->be($assignee->user);
+
+        $this->visit('helpdesk/tickets/' . $ticket->id)
+            ->see('<strong id="action-header-1">Opened</strong>')
+            ->see('<strong id="action-header-2">Assigned</strong>')
+            ->select($assignee->id, 'collab_id')
+            ->press('collab_submit')
+            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->dontSee('<strong id="action-header-3">Collaborator Added</strong>')
+            ->dontSee('<em>By</em>: ' . $assignee->user->name)
+            ->dontSee('id="action-3-public"');
+    }
 }

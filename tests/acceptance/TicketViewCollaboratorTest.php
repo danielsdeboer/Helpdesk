@@ -67,11 +67,12 @@ class TicketViewCollaboratorTest extends TestCase
      */
     public function collaborators_may_reply()
     {
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create();
-        $ticket->addCollaborator($agent);
+        $agent1 = $this->createAgent();
+        $agent2 = $this->createAgent();
+        $ticket = $this->createTicketForUser($agent1->user);
+        $ticket = $ticket->addCollaborator($agent2, $agent1);
 
-        $this->be($agent->user);
+        $this->be($agent2->user);
 
         $this->visit($this->buildRoute($ticket))
             ->see('id="ticket-toolbar"')
