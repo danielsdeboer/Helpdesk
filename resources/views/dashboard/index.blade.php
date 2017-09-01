@@ -53,8 +53,8 @@
           <div class="level-item has-text-centered">
             <a href="#collab">
               <div>
-                <p class="heading">Collaborating On</p>
-                <p class="title"><strong>{{ $collab->count() }}</strong></p>
+                <p class="heading" id="collab-count-title">Collaborating On</p>
+                <p class="title" id="collab-count-number"><strong>{{ $collab->count() }}</strong></p>
               </div>
             </a>
           </div>
