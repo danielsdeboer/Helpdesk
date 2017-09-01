@@ -48,6 +48,17 @@
             </a>
           </div>
         @endif
+
+        @if (isset($collab))
+          <div class="level-item has-text-centered">
+            <a href="#collab">
+              <div>
+                <p class="heading">Collaborating On</p>
+                <p class="title"><strong>{{ $collab->count() }}</strong></p>
+              </div>
+            </a>
+          </div>
+        @endif
       </div>
     </div>
   </section>
@@ -125,6 +136,26 @@
           ])
         @else
           @include('helpdesk::dashboard.sections.noresults')
+        @endif
+      </div>
+    </section>
+  @endif
+
+  @if (isset($collab))
+    <section class="section" id="collab">
+      <div class="container is-fluid">
+        <h1 class="title" id="collab-title">Collaborating On</h1>
+
+        @if($collab->count() > 0)
+          @include('helpdesk::dashboard.sections.table', [
+            'tickets' => $collab,
+            'withOpened' => true,
+            'withLastAction' => true,
+          ])
+        @else
+          @include('helpdesk::dashboard.sections.noresults', [
+            'id' => 'collab-no-results'
+          ])
         @endif
       </div>
     </section>
