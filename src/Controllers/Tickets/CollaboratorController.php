@@ -42,7 +42,7 @@ class CollaboratorController extends Controller
      * @param \Aviator\Helpdesk\Models\Ticket $ticket
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function redirect (Ticket $ticket)
+    protected function redirect(Ticket $ticket)
     {
         return redirect(
             route('helpdesk.tickets.show', $ticket->id)
@@ -52,7 +52,7 @@ class CollaboratorController extends Controller
     /**
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    protected function fetchCollaborator ()
+    protected function fetchCollaborator()
     {
         /** @var \Aviator\Helpdesk\Models\Agent $collab */
         $collab = Agent::query()->findOrFail(
@@ -65,7 +65,7 @@ class CollaboratorController extends Controller
     /**
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    protected function fetchCreator ()
+    protected function fetchCreator()
     {
         /** @var \Aviator\Helpdesk\Models\Agent $creator */
         $creator = Agent::query()->where('user_id', request()->user()->id)->first();

@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Support\Facades\Auth;
 
 class TicketViewCollaboratorTest extends TestCase
 {

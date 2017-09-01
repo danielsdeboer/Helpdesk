@@ -12,7 +12,6 @@ use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Ticket.
