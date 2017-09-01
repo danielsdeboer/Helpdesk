@@ -183,7 +183,7 @@ class OwnerOrAssigneeOnlyTest extends TestCase
         $ticket = $this->makeTicket();
 
         $ticket->assignToAgent($agent);
-        $ticket->addCollaborator($agent2);
+        $ticket->addCollaborator($agent2, $agent);
 
         $this->be($agent2->user);
 

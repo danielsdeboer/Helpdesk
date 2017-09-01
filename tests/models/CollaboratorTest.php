@@ -85,6 +85,6 @@ class CollaboratorTest extends TestCase
     {
         $collab = $this->createCollab();
 
-        $this->assertInstanceOf(User::class, $collab->createdBy);
+        $this->assertInstanceOf(Agent::class, $collab->createdBy);
     }
 }

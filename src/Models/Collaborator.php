@@ -8,7 +8,7 @@ namespace Aviator\Helpdesk\Models;
  * @property \Aviator\Helpdesk\Models\Agent agent
  * @property \Aviator\Helpdesk\Models\Ticket ticket
  * @property mixed action
- * @property mixed created_by
+ * @property mixed createdBy
  */
 class Collaborator extends ActionBase
 {
@@ -52,6 +52,6 @@ class Collaborator extends ActionBase
      */
     public function createdBy()
     {
-        return $this->belongsTo(config('helpdesk.userModel'), 'created_by');
+        return $this->belongsTo(Agent::class, 'created_by');
     }
 }

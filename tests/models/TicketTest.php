@@ -972,11 +972,12 @@ class TicketTest extends TestCase
     public function a_ticket_can_add_a_collaborating_agent()
     {
         $ticket = $this->createTicket();
-        $agent = $this->createAgent();
+        $owner = $this->createAgent();
+        $collab = $this->createAgent();
 
-        $ticket = $ticket->addCollaborator($agent);
+        $ticket = $ticket->addCollaborator($collab, $owner);
 
-        $this->assertEquals($agent->id, $ticket->collaborators->first()->id);
+        $this->assertEquals($collab->id, $ticket->collaborators->first()->agent->id);
     }
 
     /**
@@ -988,10 +989,11 @@ class TicketTest extends TestCase
     public function a_ticket_can_add_a_collaborating_agent_only_once()
     {
         $ticket = $this->createTicket();
-        $agent = $this->createAgent();
+        $collab = $this->createAgent();
+        $owner = $this->createAgent();
 
-        $ticket->addCollaborator($agent);
-        $ticket->addCollaborator($agent);
+        $ticket->addCollaborator($collab, $owner);
+        $ticket->addCollaborator($collab, $owner);
 
         $this->assertEquals(1, $ticket->fresh()->collaborators->count());
     }
@@ -1005,14 +1007,15 @@ class TicketTest extends TestCase
     public function a_ticket_can_remove_a_collaborating_agent()
     {
         $ticket = $this->createTicket();
-        $agent = $this->createAgent();
+        $collab = $this->createAgent();
+        $owner = $this->createAgent();
 
         /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
-        $ticket = $ticket->addCollaborator($agent);
+        $ticket = $ticket->addCollaborator($collab, $owner);
 
-        $this->assertEquals($agent->id, $ticket->collaborators->first()->id);
+        $this->assertEquals($collab->id, $ticket->collaborators->first()->id);
 
-        $ticket = $ticket->removeCollaborator($agent);
+        $ticket = $ticket->removeCollaborator($collab);
 
         $this->assertEquals(0, $ticket->collaborators->count());
     }
@@ -1032,7 +1035,7 @@ class TicketTest extends TestCase
 
         $this->assertFalse($bool);
 
-        $ticket = $ticket->addCollaborator($agent);
+        $ticket = $ticket->addCollaborator($agent, $agent);
         $bool2 = $ticket->isCollaborator($agent);
 
         $this->assertTrue($bool2);
@@ -1047,7 +1050,7 @@ class TicketTest extends TestCase
     public function a_collaborator_created_via_the_ticket_is_visible_by_default()
     {
         $agent = $this->createAgent();
-        $ticket = $this->createTicket()->addCollaborator($agent);
+        $ticket = $this->createTicket()->addCollaborator($agent, $agent);
 
         $this->assertTrue($ticket->collaborators->first()->is_visible);
     }
