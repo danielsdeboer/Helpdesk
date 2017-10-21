@@ -8,6 +8,7 @@ namespace Aviator\Helpdesk\Models;
  * @property int ticket_id
  * @property int id
  * @property \Aviator\Helpdesk\Models\Ticket ticket
+ * @property \Aviator\Helpdesk\Models\Agent agent
  */
 class TeamAssignment extends ActionBase
 {

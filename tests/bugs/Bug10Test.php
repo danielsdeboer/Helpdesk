@@ -23,9 +23,7 @@ class Bug10Test extends AdminBase
         $agent3 = $this->make->agent;
         $agent4 = $this->make->agent;
         $team = $this->make->team;
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $ticket = $this->make->ticket($user);
 
         $ticket->assignToTeam($team, null, true);
         $agent1->makeTeamLeadOf($team);

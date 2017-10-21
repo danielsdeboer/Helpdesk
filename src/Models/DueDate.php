@@ -7,6 +7,7 @@ use Carbon\Carbon;
 /**
  * @property \Aviator\Helpdesk\Models\Action action
  * @property \Carbon\Carbon due_on
+ * @property \Aviator\Helpdesk\Models\Agent agent
  */
 class DueDate extends ActionBase
 {

@@ -36,6 +36,7 @@ use Illuminate\Support\Collection;
  * @property \Aviator\Helpdesk\Models\Opening opening
  * @property \Aviator\Helpdesk\Models\Reply reply
  * @property \Aviator\Helpdesk\Models\TeamAssignment teamAssignment
+ * @property \Aviator\Helpdesk\Models\GenericContent content
  */
 class Make
 {
@@ -80,6 +81,14 @@ class Make
     public function collaborator ()
     {
         return factory(Collaborator::class)->create();
+    }
+
+    /**
+     * @return \Aviator\Helpdesk\Models\GenericContent
+     */
+    public function content ()
+    {
+        return factory(GenericContent::class)->create();
     }
 
     /**
@@ -209,14 +218,6 @@ class Make
     public function team ()
     {
         return factory(Team::class)->create();
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Models\GenericContent
-     */
-    public function content ()
-    {
-        return factory(GenericContent::class)->create();
     }
 
     /**

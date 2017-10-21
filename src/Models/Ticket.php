@@ -23,10 +23,21 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @property \Aviator\Helpdesk\Models\Assignment assignment
  * @property mixed uuid
  * @property \Aviator\Helpdesk\Models\GenericContent content
- * @method Builder accessible($user)
+ * @property \Illuminate\Support\Collection actions
+ * @property \Aviator\Helpdesk\Models\DueDate dueDate
+ * @property \Aviator\Helpdesk\Models\Closing closing
+ * @property \Aviator\Helpdesk\Models\Opening opening
+ * @property \Aviator\Helpdesk\Models\Note notes
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
- * @method Builder opened()
+ * @method static Builder assigned()
+ * @method static Builder unassigned()
+ * @method static Builder overdue()
+ * @method static Builder onTime()
+ * @method static Builder dueToday()
+ * @method static Builder opened()
+ * @method static Builder teamed()
+ * @method static Builder accessible($user)
  */
 class Ticket extends Model
 {
@@ -49,6 +60,23 @@ class Ticket extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('helpdesk.tables.tickets'));
+    }
+
+    /*
+     * Public Static Api
+     */
+
+    /**
+     * Find a single model with actions.
+     * @param int $id
+     * @return \Aviator\Helpdesk\Models\Ticket
+     */
+    public static function findWithActions($id)
+    {
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
+        $ticket = static::query()->with('actions')->find($id);
+
+        return $ticket;
     }
 
     ////////////////////
@@ -484,17 +512,6 @@ class Ticket extends Model
     public function scopeUuid($query, $uuid)
     {
         return $query->where('uuid', $uuid)->first();
-    }
-
-    /**
-     * Find a single model with actions.
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $id
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeFindWithActions($query, $id)
-    {
-        return $query->with('actions')->find($id);
     }
 
     /**

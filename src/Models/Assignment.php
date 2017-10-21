@@ -9,6 +9,7 @@ namespace Aviator\Helpdesk\Models;
  * @property mixed ticket
  * @property mixed assigned_to
  * @property string action
+ * @property \Aviator\Helpdesk\Models\Agent agent
  */
 class Assignment extends ActionBase
 {

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property mixed id
  * @property string name
  * @property \Illuminate\Support\Collection teamLeads
+ * @property \Illuminate\Support\Collection agents
+ * @property mixed team_lead
  */
 class Team extends Model
 {

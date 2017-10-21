@@ -19,8 +19,9 @@ class TeamAssignmentTest extends TestCase
     public function create_an_assignment_fires_a_notification_to_the_assignee()
     {
         $team = $this->make->team;
-        $agent = $this->make->agent->makeTeamLeadOf($team);
         $assignment = $this->make->teamAssignment($team);
+        $this->make->agent->makeTeamLeadOf($team);
+
 
         /** @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
