@@ -29,7 +29,7 @@ use Aviator\Helpdesk\Observers\OpeningObserver;
 use Aviator\Helpdesk\Middleware\DashboardRouter;
 use Aviator\Helpdesk\Observers\AssignmentObserver;
 use Aviator\Helpdesk\Observers\CollaboratorObserver;
-use Aviator\Helpdesk\Observers\teamAssignmentObserver;
+use Aviator\Helpdesk\Observers\TeamAssignmentObserver;
 
 class HelpdeskServiceProvider extends ServiceProvider
 {
@@ -123,7 +123,7 @@ class HelpdeskServiceProvider extends ServiceProvider
         Assignment::observe(AssignmentObserver::class);
         DueDate::observe(DueDateObserver::class);
         Reply::observe(ReplyObserver::class);
-        TeamAssignment::observe(teamAssignmentObserver::class);
+        TeamAssignment::observe(TeamAssignmentObserver::class);
         Closing::observe(ClosingObserver::class);
         Opening::observe(OpeningObserver::class);
         Note::observe(NoteObserver::class);

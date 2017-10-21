@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class CreateSuperTest extends AdminBase
 {
@@ -23,7 +24,9 @@ class CreateSuperTest extends AdminBase
 
         $this->assertInstanceOf(Agent::class, $super);
         $this->assertTrue($super->isSuper());
-        $this->assertEquals('Supervisor Agent created for ' . $user->email . "\r\n", Artisan::output());
+        $this->assertTrue(
+            Str::contains(Artisan::output(), 'Supervisor Agent created for ' . $user->email)
+        );
     }
 
     /**
@@ -35,6 +38,8 @@ class CreateSuperTest extends AdminBase
             'email' => 'some@user.net',
         ]);
 
-        $this->assertEquals('No user found for some@user.net' . "\r\n", Artisan::output());
+        $this->assertTrue(
+            Str::contains(Artisan::output(), 'No user found for some@user.net')
+        );
     }
 }
