@@ -2,12 +2,6 @@
 
 namespace Aviator\Helpdesk;
 
-use Aviator\Helpdesk\Commands\CreateSuper;
-use Aviator\Helpdesk\Middleware\AgentsOnly;
-use Aviator\Helpdesk\Middleware\DashboardRouter;
-use Aviator\Helpdesk\Middleware\TicketAccess;
-use Aviator\Helpdesk\Middleware\SupersOnly;
-use Aviator\Helpdesk\Middleware\TicketAssignee;
 use Illuminate\Routing\Router;
 use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Reply;
@@ -20,13 +14,19 @@ use Illuminate\Foundation\Http\Kernel;
 use Aviator\Helpdesk\Models\Assignment;
 use Illuminate\Support\ServiceProvider;
 use Aviator\Helpdesk\Models\Collaborator;
+use Aviator\Helpdesk\Commands\CreateSuper;
+use Aviator\Helpdesk\Middleware\AgentsOnly;
+use Aviator\Helpdesk\Middleware\SupersOnly;
 use Aviator\Helpdesk\Models\TeamAssignment;
 use Aviator\Helpdesk\Observers\NoteObserver;
+use Aviator\Helpdesk\Middleware\TicketAccess;
 use Aviator\Helpdesk\Observers\ReplyObserver;
 use Aviator\Helpdesk\Observers\TicketObserver;
+use Aviator\Helpdesk\Middleware\TicketAssignee;
 use Aviator\Helpdesk\Observers\ClosingObserver;
 use Aviator\Helpdesk\Observers\DueDateObserver;
 use Aviator\Helpdesk\Observers\OpeningObserver;
+use Aviator\Helpdesk\Middleware\DashboardRouter;
 use Aviator\Helpdesk\Observers\AssignmentObserver;
 use Aviator\Helpdesk\Observers\CollaboratorObserver;
 use Aviator\Helpdesk\Observers\teamAssignmentObserver;
@@ -62,7 +62,7 @@ class HelpdeskServiceProvider extends ServiceProvider
         });
 
         $this->commands([
-            CreateSuper::class
+            CreateSuper::class,
         ]);
     }
 

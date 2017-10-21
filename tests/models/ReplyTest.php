@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
 use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
-use Illuminate\Support\Facades\Notification;
 
 class ReplyTest extends TestCase
 {
@@ -29,7 +29,7 @@ class ReplyTest extends TestCase
     {
         $reply = $this->make->reply;
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $reply->ticket->user,
             ExternalReply::class
@@ -43,7 +43,7 @@ class ReplyTest extends TestCase
             ->assignToAgent($this->make->agent)
             ->externalReply('this is a reply', $this->make->user);
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $ticket->assignment->assignee,
             InternalReply::class

@@ -96,7 +96,6 @@ class TicketsIndexTest extends AdminBase
 
         $agent1->makeTeamLeadOf($team);
 
-
         $this->be($agent1->user);
 
         $this->visit(self::URI)

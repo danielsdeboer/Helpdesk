@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class ActionBase
- * @package Aviator\Helpdesk\Models
+ * Class ActionBase.
  * @property \Aviator\Helpdesk\Models\Action action
  */
 class ActionBase extends Model

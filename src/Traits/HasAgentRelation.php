@@ -5,8 +5,7 @@ namespace Aviator\Helpdesk\Traits;
 use Aviator\Helpdesk\Models\Agent;
 
 /**
- * Trait HasAgentRelation
- * @package Aviator\Helpdesk
+ * Trait HasAgentRelation.
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 trait HasAgentRelation

@@ -105,7 +105,7 @@ class TicketsTest extends TestCase
                  $ticket->assignToAgent($agent1);
              });
 
-         $this->make->tickets(6)
+        $this->make->tickets(6)
              ->each(function (Ticket $ticket) use ($agent2) {
                  $ticket->assignToAgent($agent2);
              });

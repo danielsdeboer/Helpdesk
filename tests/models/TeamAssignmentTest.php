@@ -22,8 +22,7 @@ class TeamAssignmentTest extends TestCase
         $assignment = $this->make->teamAssignment($team);
         $this->make->agent->makeTeamLeadOf($team);
 
-
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $assignment->team->teamLeads,
             AssignedToTeam::class

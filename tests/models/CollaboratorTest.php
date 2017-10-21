@@ -4,8 +4,8 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Notifications\Internal\Collaborator;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\Internal\Collaborator;
 
 class CollaboratorTest extends TestCase
 {
@@ -22,7 +22,7 @@ class CollaboratorTest extends TestCase
     {
         $collab = $this->make->collaborator;
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $collab->agent->user,
             Collaborator::class

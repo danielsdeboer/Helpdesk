@@ -20,7 +20,7 @@ class ClosingTest extends TestCase
     {
         $closing = $this->make->closing;
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $closing->ticket->user,
             Closed::class

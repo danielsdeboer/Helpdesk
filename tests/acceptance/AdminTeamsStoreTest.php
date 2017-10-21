@@ -6,7 +6,7 @@ class AdminTeamsStoreTest extends TestCase
 {
     /** @const string */
     const URI = 'helpdesk/admin/teams';
-    
+
     /** @test */
     public function guests_cant_visit ()
     {

@@ -8,12 +8,13 @@ class AdminTeamsShowTest extends TestCase
 {
     /** @const string */
     const URI = 'helpdesk/admin/teams/1';
-    
+
     public function setUp()
     {
         parent::setUp();
 
-        Route::any('login', function () {});
+        Route::any('login', function () {
+        });
     }
 
     /** @test */

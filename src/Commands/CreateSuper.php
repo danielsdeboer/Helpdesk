@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Commands;
 
-use Aviator\Helpdesk\Traits\InteractsWithUsers;
 use Illuminate\Console\Command;
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Traits\InteractsWithUsers;
 
 class CreateSuper extends Command
 {
@@ -33,11 +33,12 @@ class CreateSuper extends Command
     {
         /** @var \Aviator\Helpdesk\Tests\User $user */
         $user = $this->userModelName::query()->where([
-           $this->userModelEmailColumn => $this->argument('email')
+           $this->userModelEmailColumn => $this->argument('email'),
         ])->first();
 
         if ($user) {
             $this->createSuper($user);
+
             return;
         }
 

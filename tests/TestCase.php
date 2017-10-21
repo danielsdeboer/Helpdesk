@@ -3,11 +3,11 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
+use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
 use Orchestra\Testbench\BrowserKit\TestCase as Orchestra;
 
@@ -27,8 +27,8 @@ abstract class TestCase extends Orchestra
         ],
         [
             'name' => 'Other Visor',
-            'email' => 'some.other@email.com'
-        ]
+            'email' => 'some.other@email.com',
+        ],
     ];
 
     public function setUp()
@@ -147,9 +147,18 @@ abstract class TestCase extends Orchestra
     protected function withoutErrorHandling ()
     {
         app()->instance(ExceptionHandler::class, new class extends Handler {
-            public function __construct() {}
-            public function report(\Exception $e) {}
-            public function render($request, \Exception $e) { throw $e; }
+            public function __construct()
+            {
+            }
+
+            public function report(\Exception $e)
+            {
+            }
+
+            public function render($request, \Exception $e)
+            {
+                throw $e;
+            }
         });
     }
 }

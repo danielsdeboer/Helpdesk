@@ -20,7 +20,7 @@ class OpeningTest extends TestCase
     {
         $opening = $this->make->opening;
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $opening->ticket->user,
             Opened::class

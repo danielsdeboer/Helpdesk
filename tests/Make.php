@@ -2,24 +2,23 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Assignment;
-use Aviator\Helpdesk\Models\Closing;
-use Aviator\Helpdesk\Models\Collaborator;
-use Aviator\Helpdesk\Models\DueDate;
-use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Note;
-use Aviator\Helpdesk\Models\Opening;
-use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Team;
-use Aviator\Helpdesk\Models\TeamAssignment;
-use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Reply;
 use Illuminate\Support\Collection;
+use Aviator\Helpdesk\Models\Action;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Closing;
+use Aviator\Helpdesk\Models\DueDate;
+use Aviator\Helpdesk\Models\Opening;
+use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Collaborator;
+use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\TeamAssignment;
 
 /**
- * Class Create
- * @package Aviator\Helpdesk\Tests
+ * Class Create.
  * @property \Aviator\Helpdesk\Models\Agent super
  * @property \Aviator\Helpdesk\Tests\User user
  * @property \Aviator\Helpdesk\Models\Agent agent
@@ -124,7 +123,7 @@ class Make
         $team = $team ?: $this->team();
 
         return factory(TeamAssignment::class)->create([
-            'team_id' => $team->id
+            'team_id' => $team->id,
         ]);
     }
 
@@ -170,7 +169,7 @@ class Make
         $user = $user ?: factory(User::class)->create();
 
         return factory(Ticket::class)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 
@@ -186,7 +185,7 @@ class Make
         $user = $user ?: factory(User::class)->create();
 
         return factory(Ticket::class, $quantity)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 

@@ -33,7 +33,7 @@ class TicketsOpenedTest extends AdminBase
             ->see('Helpdesk');
     }
 
-/** @test */
+    /** @test */
     public function users_see_a_listing_of_their_tickets ()
     {
         $user = $this->make->user;

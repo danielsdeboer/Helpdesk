@@ -12,7 +12,8 @@ class AdminTeamsIndexTest extends TestCase
     {
         parent::setUp();
 
-        Route::any('login', function () {});
+        Route::any('login', function () {
+        });
     }
 
     /** @test */

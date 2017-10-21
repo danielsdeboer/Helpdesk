@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Http\Request;
+use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Queries\TicketsQuery;

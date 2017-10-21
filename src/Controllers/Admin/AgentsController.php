@@ -2,9 +2,6 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Traits\InteractsWithUsers;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
@@ -12,6 +9,9 @@ use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Builder;
+use Aviator\Helpdesk\Traits\InteractsWithUsers;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AgentsController extends Controller
