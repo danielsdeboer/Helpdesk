@@ -15,7 +15,7 @@ class CreateSuperTest extends AdminBase
         $user = factory(User::class)->create();
 
         $this->artisan('helpdesk:super', [
-            'email' => $user->email
+            'email' => $user->email,
         ]);
 
         /** @var \Aviator\Helpdesk\Models\Agent $super */
@@ -32,7 +32,7 @@ class CreateSuperTest extends AdminBase
     public function the_command_errors_if_no_such_user ()
     {
         $this->artisan('helpdesk:super', [
-            'email' => 'some@user.net'
+            'email' => 'some@user.net',
         ]);
 
         $this->assertEquals('No user found for some@user.net' . "\r\n", Artisan::output());

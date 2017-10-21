@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 class UserDashboardTest extends TestCase
 {
     const URI = 'helpdesk/dashboard/user';
-    
+
     /** @test */
     public function a_guest_cannot_visit_the_user_dashboard()
     {
@@ -20,7 +20,7 @@ class UserDashboardTest extends TestCase
     {
         $this->be($this->make->user);
         $this->get(self::URI);
-        
+
         $this->assertResponseOk();
     }
 

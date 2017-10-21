@@ -3,8 +3,6 @@
 namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
-use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Aviator\Helpdesk\Models\Ticket;
 
@@ -21,7 +19,7 @@ class TicketAccess
         /*
          * Deny guests
          */
-        if (!$request->user()) {
+        if (! $request->user()) {
             return abort(403);
         }
 
@@ -89,6 +87,5 @@ class TicketAccess
             : Ticket::query()->find($request->route('ticket'));
 
         return $ticket ?: abort(403);
-
     }
 }

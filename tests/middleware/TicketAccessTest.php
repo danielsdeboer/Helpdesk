@@ -23,7 +23,7 @@ class TicketAccessTest extends TestCase
                 'middleware' => 'helpdesk.ticket.owner',
                 function (Ticket $ticket) {
                     return $ticket;
-                }
+                },
             ]
         );
     }

@@ -5,8 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class Find
- * @package Aviator\Helpdesk\Tests
+ * Class Find.
  * @property \Aviator\Helpdesk\Tests\Get latest
  * @property \Aviator\Helpdesk\Models\Agent agent
  * @property \Aviator\Helpdesk\Tests\Get count
@@ -41,7 +40,7 @@ class Get
                 $query->latest();
             })
             ->when($this->includeSoftDeleted, function (Builder $query) {
-                /** @noinspection PhpUndefinedMethodInspection */
+                /* @noinspection PhpUndefinedMethodInspection */
                 $query->withTrashed();
             });
 

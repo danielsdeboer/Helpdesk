@@ -15,7 +15,7 @@ class AdminTeamsDeleteTest extends TestCase
 
         $this->be($super->user);
         $this->visitRoute('helpdesk.admin.teams.index');
-        $this->delete( self::URI . '/' . $team->id, [
+        $this->delete(self::URI . '/' . $team->id, [
             'delete_team_confirmed' => 1,
         ]);
 

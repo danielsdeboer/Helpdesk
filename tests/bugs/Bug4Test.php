@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests;
 
 class Bug4Test extends TestCase
 {
-
     /** @test */
     public function guests_cant_see_public_ticket_actions ()
     {

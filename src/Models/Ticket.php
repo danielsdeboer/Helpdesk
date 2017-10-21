@@ -450,7 +450,7 @@ class Ticket extends Model
     }
 
     /**
-     * Check if the ticket is assigned to a particular agent
+     * Check if the ticket is assigned to a particular agent.
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return bool
      */

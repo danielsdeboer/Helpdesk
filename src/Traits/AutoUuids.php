@@ -3,8 +3,7 @@
 namespace Aviator\Helpdesk\Traits;
 
 /**
- * Trait AutoUuids
- * @package Aviator\Helpdesk
+ * Trait AutoUuids.
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 trait AutoUuids

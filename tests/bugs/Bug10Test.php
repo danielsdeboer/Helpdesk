@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Ticket;
-
 class Bug10Test extends AdminBase
 {
     const VERB = 'GET';

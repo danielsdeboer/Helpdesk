@@ -20,7 +20,7 @@ class AssignmentTest extends TestCase
     {
         $assignment = $this->make->assignment;
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $assignment->assignee->user,
             AssignedToAgent::class
