@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 
 class TicketsClosedTest extends AdminBase
@@ -10,63 +9,40 @@ class TicketsClosedTest extends AdminBase
     const VERB = 'GET';
     const URI = 'helpdesk/tickets/closed';
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.closed
-     * @test
-     */
-    public function access_test()
+    /** @test */
+    public function access_test ()
     {
         $this->noGuests();
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.closed
-     * @test
-     */
-    public function users_can_visit()
+    /** @test */
+    public function users_can_visit ()
     {
-        $user = $this->makeUser();
-
-        $this->be($user);
-        $this->visit(self::URI)
-            ->assertResponseOk()
-            ->see('Helpdesk');
-    }
-
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.closed
-     * @test
-     */
-    public function agents_can_visit()
-    {
-        $this->be($this->makeAgent()->user);
+        $this->be($this->make->user);
 
         $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.closed
-     * @test
-     */
-    public function users_see_a_listing_of_their_closed_tickets()
+    /** @test */
+    public function agents_can_visit ()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $this->be($this->make->agent->user);
 
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->close(null, $agent);
+        $this->visit(self::URI)
+            ->assertResponseOk()
+            ->see('Helpdesk');
+    }
 
+    /** @test */
+    public function users_see_a_listing_of_their_closed_tickets ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket($user);
+
+        $ticket = $ticket->close(null, $agent);
         $this->be($user);
 
         $this->visit(self::URI)
@@ -74,21 +50,16 @@ class TicketsClosedTest extends AdminBase
             ->see($ticket->content->title());
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.closed
-     * @test
-     */
-    public function for_more_than_25_records_pagination_is_shown()
+    /** @test */
+    public function for_more_than_25_records_pagination_is_shown ()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class, 26)->create([
-            'user_id' => $user->id,
-        ])->each(function ($item) use ($agent) {
-            $item->close(null, $agent);
-        });
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+
+        $tickets = $this->make->tickets(26, $user)
+            ->each(function (Ticket $item) use ($agent) {
+                $item->close(null, $agent);
+            });
 
         $this->be($user);
 

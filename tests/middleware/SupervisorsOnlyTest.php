@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 class SupervisorsOnlyTest extends TestCase
 {
+    /** @const string */
+    const URI = '/guarded';
+
     public function setUp()
     {
         parent::setUp();
@@ -17,29 +20,39 @@ class SupervisorsOnlyTest extends TestCase
     }
 
     /**
-     * @group middleware
      * @test
      */
-    public function it_aborts_with_403_for_guests()
+    public function guests_get_a_403 ()
     {
-        $this->call('GET', '/guarded');
+        $this->get(self::URI);
 
         $this->assertResponseStatus(403);
     }
 
     /**
-     * @group middleware
      * @test
      */
-    public function it_aborts_with_403_if_the_user_isnt_a_supervisor()
+    public function users_get_a_403 ()
     {
-        $this->be(factory(User::class)->create());
-        $this->call('GET', '/guarded');
+        $this->be(
+            factory(User::class)->create()
+        );
+
+        $this->get(self::URI);
 
         $this->assertResponseStatus(403);
+    }
 
-        $this->be(factory(Agent::class)->create()->user);
-        $this->call('GET', '/guarded');
+    /**
+     * @test
+     */
+    public function agents_get_a_403 ()
+    {
+        $this->be(
+            factory(Agent::class)->create()->user
+        );
+
+        $this->get(self::URI);
 
         $this->assertResponseStatus(403);
     }
@@ -51,10 +64,12 @@ class SupervisorsOnlyTest extends TestCase
     public function it_passes_if_the_user_is_a_supervisor()
     {
         $this->be(
-            factory(Agent::class)->states('isSuper')->create()->user
+            $this->make->super->user
         );
-        $response = $this->call('GET', '/guarded');
 
-        $this->assertEquals('Guarded.', $response->getContent());
+        $this->visit(self::URI);
+
+        $this->assertResponseOk();
+        $this->assertEquals('Guarded.', $this->response->getContent());
     }
 }

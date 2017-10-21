@@ -2,27 +2,15 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Ticket;
-
-class Bug4Test extends AdminBase
+class Bug4Test extends TestCase
 {
-    const VERB = 'GET';
-    const URIBASE = 'helpdesk/tickets/';
-    const URI = 'helpdesk/tickets/1';
 
-    /**
-     * @group bugs
-     * @group bugs.4
-     * @test
-     */
-    public function aGuestCantSeePublicTicketActions()
+    /** @test */
+    public function guests_cant_see_public_ticket_actions ()
     {
-        $user = $this->makeUser();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $ticket = $this->make->ticket;
 
-        $this->visit(self::URIBASE . 'public/' . $ticket->uuid)
+        $this->visit('helpdesk/tickets/public/' . $ticket->uuid)
             ->assertResponseOk()
             ->see($ticket->content->title())
             ->dontSee('add reply')

@@ -2,44 +2,21 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
-use Aviator\Helpdesk\Notifications\External\Opened;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
+use Aviator\Helpdesk\Tests\Traits\CreatesContent;
+use Aviator\Helpdesk\Tests\Traits\CreatesTickets;
+use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
 
 class TicketTest extends TestCase
 {
-    protected $ticket;
-    protected $content;
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicket()
-    {
-        $ticket = factory(Ticket::class)->create();
-
-        $this->ticket = $ticket;
-
-        return $ticket;
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Agent
-     */
-    protected function createAgent()
-    {
-        return factory(Agent::class)->create();
-    }
-
-    protected function createContent()
-    {
-        $this->content = factory(GenericContent::class)->create();
-    }
-
+    use CreatesUsers, CreatesTickets, CreatesAgents, CreatesContent;
+   
     /**
      * @return \Aviator\Helpdesk\Models\Ticket
      */
@@ -57,9 +34,9 @@ class TicketTest extends TestCase
      */
     public function it_has_an_automatically_generated_uuid()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->assertEquals(32, strlen($this->ticket->uuid));
+        $this->assertEquals(32, strlen($ticket->uuid));
     }
 
     /**
@@ -69,9 +46,9 @@ class TicketTest extends TestCase
      */
     public function it_belongs_to_a_user()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->assertNotNull($this->ticket->user->email);
+        $this->assertNotNull($ticket->user->email);
     }
 
     /**
@@ -81,14 +58,14 @@ class TicketTest extends TestCase
      */
     public function it_can_have_polymorphic_generic_content()
     {
-        $this->createTicket();
-        $this->createContent();
+        $ticket = $this->ticket();
+        $content = $this->content();
 
-        $this->ticket->withContent($this->content);
+        $ticket->withContent($content);
 
-        $this->assertSame($this->content, $this->ticket->content);
-        $this->assertNotNull($this->ticket->content->title);
-        $this->assertNotNull($this->ticket->content->body);
+        $this->assertSame($content, $ticket->content);
+        $this->assertNotNull($ticket->content->title);
+        $this->assertNotNull($ticket->content->body);
     }
 
     /**
@@ -98,15 +75,15 @@ class TicketTest extends TestCase
      */
     public function it_can_create_the_content()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->createContent(GenericContent::class, [
+        $ticket->createContent(GenericContent::class, [
             'title' => 'test title',
             'body' => 'test body',
         ]);
 
-        $this->assertEquals('test title', $this->ticket->content->title);
-        $this->assertEquals('test body', $this->ticket->content->body);
+        $this->assertEquals('test title', $ticket->content->title);
+        $this->assertEquals('test body', $ticket->content->body);
     }
 
     /**
@@ -116,12 +93,12 @@ class TicketTest extends TestCase
      */
     public function it_may_be_assigned_to_an_agent_automatically()
     {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $agent = $this->make->agent;
 
-        $this->ticket->assignToAgent($agent);
+        $ticket->assignToAgent($agent);
 
-        $this->assertEquals($agent->user->email, $this->ticket->assignment->assignee->user->email);
+        $this->assertEquals($agent->user->email, $ticket->assignment->assignee->user->email);
     }
 
     /**
@@ -131,17 +108,17 @@ class TicketTest extends TestCase
      */
     public function it_may_be_assigned_to_an_agent_by_an_agent()
     {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
-        $creator = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $agent = $this->make->agent;
+        $creator = $this->make->agent;
 
-        $this->ticket->assignToAgent($agent, $creator);
+        $ticket->assignToAgent($agent, $creator);
 
-        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->assignee);
-        $this->assertEquals($agent->id, $this->ticket->assignment->assignee->id);
+        $this->assertInstanceOf(Agent::class, $ticket->assignment->assignee);
+        $this->assertEquals($agent->id, $ticket->assignment->assignee->id);
 
-        $this->assertInstanceOf(Agent::class, $this->ticket->assignment->agent);
-        $this->assertEquals($creator->id, $this->ticket->assignment->agent->id);
+        $this->assertInstanceOf(Agent::class, $ticket->assignment->agent);
+        $this->assertEquals($creator->id, $ticket->assignment->agent->id);
     }
 
     /**
@@ -149,14 +126,14 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function it_may_be_assigned_to_an_assignment_pool_automatically()
+    public function it_may_be_assigned_to_an_assignment_team_automatically()
     {
-        $this->createTicket();
-        $pool = factory(Pool::class)->create();
+        $ticket = $this->ticket();
+        $team = $this->make->team;
 
-        $this->ticket->assignToPool($pool);
+        $ticket->assignToTeam($team);
 
-        $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
+        $this->assertEquals($team->team_lead, $ticket->teamAssignment->team->team_lead);
     }
 
     /**
@@ -164,16 +141,16 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function it_may_be_assigned_to_an_assignment_pool_by_an_agent()
+    public function it_may_be_assigned_to_an_assignment_team_by_an_agent()
     {
-        $this->createTicket();
-        $pool = factory(Pool::class)->create();
-        $creator = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $team = $this->make->team;
+        $creator = $this->make->agent;
 
-        $this->ticket->assignToPool($pool, $creator);
+        $ticket->assignToTeam($team, $creator);
 
-        $this->assertEquals($pool->team_lead, $this->ticket->poolAssignment->pool->team_lead);
-        $this->assertEquals($creator->id, $this->ticket->poolAssignment->agent->id);
+        $this->assertEquals($team->team_lead, $ticket->teamAssignment->team->team_lead);
+        $this->assertEquals($creator->id, $ticket->teamAssignment->agent->id);
     }
 
     /**
@@ -183,11 +160,11 @@ class TicketTest extends TestCase
      */
     public function it_may_be_given_a_due_date_automatically()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->dueOn('+1 day');
+        $ticket->dueOn('+1 day');
 
-        $this->assertNotNull($this->ticket->dueDate->due_on);
+        $this->assertNotNull($ticket->dueDate->due_on);
     }
 
     /**
@@ -197,13 +174,13 @@ class TicketTest extends TestCase
      */
     public function it_may_be_given_a_due_date_by_a_user()
     {
-        $this->createTicket();
-        $creator = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $creator = $this->make->agent;
 
-        $this->ticket->dueOn('+1 day', $creator);
+        $ticket->dueOn('+1 day', $creator);
 
-        $this->assertNotNull($this->ticket->dueDate->due_on);
-        $this->assertEquals($creator->id, $this->ticket->dueDate->agent->id);
+        $this->assertNotNull($ticket->dueDate->due_on);
+        $this->assertEquals($creator->id, $ticket->dueDate->agent->id);
     }
 
     /**
@@ -213,13 +190,13 @@ class TicketTest extends TestCase
      */
     public function it_may_have_many_actions()
     {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $agent = $this->make->agent;
 
-        $this->ticket->assignToAgent($agent);
-        $this->ticket->dueOn('today');
+        $ticket->assignToAgent($agent);
+        $ticket->dueOn('today');
 
-        $this->assertEquals(3, $this->ticket->actions->count());
+        $this->assertEquals(3, $ticket->actions->count());
     }
 
     /**
@@ -229,10 +206,10 @@ class TicketTest extends TestCase
      */
     public function it_may_not_be_closed_automatically()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
         try {
-            $this->ticket->close(null, null);
+            $ticket->close(null, null);
         } catch (CreatorRequiredException $e) {
             return;
         }
@@ -247,13 +224,13 @@ class TicketTest extends TestCase
      */
     public function it_may_be_closed_with_a_note()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
         $user = factory(config('helpdesk.userModel'))->create();
 
-        $this->ticket->close('here is a note', $user);
+        $ticket->close('here is a note', $user);
 
-        $this->assertEquals('closed', $this->ticket->status);
-        $this->assertEquals('here is a note', $this->ticket->closing->note);
+        $this->assertEquals('closed', $ticket->status);
+        $this->assertEquals('here is a note', $ticket->closing->note);
     }
 
     /**
@@ -263,14 +240,14 @@ class TicketTest extends TestCase
      */
     public function it_may_be_opened_after_being_closed_with_a_note()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
         $user = factory(User::class)->create();
 
-        $this->ticket->close(null, $user);
-        $this->ticket->open('here is an opening note', $user);
+        $ticket->close(null, $user);
+        $ticket->open('here is an opening note', $user);
 
-        $this->assertEquals('open', $this->ticket->status);
-        $this->assertEquals('here is an opening note', $this->ticket->opening->note);
+        $this->assertEquals('open', $ticket->status);
+        $this->assertEquals('here is an opening note', $ticket->opening->note);
     }
 
     /**
@@ -280,12 +257,12 @@ class TicketTest extends TestCase
      */
     public function it_may_not_be_opened_with_no_user()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->close(null, $this->ticket->user);
+        $ticket->close(null, $ticket->user);
 
         try {
-            $this->ticket->open(null, null);
+            $ticket->open(null, null);
         } catch (CreatorRequiredException $e) {
             return;
         }
@@ -300,11 +277,11 @@ class TicketTest extends TestCase
      */
     public function it_can_create_a_note()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->note('here is the body of the note', $this->ticket->user);
+        $ticket->note('here is the body of the note', $ticket->user);
 
-        $this->assertNotNull($this->ticket->notes);
+        $this->assertNotNull($ticket->notes);
     }
 
     /**
@@ -314,14 +291,14 @@ class TicketTest extends TestCase
      */
     public function it_can_have_many_notes()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket
-            ->note('note1', $this->ticket->user)
-            ->note('note2', $this->ticket->user)
-            ->note('note3', $this->ticket->user);
+        $ticket
+            ->note('note1', $ticket->user)
+            ->note('note2', $ticket->user)
+            ->note('note3', $ticket->user);
 
-        $this->assertEquals(3, $this->ticket->notes->count());
+        $this->assertEquals(3, $ticket->notes->count());
     }
 
     /**
@@ -331,11 +308,11 @@ class TicketTest extends TestCase
      */
     public function it_creates_notes_with_default_visibility_of_true()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->note('note1', $this->ticket->user);
+        $ticket->note('note1', $ticket->user);
 
-        $this->assertTrue($this->ticket->notes->first()->is_visible);
+        $this->assertTrue($ticket->notes->first()->is_visible);
     }
 
     /**
@@ -345,11 +322,11 @@ class TicketTest extends TestCase
      */
     public function it_may_create_notes_with_visibility_set_to_false()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $this->ticket->note('note1', $this->ticket->user, false);
+        $ticket->note('note1', $ticket->user, false);
 
-        $this->assertFalse($this->ticket->notes->first()->is_visible);
+        $this->assertFalse($ticket->notes->first()->is_visible);
     }
 
     /**
@@ -359,12 +336,12 @@ class TicketTest extends TestCase
      */
     public function it_may_be_replied_to_by_an_agent()
     {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $agent = $this->make->agent;
 
-        $this->ticket->internalReply('here is the body of the reply', $agent);
+        $ticket->internalReply('here is the body of the reply', $agent);
 
-        $this->assertEquals($agent->id, $this->ticket->internalReplies->first()->agent->id);
+        $this->assertEquals($agent->id, $ticket->internalReplies->first()->agent->id);
     }
 
     /**
@@ -374,12 +351,12 @@ class TicketTest extends TestCase
      */
     public function a_reply_created_by_an_agent_is_visible_to_the_user()
     {
-        $this->createTicket();
-        $agent = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $agent = $this->make->agent;
 
-        $this->ticket->internalReply('here is the body of the reply', $agent);
+        $ticket->internalReply('here is the body of the reply', $agent);
 
-        $this->assertTrue($this->ticket->internalReplies->first()->is_visible);
+        $this->assertTrue($ticket->internalReplies->first()->is_visible);
     }
 
     /**
@@ -389,12 +366,12 @@ class TicketTest extends TestCase
      */
     public function it_may_be_replied_to_by_a_user()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
         $user = factory(User::class)->create();
 
-        $this->ticket->externalReply('here is the body of the reply', $user);
+        $ticket->externalReply('here is the body of the reply', $user);
 
-        $this->assertEquals($user->id, $this->ticket->externalReplies->first()->user->id);
+        $this->assertEquals($user->id, $ticket->externalReplies->first()->user->id);
     }
 
     /**
@@ -404,12 +381,13 @@ class TicketTest extends TestCase
      */
     public function it_has_a_uuid_scope()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $uuid = $this->ticket->uuid;
+        $uuid = $ticket->uuid;
+        /** @noinspection PhpUndefinedMethodInspection */
         $ticketLookupByUuid = Ticket::uuid($uuid);
 
-        $this->assertSame($this->ticket->uuid, $ticketLookupByUuid->uuid);
+        $this->assertSame($ticket->uuid, $ticketLookupByUuid->uuid);
     }
 
     /**
@@ -419,9 +397,10 @@ class TicketTest extends TestCase
      */
     public function it_has_a_find_with_actions_scope()
     {
-        $this->createTicket();
+        $ticket = $this->ticket();
 
-        $ticketWithActions = Ticket::findWithActions($this->ticket->id);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $ticketWithActions = Ticket::findWithActions($ticket->id);
 
         $this->assertNotNull($ticketWithActions->actions);
         $this->assertEquals(1, $ticketWithActions->actions->count());
@@ -435,9 +414,10 @@ class TicketTest extends TestCase
     public function it_has_an_unassigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
-        $assignee = factory(Agent::class)->create();
+        $assignee = $this->make->agent;
 
         $tickets->first()->assignToAgent($assignee);
+        /** @var \Illuminate\Support\Collection $unassignedTickets */
         $unassignedTickets = Ticket::unassigned()->get();
 
         $this->assertEquals(9, $unassignedTickets->count());
@@ -467,7 +447,7 @@ class TicketTest extends TestCase
     public function it_has_assigned_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
-        $assignee = factory(Agent::class)->create();
+        $assignee = $this->make->agent;
 
         $tickets->first()->assignToAgent($assignee);
         $assignedTickets = Ticket::assigned()->get();
@@ -482,7 +462,7 @@ class TicketTest extends TestCase
      */
     public function the_assigned_scope_returns_only_open_tickets()
     {
-        $agent = factory(Agent::class)->create();
+        $agent = $this->make->agent;
 
         $tickets = factory(Ticket::class, 2)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent);
@@ -615,13 +595,13 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function it_has_pooled_scope()
+    public function it_has_teamed_scope()
     {
         $tickets = factory(Ticket::class, 10)->create();
-        $pool = factory(Pool::class)->create();
+        $team = $this->make->team;
 
-        $tickets->first()->assignToPool($pool);
-        $tickets = Ticket::pooled()->get();
+        $tickets->first()->assignToTeam($team);
+        $tickets = Ticket::teamed()->get();
 
         $this->assertEquals(1, $tickets->count());
     }
@@ -631,19 +611,19 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function the_pooled_scope_returns_only_open_tickets()
+    public function the_teamed_scope_returns_only_open_tickets()
     {
         $tickets = factory(Ticket::class, 2)->create()->each(function ($item) {
-            $pool = factory(Pool::class)->create();
+            $team = $this->make->team;
 
-            $item->assignToPool($pool);
+            $item->assignToTeam($team);
         });
 
         $tickets->first()->close(null, $tickets->first()->user);
-        $pooled = Ticket::pooled()->get();
+        $teamed = Ticket::teamed()->get();
 
-        $this->assertEquals(1, $pooled->count());
-        $this->assertEquals('open', $pooled->first()->status);
+        $this->assertEquals(1, $teamed->count());
+        $this->assertEquals('open', $teamed->first()->status);
     }
 
     /**
@@ -653,11 +633,11 @@ class TicketTest extends TestCase
      */
     public function it_has_with_actions_scope_which_returns_actions_sorted_ascending()
     {
-        $ticket = factory(Ticket::class)->create();
-        $pool = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create();
+        $ticket = $this->ticket();
+        $team = $this->make->team;
+        $agent = $this->make->agent;
 
-        $ticket->dueOn('today')->assignToPool($pool)->internalReply('this is a reply', $agent);
+        $ticket->dueOn('today')->assignToTeam($team)->internalReply('this is a reply', $agent);
         $ticket = Ticket::withActions()->find($ticket->id);
 
         $this->assertEquals(4, $ticket->actions->count());
@@ -678,7 +658,7 @@ class TicketTest extends TestCase
      */
     public function it_has_an_is_open_method()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
         $this->assertTrue($ticket->isOpen());
 
@@ -694,7 +674,7 @@ class TicketTest extends TestCase
      */
     public function it_has_an_is_closed_method()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
         $this->assertFalse($ticket->isClosed());
 
@@ -710,7 +690,7 @@ class TicketTest extends TestCase
      */
     public function isOverdueReturnsTrueIfOverdue()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
         $ticket->dueOn('-1 day');
         $this->assertTrue($ticket->isOverdue());
@@ -723,7 +703,7 @@ class TicketTest extends TestCase
      */
     public function isOverdueReturnsFalseIfNotOverdue()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
         $ticket->dueOn('+1 day');
         $this->assertFalse($ticket->isOverdue());
@@ -736,7 +716,7 @@ class TicketTest extends TestCase
      */
     public function isAssignedReturnsFalseIfNotAssigned()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
         $this->assertFalse($ticket->isAssigned());
     }
@@ -748,8 +728,8 @@ class TicketTest extends TestCase
      */
     public function isAssignedReturnsTrueIfAssignedToAnAgent()
     {
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $agent = $this->make->agent;
+        $ticket = $this->ticket();
         $ticket->assignToAgent($agent);
 
         $this->assertTrue($ticket->isAssigned());
@@ -762,8 +742,8 @@ class TicketTest extends TestCase
      */
     public function isAssignedReturnsTrueIfAssignedToATeam()
     {
-        $team = factory(Pool::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $team = $this->make->team;
+        $ticket = $this->ticket();
         $ticket->assignToTeam($team);
 
         $this->assertTrue($ticket->isAssigned());
@@ -774,13 +754,13 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function isAssignedToAgentReturnsTrueIfAssignedToAnAgent()
+    public function isAssignedToAnyAgentReturnsTrueIfAssignedToAnAgent()
     {
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $agent = $this->make->agent;
+        $ticket = $this->ticket();
         $ticket->assignToAgent($agent);
 
-        $this->assertTrue($ticket->isAssignedToAgent());
+        $this->assertTrue($ticket->isAssignedToAnyAgent());
     }
 
     /**
@@ -788,11 +768,26 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function isAssignedToAgentReturnsFalseIfUnassigned()
+    public function isAssignedToAnyAgentReturnsFalseIfUnassigned()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->ticket();
 
-        $this->assertFalse($ticket->isAssignedToAgent());
+        $this->assertFalse($ticket->isAssignedToAnyAgent());
+    }
+
+    /**
+     * @test
+     */
+    public function checking_if_a_ticket_is_assigned_to_a_particular_agent ()
+    {
+        $agent = $this->make->agent;
+        $assigned = $ticket = $this->ticket();
+        $notAssigned = $ticket = $this->ticket();
+
+        $assigned->assignToAgent($agent);
+
+        $this->assertTrue($assigned->isAssignedTo($agent));
+        $this->assertFalse($notAssigned->isAssignedTo($agent));
     }
 
     /**
@@ -800,13 +795,13 @@ class TicketTest extends TestCase
      * @group model.ticket
      * @test
      */
-    public function isAssignedToAgentReturnsFalseIfAssignedToTeam()
+    public function isAssignedToAnyAgentReturnsFalseIfAssignedToTeam()
     {
-        $team = factory(Pool::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $team = $this->make->team;
+        $ticket = $this->ticket();
         $ticket->assignToTeam($team);
 
-        $this->assertFalse($ticket->isAssignedToAgent());
+        $this->assertFalse($ticket->isAssignedToAnyAgent());
     }
 
     /**
@@ -816,8 +811,8 @@ class TicketTest extends TestCase
      */
     public function isAssignedToTeamReturnsTrueIfAssignedToTeam()
     {
-        $team = factory(Pool::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $team = $this->make->team;
+        $ticket = $this->ticket();
         $ticket->assignToTeam($team);
 
         $this->assertTrue($ticket->isAssignedToTeam());
@@ -830,8 +825,8 @@ class TicketTest extends TestCase
      */
     public function isAssignedToTeamReturnsFalseIfUnassigned()
     {
-        $team = factory(Pool::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $team = $this->make->team;
+        $ticket = $this->ticket();
 
         $this->assertFalse($ticket->isAssignedToTeam());
     }
@@ -843,8 +838,8 @@ class TicketTest extends TestCase
      */
     public function isAssignedToTeamReturnsFalseIfAssignedToAgent()
     {
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $agent = $this->make->agent;
+        $ticket = $this->ticket();
         $ticket->assignToAgent($agent);
 
         $this->assertFalse($ticket->isAssignedToTeam());
@@ -858,17 +853,17 @@ class TicketTest extends TestCase
     public function the_owned_scope_returns_tickets_accessible_to_a_user()
     {
         $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $agent = $this->make->agent;
 
         // User should be able to see this
         $userTicket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
         // But not this
-        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
+        $agentTicket = $this->ticket()->assignToAgent($agent);
 
         // And not this
-        $nobodyTicket = factory(Ticket::class)->create();
+        $nobodyTicket = $this->ticket();
 
         $tickets = Ticket::accessible($user)->get();
 
@@ -884,13 +879,13 @@ class TicketTest extends TestCase
     public function the_owned_scope_returns_tickets_accessible_to_an_agent()
     {
         $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
+        $agent = $this->make->agent;
 
         $userTicket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
-        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
-        $nobodyTicket = factory(Ticket::class)->create();
+        $agentTicket = $this->ticket()->assignToAgent($agent);
+        $nobodyTicket = $this->ticket();
 
         $tickets = Ticket::accessible($agent)->get();
 
@@ -906,16 +901,16 @@ class TicketTest extends TestCase
     public function the_owned_scope_returns_tickets_accessible_to_an_agent_who_is_a_team_lead()
     {
         $user = factory(User::class)->create();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create()->makeTeamLeadOf($team)->addToTeam($team2);
+        $team = $this->make->team;
+        $team2 = factory(Team::class)->create();
+        $agent = $this->make->agent->makeTeamLeadOf($team)->addToTeam($team2);
 
         $userTicket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
-        $agentTicket = factory(Ticket::class)->create()->assignToAgent($agent);
-        $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
-        $team2Ticket = factory(Ticket::class)->create()->assignToPool($team2);
+        $agentTicket = $this->ticket()->assignToAgent($agent);
+        $teamTicket = $this->ticket()->assignToTeam($team);
+        $team2Ticket = $this->ticket()->assignToTeam($team2);
 
         $tickets = Ticket::accessible($agent)->get();
 
@@ -932,17 +927,17 @@ class TicketTest extends TestCase
     public function the_owned_scope_returns_tickets_accessible_to_a_supervisor()
     {
         $user = factory(User::class)->create();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
-        $agent = factory(Agent::class)->create();
+        $team = $this->make->team;
+        $team2 = factory(Team::class)->create();
+        $agent = $this->make->agent;
         $super = factory(Agent::class)->states('isSuper')->create();
 
         $userTicket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
-        $agentTicket = factory(Ticket::class)->create();
-        $teamTicket = factory(Ticket::class)->create()->assignToPool($team);
-        $team2Ticket = factory(Ticket::class)->create()->assignToPool($team2);
+        $agentTicket = $this->ticket();
+        $teamTicket = $this->ticket()->assignToTeam($team);
+        $team2Ticket = $this->ticket()->assignToTeam($team2);
 
         $tickets = Ticket::accessible($super)->get();
 
@@ -969,11 +964,11 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_add_a_collaborating_agent()
+    public function adding_a_collaborator ()
     {
-        $ticket = $this->createTicket();
-        $owner = $this->createAgent();
-        $collab = $this->createAgent();
+        $ticket = $this->ticket();
+        $owner = $this->make->agent;
+        $collab = $this->make->agent;
 
         $ticket = $ticket->addCollaborator($collab, $owner);
 
@@ -988,9 +983,9 @@ class TicketTest extends TestCase
      */
     public function a_ticket_can_add_a_collaborating_agent_only_once()
     {
-        $ticket = $this->createTicket();
-        $collab = $this->createAgent();
-        $owner = $this->createAgent();
+        $ticket = $this->ticket();
+        $collab = $this->make->agent;
+        $owner = $this->make->agent;
 
         $ticket->addCollaborator($collab, $owner);
         $ticket->addCollaborator($collab, $owner);
@@ -1004,18 +999,25 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_remove_a_collaborating_agent()
+    public function removing_a_collaborator ()
     {
-        $ticket = $this->createTicket();
-        $collab = $this->createAgent();
-        $owner = $this->createAgent();
+        $ticket = $this->ticket();
+        $agent0 = $this->make->agent;
+        $agent1 = $this->make->agent;
+        $owner = $this->make->agent;
 
         /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
-        $ticket = $ticket->addCollaborator($collab, $owner);
+        $ticket = $ticket->addCollaborator($agent0, $owner);
+        $ticket = $ticket->addCollaborator($agent1, $owner);
 
-        $this->assertEquals($collab->id, $ticket->collaborators->first()->id);
+        $this->assertEquals($agent0->id, $ticket->collaborators[0]->agent->id);
+        $this->assertEquals($agent1->id, $ticket->collaborators[1]->agent->id);
 
-        $ticket = $ticket->removeCollaborator($collab);
+        $ticket = $ticket->removeCollaborator($agent0);
+
+        $this->assertEquals(1, $ticket->collaborators->count());
+
+        $ticket = $ticket->removeCollaborator($agent1);
 
         $this->assertEquals(0, $ticket->collaborators->count());
     }
@@ -1026,19 +1028,20 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_ticket_can_evaluate_whether_an_agent_is_a_collaborator()
+    public function checking_if_an_agent_is_a_collaborator ()
     {
-        $ticket = $this->createTicket();
-        $agent = $this->createAgent();
+        $noCollab = $this->ticket();
+        $agent = $this->make->agent;
 
-        $bool = $ticket->isCollaborator($agent);
+        $this->assertFalse(
+            $noCollab->isCollaborator($agent)
+        );
 
-        $this->assertFalse($bool);
+        $collab = $noCollab->addCollaborator($agent, $agent);
 
-        $ticket = $ticket->addCollaborator($agent, $agent);
-        $bool2 = $ticket->isCollaborator($agent);
-
-        $this->assertTrue($bool2);
+        $this->assertTrue(
+            $collab->isCollaborator($agent)
+        );
     }
 
     /**
@@ -1047,11 +1050,25 @@ class TicketTest extends TestCase
      * @group model.ticket.collab
      * @test
      */
-    public function a_collaborator_created_via_the_ticket_is_visible_by_default()
+    public function a_collaborator_created_via_the_ticket_is_visible_by_default ()
     {
-        $agent = $this->createAgent();
-        $ticket = $this->createTicket()->addCollaborator($agent, $agent);
+        $agent = $this->make->agent;
+        $ticket = $this->ticket()->addCollaborator($agent, $agent);
 
         $this->assertTrue($ticket->collaborators->first()->is_visible);
+    }
+
+    /**
+     * @test
+     */
+    public function checking_if_a_ticket_is_owned_by_a_user ()
+    {
+        $user = $this->make->user;
+
+        $owned = $this->ticket($user);
+        $notOwned = $ticket = $this->ticket();
+
+        $this->assertTrue($owned->isOwnedBy($user));
+        $this->assertFalse($notOwned->isOwnedBy($user));
     }
 }

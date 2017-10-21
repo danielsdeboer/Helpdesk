@@ -2,20 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-
 class AdminAgentsStoreTest extends AdminBase
 {
     const VERB = 'POST';
     const URI = 'helpdesk/admin/agents';
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
+    /** @test */
     public function access_test()
     {
         $this->noGuests();
@@ -23,44 +15,33 @@ class AdminAgentsStoreTest extends AdminBase
         $this->noAgents();
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function supervisors_can_create_agents()
+    /** @test */
+    public function supervisors_can_create_agents ()
     {
-        $super = $this->makeSuper();
-        $user = $this->makeUser();
+        $super = $this->make->super;
+        $user = $this->make->user;
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
+
+        $this->post(self::URI, [
             'user_id' => $user->id,
         ]);
 
         $this->assertResponseStatus(302);
-        $this->assertRedirectedToRoute('helpdesk.admin.agents.show', 2);
+        $this->assertRedirectedToRoute('helpdesk.admin.agents.show', $user->id);
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function the_same_user_cant_be_added_as_an_agent_twice()
+    /** @test */
+    public function the_same_user_cant_be_added_as_an_agent_twice ()
     {
-        $super = $this->makeSuper();
-        $agent = $this->makeAgent();
+        $super = $this->make->super;
+        $agent = $this->make->agent;
 
-        $this->be($super);
+        $this->be($super->user);
 
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call(self::VERB, 'helpdesk/admin/agents', [
+        $this->post(self::URI, [
             'user_id' => $agent->user->id,
         ]);
 
@@ -69,20 +50,14 @@ class AdminAgentsStoreTest extends AdminBase
         $this->assertSessionHasErrors('user_id');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function a_non_existent_user_cant_be_added()
+    /** @test */
+    public function a_non_existent_user_cant_be_added ()
     {
-        $super = $this->makeSuper();
+        $super = $this->make->super;
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $response = $this->call(self::VERB, 'helpdesk/admin/agents', [
+        $this->post(self::URI, [
             'user_id' => 999999,
         ]);
 
@@ -91,34 +66,30 @@ class AdminAgentsStoreTest extends AdminBase
         $this->assertSessionHasErrors('user_id');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.store
-     * @test
-     */
-    public function an_agent_can_be_deleted_and_then_created_again()
+    /** @test */
+    public function an_agent_can_be_deleted_and_then_created_again ()
     {
-        $super = $this->makeSuper();
-        $user = $this->makeUser();
+        $super = $this->make->super;
+        $user = $this->make->user;
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call(self::VERB, 'helpdesk/admin/agents', [
+        $this->post(self::URI, [
             'user_id' => $user->id,
         ]);
 
+        $agent = $this->get->latest->agent;
+
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call('DELETE', 'helpdesk/admin/agents/2', [
+        $this->delete('helpdesk/admin/agents/' . $agent->id, [
             'delete_agent_confirmed' => 1,
         ]);
 
         $this->visitRoute('helpdesk.admin.agents.index');
-        $this->call(self::VERB, 'helpdesk/admin/agents', [
+        $this->post(self::URI, [
             'user_id' => $user->id,
         ]);
 
-        $this->assertEquals(3, Agent::withTrashed()->get()->count());
+        $this->assertEquals(4, $this->get->withTrashed->count->agent);
     }
 }

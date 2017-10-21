@@ -7,7 +7,7 @@
         }
     },
     "require": {
-        "php" : ">=5.6.0",
+        "php" : ">=7.0.0",
         "laravel/framework": "~5.4.0"
     },
     "require-dev": {
@@ -17,8 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Aviator\\Helpdesk\\Tests\\": "tests/",
-            "Aviator\\Helpdesk\\Tests\\Traits\\": "tests/traits"
+            "Aviator\\Helpdesk\\Tests\\": "tests/"
         }
     }
 }

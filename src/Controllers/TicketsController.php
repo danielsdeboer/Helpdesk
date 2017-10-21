@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Queries\TicketsQuery;
@@ -28,7 +29,7 @@ class TicketsController extends Controller
      */
     protected $relations = [
         'assignment',
-        'poolAssignment',
+        'teamAssignment',
         'dueDate',
         'collaborators',
     ];
@@ -114,30 +115,27 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource.
+     * @param \Illuminate\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Contracts\View\View
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $supervisorEmails = config('helpdesk.supervisors');
-        $email = config('helpdesk.userModelEmailColumn');
-
-        $agent = Agent::query()
-            ->where('user_id', auth()->user()->id)
-            ->first();
+        /** @var \Aviator\Helpdesk\Models\Agent $agent */
+        $agent = $request->user()->agent;
 
         $this->ticket = Ticket::with($this->relations)
-            ->accessible($agent ? $agent : auth()->user())
+            ->accessible($agent ?: $request->user())
             ->findOrFail($id);
 
         switch (true) {
             case ! $agent:
                 return $this->showForUser();
-            case $agent && in_array($agent->user->$email, $supervisorEmails):
+            case $agent && $agent->isSuper():
                 return $this->showForSuper();
-            case $agent && $this->ticket->poolAssignment && $agent->isMemberOf($this->ticket->poolAssignment->pool):
+            case $agent && $this->ticket->teamAssignment && $agent->isMemberOf($this->ticket->teamAssignment->team):
                 return $this->showForTeamLead();
-            case $agent && $this->ticket->isCollaborator($agent):
+            case $agent && $this->ticket->hasCollaborator($agent):
                 return $this->showForCollab();
             default:
                 return $this->showForAgent();
@@ -252,8 +250,8 @@ class TicketsController extends Controller
      */
     protected function getUsers()
     {
-        if ($this->ticket->poolAssignment) {
-            return $this->ticket->poolAssignment->pool->agents()
+        if ($this->ticket->teamAssignment) {
+            return $this->ticket->teamAssignment->team->agents()
                 ->with('user')
                 ->get()
                 ->sortBy('user.name');

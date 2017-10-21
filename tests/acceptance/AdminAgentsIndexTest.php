@@ -7,13 +7,7 @@ class AdminAgentsIndexTest extends AdminBase
     const VERB = 'get';
     const URI = 'helpdesk/admin';
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.index
-     * @test
-     */
+    /** @test */
     public function access_test()
     {
         $this->noGuests();
@@ -21,84 +15,61 @@ class AdminAgentsIndexTest extends AdminBase
         $this->noAgents();
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.index
-     * @test
-     */
+    /** @test */
     public function supervisors_can_visit()
     {
-        $super = $this->makeSuper();
+        $super = $this->make->super;
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visit(self::URI);
 
         $this->see('id="tab-admin-agents"')
             ->see('Add Agent');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.index
-     * @test
-     */
+    /** @test */
     public function it_has_a_list_of_agents_with_emails_and_teams()
     {
-        $super = $this->makeSuper();
-        $team = $this->makeTeam();
-        $agent = $this->makeAgent()->addToTeam($team);
+        $super = $this->make->super;
+        $team = $this->make->team;
+        $agent = $this->make->agent->addToTeam($team);
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent->user->name . '</a>')
+        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent->user->id . '">' . $agent->user->name . '</a>')
             ->see('<td>' . $agent->user->email . '</td>')
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.index
-     * @test
-     */
-    public function the_list_of_agents_does_not_include_the_supervisor()
+    /** @test */
+    public function the_agents_list_includes_supervisors ()
     {
-        $super = $this->makeSuper();
-        $team = $this->makeTeam();
-        $agent = $this->makeAgent()->addToTeam($team);
+        $super = $this->make->super;
+        $team = $this->make->team;
+        $this->make->agent->addToTeam($team);
 
-        $this->be($super);
+        $this->be($super->user);
         $this->visit(self::URI);
 
-        $this->dontSee('<a href="http://localhost/helpdesk/admin/agents/1">' . $super->name . '</a>');
+        $this->see(
+            '<a href="http://localhost/helpdesk/admin/agents/' . $super->id . '">' . $super->user->name . '</a>'
+        );
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.agent
-     * @group acc.admin.agent.index
-     * @test
-     */
-    public function the_user_listing_is_filtered_by_the_user_callback()
+    /** @test */
+    public function the_user_listing_is_filtered_by_the_user_callback ()
     {
-        $super = $this->makeSuper();
-        $agent = $this->makeAgent();
-        $user1 = factory(User::class)->states('isInternal')->create();
-        $user2 = $this->makeUser();
-        $user3 = $this->makeUser();
-        $user4 = $this->makeUser();
-        $user5 = factory(User::class)->states('isInternal')->create();
+        $this->make->agent;
+        $this->make->internalUser;
+        $this->make->user;
+        $this->make->user;
+        $this->make->user;
+        $this->make->internalUser;
 
-        $this->be($super);
+        $this->beSuper();
         $response = $this->call(self::VERB, 'helpdesk/admin/agents');
 
-        $this->assertEquals(2, $response->getOriginalContent()->getData()['users']->count());
+        $this->assertEquals(2, count($response->getOriginalContent()->getData()['users']));
     }
 }

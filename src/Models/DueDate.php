@@ -4,6 +4,10 @@ namespace Aviator\Helpdesk\Models;
 
 use Carbon\Carbon;
 
+/**
+ * @property \Aviator\Helpdesk\Models\Action action
+ * @property \Carbon\Carbon due_on
+ */
 class DueDate extends ActionBase
 {
     protected $casts = [

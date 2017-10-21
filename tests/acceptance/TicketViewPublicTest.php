@@ -2,84 +2,25 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
-
 class TicketViewPublicTest extends TestCase
 {
-    /*
-     * Setup -----------------------------------------------------------------------------------------------------------
-     */
+    const URI = 'helpdesk/tickets/public/';
 
-    /**
-     * @return \Aviator\Helpdesk\Models\Agent
-     */
-    protected function createAgent()
+    /** @test */
+    public function anyone_can_visit ()
     {
-        return factory(Agent::class)->create();
-    }
+        $ticket = $this->make->ticket;
 
-    /**
-     * @return \Aviator\Helpdesk\Tests\User
-     */
-    protected function createUser()
-    {
-        return factory(User::class)->create();
-    }
-
-    /**
-     * @param \Aviator\Helpdesk\Tests\User $user
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicketForUser(User $user)
-    {
-        return factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicket()
-    {
-        return factory(Ticket::class)->create();
-    }
-
-    protected function buildRoute(Ticket $ticket)
-    {
-        return 'helpdesk/tickets/public/' . $ticket->uuid;
-    }
-
-    /*
-     * Tests -----------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * @group acc
-     * @group acc.public
-     * @group acc.public.ticket
-     * @test
-     */
-    public function anyone_can_visit()
-    {
-        $ticket = $this->createTicket();
-
-        $this->visit($this->buildRoute($ticket))
+        $this->visit(self::URI . $ticket->uuid)
             ->see('<strong id="action-header-1">Opened</strong>');
     }
 
-    /**
-     * @group acc
-     * @group acc.public
-     * @group acc.public.ticket
-     * @test
-     */
-    public function unauthenticated_users_see_no_actions()
+    /** @test */
+    public function unauthenticated_users_see_no_actions ()
     {
-        $ticket = $this->createTicket();
+        $ticket = $this->make->ticket;
 
-        $this->visit($this->buildRoute($ticket))
+        $this->visit(self::URI . $ticket->uuid)
             ->dontSee('id="ticket-toolbar"');
     }
 }

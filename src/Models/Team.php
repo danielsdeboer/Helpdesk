@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed id
+ * @property string name
+ * @property \Illuminate\Support\Collection teamLeads
  */
-class Pool extends Model
+class Team extends Model
 {
     use SoftDeletes;
 
@@ -22,7 +24,7 @@ class Pool extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.pools'));
+        $this->setTable(config('helpdesk.tables.teams'));
     }
 
     ////////////////
@@ -48,14 +50,14 @@ class Pool extends Model
      */
     public function agents()
     {
-        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))
+        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
             ->withTimestamps();
     }
 
     public function teamLeads()
     {
-        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_pool'))
+        return $this->belongsToMany(Agent::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);

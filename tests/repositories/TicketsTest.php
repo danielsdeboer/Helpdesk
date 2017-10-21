@@ -2,32 +2,16 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Repositories\Tickets;
+use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
+use Aviator\Helpdesk\Tests\Traits\CreatesTickets;
 
 class TicketsTest extends TestCase
 {
-    /*
-     * Setup -----------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Agent
-     */
-    protected function createAgent()
-    {
-        return factory(Agent::class)->create();
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicket()
-    {
-        return factory(Ticket::class)->create();
-    }
+    use CreatesAgents, CreatesTickets;
 
     /*
      * Tests -----------------------------------------------------------------------------------------------------------
@@ -55,7 +39,7 @@ class TicketsTest extends TestCase
      */
     public function the_foragent_static_returns_an_instance_with_the_agent_and_user_set()
     {
-        $agent = $this->createAgent();
+        $agent = $this->make->agent;
 
         $tickets = Tickets::forAgent($agent);
 
@@ -69,15 +53,15 @@ class TicketsTest extends TestCase
      * @group repo.tickets
      * @test
      */
-    public function the_forsuper_static_return_an_instance_with_agent_user_and_super_set()
+    public function the_forsuper_static_return_an_instance_with_agent_user_and_super_set ()
     {
-        $agent = factory(Agent::class)->states('isSuper')->create();
+        $super = $this->make->super;
 
-        $tickets = Tickets::forSuper($agent);
+        $tickets = Tickets::forSuper($super);
 
         $this->assertInstanceOf(Tickets::class, $tickets);
-        $this->assertSame($agent->user, $tickets->getUser());
-        $this->assertSame($agent, $tickets->getAgent());
+        $this->assertSame($super->user, $tickets->getUser());
+        $this->assertSame($super, $tickets->getAgent());
         $this->assertTrue($tickets->getSuper());
     }
 
@@ -88,7 +72,7 @@ class TicketsTest extends TestCase
      */
     public function the_forsuper_static_only_sets_super_to_true_if_the_agent_is_the_supervisor()
     {
-        $super = factory(Agent::class)->states('isSuper')->create();
+        $super = $this->make->super;
         $notSuper = factory(Agent::class)->create();
 
         $superTickets = Tickets::forSuper($super);
@@ -128,7 +112,7 @@ class TicketsTest extends TestCase
      */
     public function the_all_method_returns_only_open_tickets_assigned_to_the_agent()
     {
-        $agent = $this->createAgent();
+        $agent = $this->make->agent;
         $agent2 = factory(Agent::class)->create();
 
         $agentTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
@@ -151,8 +135,8 @@ class TicketsTest extends TestCase
      */
     public function the_all_method_returns_all_open_tickets_in_supervisor_context()
     {
-        $super = factory(Agent::class)->states('isSuper')->create();
-        $agent = $this->createAgent();
+        $super = $this->make->super;
+        $agent = $this->make->agent;
         $agent2 = factory(Agent::class)->create();
 
         $agentTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
@@ -208,7 +192,7 @@ class TicketsTest extends TestCase
      */
     public function the_overdue_method_returns_only_overdue_tickets_assigned_to_the_agent()
     {
-        $agent = $this->createAgent();
+        $agent = $this->make->agent;
         $agent2 = factory(Agent::class)->create();
 
         $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
@@ -239,9 +223,9 @@ class TicketsTest extends TestCase
      */
     public function the_overdue_method_returns_all_overdue_tickets_in_supervisor_context()
     {
-        $super = factory(Agent::class)->states('isSuper')->create();
-        $agent = $this->createAgent();
-        $agent2 = $this->createAgent();
+        $super = $this->make->super;
+        $agent = $this->make->agent;
+        $agent2 = $this->make->agent;
 
         $agentOverdueTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($agent) {
             $item->assignToAgent($agent)->dueOn('yesterday');
@@ -289,16 +273,16 @@ class TicketsTest extends TestCase
      */
     public function the_team_method_returns_tickets_assigned_to_the_agents_team()
     {
-        $agent = $this->createAgent();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = factory(Team::class)->create();
 
         $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
-            $item->assignToPool($team);
+            $item->assignToTeam($team);
         });
 
         $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
-            $item->assignToPool($team2);
+            $item->assignToTeam($team2);
         });
 
         $agent->addToTeam($team);
@@ -314,17 +298,17 @@ class TicketsTest extends TestCase
      */
     public function the_team_method_returns_all_team_assigned_in_supervisor_context()
     {
-        $super = factory(Agent::class)->states('isSuper')->create();
-        $agent = $this->createAgent();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = factory(Team::class)->create();
 
         $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
-            $item->assignToPool($team);
+            $item->assignToTeam($team);
         });
 
         $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
-            $item->assignToPool($team2);
+            $item->assignToTeam($team2);
         });
 
         $agent->addToTeam($team);
@@ -340,21 +324,21 @@ class TicketsTest extends TestCase
      */
     public function the_team_method_returns_tickets_assigned_to_multiple_agent_teams()
     {
-        $agent = $this->createAgent();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
-        $team3 = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = factory(Team::class)->create();
+        $team3 = factory(Team::class)->create();
 
         $teamTickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team) {
-            $item->assignToPool($team);
+            $item->assignToTeam($team);
         });
 
         $team2Tickets = factory(Ticket::class, 5)->create()->each(function ($item) use ($team2) {
-            $item->assignToPool($team2);
+            $item->assignToTeam($team2);
         });
 
         $team3Tickets = factory(Ticket::class, 3)->create()->each(function ($item) use ($team3) {
-            $item->assignToPool($team3);
+            $item->assignToTeam($team3);
         });
 
         $agent->addToTeams([$team, $team3]);
@@ -386,7 +370,7 @@ class TicketsTest extends TestCase
      */
     public function the_unassigned_method_returns_null_for_agents()
     {
-        $agent = $this->createAgent();
+        $agent = $this->make->agent;
 
         $unassignedTickets = factory(Ticket::class, 11)->create();
 
@@ -402,7 +386,7 @@ class TicketsTest extends TestCase
      */
     public function the_unassigned_method_return_unassigned_tickets_for_supers()
     {
-        $super = factory(Agent::class)->states('isSuper')->create();
+        $super = $this->make->super;
 
         $unassignedTickets = factory(Ticket::class, 4)->create();
 
@@ -418,13 +402,13 @@ class TicketsTest extends TestCase
      */
     public function collaborating_returns_tickets_the_agent_is_a_collaborator_on()
     {
-        $creator = $this->createAgent();
-        $collab = $this->createAgent();
-        $collab2 = $this->createAgent();
+        $creator = $this->make->agent;
+        $collab = $this->make->agent;
+        $collab2 = $this->make->agent;
 
-        $ticket1 = $this->createTicket()->assignToAgent($creator);
-        $ticket2 = $this->createTicket()->assignToAgent($creator);
-        $ticket3 = $this->createTicket()->assignToAgent($creator);
+        $ticket1 = $this->ticket()->assignToAgent($creator);
+        $ticket2 = $this->ticket()->assignToAgent($creator);
+        $ticket3 = $this->ticket()->assignToAgent($creator);
 
         $ticket2->addCollaborator($collab, $creator);
         $ticket3->addCollaborator($collab2, $creator);

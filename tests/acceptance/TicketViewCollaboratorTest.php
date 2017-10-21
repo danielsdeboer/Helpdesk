@@ -2,79 +2,21 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
-
 class TicketViewCollaboratorTest extends TestCase
 {
-    /*
-     * Setup -----------------------------------------------------------------------------------------------------------
-     */
+    /** @const string */
+    const URI = 'helpdesk/tickets';
 
-    /**
-     * @return \Aviator\Helpdesk\Models\Agent
-     */
-    protected function createAgent()
+    /** @test */
+    public function collaborators_may_reply ()
     {
-        return factory(Agent::class)->create();
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Tests\User
-     */
-    protected function createUser()
-    {
-        return factory(User::class)->create();
-    }
-
-    /**
-     * @param \Aviator\Helpdesk\Tests\User $user
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicketForUser(User $user)
-    {
-        return factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicket()
-    {
-        return factory(Ticket::class)->create();
-    }
-
-    /**
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
-     * @return string
-     */
-    protected function buildRoute(Ticket $ticket)
-    {
-        return 'helpdesk/tickets/' . $ticket->id;
-    }
-
-    /*
-     * Tests -----------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * @group acc
-     * @group acc.collab
-     * @group acc.collab.ticket
-     * @test
-     */
-    public function collaborators_may_reply()
-    {
-        $agent1 = $this->createAgent();
-        $agent2 = $this->createAgent();
-        $ticket = $this->createTicketForUser($agent1->user);
-        $ticket = $ticket->addCollaborator($agent2, $agent1);
+        $agent1 = $this->make->agent;
+        $agent2 = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($agent1)->addCollaborator($agent2, $agent1);
 
         $this->be($agent2->user);
 
-        $this->visit($this->buildRoute($ticket))
+        $this->visit(self::URI . '/' . $ticket->id)
             ->see('id="ticket-toolbar"')
             ->see('<p class="heading">Add Reply</p>')
             ->see('<p class="heading">Add Note</p>')

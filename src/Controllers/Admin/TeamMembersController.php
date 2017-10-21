@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Illuminate\Database\QueryException;
@@ -43,7 +43,7 @@ class TeamMembersController extends Controller
             'team_id' => [
                 'required',
                 'int',
-                Rule::exists(config('helpdesk.tables.pools'), 'id'),
+                Rule::exists(config('helpdesk.tables.teams'), 'id'),
             ],
             'from' => [
                 'required',
@@ -52,7 +52,7 @@ class TeamMembersController extends Controller
         ]);
 
         $agent = Agent::find($request->agent_id);
-        $team = Pool::find($request->team_id);
+        $team = Team::find($request->team_id);
 
         try {
             $agent->addToTeam($team);
@@ -84,7 +84,7 @@ class TeamMembersController extends Controller
             'team_id' => [
                 'required',
                 'int',
-                Rule::exists(config('helpdesk.tables.pools'), 'id'),
+                Rule::exists(config('helpdesk.tables.teams'), 'id'),
             ],
             'from' => [
                 'required',
@@ -93,7 +93,7 @@ class TeamMembersController extends Controller
         ]);
 
         $agent = Agent::find($request->agent_id);
-        $team = Pool::find($request->team_id);
+        $team = Team::find($request->team_id);
 
         $agent->removeFromTeam($team);
 

@@ -18,34 +18,28 @@ return [
      */
     'callbacks' => [
         /*
-         * The user query callback. In order to guard against adding any type of user being
-         * added as an agent, you can modify this callback to fit your database use case.
-         * If you don't care about this at all, simply remove this config key or change
-         * the value to null.
+         * The class to get the User filter closure from. Whatever class you specify here
+         * will have a the 'getUserCallback()' method called on it. This closure enables
+         * adding only a certain subset of user as a agents. The default implementation
+         * looks for an is_internal field on the User, set to 1. You'll need to change
+         * this to match your own implementation. If you use multiple guards or don't
+         * care about this setting, set this key to null.
          */
-        'user' => function ($query) {
-            $query
-                ->where('is_internal', 1);
-        },
-    ],
-
-    'supervisors' => [
-        'supervisor@test.com',
-        'supervisor2@test.com',
+        'user' => \Aviator\Helpdesk\Helpers\Helpers::class,
     ],
 
     'tables' => [
         'users' => 'users',
         'tickets' => 'tickets',
         'agents' => 'agents',
-        'agent_pool' => 'agent_pool',
+        'agent_team' => 'agent_team',
         'generic_contents' => 'generic_contents',
         'actions' => 'actions',
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',
         'replies' => 'replies',
-        'pools' => 'pools',
-        'pool_assignments' => 'pool_assignments',
+        'teams' => 'teams',
+        'team_assignments' => 'team_assignments',
         'closings' => 'closings',
         'openings' => 'openings',
         'notes' => 'notes',
@@ -93,8 +87,8 @@ return [
                 'route' => 'helpdesk.tickets.show',
             ],
 
-            'assignedToPool' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToPool::class,
+            'assignedToTeam' => [
+                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToTeam::class,
                 'subject' => 'A ticket has been assigned to your team',
                 'greeting' => 'Hey there.',
                 'line' => '',

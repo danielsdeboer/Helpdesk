@@ -10,54 +10,36 @@ class RemoveTest extends AdminBase
     const VERB = 'POST';
     const URI = 'helpdesk/admin/team-members/remove';
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.member
-     * @group acc.admin.member.remove
-     * @test
-     */
-    public function access_test()
+    /** @test */
+    public function access_test ()
     {
         $this->noGuests();
         $this->noUsers();
         $this->noAgents();
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.member
-     * @group acc.admin.member.remove
-     * @test
-     */
-    public function the_request_requires_three_parameters()
+    /** @test */
+    public function the_request_requires_three_parameters ()
     {
-        $agent = $this->makeAgent();
-        $team = $this->makeTeam();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $this->beSuper();
-        $this->callUri();
+        $this->post(self::URI);
 
         $this->assertValidationFailed(['agent_id', 'team_id', 'from']);
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.member
-     * @group acc.admin.member.remove
-     * @test
-     */
+    /** @test */
     public function an_agent_can_be_removed_from_a_team()
     {
-        $agent = $this->makeAgent();
-        $team = $this->makeTeam();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->addToTeam($team);
 
         $this->beSuper();
-        $this->callUri([
+        $this->post(self::URI, [
             'agent_id' => $agent->id,
             'team_id' => $team->id,
             'from' => 'agent',

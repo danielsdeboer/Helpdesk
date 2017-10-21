@@ -3,7 +3,7 @@
 namespace Aviator\Helpdesk\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
@@ -35,7 +35,7 @@ class TeamsController extends Controller
         $email = config('helpdesk.userModelEmailColumn');
 
         return view('helpdesk::admin.teams.index')->with([
-            'teams' => Pool::all(),
+            'teams' => Team::all(),
             'isSuper' => true,
             'tab' => 'admin',
         ]);
@@ -51,7 +51,7 @@ class TeamsController extends Controller
     {
         $this->val($request);
 
-        $team = Pool::create([
+        $team = Team::create([
             'name' => $request->name,
         ]);
 
@@ -66,16 +66,16 @@ class TeamsController extends Controller
      */
     public function show($id)
     {
-        $team = Pool::findOrFail($id);
+        $team = Team::findOrFail($id);
 
-        $tickets = Ticket::whereHas('poolAssignment', function ($query) use ($team) {
-            $query->where('pool_id', $team->id);
+        $tickets = Ticket::whereHas('teamAssignment', function ($query) use ($team) {
+            $query->where('team_id', $team->id);
         })->get();
 
         // Get all agents who are not assigned to this team (or who
         // are assigned to no team)
         $agents = Agent::with('user')->doesntHave('teams', 'or', function ($query) use ($team) {
-            $query->where('pool_id', $team->id);
+            $query->where('team_id', $team->id);
         })->get();
 
         return view('helpdesk::admin.teams.show')->with([
@@ -98,7 +98,7 @@ class TeamsController extends Controller
     {
         $this->val($request);
 
-        $team = Pool::findOrFail($id);
+        $team = Team::findOrFail($id);
 
         $team->update([
             'name' => $request->name,
@@ -119,7 +119,7 @@ class TeamsController extends Controller
             'delete_team_confirmed' => 'required|in:1',
         ]);
 
-        $team = Pool::findOrFail($id);
+        $team = Team::findOrFail($id);
 
         $team->delete();
 
@@ -142,10 +142,10 @@ class TeamsController extends Controller
 
     /**
      * Redirect to the show route with param.
-     * @param  Pool   $team
+     * @param  Team   $team
      * @return Response
      */
-    protected function toShow(Pool $team)
+    protected function toShow(Team $team)
     {
         return redirect(route('helpdesk.admin.teams.show', $team->id));
     }

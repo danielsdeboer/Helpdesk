@@ -2,127 +2,85 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
 
 class AdminTeamsIndexTest extends TestCase
 {
+    const URI = 'helpdesk/admin/teams';
+
     public function setUp()
     {
         parent::setUp();
 
-        Route::any('login', function () {
-        });
+        Route::any('login', function () {});
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function guests_cant_visit()
+    /** @test */
+    public function guests_cant_visit ()
     {
-        $this->call('GET', 'helpdesk/admin/teams');
+        $this->get(self::URI);
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function users_cant_visit()
+    /** @test */
+    public function users_cant_visit ()
     {
-        $user = factory(User::class)->create();
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/teams');
+        $this->be($this->make->user);
+        $this->get(self::URI);
 
         $this->assertResponseStatus('403');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function agents_cant_visit()
+    /** @test */
+    public function agents_cant_visit ()
     {
-        $user = factory(Agent::class)->create()->user;
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/teams');
+        $this->be($this->make->agent->user);
+        $this->get(self::URI);
 
         $this->assertResponseStatus('403');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function supervisors_can_visit()
+    /** @test */
+    public function supervisors_can_visit ()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
+        $team = $this->make->team;
 
-        $this->be($user);
-        $this->visit('helpdesk/admin/teams');
+        $this->be($this->make->super->user);
+        $this->visit(self::URI);
 
         $this->see('id="tab-admin-agents"')
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function it_has_a_list_of_all_teams()
+    /** @test */
+    public function it_has_a_list_of_all_teams ()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $team1 = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $team1 = $this->make->team;
+        $team2 = $this->make->team;
 
-        $this->be($user);
-        $this->visit('helpdesk/admin/teams');
+        $this->be($super->user);
+        $this->visit(self::URI);
 
         $this->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team1->name . '</a>')
             ->see('<a href="http://localhost/helpdesk/admin/teams/2">' . $team2->name . '</a>');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.index
-     * @test
-     */
-    public function it_lists_agents_in_teams()
+    /** @test */
+    public function it_lists_agents_in_teams ()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $team = $this->make->team;
 
-        $agent2 = factory(Agent::class)->create()->addToTeam($team);
-        $agent3 = factory(Agent::class)->create()->addToTeam($team);
+        $agent2 = $this->make->agent->addToTeam($team);
+        $agent3 = $this->make->agent->addToTeam($team);
 
-        $this->be($super);
-        $this->visit('helpdesk/admin/teams');
+        $this->be($super->user);
+        $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent2->user->name . '</a>')
-            ->see('<a href="http://localhost/helpdesk/admin/agents/3">' . $agent3->user->name . '</a>');
+        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent2->id . '">' . $agent2->user->name . '</a>')
+            ->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent3->id . '">' . $agent3->user->name . '</a>');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 
@@ -89,9 +89,9 @@ class Bug17Test extends AdminBase
     public function ticketShouldHaveAssignedToTeamStatusTag()
     {
         $ticket = factory(Ticket::class)->create();
-        $team = factory(Pool::class)->create();
+        $team = $this->make->team;
 
-        $ticket->assignToPool($team);
+        $ticket->assignToTeam($team);
 
         $this->visit(self::PUB . $ticket->uuid)
             ->assertResponseOk()

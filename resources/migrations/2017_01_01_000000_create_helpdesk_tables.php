@@ -29,17 +29,18 @@ class CreateHelpdeskTables extends Migration
         Schema::create($tables['agents'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('is_super')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create($tables['agent_pool'], function (Blueprint $table) {
+        Schema::create($tables['agent_team'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('agent_id');
-            $table->unsignedInteger('pool_id');
+            $table->unsignedInteger('team_id');
             $table->boolean('is_team_lead')->default(false);
             $table->timestamps();
-            $table->unique(['agent_id', 'pool_id']);
+            $table->unique(['agent_id', 'team_id']);
         });
 
         Schema::create($tables['generic_contents'], function (Blueprint $table) {
@@ -92,17 +93,17 @@ class CreateHelpdeskTables extends Migration
             $table->softDeletes();
         });
 
-        Schema::create($tables['pools'], function (Blueprint $table) {
+        Schema::create($tables['teams'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create($tables['pool_assignments'], function (Blueprint $table) {
+        Schema::create($tables['team_assignments'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('ticket_id');
-            $table->unsignedInteger('pool_id');
+            $table->unsignedInteger('team_id');
             $table->unsignedInteger('agent_id')->nullable();
             $table->boolean('is_visible')->default(0);
             $table->timestamps();

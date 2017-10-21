@@ -7,6 +7,8 @@ namespace Aviator\Helpdesk\Models;
  * @property mixed ticket_id
  * @property mixed id
  * @property mixed ticket
+ * @property mixed assigned_to
+ * @property string action
  */
 class Assignment extends ActionBase
 {

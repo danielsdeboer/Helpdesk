@@ -5,6 +5,11 @@ namespace Aviator\Helpdesk\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class ActionBase
+ * @package Aviator\Helpdesk\Models
+ * @property \Aviator\Helpdesk\Models\Action action
+ */
 class ActionBase extends Model
 {
     use SoftDeletes;

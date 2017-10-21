@@ -25,7 +25,7 @@ class HelpdeskSeederTest extends TestCase
      * @group seeders
      * @test
      */
-    public function it_assigns_half_the_tickets_to_pools()
+    public function it_assigns_half_the_tickets_to_teams()
     {
         $this->seed(HelpdeskSeeder::class);
 
@@ -38,11 +38,11 @@ class HelpdeskSeederTest extends TestCase
      * @group seeders
      * @test
      */
-    public function it_assigns_half_the_remaining_unassigned_tickets_to_assignment_pools()
+    public function it_assigns_half_the_remaining_unassigned_tickets_to_assignment_teams()
     {
         $this->seed(HelpdeskSeeder::class);
 
-        $tickets = Ticket::pooled()->get();
+        $tickets = Ticket::teamed()->get();
 
         $this->assertGreaterThan(1, $tickets->count());
     }
@@ -51,7 +51,7 @@ class HelpdeskSeederTest extends TestCase
      * @group seeders
      * @test
      */
-    public function it_adds_a_due_date_for_assigned_and_pooled_tickets()
+    public function it_adds_a_due_date_for_assigned_and_teamed_tickets()
     {
         $this->seed(HelpdeskSeeder::class);
 

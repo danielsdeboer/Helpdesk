@@ -31,13 +31,13 @@
               </div>
             @endif
 
-            @if ($ticket->isAssignedToAgent())
+            @if ($ticket->isAssignedToAnyAgent())
               <div class="level-item">
                 <span class="tag is-success is-medium">Assigned</span>
               </div>
             @endif
 
-            @if ($ticket->isAssignedToTeam())
+            @if ($ticket->isAssignedToAnyTeam())
               <div class="level-item">
                 <span class="tag is-warning is-medium">Assigned To Team</span>
               </div>

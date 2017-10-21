@@ -15,13 +15,14 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 /**
  * Class Ticket.
- * @property \Aviator\Helpdesk\Models\PoolAssignment poolAssignment
+ * @property \Aviator\Helpdesk\Models\TeamAssignment teamAssignment
  * @property mixed user
  * @property mixed id
  * @property mixed collaborators
  * @property string status
  * @property \Aviator\Helpdesk\Models\Assignment assignment
  * @property mixed uuid
+ * @property \Aviator\Helpdesk\Models\GenericContent content
  * @method Builder accessible($user)
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
@@ -79,39 +80,27 @@ class Ticket extends Model
     }
 
     /**
-     * Assign to a pool. Optionally set the creator if the
-     * assignment isn't automatically done.
+     * Assign to a team. Optionally set the creator if the assignment isn't automatically done.
+     * Visibility for assignments is assumed to be false as this isn't relevant for the end
+     * user but this can be overridden.
      *
-     * Visibility for assignments is assumed to be false as
-     * this isn't relevant for the end user but this can
-     * be overridden.
-     * @param \Aviator\Helpdesk\Models\Pool $pool
+     * @param \Aviator\Helpdesk\Models\Team $team
      * @param \Aviator\Helpdesk\Models\Agent $creator
      * @param bool $isVisible
      * @return $this
      * @internal param User $user
      */
-    public function assignToPool($pool, Agent $creator = null, $isVisible = false)
+    public function assignToTeam ($team, Agent $creator = null, $isVisible = false)
     {
-        PoolAssignment::query()
+        TeamAssignment::query()
             ->create([
                 'ticket_id' => $this->id,
-                'pool_id' => $pool->id,
+                'team_id' => $team->id,
                 'agent_id' => $creator ? $creator->id : null,
                 'is_visible' => $isVisible,
             ]);
 
         return $this;
-    }
-
-    /**
-     * Alias for assignToTeam.
-     * @param  mixed[] $args
-     * @return $this
-     */
-    public function assignToTeam(...$args)
-    {
-        return $this->assignToPool(...$args);
     }
 
     /**
@@ -144,7 +133,7 @@ class Ticket extends Model
      * indicator for the customer
      * @param  string $note
      * @param  User | Agent $creator
-     * @return $this
+     * @return \Aviator\Helpdesk\Models\Ticket
      * @throws CreatorRequiredException
      */
     public function close($note, $creator)
@@ -343,7 +332,7 @@ class Ticket extends Model
 
     /**
      * @param \Aviator\Helpdesk\Models\Agent $agent
-     * @return $this;
+     * @return $this
      */
     public function removeCollaborator(Agent $agent)
     {
@@ -352,9 +341,9 @@ class Ticket extends Model
         return $this->fresh('collaborators');
     }
 
-    ////////////////////////
-    // NON-FLUENT HELPERS //
-    ////////////////////////
+    /*
+     * Non-fluent public methods
+     */
 
     /**
      * Find the internal user who should receive notifications for
@@ -373,9 +362,9 @@ class Ticket extends Model
             return $this->assignment->assignee;
         }
 
-        // If not, check if the ticket is assigned to a pool
-        if (isset($this->poolAssignment->pool->teamLead)) {
-            return $this->poolAssignment->pool->teamLead;
+        // If not, check if the ticket is assigned to a team
+        if (isset($this->teamAssignment->team->teamLead)) {
+            return $this->teamAssignment->team->teamLead;
         }
 
         // Notify the supervisor
@@ -393,7 +382,7 @@ class Ticket extends Model
      */
     public function isOpen()
     {
-        return $this->status == 'open';
+        return $this->status === 'open';
     }
 
     /**
@@ -402,7 +391,7 @@ class Ticket extends Model
      */
     public function isClosed()
     {
-        return $this->status == 'closed';
+        return $this->status === 'closed';
     }
 
     /**
@@ -420,25 +409,44 @@ class Ticket extends Model
      */
     public function isAssigned()
     {
-        return $this->assignment || $this->poolAssignment;
+        return $this->assignment || $this->teamAssignment;
     }
 
     /**
      * Is the ticket assigned to an agent.
      * @return bool
      */
-    public function isAssignedToAgent()
+    public function isAssignedToAnyAgent()
     {
         return (bool) $this->assignment;
+    }
+
+    /**
+     * Check if the ticket is assigned to a particular agent
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return bool
+     */
+    public function isAssignedTo (Agent $agent)
+    {
+        return $this->assignment && (int) $this->assignment->assigned_to === (int) $agent->id;
     }
 
     /**
      * Is the ticket assigned to a team.
      * @return bool
      */
-    public function isAssignedToTeam()
+    public function isAssignedToAnyTeam()
     {
-        return $this->poolAssignment && ! $this->assignment;
+        return $this->teamAssignment && ! $this->assignment;
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Models\Team $team
+     * @return bool
+     */
+    public function isAssignedToTeam (Team $team)
+    {
+        return $this->teamAssignment->team->id === $team->id;
     }
 
     /**
@@ -446,14 +454,24 @@ class Ticket extends Model
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return bool
      */
-    public function isCollaborator(Agent $agent)
+    public function hasCollaborator(Agent $agent)
     {
         return $this->collaborators->pluck('agent.id')->contains($agent->id);
     }
 
-    ////////////
-    // SCOPES //
-    ////////////
+    /**
+     * Check if the ticket is owned by a user.
+     * @param $user
+     * @return bool
+     */
+    public function isOwnedBy ($user)
+    {
+        return (int) $user->id === (int) $this->user_id;
+    }
+
+    /*
+     * Scopes
+     */
 
     /**
      * Find a model by uuid. It doesn't make sense to call
@@ -480,9 +498,9 @@ class Ticket extends Model
     }
 
     /**
-     * Get unasssigned tickets. A pool assignment isn't
+     * Get unasssigned tickets. A team assignment isn't
      * considered an assignment for these purposes since
-     * a pool assignment is an automatic intermediary
+     * a team assignment is an automatic intermediary
      * to an assignment to an actual user.
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -505,13 +523,13 @@ class Ticket extends Model
     }
 
     /**
-     * Get tickets assigned to pools.
+     * Get tickets assigned to teams.
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePooled($query)
+    public function scopeTeamed($query)
     {
-        return $query->has('poolAssignment')
+        return $query->has('teamAssignment')
             ->whereDoesntHave('assignment')
             ->where('status', 'open');
     }
@@ -632,10 +650,7 @@ class Ticket extends Model
      */
     public function scopeAccessibleToAgent($query, $agent)
     {
-        $supervisorEmails = config('helpdesk.supervisors');
-        $email = config('helpdesk.userModelEmailColumn');
-
-        if (in_array($agent->user->$email, $supervisorEmails)) {
+        if ($agent->isSuper()) {
             return $query;
         }
 
@@ -648,8 +663,8 @@ class Ticket extends Model
             $query->whereHas('assignment', function (Builder $query) use ($agent) {
                 $query->where('assigned_to', $agent->id);
             })
-            ->orWhereHas('poolAssignment', function (Builder $query) use ($isTeamLeadOf) {
-                $query->whereIn('pool_id', $isTeamLeadOf->pluck('id')->all());
+            ->orWhereHas('teamAssignment', function (Builder $query) use ($isTeamLeadOf) {
+                $query->whereIn('team_id', $isTeamLeadOf->pluck('id')->all());
             })
             ->orWhereHas('collaborators', function (Builder $query) use ($agent) {
                 $query->where('agent_id', $agent->id);
@@ -657,9 +672,9 @@ class Ticket extends Model
         });
     }
 
-    ///////////////////
-    // RELATIONSHIPS //
-    ///////////////////
+    /*
+     * Relationships
+     */
 
     public function user()
     {
@@ -695,14 +710,16 @@ class Ticket extends Model
             ->latest();
     }
 
-    public function poolAssignments()
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany */
+    public function teamAssignments()
     {
-        return $this->hasMany(PoolAssignment::class);
+        return $this->hasMany(TeamAssignment::class);
     }
 
-    public function poolAssignment()
+    /** @return \Illuminate\Database\Eloquent\Relations\HasOne */
+    public function teamAssignment()
     {
-        return $this->hasOne(PoolAssignment::class)
+        return $this->hasOne(TeamAssignment::class)
             ->latest();
     }
 

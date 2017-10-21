@@ -2,26 +2,19 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Agent;
-
 class AdminTeamsUpdateTest extends TestCase
 {
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.update
-     * @test
-     */
-    public function supervisors_can_update_teams()
-    {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
+    /** @const string */
+    const URI = 'helpdesk/admin/teams';
 
-        $this->be($super);
+    /** @test */
+    public function supervisors_can_update_teams ()
+    {
+        $team = $this->make->team;
+        $this->be($this->make->super->user);
+
         $this->visitRoute('helpdesk.admin.teams.index');
-        $response = $this->call('PATCH', 'helpdesk/admin/teams/1', [
+        $this->patch(self::URI . '/' . $team->id, [
             'name' => 'test team update',
         ]);
 
@@ -32,20 +25,13 @@ class AdminTeamsUpdateTest extends TestCase
         $this->assertEquals('test team update', $team->name);
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.update
-     * @test
-     */
-    public function nonexistent_teams_throw_a_404()
+    /** @test */
+    public function nonexistent_teams_throw_a_404 ()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
+        $this->be($this->make->super->user);
 
-        $this->be($super);
         $this->visitRoute('helpdesk.admin.teams.index');
-        $response = $this->call('PATCH', 'helpdesk/admin/teams/1', [
+        $this->patch(self::URI . '/99', [
             'name' => 'test team',
         ]);
 

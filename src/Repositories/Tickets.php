@@ -28,7 +28,7 @@ class Tickets
     protected $super;
 
     /*
-     * Named Constructors ----------------------------------------------------------------------------------------------
+     * Named Constructors
      */
 
     /**
@@ -62,7 +62,7 @@ class Tickets
     }
 
     /*
-     * Public Api ------------------------------------------------------------------------------------------------------
+     * Public Api
      */
 
     /**
@@ -166,7 +166,7 @@ class Tickets
     }
 
     /*
-     * Callbacks -------------------------------------------------------------------------------------------------------
+     * Callbacks
      */
 
     /**
@@ -182,7 +182,7 @@ class Tickets
     }
 
     /*
-     * Helpers ---------------------------------------------------------------------------------------------------------
+     * Helpers
      */
 
     /**
@@ -214,8 +214,8 @@ class Tickets
             ->whereHas('assignment', function ($query) {
                 $query->where('assigned_to', $this->agent->id);
             })
-            ->orWhereHas('poolAssignment', function ($query) {
-                $query->whereIn('pool_id', $this->teamIds());
+            ->orWhereHas('teamAssignment', function ($query) {
+                $query->whereIn('team_id', $this->teamIds());
             })
             ->overdue()
             ->get()
@@ -243,8 +243,8 @@ class Tickets
     protected function agentTeam()
     {
         return Ticket::with('user', 'opening')
-            ->whereHas('poolAssignment', function ($query) {
-                $query->whereIn('pool_id', $this->teamIds());
+            ->whereHas('teamAssignment', function ($query) {
+                $query->whereIn('team_id', $this->teamIds());
             })
             ->opened()
             ->unassigned()
@@ -258,14 +258,14 @@ class Tickets
     protected function superTeam()
     {
         return Ticket::with('user', 'opening')
-            ->whereHas('poolAssignment')
+            ->whereHas('teamAssignment')
             ->opened()
             ->unassigned()
             ->get();
     }
 
     /*
-     * Setters and Getters ---------------------------------------------------------------------------------------------
+     * Setters and Getters
      */
 
     /**
@@ -297,7 +297,7 @@ class Tickets
      */
     public function setSuper(Agent $agent)
     {
-        if (in_array($agent->user->{config('helpdesk.userModelEmailColumn')}, config('helpdesk.supervisors'))) {
+        if ($agent->isSuper()) {
             $this->super = true;
         }
 
