@@ -2,67 +2,51 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Reply;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
+use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
 
 class ReplyTest extends TestCase
 {
-    /**
-     * @group model
-     * @group model.reply
-     * @test
-     */
+    /** @test */
     public function it_creates_an_action_via_its_observer()
     {
-        $reply = factory(Reply::class)->create();
+        $reply = $this->make->reply;
 
         $this->assertEquals('Reply Added', $reply->action->name);
     }
 
-    /**
-     * @group model
-     * @group model.reply
-     * @test
-     */
+    /** @test */
     public function it_is_visible_by_default()
     {
-        $reply = factory(Reply::class)->create();
+        $reply = $this->make->reply;
 
         $this->assertTrue($reply->is_visible);
     }
 
-    /**
-     * @group model
-     * @group model.reply
-     * @test
-     */
+    /** @test */
     public function it_sends_a_notification_to_the_user_if_created_by_an_agent()
     {
-        $reply = factory(Reply::class)->create();
+        $reply = $this->make->reply;
 
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $reply->ticket->user,
-            \Aviator\Helpdesk\Notifications\External\Replied::class
+            ExternalReply::class
         );
     }
 
-    /**
-     * @group model
-     * @group model.reply
-     * @test
-     */
+    /** @test */
     public function it_sends_a_notification_to_the_agent_if_created_by_an_user_and_assigned()
     {
-        $ticket = factory(Ticket::class)
-            ->create()
-            ->assignToAgent(factory(Agent::class)->create())
-            ->externalReply('this is a reply', factory(User::class)->create());
+        $ticket = $this->make->ticket
+            ->assignToAgent($this->make->agent)
+            ->externalReply('this is a reply', $this->make->user);
 
+        /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $ticket->assignment->assignee,
-            \Aviator\Helpdesk\Notifications\Internal\Replied::class
+            InternalReply::class
         );
     }
 }

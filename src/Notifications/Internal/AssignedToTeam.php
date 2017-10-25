@@ -8,33 +8,28 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AssignedToPool extends Notification implements ShouldQueue
+class AssignedToTeam extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * The ticket.
-     * @var \Aviator\Helpdesk\Models\Ticket
-     */
+    /** @var \Aviator\Helpdesk\Models\Ticket */
     public $ticket;
 
     /**
-     * Create a new notification instance.
-     *
-     * @return void
+     * Constructor.
+     * @param \Aviator\Helpdesk\Models\Ticket $ticket
      */
-    public function __construct(Ticket $ticket)
+    public function __construct (Ticket $ticket)
     {
         $this->ticket = $ticket;
     }
 
     /**
      * Get the notification's delivery channels.
-     *
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via ($notifiable)
     {
         return ['mail'];
     }
@@ -45,15 +40,15 @@ class AssignedToPool extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail ($notifiable)
     {
         $message = new MailMessage;
 
         $message->from(config('helpdesk.from.address'), config('helpdesk.from.name'));
-        $message->subject(config('helpdesk.notifications.internal.assignedToPool.subject'));
-        $message->greeting(config('helpdesk.notifications.internal.assignedToPool.greeting'));
-        $message->line('A ticket from ' . $this->ticket->user->name . ' has been placed in your assignment pool. Press the button below to view the ticket and assign it to a user.');
-        $message->action('View your ticket', route(config('helpdesk.notifications.internal.assignedToPool.route'), $this->ticket->id));
+        $message->subject(config('helpdesk.notifications.internal.assignedToTeam.subject'));
+        $message->greeting(config('helpdesk.notifications.internal.assignedToTeam.greeting'));
+        $message->line('A ticket from ' . $this->ticket->user->name . ' has been placed in your assignment team. Press the button below to view the ticket and assign it to a user.');
+        $message->action('View your ticket', route(config('helpdesk.notifications.internal.assignedToTeam.route'), $this->ticket->id));
 
         return $message;
     }

@@ -5,3 +5,4 @@ enabled:
 
 disabled:
   - concat_without_spaces
+  - function_declaration

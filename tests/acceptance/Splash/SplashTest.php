@@ -4,11 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 class SplashTest extends TestCase
 {
-    /**
-     * @group acc
-     * @group acc.splash
-     * @test
-     */
+    /** @test */
     public function the_splash_exists()
     {
         $this->visit('/helpdesk')

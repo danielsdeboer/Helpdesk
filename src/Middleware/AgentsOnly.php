@@ -3,7 +3,6 @@
 namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
-use Aviator\Helpdesk\Models\Agent;
 
 class AgentsOnly
 {
@@ -16,10 +15,10 @@ class AgentsOnly
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && Agent::where('user_id', $request->user()->id)->first()) {
+        if ($request->user() && $request->user()->agent) {
             return $next($request);
         }
 
-        abort(403, 'You are not permitted to access this resource.');
+        return abort(403, 'You are not permitted to access this resource.');
     }
 }

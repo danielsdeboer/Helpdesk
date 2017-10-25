@@ -3,59 +3,47 @@
 namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
-use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Support\Facades\Auth;
 
 class DashboardRouter
 {
     /**
-     * The supervisor's email.
-     * @var string
-     */
-    protected $supervisorEmail;
-
-    /**
-     * The user model's email column.
-     * @var string
-     */
-    protected $emailColumn;
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->supervisorEmails = config('helpdesk.supervisors');
-        $this->emailColumn = config('helpdesk.userModelEmailColumn');
-    }
-
-    /**
      * Handle an incoming request.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::guest()) {
+        /*
+         * Guests must log in.
+         */
+        if (auth()->guest()) {
             return redirect(
                 route('login')
             );
         }
 
-        if (in_array($request->user()->{$this->emailColumn}, $this->supervisorEmails)) {
+        /*
+         * Supervisors get redirected to their dashboard.
+         */
+        if (auth()->user()->agent && auth()->user()->agent->isSuper()) {
             return redirect(
                 route('helpdesk.dashboard.supervisor')
             );
         }
 
-        if (Agent::where('user_id', $request->user()->id)->first()) {
+        /*
+         * Agents get redirected to their dashboard.
+         */
+        if (auth()->user()->agent) {
             return redirect(
                 route('helpdesk.dashboard.agent')
             );
         }
 
+        /*
+         * Finally, everyone else gets the user dashboard.
+         */
         return redirect(
             route('helpdesk.dashboard.user')
         );

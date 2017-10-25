@@ -2,35 +2,20 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Ticket;
-
 class Bug5Test extends AdminBase
 {
-    const VERB = 'GET';
-    const URIBASE = 'helpdesk/tickets/';
-    const URI = 'helpdesk/tickets/1';
-
-    /**
-     * @group bugs
-     * @group bugs.5
-     * @test
-     */
-    public function aTeamLeadCanReplyToATicketAssignedToTheirTeam()
+    /** @test */
+    public function a_team_lead_can_reply_to_any_ticket_assigned_to_their_team ()
     {
-        $user = $this->makeUser();
-        $agent = $this->makeAgent();
-        $team = $this->makeTeam();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $team = $this->make->team;
+        $ticket = $this->make->ticket->assignToTeam($team, null, true);
+        $agent = $this->make->agent->makeTeamLeadOf($team);
 
-        $ticket->assignToTeam($team, null, true);
-        $agent->makeTeamLeadOf($team);
         $this->assertTrue($team->isTeamLead($agent));
 
         $this->be($agent->user);
 
-        $this->visit(self::URI)
+        $this->visit('helpdesk/tickets/' . $ticket->id)
             ->assertResponseOk()
             ->see($ticket->content->title())
             ->see('add reply')

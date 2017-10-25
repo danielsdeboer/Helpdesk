@@ -2,30 +2,20 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Action;
-
 class ActionTest extends TestCase
 {
-    /**
-     * @group model
-     * @group model.action
-     * @test
-     */
+    /** @test */
     public function it_has_an_object()
     {
-        $action = factory(Action::class)->create();
+        $action = $this->make->action;
 
         $this->assertNotNull($action->object);
     }
 
-    /**
-     * @group model
-     * @group model.action
-     * @test
-     */
+    /** @test */
     public function it_has_an_subject()
     {
-        $action = factory(Action::class)->create();
+        $action = $this->make->action;
 
         $this->assertNotNull($action->subject);
     }

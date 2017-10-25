@@ -2,6 +2,10 @@
 
 namespace Aviator\Helpdesk\Models;
 
+/**
+ * @property string body
+ * @property string title
+ */
 class GenericContent extends ContentBase
 {
     protected $fillable = [

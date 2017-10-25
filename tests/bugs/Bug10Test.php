@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Ticket;
-
 class Bug10Test extends AdminBase
 {
     const VERB = 'GET';
@@ -15,17 +13,15 @@ class Bug10Test extends AdminBase
      * @group bugs.10
      * @test
      */
-    public function whenAssigningAPoolAssignedTicketToAnAgentOnlyAgentsFromThatTeamShouldShowInTheSelect()
+    public function whenAssigningATeamAssignedTicketToAnAgentOnlyAgentsFromThatTeamShouldShowInTheSelect()
     {
-        $user = $this->makeUser();
-        $agent1 = $this->makeAgent();
-        $agent2 = $this->makeAgent();
-        $agent3 = $this->makeAgent();
-        $agent4 = $this->makeAgent();
-        $team = $this->makeTeam();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $agent1 = $this->make->agent;
+        $agent2 = $this->make->agent;
+        $agent3 = $this->make->agent;
+        $agent4 = $this->make->agent;
+        $team = $this->make->team;
+        $ticket = $this->make->ticket($user);
 
         $ticket->assignToTeam($team, null, true);
         $agent1->makeTeamLeadOf($team);

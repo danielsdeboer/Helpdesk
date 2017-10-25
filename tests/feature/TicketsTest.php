@@ -2,142 +2,112 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
-use Aviator\Helpdesk\Tests\User;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 
 class TicketsTest extends TestCase
 {
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function a_guest_cannot_view_tickets()
+    /** @test */
+    public function a_guest_cannot_view_tickets ()
     {
-        $this->call('GET', 'helpdesk/tickets');
+        $this->get($this->make->ticketUri);
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function a_user_may_view_ticket()
+    /** @test */
+    public function a_user_may_view_tickets ()
     {
-        $this->be(factory(User::class)->create());
+        $this->be($this->make->user);
 
-        $response = $this->call('GET', 'helpdesk/tickets');
+        $this->get($this->make->ticketUri);
 
         $this->assertResponseOk();
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function a_user_may_view_a_ticket_that_belongs_to_them()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $response = $this->call('GET', 'helpdesk/tickets/' . $ticket->id);
+        $this->get($this->make->ticketUri($ticket));
 
         $this->assertResponseOk();
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function tickets_are_available_publically_through_via_the_uuid()
+    /** @test */
+    public function tickets_are_available_publicly_through_via_the_uuid ()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->make->ticket;
 
-        $response = $this->call('GET', 'helpdesk/tickets/public/' . $ticket->uuid);
+        $this->get($this->make->ticketUuidUri($ticket));
 
         $this->assertResponseOk();
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function the_content_and_user_are_displayed_on_the_ticket_page()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->make->ticket;
 
-        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+        $this->visit($this->make->ticketUuidUri($ticket));
 
-        $this->see($ticket->content->title);
+        $this->see($ticket->content->title());
         $this->see($ticket->content->body);
         $this->see($ticket->user->name);
     }
 
-    /**
-     * @group feature
-     * @group feature.tickets
-     * @test
-     */
-    public function openPublicTicketsHaveACloseAction()
+    /** @test */
+    public function if_the_user_is_logged_in_open_public_tickets_have_a_close_action ()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+
+        $this->visit($this->make->ticketUuidUri($ticket));
+        $this->dontSee('<i class="material-icons">lock_outline</i>');
 
         $this->be($user);
 
-        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
-
+        $this->visit($this->make->ticketUuidUri($ticket));
         $this->see('<i class="material-icons">lock_outline</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function openPublicTicketsHaveAReplyAction()
+    /** @test */
+    public function if_the_user_is_logged_in_open_public_tickets_have_a_reply_action ()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+
+        $this->visit($this->make->ticketUuidUri($ticket));
+        $this->dontSee('<i class="material-icons">reply</i>');
 
         $this->be($user);
 
-        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
-
+        $this->visit($this->make->ticketUuidUri($ticket));
         $this->see('<i class="material-icons">reply</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function open_public_tickets_dont_have_agent_actions()
+    /** @test */
+    public function open_public_tickets_dont_have_agent_actions ()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = $this->make->ticket;
 
-        $this->visit('helpdesk/tickets/public/' . $ticket->uuid);
+        $this->visit($this->make->ticketUuidUri($ticket));
 
         $this->dontSee('<i class="material-icons">note_add</i>');
         $this->dontSee('<i class="material-icons">person_pin_circle</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
-    public function closedPublicTicketsHaveAnOpenAction()
+    /** @test */
+    public function if_an_agent_is_logged_in_closed_public_tickets_have_an_open_action ()
     {
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create()->close('with note', $agent);
+        /*
+         * This is a strange test. TODO: Should this work this way?
+         */
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket->close('with note', $agent);
 
         $this->be($agent->user);
 
@@ -148,90 +118,66 @@ class TicketsTest extends TestCase
         $this->see('<i class="material-icons">lock_open</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function open_user_tickets_have_an_close_action()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->see('<i class="material-icons">lock_outline</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function open_user_tickets_have_an_reply_action()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->see('<i class="material-icons">reply</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function open_user_tickets_dont_have_agent_actions()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->dontSee('<i class="material-icons">note_add</i>');
         $this->dontSee('<i class="material-icons">person_pin_circle</i>');
     }
 
-    /**
-     * @group feature.tickets
-     * @test
-     */
+    /** @test */
     public function closed_user_tickets_have_an_open_action()
     {
-        $user = factory(User::class)->create();
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->close('with note', $agent);
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket($user)->close('with note', $agent);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->dontSee('<i class="material-icons">reply</i>');
         $this->dontSee('<i class="material-icons">lock_outline</i>');
         $this->see('<i class="material-icons">lock_open</i>');
     }
 
-    /**
-     * @group feature.tickets.agent
-     * @test
-     */
+    /** @test */
     public function open_agent_tickets_have_agent_actions()
     {
-        $agent = factory(Agent::class)->create();
-
-        $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->see('<i class="material-icons">lock_outline</i>');
         $this->see('<i class="material-icons">note_add</i>');
@@ -241,18 +187,14 @@ class TicketsTest extends TestCase
         $this->dontSee('<i class="material-icons">person_pin_circle</i>');
     }
 
-    /**
-     * @group feature.tickets.agent
-     * @test
-     */
+    /** @test */
     public function closed_agent_tickets_have_an_open_action()
     {
-        $agent = factory(Agent::class)->create();
-
-        $ticket = factory(Ticket::class)->create()->assignToAgent($agent)->close('with note', $agent);
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($agent)->close('with note', $agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->see('<i class="material-icons">lock_open</i>');
 
@@ -262,17 +204,14 @@ class TicketsTest extends TestCase
         $this->dontSee('<i class="material-icons">person_pin_circle</i>');
     }
 
-    /**
-     * @group feature.tickets.super
-     * @test
-     */
+    /** @test */
     public function open_supervisor_tickets_have_supervisor_actions()
     {
-        $agent = factory(Agent::class)->states('isSuper')->create();
-        $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
+        $super = $this->make->super;
+        $ticket = $this->make->ticket->assignToAgent($super);
 
-        $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id);
+        $this->be($super->user);
+        $this->visit($this->make->ticketUri($ticket));
 
         $this->see('<i class="material-icons">lock_outline</i>');
         $this->see('<i class="material-icons">note_add</i>');

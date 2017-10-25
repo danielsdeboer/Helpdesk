@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
 
-class SupervisorsOnly
+class SupersOnly
 {
     /**
      * Handle an incoming request.
@@ -15,13 +15,10 @@ class SupervisorsOnly
      */
     public function handle($request, Closure $next)
     {
-        $email = config('helpdesk.userModelEmailColumn');
-        $supervisorEmails = config('helpdesk.supervisors');
-
-        if ($request->user() && in_array($request->user()->$email, $supervisorEmails)) {
+        if ($request->user() && $request->user()->agent && $request->user()->agent->isSuper()) {
             return $next($request);
         }
 
-        abort(403, 'You are not permitted to access this resource.');
+        return abort(403, 'You are not permitted to access this resource.');
     }
 }

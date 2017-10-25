@@ -7,7 +7,7 @@ namespace Aviator\Helpdesk\Models;
  * @property mixed id
  * @property \Aviator\Helpdesk\Models\Agent agent
  * @property \Aviator\Helpdesk\Models\Ticket ticket
- * @property mixed action
+ * @property \Aviator\Helpdesk\Models\Action action
  * @property mixed createdBy
  */
 class Collaborator extends ActionBase

@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Note;
-use Aviator\Helpdesk\Models\Pool;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Action;
@@ -13,26 +13,7 @@ use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
-use Aviator\Helpdesk\Models\PoolAssignment;
-
-/*
- * User factory facilities
- */
-
-$factory->define(config('helpdesk.userModel'), function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-    ];
-});
-
-$factory->state(config('helpdesk.userModel'), 'isInternal', function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-        'is_internal' => 1,
-    ];
-});
+use Aviator\Helpdesk\Models\TeamAssignment;
 
 /*
  * Helpdesk factory facilities
@@ -54,20 +35,6 @@ $factory->define(Ticket::class, function (Faker\Generator $faker) {
         'content_id' => factory(GenericContent::class)->create()->id,
         'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
         'status' => 'open',
-    ];
-});
-
-$factory->define(Agent::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => factory(config('helpdesk.userModel'))->create()->id,
-    ];
-});
-
-$factory->state(Agent::class, 'isSuper', function (Faker\Generator $faker) {
-    return [
-        'user_id' => factory(config('helpdesk.userModel'))->create([
-            'email' => config('helpdesk.supervisors')[0],
-        ])->id,
     ];
 });
 
@@ -113,16 +80,16 @@ $factory->state(Reply::class, 'isUser', function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Pool::class, function (Faker\Generator $faker) {
+$factory->define(Team::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->jobTitle(),
     ];
 });
 
-$factory->define(PoolAssignment::class, function (Faker\Generator $faker) {
+$factory->define(TeamAssignment::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
-        'pool_id' => factory(Pool::class)->create()->id,
+        'team_id' => factory(Team::class)->create()->id,
         'agent_id' => null,
         'is_visible' => false,
     ];

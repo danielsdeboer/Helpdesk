@@ -2,66 +2,42 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Ticket;
-
 class TicketsOpenedTest extends AdminBase
 {
     const VERB = 'GET';
     const URI = 'helpdesk/tickets/open';
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.open
-     * @test
-     */
-    public function access_test()
+    /** @test */
+    public function access_test ()
     {
         $this->noGuests();
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.open
-     * @test
-     */
-    public function users_can_visit()
+    /** @test */
+    public function users_can_visit ()
     {
-        $this->be($this->makeUser());
+        $this->be($this->make->user);
 
         $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.open
-     * @test
-     */
-    public function agents_can_visit()
+    /** @test */
+    public function agents_can_visit ()
     {
-        $this->be($this->makeAgent()->user);
+        $this->be($this->make->agent->user);
 
         $this->visit(self::URI)
             ->assertResponseOk()
             ->see('Helpdesk');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.open
-     * @test
-     */
-    public function users_see_a_listing_of_their_tickets()
+    /** @test */
+    public function users_see_a_listing_of_their_tickets ()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
 
@@ -70,18 +46,11 @@ class TicketsOpenedTest extends AdminBase
             ->see($ticket->content->title());
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.open
-     * @test
-     */
-    public function for_more_than_25_records_pagination_is_shown()
+    /** @test */
+    public function for_more_than_25_records_pagination_is_shown ()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class, 26)->create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->make->user;
+        $ticket = $this->make->tickets(26, $user);
 
         $this->be($user);
 

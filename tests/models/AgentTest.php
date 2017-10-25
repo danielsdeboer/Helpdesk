@@ -2,81 +2,48 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Agent;
-
 class AgentTest extends TestCase
 {
-    /**
-     * Build up an agent.
-     * @return Agent
-     */
-    protected function agent($numberOfAgents = 1)
-    {
-        if ($numberOfAgents == 1) {
-            return factory(Agent::class)->create();
-        }
-
-        return factory(Agent::class, $numberOfAgents)->create();
-    }
-
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_belongs_to_a_user()
     {
-        $agent = factory(Agent::class)->create();
+        $agent = $this->make->agent;
 
         $this->assertNotNull($agent->user);
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_belong_to_many_teams()
     {
-        $agent = $this->agent();
-        $agent2 = $this->agent();
+        $agent1 = $this->make->agent;
+        $agent2 = $this->make->agent;
 
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
+        $team1 = $this->make->team;
+        $team2 = $this->make->team;
 
-        $agent2->addToTeams([$team, $team2]);
+        $agent1->addToTeam($team1);
+        $agent2->addToTeams([$team1, $team2]);
 
-        $agent->addToTeam($team);
-
-        $this->assertEquals(1, $agent->teams->count());
+        $this->assertEquals(1, $agent1->teams->count());
         $this->assertEquals(2, $agent2->teams->count());
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_added_to_a_team()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->addToTeam($team);
 
         $this->assertEquals(1, $agent->teams->count());
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_removed_from_a_team()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->addToTeam($team);
 
@@ -88,33 +55,25 @@ class AgentTest extends TestCase
         $this->assertEquals(0, $agent->teams->count());
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_added_to_many_teams()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = $this->make->team;
 
         $agent->addToTeams([$team, $team2]);
 
         $this->assertEquals(2, $agent->teams->count());
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_removed_from_many_teams()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
-        $team2 = factory(Pool::class)->create();
-        $team3 = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = $this->make->team;
+        $team3 = $this->make->team;
 
         $agent->addToTeams([$team, $team2, $team3]);
 
@@ -126,30 +85,22 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->count());
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_made_team_lead_of_a_team()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->makeTeamLeadOf($team);
 
         $this->assertEquals(1, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_made_team_lead_of_a_team_it_already_belongs_to()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->teams()->attach($team->id);
 
@@ -158,15 +109,11 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function it_may_be_made_team_lead_and_then_removed_as_team_lead()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->makeTeamLeadOf($team);
 
@@ -179,31 +126,38 @@ class AgentTest extends TestCase
         $this->assertEquals(0, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function isMemberOfReturnsTrueIfAnAgentIsAMemberOfThatTeam()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $agent->makeTeamLeadOf($team);
 
         $this->assertTrue($agent->isMemberOf($team));
     }
 
-    /**
-     * @group model
-     * @group model.agent
-     * @test
-     */
+    /** @test */
     public function isMemberOfReturnsFalseIfAnAgentIsntAMemberOfThatTeam()
     {
-        $agent = $this->agent();
-        $team = factory(Pool::class)->create();
+        $agent = $this->make->agent;
+        $team = $this->make->team;
 
         $this->assertFalse($agent->isMemberOf($team));
+    }
+
+    /**
+     * @test
+     */
+    public function checking_if_an_agent_is_super ()
+    {
+        $agent = $this->make->agent;
+        $super = $this->make->super;
+
+        $this->assertSame(false, $agent->isSuper());
+        $this->assertSame(true, $super->isSuper());
+
+        $this->assertSame(false, $agent->is_super);
+        $this->assertSame(true, $super->is_super);
     }
 }

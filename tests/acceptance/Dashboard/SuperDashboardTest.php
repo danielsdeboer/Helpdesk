@@ -2,80 +2,43 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\Traits\CallsAs;
-use Aviator\Helpdesk\Tests\Traits\VisitsAs;
-use Aviator\Helpdesk\Tests\Traits\CreatesUsers;
-use Aviator\Helpdesk\Tests\Traits\CreatesAgents;
-use Aviator\Helpdesk\Tests\Traits\CreatesSupervisors;
-
 class SuperDashboardTest extends TestCase
 {
-    /*
-     * Setup -----------------------------------------------------------------------------------------------------------
-     */
+    /** @const string */
+    const URI = 'helpdesk/dashboard/supervisor';
 
-    use CreatesAgents, CreatesUsers, CreatesSupervisors, CallsAs, VisitsAs;
-
-    protected $dash = 'helpdesk/dashboard/supervisor';
-
-    /*
-     * Tests -----------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * @group acc
-     * @group acc.dash
-     * @group acc.dash.super
-     * @test
-     */
+    /** @test */
     public function a_guest_cannot_visit_the_supervisor_dashboard()
     {
-        $response = $this->call('GET', 'helpdesk/dashboard/supervisor');
+        $this->get(self::URI);
 
         $this->assertResponseStatus(403);
     }
 
-    /**
-     * @group acc
-     * @group acc.dash
-     * @group acc.dash.super
-     * @test
-     */
+    /** @test */
     public function an_agent_cannot_visit_the_supervisor_dashboard()
     {
-        $user = $this->createAgent()->user;
-
-        $this->callAs($user, $this->dash);
+        $this->be($this->make->agent->user);
+        $this->get(self::URI);
 
         $this->assertResponseStatus(403);
     }
 
-    /**
-     * @group acc
-     * @group acc.dash
-     * @group acc.dash.super
-     * @test
-     */
+    /** @test */
     public function a_supervisor_can_visit_their_dashboard()
     {
-        $user = $this->createSupervisor()->user;
-
-        $this->callAs($user, $this->dash);
+        $this->be($this->make->super->user);
+        $this->get(self::URI);
 
         $this->assertResponseOk();
     }
 
-    /**
-     * @group acc
-     * @group acc.dash
-     * @group acc.dash.super
-     * @test
-     */
+    /** @test */
     public function a_supervisor_can_see_their_dashboard()
     {
-        $user = $this->createSupervisor()->user;
+        $this->be($this->make->super->user);
 
-        $this->visitAs($user, $this->dash)
+        $this->visit(self::URI)
             ->see('Helpdesk')
             ->see('Unassigned')
             ->see('Overdue')
@@ -84,17 +47,12 @@ class SuperDashboardTest extends TestCase
             ->see('id="header-tab-admin"');
     }
 
-    /**
-     * @group acc
-     * @group acc.dash
-     * @group acc.dash.agents
-     * @test
-     */
+    /** @test */
     public function agent_dashboard_has_collaborating_list()
     {
-        $user = $this->createSupervisor()->user;
+        $this->be($this->make->super->user);
 
-        $this->visitAs($user, $this->dash)
+        $this->visit(self::URI)
             ->see('id="collab-count-title"')
             ->see('id="collab-count-number"')
             ->see('id="collab-title"')

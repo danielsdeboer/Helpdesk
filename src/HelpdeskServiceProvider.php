@@ -14,16 +14,22 @@ use Illuminate\Foundation\Http\Kernel;
 use Aviator\Helpdesk\Models\Assignment;
 use Illuminate\Support\ServiceProvider;
 use Aviator\Helpdesk\Models\Collaborator;
-use Aviator\Helpdesk\Models\PoolAssignment;
+use Aviator\Helpdesk\Commands\CreateSuper;
+use Aviator\Helpdesk\Middleware\AgentsOnly;
+use Aviator\Helpdesk\Middleware\SupersOnly;
+use Aviator\Helpdesk\Models\TeamAssignment;
 use Aviator\Helpdesk\Observers\NoteObserver;
+use Aviator\Helpdesk\Middleware\TicketAccess;
 use Aviator\Helpdesk\Observers\ReplyObserver;
 use Aviator\Helpdesk\Observers\TicketObserver;
+use Aviator\Helpdesk\Middleware\TicketAssignee;
 use Aviator\Helpdesk\Observers\ClosingObserver;
 use Aviator\Helpdesk\Observers\DueDateObserver;
 use Aviator\Helpdesk\Observers\OpeningObserver;
+use Aviator\Helpdesk\Middleware\DashboardRouter;
 use Aviator\Helpdesk\Observers\AssignmentObserver;
 use Aviator\Helpdesk\Observers\CollaboratorObserver;
-use Aviator\Helpdesk\Observers\PoolAssignmentObserver;
+use Aviator\Helpdesk\Observers\TeamAssignmentObserver;
 
 class HelpdeskServiceProvider extends ServiceProvider
 {
@@ -49,12 +55,15 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/Routes/routes.php');
 
         $this->publishFactories();
-        $this->registerCommands();
         $this->publishImages();
 
         Blade::directive('para', function ($var) {
             return "<?php echo nl2br($var); ?>";
         });
+
+        $this->commands([
+            CreateSuper::class,
+        ]);
     }
 
     /**
@@ -66,20 +75,20 @@ class HelpdeskServiceProvider extends ServiceProvider
      */
     protected function pushMiddleware($kernel, $router)
     {
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\AgentsOnly::class);
-        $router->aliasMiddleware('helpdesk.agents', \Aviator\Helpdesk\Middleware\AgentsOnly::class);
+        $kernel->pushMiddleware(AgentsOnly::class);
+        $router->aliasMiddleware('helpdesk.agents', AgentsOnly::class);
 
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
-        $router->aliasMiddleware('helpdesk.supervisors', \Aviator\Helpdesk\Middleware\SupervisorsOnly::class);
+        $kernel->pushMiddleware(SupersOnly::class);
+        $router->aliasMiddleware('helpdesk.supervisors', SupersOnly::class);
 
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class);
-        $router->aliasMiddleware('helpdesk.redirect.dashboard', \Aviator\Helpdesk\Middleware\DashboardRedirector::class);
+        $kernel->pushMiddleware(DashboardRouter::class);
+        $router->aliasMiddleware('helpdesk.redirect.dashboard', DashboardRouter::class);
 
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\OwnerOrAssigneeOnly::class);
-        $router->aliasMiddleware('helpdesk.ticket.owner', \Aviator\Helpdesk\Middleware\OwnerOrAssigneeOnly::class);
+        $kernel->pushMiddleware(TicketAccess::class);
+        $router->aliasMiddleware('helpdesk.ticket.owner', TicketAccess::class);
 
-        $kernel->pushMiddleware(\Aviator\Helpdesk\Middleware\TicketAssignee::class);
-        $router->aliasMiddleware('helpdesk.ticket.assignee', \Aviator\Helpdesk\Middleware\TicketAssignee::class);
+        $kernel->pushMiddleware(TicketAssignee::class);
+        $router->aliasMiddleware('helpdesk.ticket.assignee', TicketAssignee::class);
     }
 
     /**
@@ -114,24 +123,11 @@ class HelpdeskServiceProvider extends ServiceProvider
         Assignment::observe(AssignmentObserver::class);
         DueDate::observe(DueDateObserver::class);
         Reply::observe(ReplyObserver::class);
-        PoolAssignment::observe(PoolAssignmentObserver::class);
+        TeamAssignment::observe(TeamAssignmentObserver::class);
         Closing::observe(ClosingObserver::class);
         Opening::observe(OpeningObserver::class);
         Note::observe(NoteObserver::class);
         Collaborator::observe(CollaboratorObserver::class);
-    }
-
-    /**
-     * Register artisan commands.
-     * @return void
-     */
-    public function registerCommands()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \Aviator\Helpdesk\Commands\MakeSupervisor::class,
-            ]);
-        }
     }
 
     /**

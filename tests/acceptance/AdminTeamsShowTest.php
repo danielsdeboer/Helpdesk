@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Pool;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 
 class AdminTeamsShowTest extends TestCase
 {
+    /** @const string */
+    const URI = 'helpdesk/admin/teams/1';
+
     public function setUp()
     {
         parent::setUp();
@@ -17,116 +17,76 @@ class AdminTeamsShowTest extends TestCase
         });
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function guests_cant_visit()
+    /** @test */
+    public function guests_cant_visit ()
     {
-        $this->call('GET', 'helpdesk/admin/teams/1');
+        $this->get(self::URI);
 
         $this->assertResponseStatus('302');
         $this->assertRedirectedTo('login');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function users_cant_visit()
+    /** @test */
+    public function users_cant_visit ()
     {
-        $user = factory(User::class)->create();
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/teams/1');
+        $this->be($this->make->user);
+        $this->get(self::URI);
 
         $this->assertResponseStatus('403');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function agents_cant_visit()
+    /** @test */
+    public function agents_cant_visit ()
     {
-        $user = factory(Agent::class)->create()->user;
-
-        $this->be($user);
-        $this->call('GET', 'helpdesk/admin/teams/1');
+        $this->be($this->make->agent->user);
+        $this->get(self::URI);
 
         $this->assertResponseStatus('403');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function supervisors_can_visit()
+    /** @test */
+    public function supervisors_can_visit ()
     {
-        $user = factory(Agent::class)->states('isSuper')->create()->user;
-        $team = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $team = $this->make->team;
 
-        $this->be($user);
-        $this->visit('helpdesk/admin/teams/1');
+        $this->be($super->user);
+        $this->visit(self::URI);
 
         $this->see('id="tab-admin-agents"')
             ->see('<strong>' . $team->name . '</strong>')
             ->see('0 open tickets');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function it_has_a_list_of_agents()
+    /** @test */
+    public function it_has_a_list_of_agents ()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team1 = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $team1 = $this->make->team;
 
-        $agent2 = factory(Agent::class)->create()->addToTeam($team1);
-        $agent3 = factory(Agent::class)->create()->addToTeam($team1);
+        $agent2 = $this->make->agent->addToTeam($team1);
+        $agent3 = $this->make->agent->addToTeam($team1);
 
-        $this->be($super);
-        $this->visit('helpdesk/admin/teams/1');
+        $this->be($super->user);
+        $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/2">' . $agent2->user->name . '</a>')
-            ->see('<a href="http://localhost/helpdesk/admin/agents/3">' . $agent3->user->name . '</a>');
+        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent2->id . '">' . $agent2->user->name . '</a>')
+            ->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent3->id . '">' . $agent3->user->name . '</a>');
     }
 
-    /**
-     * @group acc
-     * @group acc.admin
-     * @group acc.admin.team
-     * @group acc.admin.team.show
-     * @test
-     */
-    public function it_has_a_list_of_open_tickets()
+    /** @test */
+    public function it_has_a_list_of_open_tickets ()
     {
-        $super = factory(Agent::class)->states('isSuper')->create()->user;
-        $team1 = factory(Pool::class)->create();
+        $super = $this->make->super;
+        $team1 = $this->make->team;
 
-        $ticket1 = factory(Ticket::class)->create()->assignToPool($team1);
-        $ticket2 = factory(Ticket::class)->create()->assignToPool($team1);
+        $ticket1 = $this->make->ticket->assignToTeam($team1);
+        $ticket2 = $this->make->ticket->assignToTeam($team1);
 
-        $this->be($super);
-        $this->visit('helpdesk/admin/teams/1');
+        $this->be($super->user);
+        $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/tickets/1">' . $ticket1->content->title . '</a>')
-            ->see('<a href="http://localhost/helpdesk/tickets/2">' . $ticket2->content->title . '</a>');
+        $this->see('<a href="http://localhost/helpdesk/tickets/' . $ticket1->id . '">' . $ticket1->content->title() . '</a>')
+            ->see('<a href="http://localhost/helpdesk/tickets/' . $ticket2->id . '">' . $ticket2->content->title() . '</a>');
     }
 }

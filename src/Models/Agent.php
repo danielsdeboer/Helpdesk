@@ -4,26 +4,40 @@ namespace Aviator\Helpdesk\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed user
  * @property int id
+ * @property bool is_super
+ * @property \Illuminate\Support\Collection teams
+ * @property \Carbon\Carbon created_at
+ * @property \Aviator\Helpdesk\Models\Team team
+ * @property \Illuminate\Support\Collection teamLeads
+ * @method static Builder withTrashed()
  */
 class Agent extends Model
 {
     use SoftDeletes, Notifiable;
 
+    /** @var \Illuminate\Database\Eloquent\Model */
+    protected $userModelName;
+
+    /** @var array */
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
+    /** @var array */
     protected $guarded = [];
 
+    /** @var array */
     protected $casts = [
         'is_team_lead' => 'boolean',
+        'is_super' => 'boolean',
     ];
 
     /**
@@ -35,15 +49,15 @@ class Agent extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('helpdesk.tables.agents'));
+        $this->userModelName = config('helpdesk.userModel');
     }
 
-    ////////////////
-    // Public API //
-    ////////////////
+    /*
+     * Public Api
+     */
 
     /**
      * Route notifications for the mail channel.
-     *
      * @return string
      */
     public function routeNotificationForMail()
@@ -55,9 +69,10 @@ class Agent extends Model
 
     /**
      * Make the Agent a team lead.
+     * @param \Aviator\Helpdesk\Models\Team $team
      * @return $this
      */
-    public function makeTeamLeadOf(Pool $team)
+    public function makeTeamLeadOf(Team $team)
     {
         // If the agent is already in the team but not team lead
         // we need to detach first. This does nothing otherwise.
@@ -72,9 +87,10 @@ class Agent extends Model
 
     /**
      * Make the Agent a team lead.
+     * @param \Aviator\Helpdesk\Models\Team $team
      * @return $this
      */
-    public function removeTeamLeadOf(Pool $team)
+    public function removeTeamLeadOf(Team $team)
     {
         $this->teams()->detach($team);
 
@@ -87,10 +103,10 @@ class Agent extends Model
 
     /**
      * Add the agent to a team.
-     * @param Pool $team
+     * @param Team $team
      * @return $this
      */
-    public function addToTeam(Pool $team)
+    public function addToTeam(Team $team)
     {
         $this->teams()->attach($team->id);
 
@@ -99,10 +115,10 @@ class Agent extends Model
 
     /**
      * Remove the agent from a team.
-     * @param  Pool   $team
+     * @param  Team   $team
      * @return $this
      */
-    public function removeFromTeam(Pool $team)
+    public function removeFromTeam(Team $team)
     {
         $this->teams()->detach($team->id);
 
@@ -137,35 +153,51 @@ class Agent extends Model
         return $this;
     }
 
+    /*
+     * Booleans
+     */
+
     /**
-     * Is this agent a member of this pool.
-     * @param  Pool    $team
+     * Is this agent a member of this team.
+     * @param  Team    $team
      * @return bool
      */
-    public function isMemberOf(Pool $team)
+    public function isMemberOf(Team $team)
     {
         return $team->agents->pluck('id')->contains($this->id);
     }
 
-    ///////////////////
-    // Relationships //
-    ///////////////////
-
-    public function user()
+    /**
+     * Check if the user is a supervisor.
+     * @return bool
+     */
+    public function isSuper ()
     {
-        return $this->belongsTo(config('helpdesk.userModel'));
+        return (bool) $this->is_super;
     }
 
+    /*
+     * Relationships
+     */
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo */
+    public function user()
+    {
+        return $this->belongsTo($this->userModelName);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany */
     public function teams()
     {
-        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
+        return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
             ->withTimestamps();
     }
 
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany */
     public function teamLeads()
     {
-        return $this->belongsToMany(Pool::class, config('helpdesk.tables.agent_pool'))
+        return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
             ->withTimestamps()
             ->wherePivot('is_team_lead', 1);

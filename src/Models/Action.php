@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string subject_type
  * @property mixed object_id
  * @property string object_type
+ * @property \Illuminate\Database\Eloquent\Model object
+ * @property \Illuminate\Database\Eloquent\Model subject
  */
 class Action extends Model
 {

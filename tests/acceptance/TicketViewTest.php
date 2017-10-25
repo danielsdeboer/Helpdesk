@@ -2,298 +2,183 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
-
 class TicketViewTest extends TestCase
 {
-    /*
-     * Setup -----------------------------------------------------------------------------------------------------------
-     */
+    const URI = 'helpdesk/tickets/';
 
-    /**
-     * @return \Aviator\Helpdesk\Models\Agent
-     */
-    protected function createAgent()
+    /** @test */
+    public function users_can_visit ()
     {
-        return factory(Agent::class)->create();
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Tests\User
-     */
-    protected function createUser()
-    {
-        return factory(User::class)->create();
-    }
-
-    /**
-     * @param \Aviator\Helpdesk\Tests\User $user
-     * @return \Aviator\Helpdesk\Models\Ticket
-     */
-    protected function createTicketForUser(User $user)
-    {
-        return factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ]);
-    }
-
-    /*
-     * Tests -----------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.user
-     * @test
-     */
-    public function users_can_visit()
-    {
-        $user = $this->createUser();
-        $ticket = $this->createTicketForUser($user);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.user
-     * @test
-     */
-    public function users_can_add_replies()
+    /** @test */
+    public function users_can_add_replies ()
     {
-        $user = $this->createUser();
-
-        $ticket = $this->createTicketForUser($user);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
 
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->type('test reply body', 'reply_body')
             ->press('reply_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-2">Reply Added</strong>');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.user
-     * @test
-     */
-    public function users_can_close()
+    /** @test */
+    public function users_can_close ()
     {
-        $user = $this->createUser();
-        $ticket = $this->createTicketForUser($user);
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->press('close_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-2">Closed</strong>');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_visit()
+    /** @test */
+    public function agents_can_visit ()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_add_private_notes()
+    /** @test */
+    public function agents_can_add_private_notes ()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->type('test note body', 'note_body')
             ->press('note_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Note Added</strong>')
             ->see('id="action-3-private"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_add_public_notes()
+    /** @test */
+    public function agents_can_add_public_notes ()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->type('test note body', 'note_body')
             ->check('note_is_visible')
             ->press('note_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Note Added</strong>')
             ->see('id="action-3-public"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_add_replies()
+    /** @test */
+    public function agents_can_add_replies ()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->type('test reply body', 'reply_body')
             ->press('reply_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Reply Added</strong>')
             ->see('id="action-3-public"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_close()
+    /** @test */
+    public function agents_can_close ()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent);
+        $agent = $this->make->agent;
+        $ticket = $ticket = $this->make->ticket->assignToAgent($agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->press('close_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Closed</strong>')
             ->see('id="action-3-public"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
+    /** @test */
     public function agents_can_reopen()
     {
-        $user = $this->createUser();
-        $agent = $this->createAgent();
-        $ticket = factory(Ticket::class)->create([
-            'user_id' => $user->id,
-        ])->assignToAgent($agent)->close(null, $agent);
+        $agent = $this->make->agent;
+        $ticket = $ticket = $this->make->ticket->assignToAgent($agent)->close(null, $agent);
 
         $this->be($agent->user);
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->see('<strong id="action-header-3">Closed</strong>')
             ->press('open_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-4">Opened</strong>')
             ->see('id="action-4-public"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_can_add_collaborators()
+    /** @test */
+    public function agents_can_add_collaborators ()
     {
-        $user = $this->createUser();
-        $assignee = $this->createAgent();
-        $collaborator = $this->createAgent();
-
-        $ticket = $this->createTicketForUser($user);
-        $ticket = $ticket->assignToAgent($assignee)->fresh();
+        $assignee = $this->make->agent;
+        $collaborator = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($assignee);
 
         $this->be($assignee->user);
 
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->select($collaborator->id, 'collab_id')
             ->press('collab_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Collaborator Added</strong>')
             ->see('<em>By</em>: ' . $assignee->user->name)
             ->see('id="action-3-public"');
     }
 
-    /**
-     * @group acc
-     * @group acc.ticket
-     * @group acc.ticket.agent
-     * @test
-     */
-    public function agents_cant_add_themselves_as_collaborator()
+    /** @test */
+    public function agents_cant_add_themselves_as_collaborator ()
     {
-        $user = $this->createUser();
-        $assignee = $this->createAgent();
-
-        $ticket = $this->createTicketForUser($user);
-        $ticket = $ticket->assignToAgent($assignee)->fresh();
+        $assignee = $this->make->agent;
+        $ticket = $this->make->ticket->assignToAgent($assignee);
 
         $this->be($assignee->user);
 
-        $this->visit('helpdesk/tickets/' . $ticket->id)
+        $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
             ->select($assignee->id, 'collab_id')
             ->press('collab_submit')
-            ->seePageIs('helpdesk/tickets/' . $ticket->id)
+            ->seePageIs(self::URI . $ticket->id)
             ->dontSee('<strong id="action-header-3">Collaborator Added</strong>')
             ->dontSee('<em>By</em>: ' . $assignee->user->name)
             ->dontSee('id="action-3-public"');

@@ -6,66 +6,63 @@ use Aviator\Helpdesk\Models\Agent;
 
 class DashboardRouterTest extends TestCase
 {
+    /** @var string */
+    protected $routerUri;
+
     public function setUp()
     {
         parent::setUp();
+
+        $this->routerUri = route('helpdesk.dashboard.router');
     }
 
     /**
-     * @group middle
-     * @group middle.dash
      * @test
      */
     public function it_routes_guests_to_the_login_page()
     {
-        $this->route('GET', 'helpdesk.dashboard.router');
+        $this->get($this->routerUri);
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
     }
 
     /**
-     * @group middle
-     * @group middle.dash
      * @test
      */
     public function it_routes_users_to_the_public_dashboard()
     {
         $this->be(factory(User::class)->create());
 
-        $this->route('GET', 'helpdesk.dashboard.router');
+        $this->get($this->routerUri);
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedToRoute('helpdesk.dashboard.user');
     }
 
     /**
-     * @group middle
-     * @group middle.dash
      * @test
      */
     public function it_routes_agents_to_the_agent_dashboard()
     {
         $this->be(factory(Agent::class)->create()->user);
 
-        $this->route('GET', 'helpdesk.dashboard.router');
+        $this->get($this->routerUri);
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedToRoute('helpdesk.dashboard.agent');
     }
 
     /**
-     * @group middle
-     * @group middle.dash
      * @test
      */
     public function it_routes_supervisors_to_the_supervisor_dashboard()
     {
         $this->be(
-            factory(Agent::class)->states('isSuper')->create()->user
+            $this->make->super->user
         );
 
-        $this->route('GET', 'helpdesk.dashboard.router');
+        $this->get($this->routerUri);
 
         $this->assertResponseStatus(302);
         $this->assertRedirectedToRoute('helpdesk.dashboard.supervisor');
