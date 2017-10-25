@@ -47,7 +47,9 @@ trait InteractsWithUsers
     protected function fetchFilteredUsers ()
     {
         $class = config('helpdesk.callbacks.user');
-        $callback = (new $class)->getUserCallback();
+        /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $callback */
+        $callback = new $class;
+        $callback = $callback->getUserCallback();
 
         return $this->userModelName::query()->where($callback)->get();
     }

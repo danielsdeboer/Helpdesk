@@ -39,8 +39,6 @@ class AgentsController extends Controller
     {
         $users = $this->fetchUsers();
 
-//        dd(Agent::with('user', 'teams')->get());
-
         return view('helpdesk::admin.agents.index')->with([
             'agents' => Agent::with('user', 'teams')->get(),
             'users' => $users,
