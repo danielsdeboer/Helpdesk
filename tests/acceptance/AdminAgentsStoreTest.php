@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Agent;
+
 class AdminAgentsStoreTest extends AdminBase
 {
     const VERB = 'POST';
@@ -70,7 +72,7 @@ class AdminAgentsStoreTest extends AdminBase
     public function an_agent_can_be_deleted_and_then_created_again ()
     {
         $super = $this->make->super;
-        $user = $this->make->user;
+        $user = $this->make->internalUser;
 
         $this->be($super->user);
         $this->visitRoute('helpdesk.admin.agents.index');
@@ -84,6 +86,8 @@ class AdminAgentsStoreTest extends AdminBase
         $this->delete('helpdesk/admin/agents/' . $agent->id, [
             'delete_agent_confirmed' => 1,
         ]);
+
+        $this->assertNotNull($agent->fresh()->deleted_at);
 
         $this->visitRoute('helpdesk.admin.agents.index');
         $this->post(self::URI, [
