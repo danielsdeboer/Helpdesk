@@ -12,6 +12,8 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 /**
  * @property mixed id
+ * @property string email
+ * @property \Aviator\Helpdesk\Models\Agent agent
  */
 class User extends Model implements AuthorizableContract, AuthenticatableContract
 {

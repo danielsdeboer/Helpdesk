@@ -31,13 +31,26 @@ class CreateSuper extends Command
      */
     public function handle()
     {
-        /** @var \Aviator\Helpdesk\Tests\User $user */
-        $user = $this->userModelName::query()->where([
-           $this->userModelEmailColumn => $this->argument('email'),
-        ])->first();
+        $callback = null;
+
+        /*
+         * TODO: Make this its own function.
+         */
+        if ($callbackClass = config('helpdesk.callbacks.user')) {
+            /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $class */
+            $class = new $callbackClass;
+            $callback = $class->getUserCallback();
+        };
+
+        $user = $this->userModelName::query()
+            ->where([
+                $this->userModelEmailColumn => $this->argument('email'),
+            ])
+            ->when($callback, $callback)
+            ->first();
 
         if ($user) {
-            $this->createSuper($user);
+            $this->updateOrCreateSuper($user);
 
             return;
         }
@@ -49,12 +62,13 @@ class CreateSuper extends Command
      * Perform the agent creation.
      * @param $user
      */
-    protected function createSuper ($user)
+    protected function updateOrCreateSuper ($user)
     {
-        Agent::query()->create([
-            'user_id' => $user->id,
-            'is_super' => 1,
-        ]);
+        Agent::query()
+            ->updateOrCreate(
+                ['user_id' => $user->id],
+                ['is_super' => 1]
+            );
 
         $this->info('Supervisor Agent created for ' . $this->argument('email'));
     }

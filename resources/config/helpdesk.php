@@ -25,7 +25,7 @@ return [
          * this to match your own implementation. If you use multiple guards or don't
          * care about this setting, set this key to null.
          */
-        'user' => \Aviator\Helpdesk\Helpers\Helpers::class,
+        'user' => \Aviator\Helpdesk\Helpers\UserCallbackProvider::class,
     ],
 
     'tables' => [
