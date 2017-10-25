@@ -2,8 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
-
 class AdminAgentsStoreTest extends AdminBase
 {
     const VERB = 'POST';
