@@ -40,7 +40,7 @@ class CreateSuper extends Command
             /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $class */
             $class = new $callbackClass;
             $callback = $class->getUserCallback();
-        };
+        }
 
         $user = $this->userModelName::query()
             ->where([
