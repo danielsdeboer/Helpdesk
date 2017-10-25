@@ -3,7 +3,6 @@
 namespace Aviator\Helpdesk\Helpers;
 
 use Aviator\Helpdesk\Models\Action;
-use Illuminate\Database\Eloquent\Builder;
 
 class Helpers
 {
@@ -23,16 +22,5 @@ class Helpers
         }
 
         return '(deleted user)';
-    }
-
-    /**
-     * Get a callback to filter users.
-     * @return \Closure
-     */
-    public function getUserCallback ()
-    {
-        return function (Builder $query) {
-            $query->where('is_internal', 1);
-        };
     }
 }

@@ -59,11 +59,14 @@ class Make
     }
 
     /**
+     * @param \Aviator\Helpdesk\Tests\User|null $user
      * @return \Aviator\Helpdesk\Models\Agent
      */
-    public function agent ()
+    public function agent (User $user = null)
     {
-        return factory(Agent::class)->create();
+        return $user
+            ? factory(Agent::class)->create(['user_id' => $user->id])
+            : factory(Agent::class)->create();
     }
 
     /**
