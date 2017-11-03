@@ -13,33 +13,33 @@ class TicketShowTeamLeadTest extends TestCase
             [
                 'text' => 'Assign',
                 'modal' => 'assign',
-                'icon' => 'person_pin_circle'
+                'icon' => 'person_pin_circle',
             ], [
                 'text' => 'Add Reply',
                 'modal' => 'reply',
-                'icon' => 'reply'
+                'icon' => 'reply',
             ], [
                 'text' => 'Add Note',
                 'modal' => 'note',
-                'icon' => 'note_add'
+                'icon' => 'note_add',
             ], [
                 'text' => 'Close Ticket',
                 'modal' => 'close',
-                'icon' => 'lock_outline'
+                'icon' => 'lock_outline',
             ], [
                 'text' => 'Add Collaborator',
                 'modal' => 'collab',
-                'icon' => 'people'
-            ]
+                'icon' => 'people',
+            ],
         ],
 
         'closed' => [
             [
                 'text' => 'Reopen Ticket',
                 'modal' => 'open',
-                'icon' => 'lock_open'
+                'icon' => 'lock_open',
             ],
-        ]
+        ],
     ];
 
     /**

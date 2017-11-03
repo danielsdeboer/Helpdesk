@@ -122,7 +122,7 @@ class TicketShowAgentTest extends TestCase
             ->see('<em>By</em>: ' . $assignee->user->name)
             ->see('id="action-3-public"');
     }
-    
+
     /** @test */
     public function agents_can_add_collabs_outside_their_own_team ()
     {
