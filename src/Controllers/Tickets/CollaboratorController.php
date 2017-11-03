@@ -56,7 +56,7 @@ class CollaboratorController extends Controller
     {
         /** @var \Aviator\Helpdesk\Models\Agent $collab */
         $collab = Agent::query()->findOrFail(
-            request('collab_id')
+            request('collab-id')
         );
 
         return $collab;

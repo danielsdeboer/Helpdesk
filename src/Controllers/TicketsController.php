@@ -170,8 +170,9 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
             'ticket' => $this->ticket,
-            'agents' => $this->getUsers(),
-            'agentsJson' => $this->getUsers()->toJson(),
+            'agents' => $this->getAssignmentAgents(),
+            'collaborators' => $this->getCollaboratingAgents(),
+            'agentsJson' => $this->getAssignmentAgents()->toJson(),
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,
@@ -190,8 +191,9 @@ class TicketsController extends Controller
     {
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
-            'agents' => $this->getUsers(),
-            'agentsJson' => $this->getUsers()->toJson(),
+            'agents' => $this->getAssignmentAgents(),
+            'agentsJson' => $this->getAssignmentAgents()->toJson(),
+            'collaborators' => $this->getCollaboratingAgents(),
             'ticket' => $this->ticket,
             'withOpen' => true,
             'withClose' => true,
@@ -213,8 +215,9 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
             'ticket' => $this->ticket,
-            'agents' => $this->getUsers(),
-            'agentsJson' => $this->getUsers()->toJson(),
+            'agents' => $this->getAssignmentAgents(),
+            'agentsJson' => $this->getAssignmentAgents()->toJson(),
+            'collaborators' => $this->getCollaboratingAgents(),
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,
@@ -235,8 +238,8 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'for' => 'agent',
             'ticket' => $this->ticket,
-            'agents' => $this->getUsers(),
-            'agentsJson' => $this->getUsers()->toJson(),
+            'agents' => $this->getAssignmentAgents(),
+            'agentsJson' => $this->getAssignmentAgents()->toJson(),
             'withReply' => true,
             'withNote' => true,
             'showPrivate' => true,
@@ -246,9 +249,9 @@ class TicketsController extends Controller
 
     /**
      * Get users based on context, sorted by name.
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function getUsers()
+    protected function getAssignmentAgents ()
     {
         if ($this->ticket->teamAssignment) {
             return $this->ticket->teamAssignment->team->agents()
@@ -257,6 +260,24 @@ class TicketsController extends Controller
                 ->sortBy('user.name');
         }
 
+        return $this->getAllAgents();
+    }
+
+    /**
+     * Get agents available for collaboration.
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getCollaboratingAgents ()
+    {
+        return $this->getAllAgents();
+    }
+
+    /**
+     * Get all available agents.
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getAllAgents ()
+    {
         return Agent::with('user')
             ->get()
             ->sortBy('user.name');

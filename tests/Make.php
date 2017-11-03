@@ -36,6 +36,7 @@ use Aviator\Helpdesk\Models\TeamAssignment;
  * @property \Aviator\Helpdesk\Models\Reply reply
  * @property \Aviator\Helpdesk\Models\TeamAssignment teamAssignment
  * @property \Aviator\Helpdesk\Models\GenericContent content
+ * @property \Aviator\Helpdesk\Models\Agent teamLead
  */
 class Make
 {
@@ -131,6 +132,17 @@ class Make
     }
 
     /**
+     * Get an agent who is team lead.
+     * @param \Aviator\Helpdesk\Models\Team|null $team
+     * @return \Aviator\Helpdesk\Models\Agent
+     */
+    public function teamLead (Team $team = null)
+    {
+        return $this->agent()
+            ->makeTeamLeadOf($team ?: $this->team);
+    }
+
+    /**
      * @return \Aviator\Helpdesk\Models\Reply
      */
     public function reply ()
@@ -220,6 +232,11 @@ class Make
     public function team ()
     {
         return factory(Team::class)->create();
+    }
+
+    public function option (Agent $agent, string $idSlug) : string
+    {
+        return '<option value="' . $agent->id . '" id="' . $idSlug . $agent->id . '">' . $agent->user->name . '</option>';
     }
 
     /**
