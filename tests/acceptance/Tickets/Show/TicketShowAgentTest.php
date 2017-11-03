@@ -2,51 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class TicketViewTest extends TestCase
+class TicketShowAgentTest extends TestCase
 {
     const URI = 'helpdesk/tickets/';
-
-    /** @test */
-    public function users_can_visit ()
-    {
-        $user = $this->make->user;
-        $ticket = $this->make->ticket($user);
-
-        $this->be($user);
-
-        $this->visit(self::URI . $ticket->id)
-            ->see('<strong id="action-header-1">Opened</strong>');
-    }
-
-    /** @test */
-    public function users_can_add_replies ()
-    {
-        $user = $this->make->user;
-        $ticket = $this->make->ticket($user);
-
-        $this->be($user);
-
-        $this->visit(self::URI . $ticket->id)
-            ->see('<strong id="action-header-1">Opened</strong>')
-            ->type('test reply body', 'reply_body')
-            ->press('reply_submit')
-            ->seePageIs(self::URI . $ticket->id)
-            ->see('<strong id="action-header-2">Reply Added</strong>');
-    }
-
-    /** @test */
-    public function users_can_close ()
-    {
-        $user = $this->make->user;
-        $ticket = $this->make->ticket($user);
-
-        $this->be($user);
-        $this->visit(self::URI . $ticket->id)
-            ->see('<strong id="action-header-1">Opened</strong>')
-            ->press('close_submit')
-            ->seePageIs(self::URI . $ticket->id)
-            ->see('<strong id="action-header-2">Closed</strong>');
-    }
 
     /** @test */
     public function agents_can_visit ()
@@ -129,7 +87,7 @@ class TicketViewTest extends TestCase
     }
 
     /** @test */
-    public function agents_can_reopen()
+    public function agents_can_reopen ()
     {
         $agent = $this->make->agent;
         $ticket = $ticket = $this->make->ticket->assignToAgent($agent)->close(null, $agent);
@@ -157,12 +115,62 @@ class TicketViewTest extends TestCase
         $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
-            ->select($collaborator->id, 'collab_id')
+            ->select($collaborator->id, 'collab-id')
             ->press('collab_submit')
             ->seePageIs(self::URI . $ticket->id)
             ->see('<strong id="action-header-3">Collaborator Added</strong>')
             ->see('<em>By</em>: ' . $assignee->user->name)
             ->see('id="action-3-public"');
+    }
+
+    /** @test */
+    public function agents_can_add_collabs_outside_their_own_team ()
+    {
+        $assigneeTeam = $this->make->team;
+        $collabTeam = $this->make->team;
+
+        $assignee = $this->make->agent->addToTeam($assigneeTeam);
+        $collab = $this->make->agent->addToTeam($collabTeam);
+
+        $ticket = $this->make->ticket->assignToAgent($assignee);
+
+        $this->be($assignee->user);
+
+        $this->visit(self::URI . $ticket->id)
+            ->see($this->make->option($collab, 'collab-option-'));
+    }
+
+    /** @test */
+    public function team_leads_can_add_collabs_outside_their_own_team ()
+    {
+        $teamLeadTeam = $this->make->team;
+        $collabTeam = $this->make->team;
+
+        $teamLead = $this->make->agent->makeTeamLeadOf($teamLeadTeam);
+        $collab = $this->make->agent->addToTeam($collabTeam);
+
+        $ticket = $this->make->ticket->assignToTeam($teamLeadTeam);
+
+        $this->be($teamLead->user);
+
+        $this->visit(self::URI . $ticket->id)
+            ->see($this->make->option($collab, 'collab-option-'));
+    }
+
+    /** @test */
+    public function supers_can_add_collabs_from_any_team ()
+    {
+        $super = $this->make->super;
+        $collab1 = $this->make->agent->addToTeam($this->make->team);
+        $collab2 = $this->make->agent;
+
+        $ticket = $this->make->ticket;
+
+        $this->be($super->user);
+
+        $this->visit(self::URI . $ticket->id)
+            ->see($this->make->option($collab1, 'collab-option-'))
+            ->see($this->make->option($collab2, 'collab-option-'));
     }
 
     /** @test */
@@ -176,7 +184,7 @@ class TicketViewTest extends TestCase
         $this->visit(self::URI . $ticket->id)
             ->see('<strong id="action-header-1">Opened</strong>')
             ->see('<strong id="action-header-2">Assigned</strong>')
-            ->select($assignee->id, 'collab_id')
+            ->select($assignee->id, 'collab-id')
             ->press('collab_submit')
             ->seePageIs(self::URI . $ticket->id)
             ->dontSee('<strong id="action-header-3">Collaborator Added</strong>')

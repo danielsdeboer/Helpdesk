@@ -4,128 +4,56 @@
       <div class="modal-app nav">
 
         @if ($ticket->isOpen() && isset($withAssign))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Assign</p>
-
-              <a @click="toggle('assign')">
-                <span class="icon">
-                  <i class="material-icons">person_pin_circle</i>
-                </span>
-              </a>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Assign',
+            'modal' => 'assign',
+            'icon' => 'person_pin_circle'
+          ])
         @endif
 
         @if ($ticket->isOpen() && isset($withReply))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Add Reply</p>
-
-              <a @click="toggle('reply')">
-                <span class="icon">
-                  <i class="material-icons">reply</i>
-                </span>
-              </a>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Add Reply',
+            'modal' => 'reply',
+            'icon' => 'reply'
+          ])
         @endif
 
-
         @if ($ticket->isOpen() && isset($withNote))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Add Note</p>
-
-              <a @click="toggle('note')">
-                <span class="icon">
-                  <i class="material-icons">note_add</i>
-                </span>
-              </a>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Add Note',
+            'modal' => 'note',
+            'icon' => 'note_add'
+          ])
         @endif
 
         @if ($ticket->isOpen() && isset($withClose))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Close Ticket</p>
-
-              <span class="icon">
-                <a @click="toggle('close')">
-                  <i class="material-icons">lock_outline</i>
-                </a>
-              </span>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Close Ticket',
+            'modal' => 'close',
+            'icon' => 'lock_outline'
+          ])
         @endif
 
         @if ($ticket->isClosed() && isset($withOpen))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Reopen Ticket</p>
-
-              <span class="icon">
-                <a @click="toggle('open')">
-                  <i class="material-icons">lock_open</i>
-                </a>
-              </span>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Reopen Ticket',
+            'modal' => 'open',
+            'icon' => 'lock_open'
+          ])
         @endif
 
         @if ($ticket->isOpen() && isset($withCollab))
-          <div class="nav-item has-text-centered">
-            <div>
-              <p class="heading">Add Collaborator</p>
-
-              <a @click="toggle('collab')">
-                <span class="icon">
-                  <i class="material-icons">people</i>
-                </span>
-              </a>
-            </div>
-          </div>
+          @include('helpdesk::partials.toolbar.item', [
+            'text' => 'Add Collaborator',
+            'modal' => 'collab',
+            'icon' => 'people'
+          ])
         @endif
 
-        {{-- ASSIGN A TICKET --}}
-        <div class="modal" v-bind:class="{
-          'is-active': modals.assign.visible
-        }" v-if="modals.assign.visible"
-        >
-          <div class="modal-background" @click="toggle('assign')"></div>
-          <div class="modal-content">
-            <div class="box">
-              <h1 class="title">Assign This Ticket To An Agent</h1>
-
-              <form method="post" action="{{ route('helpdesk.tickets.assign', $ticket->id) }}">
-                {{ csrf_field() }}
-
-                <p class="control">
-                  <span class="select">
-                    <select name="agent_id">
-                      <option
-                        v-for="agent in agents"
-                        :value="agent.id"
-                      >@{{ agent.user.name }}</option>
-                    </select>
-                  </span>
-                </p>
-
-                <div class="control is-grouped">
-                  <p class="control">
-                    <button class="button is-primary">Assign Ticket</button>
-                  </p>
-
-                  <p class="control">
-                    <button class="button is-link" @click.prevent="toggle('assign')">Cancel</button>
-                  </p>
-                </div>
-              </form>
-            </div>
-          </div>
-          <button class="modal-close" @click="toggle('assign')"></button>
-        </div>
+        @if (isset($for) && $for === 'agent')
+          @include('helpdesk::tickets.show.toolbar.assign')
+        @endif
 
         {{-- CLOSE A TICKET --}}
         <div class="modal" v-bind:class="{
@@ -262,46 +190,9 @@
           <button class="modal-close" @click="toggle('open')"></button>
         </div>
 
-        {{-- ADD COLLABS --}}
-        <div class="modal" v-bind:class="{
-          'is-active': modals.collab.visible
-        }" v-if="modals.collab.visible"
-        >
-          <div class="modal-background" @click="toggle('collab')"></div>
-          <div class="modal-content">
-            <div class="box">
-              <h1 class="title">Add a Collaborator</h1>
-
-              <form method="post" action="{{ route('helpdesk.tickets.collab', $ticket->id) }}">
-                {{ csrf_field() }}
-
-                <p class="control">
-                  <span class="select">
-                    <select name="collab_id">
-                      @if (isset($agents))
-                        @foreach($agents as $agent)
-                          <option value="{{ $agent->id }}">{{ $agent->user->name }}</option>
-                        @endforeach
-                      @endif
-                    </select>
-                  </span>
-                </p>
-
-                <div class="control is-grouped">
-                  <p class="control">
-                    <button class="button is-primary" name="collab_submit">Add Collaborator</button>
-                  </p>
-
-                  <p class="control">
-                    <button class="button is-link" @click.prevent="toggle('collab')">Cancel</button>
-                  </p>
-                </div>
-              </form>
-            </div>
-          </div>
-          <button class="modal-close" @click="toggle('open')"></button>
-        </div>
-      </div>
+        @if (isset($for) && $for === 'agent')
+          @include('helpdesk::tickets.show.toolbar.collab')
+        @endif
     </div>
   </div>
 @endif
@@ -315,6 +206,7 @@
 <script>
   var app = new Vue({
     el: '.modal-app',
+
     data: {
       modals: {
         close: {
@@ -336,8 +228,8 @@
           visible: false,
         }
       },
-      agents:{!! $agentsJson or '[]' !!}
     },
+
     methods: {
       toggle: function(modal) {
         this.modals[modal].visible = ! this.modals[modal].visible;

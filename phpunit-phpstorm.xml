@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="true"
+         syntaxCheck="false"
+         verbose="true"
+>
+    <testsuites>
+        <testsuite name="Package Test Suite">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+      <whitelist>
+        <directory suffix=".php">./src</directory>
+      </whitelist>
+    </filter>
+
+    <logging>
+      <log type="testdox-html" target="./test_logs/testdox.html"/>
+      <!-- <log type="coverage-html" target="./test_logs/report" lowUpperBound="35" highLowerBound="70"/> -->
+    </logging>
+</phpunit>

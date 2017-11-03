@@ -11,7 +11,7 @@ class CreateSuperTest extends TestCase
     /**
      * @test
      */
-    public function the_command_creates_a_supervisor ()
+    public function it_creates_a_supervisor_agent ()
     {
         $user = $this->make->internalUser;
 
@@ -32,7 +32,7 @@ class CreateSuperTest extends TestCase
     /**
      * @test
      */
-    public function the_command_errors_if_no_such_user ()
+    public function it_stops_and_outputs_an_error_if_no_user_can_be_found ()
     {
         $this->artisan('helpdesk:super', [
             'email' => 'some@user.net',
@@ -44,7 +44,7 @@ class CreateSuperTest extends TestCase
     }
 
     /** @test */
-    public function modifying_an_existing_agent_instead_of_creating_a_new_one ()
+    public function it_modifies_existing_users ()
     {
         $user = $this->make->internalUser;
 

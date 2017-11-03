@@ -1,7 +1,7 @@
 @extends('helpdesk::tickets.show.action')
 
 @section('action-content')
-  <strong>Assigned To Team</strong>
+  <strong id="action-assigned-to-team">Assigned To Team</strong>
   <br>
   <em>Team Name</em>: {{ $action->object->team->name }}
   <br>
