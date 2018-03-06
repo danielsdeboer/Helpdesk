@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Assignment;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\Internal\AssignedToAgent;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Assignment;
-use Aviator\Helpdesk\Models\Ticket;
 
 class AssignmentTest extends TestCase
 {
@@ -32,14 +32,14 @@ class AssignmentTest extends TestCase
 
     /** @test */
     public function if_agent_doesnt_exist_dont_send_notification()
-    {   
+    {
         Assignment::create([
             'ticket_id' => factory(Ticket::class)->create()->id,
             'assigned_to' => 9382,
             'agent_id' => null,
             'is_visible' => false,
-        ]);        
-        
+        ]);
+
         /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertNotSentTo(
             Agent::all(),

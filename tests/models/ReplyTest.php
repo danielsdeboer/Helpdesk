@@ -2,14 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\GenericContent;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
 use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\Reply;
-use Aviator\Helpdesk\Tests\User;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\GenericContent;
 
 class ReplyTest extends TestCase
 {
@@ -31,7 +30,7 @@ class ReplyTest extends TestCase
 
     /** @test */
     public function it_sends_a_notification_to_the_user_if_created_by_an_agent()
-    { 
+    {
         $reply = $this->make->reply;
 
         /* @noinspection PhpUndefinedMethodInspection */
@@ -63,7 +62,7 @@ class ReplyTest extends TestCase
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
-            
+
         ]);
 
         $agent = $this->make->agent;
@@ -92,7 +91,7 @@ class ReplyTest extends TestCase
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
-            
+
         ]);
 
         $agent = $this->make->agent;
@@ -118,13 +117,13 @@ class ReplyTest extends TestCase
     public function if_agent_doesnt_exist_dont_send_notification_to_user()
     {
         $user = factory(User::class)->create();
-        
+
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
-            
+
         ]);
 
         $agent = $this->make->agent;
@@ -143,18 +142,19 @@ class ReplyTest extends TestCase
         Notification::assertNotSentTo(
             $user,
             ExternalReply::class
-        );        
+        );
     }
-     /** @test */
-     public function if_user_doesnt_exist_dont_send_notification()
-     {
+
+    /** @test */
+    public function if_user_doesnt_exist_dont_send_notification()
+    {
         $user = factory(User::class)->create();
 
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
-            'status' => 'open', 
+            'status' => 'open',
         ]);
 
         $agent = $this->make->agent;
@@ -174,5 +174,5 @@ class ReplyTest extends TestCase
             $user,
             ExternalReply::class
         );
-     }
+    }
 }

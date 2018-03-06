@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Observers;
 
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Models\Agent;
 
 class ReplyObserver
 {
@@ -44,9 +44,8 @@ class ReplyObserver
      * @param Reply $reply
      * @return void
      */
-    private function sendUserNotification (Reply $reply) 
+    private function sendUserNotification (Reply $reply)
     {
-
         if ($reply->agent && isset($reply->ticket->user)) {
             $notification = config('helpdesk.notifications.external.replied.class');
 
@@ -58,7 +57,7 @@ class ReplyObserver
      * @param Reply $reply
      * @return void
      */
-    private function sendAgentNotification (Reply $reply) 
+    private function sendAgentNotification (Reply $reply)
     {
         if ($reply->user && isset($reply->ticket->assignment->assignee)) {
             $notification = config('helpdesk.notifications.internal.replied.class');
@@ -66,8 +65,6 @@ class ReplyObserver
             Notification::send($reply->ticket->assignment->assignee, new $notification($reply->ticket));
         }
     }
-
-
 
     /**
      * Send the notification to the user if the reply is placed by an agent
