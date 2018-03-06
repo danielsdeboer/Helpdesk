@@ -51,6 +51,11 @@ return [
         'name' => 'Helpdesk Notifier',
     ],
 
+    /*
+     * Set the implementation of NotificationFactoryInterface that we bind to the container.
+     */
+    'notificationFactory' => \Aviator\Helpdesk\Factories\NotificationFactory::class,
+
     'notifications' => [
         'external' => [
             'opened' => [
