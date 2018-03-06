@@ -67,7 +67,7 @@ $factory->define(Reply::class, function (Faker\Generator $faker) {
     return [
         'ticket_id' => factory(Ticket::class)->create()->id,
         'body' => $faker->paragraph(2),
-        'agent_id' => factory(config('helpdesk.userModel'))->create()->id,
+        'agent_id' => factory(Agent::class)->create()->id,
         'user_id' => null,
         'is_visible' => true,
     ];
