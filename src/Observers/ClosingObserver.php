@@ -47,6 +47,8 @@ class ClosingObserver
     {
         $notification = config('helpdesk.notifications.external.closed.class');
 
-        Notification::send($observed->ticket->user, new $notification($observed->ticket));
+        if (isset($observed->ticket->user)) {
+            Notification::send($observed->ticket->user, new $notification($observed->ticket));
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\Internal\AssignedToTeam;
+use Aviator\Helpdesk\Models\TeamAssignment;
 
 class TeamAssignmentTest extends TestCase
 {

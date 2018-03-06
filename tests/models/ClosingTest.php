@@ -4,6 +4,8 @@ namespace Aviator\Helpdesk\Tests;
 
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Closed;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Closing;
 
 class ClosingTest extends TestCase
 {
@@ -23,6 +25,28 @@ class ClosingTest extends TestCase
         /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertSentTo(
             $closing->ticket->user,
+            Closed::class
+        );
+    }
+
+    /** @test */
+    public function if_user_is_null_dont_send_notification()
+    {
+        $ticket = factory(Ticket::class)->create();
+        $user = $ticket->user;
+        $ticket->user->delete();
+
+        $closing = Closing::create([
+            'note' => 'test note',
+            'agent_id' => 1,
+            'is_visible' => true,
+            'ticket_id' => $ticket->id
+        ]);
+
+        /* @noinspection PhpUndefinedMethodInspection */
+        Notification::assertNotSentTo(
+            //$closing->ticket->user,
+            $user,
             Closed::class
         );
     }

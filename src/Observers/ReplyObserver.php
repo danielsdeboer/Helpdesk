@@ -6,6 +6,7 @@ use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Models\Agent;
 
 class ReplyObserver
 {
@@ -18,7 +19,8 @@ class ReplyObserver
     public function created(Reply $observed)
     {
         $this->createAction($observed);
-        $this->sendNotification($observed);
+        $this->sendUserNotification($observed);
+        $this->sendAgentNotification($observed);
     }
 
     /**
@@ -39,12 +41,41 @@ class ReplyObserver
     }
 
     /**
+     * @param Reply $reply
+     * @return void
+     */
+    private function sendUserNotification (Reply $reply) 
+    {
+
+        if ($reply->agent && isset($reply->ticket->user)) {
+            $notification = config('helpdesk.notifications.external.replied.class');
+
+            Notification::send($reply->ticket->user, new $notification($reply->ticket));
+        }
+    }
+
+    /**
+     * @param Reply $reply
+     * @return void
+     */
+    private function sendAgentNotification (Reply $reply) 
+    {
+        if ($reply->user && isset($reply->ticket->assignment->assignee)) {
+            $notification = config('helpdesk.notifications.internal.replied.class');
+
+            Notification::send($reply->ticket->assignment->assignee, new $notification($reply->ticket));
+        }
+    }
+
+
+
+    /**
      * Send the notification to the user if the reply is placed by an agent
      * and vice versa.
      * @param  Reply $observed
      * @return void
      */
-    protected function sendNotification($observed)
+    protected function sendNotification(Reply $observed)
     {
         if ($observed->user_id && $observed->ticket->assignment) {
             $notification = config('helpdesk.notifications.internal.replied.class');
@@ -52,7 +83,7 @@ class ReplyObserver
             Notification::send($observed->ticket->assignment->assignee, new $notification($observed->ticket));
         }
 
-        if ($observed->agent_id) {
+        if ($observed->agent) {
             $notification = config('helpdesk.notifications.external.replied.class');
 
             Notification::send($observed->ticket->user, new $notification($observed->ticket));

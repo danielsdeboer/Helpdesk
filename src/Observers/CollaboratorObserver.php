@@ -46,9 +46,11 @@ class CollaboratorObserver
     {
         $notification = config('helpdesk.notifications.internal.collaborator.class');
 
-        Notification::send(
-            $collaborator->agent->user,
-            new $notification($collaborator->ticket)
-        );
+        if (isset($collaborator->agent->user)) {
+            Notification::send(
+                $collaborator->agent->user,
+                new $notification($collaborator->ticket)
+            );
+        }
     }
 }

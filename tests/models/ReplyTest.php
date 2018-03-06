@@ -5,6 +5,11 @@ namespace Aviator\Helpdesk\Tests;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
 use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\GenericContent;
 
 class ReplyTest extends TestCase
 {
@@ -26,7 +31,7 @@ class ReplyTest extends TestCase
 
     /** @test */
     public function it_sends_a_notification_to_the_user_if_created_by_an_agent()
-    {
+    { 
         $reply = $this->make->reply;
 
         /* @noinspection PhpUndefinedMethodInspection */
@@ -49,4 +54,125 @@ class ReplyTest extends TestCase
             InternalReply::class
         );
     }
+
+    /** @test */
+    public function if_user_doesnt_exist_dont_send_notification_to_agent()
+    {
+        $ticket = Ticket::create([
+            'user_id' => factory(config('helpdesk.userModel'))->create()->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            
+        ]);
+
+        $agent = $this->make->agent;
+        $ticket->assignToAgent($agent);
+
+        Reply::create([
+            'ticket_id' => $ticket->id,
+            'body' => 'Something',
+            'agent_id' => $agent->id,
+            'user_id' => 9328,
+            'is_visible' => true,
+        ]);
+
+        /* @noinspection PhpUndefinedMethodInspection */
+        Notification::assertNotSentTo(
+            Agent::all(),
+            InternalReply::class
+        );
+    }
+
+    /** @test */
+    public function if_the_ticket_is_not_assigned_dont_notify_an_agent()
+    {
+        $ticket = Ticket::create([
+            'user_id' => factory(config('helpdesk.userModel'))->create()->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            
+        ]);
+
+        $agent = $this->make->agent;
+        $ticket->assignToAgent($agent);
+        $agent->delete();
+
+        Reply::create([
+            'ticket_id' => $ticket->id,
+            'body' => 'Something',
+            'agent_id' => $agent->id,
+            'user_id' => $this->make->user->id,
+            'is_visible' => true,
+        ]);
+
+        /* @noinspection PhpUndefinedMethodInspection */
+        Notification::assertNotSentTo(
+            Agent::all(),
+            InternalReply::class
+        );
+    }
+
+    /** @test */
+    public function if_agent_doesnt_exist_dont_send_notification_to_user()
+    {
+        $user = factory(User::class)->create();
+        
+        $ticket = Ticket::create([
+            'user_id' => $user->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            
+        ]);
+
+        $agent = $this->make->agent;
+        $ticket->assignToAgent($agent);
+        $agent->delete();
+
+        Reply::create([
+            'ticket_id' => $ticket->id,
+            'body' => 'Something',
+            'agent_id' => $agent->id,
+            'user_id' => $user->id,
+            'is_visible' => true,
+        ]);
+
+        /* @noinspection PhpUndefinedMethodInspection */
+        Notification::assertNotSentTo(
+            $user,
+            ExternalReply::class
+        );        
+    }
+     /** @test */
+     public function if_user_doesnt_exist_dont_send_notification()
+     {
+        $user = factory(User::class)->create();
+
+        $ticket = Ticket::create([
+            'user_id' => $user->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open', 
+        ]);
+
+        $agent = $this->make->agent;
+        $ticket->assignToAgent($agent);
+        $user->delete();
+
+        Reply::create([
+            'ticket_id' => $ticket->id,
+            'body' => 'Something',
+            'agent_id' => $agent->id,
+            'user_id' => $user->id,
+            'is_visible' => true,
+        ]);
+
+        /* @noinspection PhpUndefinedMethodInspection */
+        Notification::assertNotSentTo(
+            $user,
+            ExternalReply::class
+        );
+     }
 }
