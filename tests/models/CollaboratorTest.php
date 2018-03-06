@@ -56,13 +56,13 @@ class CollaboratorTest extends TestCase
 
     /** @test */
     public function if_collaborator_doesnt_exist_dont_send_notification()
-    {   
+    {
         CollaboratorModel::create([
             'agent_id' => 9932,
             'ticket_id' => factory(Ticket::class)->create()->id,
             'created_by' => factory(Agent::class)->create(),
-        ]);        
-        
+        ]);
+
         /* @noinspection PhpUndefinedMethodInspection */
         Notification::assertNotSentTo(
             CollaboratorModel::all(),

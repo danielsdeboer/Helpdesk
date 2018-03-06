@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\External\Closed;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
+use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\External\Closed;
 
 class ClosingTest extends TestCase
 {
@@ -40,7 +40,7 @@ class ClosingTest extends TestCase
             'note' => 'test note',
             'agent_id' => 1,
             'is_visible' => true,
-            'ticket_id' => $ticket->id
+            'ticket_id' => $ticket->id,
         ]);
 
         /* @noinspection PhpUndefinedMethodInspection */

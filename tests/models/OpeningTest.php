@@ -2,11 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\External\Opened;
-use Aviator\Helpdesk\Models\Opening;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
+use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Notifications\External\Opened;
 
 class OpeningTest extends TestCase
 {
@@ -32,7 +31,7 @@ class OpeningTest extends TestCase
 
     /** @test */
     public function if_user_is_null_on_opening_dont_send_notification()
-    {   
+    {
         $ticket = Ticket::create([
             'user_id' => 14524,
             'content_id' => factory(GenericContent::class)->create()->id,
