@@ -16,20 +16,12 @@ class ClosingObserver extends AbstractObserver
     public function created (Closing $observed)
     {
         $this->createAction('closed', $observed);
-        $this->sendNotification($observed);
-    }
 
-    /**
-     * Send the notification.
-     * @param Closing $observed
-     * @return void
-     */
-    protected function sendNotification (Closing $observed)
-    {
         if (isset($observed->ticket->user)) {
-            Notification::send(
+            $this->sendNotification(
+                $observed,
                 $observed->ticket->user,
-                $this->factory->make('closed', $observed->ticket)
+                'closed'
             );
         }
     }

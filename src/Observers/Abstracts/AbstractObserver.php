@@ -6,6 +6,8 @@ use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\ActionBase;
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractObserver
 {
@@ -40,5 +42,13 @@ abstract class AbstractObserver
         $this->action->object_id = $model->id;
         $this->action->object_type = get_class($model);
         $this->action->save();
+    }
+
+    protected function sendNotification (ActionBase $model, Model $notifiable, string $classKey)
+    {
+        Notification::send(
+            $notifiable,
+            $this->factory->make($classKey, $model->ticket)
+        );
     }
 }

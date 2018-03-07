@@ -20,34 +20,20 @@ class ReplyObserver extends AbstractObserver
     public function created(Reply $observed)
     {
         $this->createAction('reply added', $observed);
-        $this->sendUserNotification($observed);
-        $this->sendAgentNotification($observed);
-    }
 
-    /**
-     * @param Reply $reply
-     * @return void
-     */
-    private function sendUserNotification (Reply $reply)
-    {
-        if ($reply->agent && isset($reply->ticket->user)) {
-            Notification::send(
-                $reply->ticket->user,
-                $this->factory->make('agentReplied', $reply->ticket)
+        if ($observed->agent && isset($observed->ticket->user)) {
+            $this->sendNotification(
+                $observed,
+                $observed->ticket->user,
+                'agentReplied'
             );
         }
-    }
 
-    /**
-     * @param Reply $reply
-     * @return void
-     */
-    private function sendAgentNotification (Reply $reply)
-    {
-        if ($reply->user && isset($reply->ticket->assignment->assignee)) {
-            Notification::send(
-                $reply->ticket->assignment->assignee,
-                $this->factory->make('userReplied', $reply->ticket)
+        if ($observed->user && isset($observed->ticket->assignment->assignee)) {
+            $this->sendNotification(
+                $observed,
+                $observed->ticket->assignment->assignee,
+                'userReplied'
             );
         }
     }

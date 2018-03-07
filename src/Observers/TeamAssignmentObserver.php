@@ -18,19 +18,13 @@ class TeamAssignmentObserver extends AbstractObserver
     public function created(TeamAssignment $observed)
     {
         $this->createAction('assigned to team', $observed);
-        $this->sendNotification($observed);
-    }
 
-    /**
-     * Send the notification.
-     * @param  \Aviator\Helpdesk\Models\TeamAssignment $observed
-     * @return void
-     */
-    protected function sendNotification(TeamAssignment $observed)
-    {
-        Notification::send(
-            $observed->team->teamLeads,
-            $this->factory->make('assignedToTeam', $observed->ticket)
-        );
+        foreach ($observed->team->teamLeads as $teamLead) {
+            $this->sendNotification(
+                $observed,
+                $teamLead,
+                'assignedToTeam'
+            );
+        }
     }
 }

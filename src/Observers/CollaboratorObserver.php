@@ -18,20 +18,12 @@ class CollaboratorObserver extends AbstractObserver
     public function created(Collaborator $observed)
     {
         $this->createAction('collaborator added', $observed);
-        $this->sendNotification($observed);
-    }
 
-    /**
-     * Send the notification.
-     * @param \Aviator\Helpdesk\Models\Collaborator $collaborator
-     * @return void
-     */
-    protected function sendNotification(Collaborator $collaborator)
-    {
-        if (isset($collaborator->agent->user)) {
-            Notification::send(
-                $collaborator->agent->user,
-                $this->factory->make('collaborator', $collaborator->ticket)
+        if (isset($observed->agent->user)) {
+            $this->sendNotification(
+                $observed,
+                $observed->agent->user,
+                'collaborator'
             );
         }
     }

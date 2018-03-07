@@ -18,20 +18,12 @@ class AssignmentObserver extends AbstractObserver
     public function created(Assignment $observed)
     {
         $this->createAction('assigned', $observed);
-        $this->sendNotification($observed);
-    }
 
-    /**
-     * Send the notification.
-     * @param  Assignment $assignment
-     * @return void
-     */
-    protected function sendNotification(Assignment $assignment)
-    {
-        if (isset($assignment->assignee->user)) {
-            Notification::send(
-                $assignment->assignee->user,
-                $this->factory->make('assignedToAgent', $assignment->ticket)
+        if (isset($observed->assignee->user)) {
+            $this->sendNotification(
+                $observed,
+                $observed->assignee->user,
+                'assignedToAgent'
             );
         }
     }

@@ -19,20 +19,12 @@ class OpeningObserver extends AbstractObserver
     public function created(Opening $observed)
     {
         $this->createAction('opened', $observed);
-        $this->sendNotification($observed);
-    }
 
-    /**
-     * Send the notification.
-     * @param  Opening $observed
-     * @return void
-     */
-    protected function sendNotification(Opening $observed)
-    {
         if (isset($observed->ticket->user)) {
-            Notification::send(
+            $this->sendNotification(
+                $observed,
                 $observed->ticket->user,
-                $this->factory->make('opened', $observed->ticket)
+                'opened'
             );
         }
     }
