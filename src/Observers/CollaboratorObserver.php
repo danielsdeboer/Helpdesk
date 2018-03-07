@@ -2,10 +2,7 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
 class CollaboratorObserver extends AbstractObserver

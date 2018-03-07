@@ -5,11 +5,11 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Aviator\Helpdesk\Traits\HasAgentRelation;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Notifications\Notifiable;
 
 /**
  * @property mixed id

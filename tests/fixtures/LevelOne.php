@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Aviator\Helpdesk\Tests\fixtures;
 
 class LevelOne
