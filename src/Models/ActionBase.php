@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int ticket_id
  * @property int id
+ * @property Ticket ticket
  */
 class ActionBase extends Model
 {

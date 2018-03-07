@@ -20,12 +20,12 @@ class OpeningObserver extends AbstractObserver
     {
         $this->createAction('opened', $observed);
 
-        if (isset($observed->ticket->user)) {
-            $this->sendNotification(
-                $observed,
-                $observed->ticket->user,
-                'opened'
-            );
-        }
+//        if (isset($observed->ticket->user)) {
+//            $this->sendNotification(
+//                $observed,
+//                $observed->ticket->user,
+//                'opened'
+//            );
+//        }
     }
 }

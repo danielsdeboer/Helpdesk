@@ -17,12 +17,12 @@ class ClosingObserver extends AbstractObserver
     {
         $this->createAction('closed', $observed);
 
-        if (isset($observed->ticket->user)) {
-            $this->sendNotification(
-                $observed,
-                $observed->ticket->user,
-                'closed'
-            );
-        }
+//        if (isset($observed->ticket->user)) {
+//            $this->sendNotification(
+//                $observed,
+//                $observed->ticket->user,
+//                'closed'
+//            );
+//        }
     }
 }

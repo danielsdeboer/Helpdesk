@@ -19,12 +19,12 @@ class TeamAssignmentObserver extends AbstractObserver
     {
         $this->createAction('assigned to team', $observed);
 
-        foreach ($observed->team->teamLeads as $teamLead) {
-            $this->sendNotification(
-                $observed,
-                $teamLead,
-                'assignedToTeam'
-            );
-        }
+//        foreach ($observed->team->teamLeads as $teamLead) {
+//            $this->sendNotification(
+//                $observed,
+//                $teamLead,
+//                'assignedToTeam'
+//            );
+//        }
     }
 }

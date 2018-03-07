@@ -19,12 +19,12 @@ class CollaboratorObserver extends AbstractObserver
     {
         $this->createAction('collaborator added', $observed);
 
-        if (isset($observed->agent->user)) {
-            $this->sendNotification(
-                $observed,
-                $observed->agent->user,
-                'collaborator'
-            );
-        }
+//        if (isset($observed->agent->user)) {
+//            $this->sendNotification(
+//                $observed,
+//                $observed->agent->user,
+//                'collaborator'
+//            );
+//        }
     }
 }

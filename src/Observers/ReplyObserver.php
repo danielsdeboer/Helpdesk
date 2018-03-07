@@ -21,20 +21,20 @@ class ReplyObserver extends AbstractObserver
     {
         $this->createAction('reply added', $observed);
 
-        if ($observed->agent && isset($observed->ticket->user)) {
-            $this->sendNotification(
-                $observed,
-                $observed->ticket->user,
-                'agentReplied'
-            );
-        }
-
-        if ($observed->user && isset($observed->ticket->assignment->assignee)) {
-            $this->sendNotification(
-                $observed,
-                $observed->ticket->assignment->assignee,
-                'userReplied'
-            );
-        }
+//        if ($observed->agent && isset($observed->ticket->user)) {
+//            $this->sendNotification(
+//                $observed,
+//                $observed->ticket->user,
+//                'agentReplied'
+//            );
+//        }
+//
+//        if ($observed->user && isset($observed->ticket->assignment->assignee)) {
+//            $this->sendNotification(
+//                $observed,
+//                $observed->ticket->assignment->assignee,
+//                'userReplied'
+//            );
+//        }
     }
 }

@@ -9,6 +9,7 @@ use Aviator\Helpdesk\Traits\HasAgentRelation;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property mixed id
@@ -17,7 +18,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  */
 class User extends Model implements AuthorizableContract, AuthenticatableContract
 {
-    use Authorizable, Authenticatable, HasAgentRelation;
+    use Authorizable, Authenticatable, HasAgentRelation, Notifiable;
 
     /**
      * The attributes that are mass assignable.

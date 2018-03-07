@@ -44,11 +44,19 @@ abstract class AbstractObserver
         $this->action->save();
     }
 
-    protected function sendNotification (ActionBase $model, Model $notifiable, string $classKey)
+    /**
+     * @param ActionBase $model
+     * @param string $notifiable Dot notated string used to access the notifiable.
+     * @param string $classKey
+     */
+    protected function sendNotification (ActionBase $model, string $notifiable, string $classKey)
     {
-        Notification::send(
-            $notifiable,
-            $this->factory->make($classKey, $model->ticket)
-        );
+        $notifiable = reduceProperties($model, $notifiable);
+
+        if ($notifiable && method_exists($notifiable, 'notify')) {
+            $notifiable->notify(
+                $this->factory->make($classKey, $model->ticket)
+            );
+        }
     }
 }

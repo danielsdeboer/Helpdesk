@@ -19,12 +19,12 @@ class AssignmentObserver extends AbstractObserver
     {
         $this->createAction('assigned', $observed);
 
-        if (isset($observed->assignee->user)) {
+//        if (isset($observed->assignee->user)) {
             $this->sendNotification(
                 $observed,
-                $observed->assignee->user,
+                'assignee.user',
                 'assignedToAgent'
             );
-        }
+//        }
     }
 }
