@@ -5,8 +5,9 @@ namespace Aviator\Helpdesk\Observers;
 use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class NoteObserver
+class NoteObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,23 +17,6 @@ class NoteObserver
      */
     public function created(Note $observed)
     {
-        $this->createAction($observed);
-    }
-
-    /**
-     * Create the action.
-     * @param  Note  $observed
-     * @return void
-     */
-    protected function createAction(Note $observed)
-    {
-        $action = new Action;
-
-        $action->name = 'Note Added';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = Note::class;
-        $action->save();
+        $this->createAction(ucwords('note added'), $observed);
     }
 }

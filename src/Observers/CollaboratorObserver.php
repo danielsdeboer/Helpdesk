@@ -6,8 +6,9 @@ use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class CollaboratorObserver
+class CollaboratorObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,25 +17,8 @@ class CollaboratorObserver
      */
     public function created(Collaborator $observed)
     {
-        $this->createAction($observed);
+        $this->createAction(ucwords('collaborator added'), $observed);
         $this->sendNotification($observed);
-    }
-
-    /**
-     * Create the action.
-     * @param \Aviator\Helpdesk\Models\Collaborator $observed
-     * @return void
-     */
-    protected function createAction(Collaborator $observed)
-    {
-        $action = new Action;
-
-        $action->name = 'Collaborator Added';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = Collaborator::class;
-        $action->save();
     }
 
     /**

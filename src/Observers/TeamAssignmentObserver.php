@@ -6,8 +6,9 @@ use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\TeamAssignment;
 use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class TeamAssignmentObserver
+class TeamAssignmentObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,25 +17,8 @@ class TeamAssignmentObserver
      */
     public function created(TeamAssignment $observed)
     {
-        $this->createAction($observed);
+        $this->createAction(ucwords('assigned to team'), $observed);
         $this->sendNotification($observed);
-    }
-
-    /**
-     * Create the action.
-     * @param \Aviator\Helpdesk\Models\TeamAssignment $observed
-     * @return void
-     */
-    protected function createAction(TeamAssignment $observed)
-    {
-        $action = new Action;
-
-        $action->name = 'Assigned To Team';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = TeamAssignment::class;
-        $action->save();
     }
 
     /**
