@@ -33,7 +33,7 @@ class AssignmentTest extends TestCase
     /** @test */
     public function if_agent_doesnt_exist_dont_send_notification()
     {
-        Assignment::create([
+        Assignment::query()->create([
             'ticket_id' => factory(Ticket::class)->create()->id,
             'assigned_to' => 9382,
             'agent_id' => null,

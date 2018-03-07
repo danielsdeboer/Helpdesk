@@ -52,6 +52,16 @@ return [
     ],
 
     'notifications' => [
+        'classMap'=> [
+            'closed' => Aviator\Helpdesk\Notifications\External\Closed::class,
+            'opened' => Aviator\Helpdesk\Notifications\External\Opened::class,
+            'agentReplied' => Aviator\Helpdesk\Notifications\External\Replied::class,
+            'assignedToAgent' => Aviator\Helpdesk\Notifications\Internal\AssignedToAgent::class,
+            'assignedToTeam' => Aviator\Helpdesk\Notifications\Internal\AssignedToTeam::class,
+            'collaborator' => Aviator\Helpdesk\Notifications\Internal\Collaborator::class,
+            'userReplied' => Aviator\Helpdesk\Notifications\Internal\Replied::class,
+        ],
+
         'external' => [
             'opened' => [
                 'class' => \Aviator\Helpdesk\Notifications\External\Opened::class,

@@ -1,23 +1,27 @@
 {
-    "name": "aviator/helpdesk",
-    "autoload": {
-        "psr-4": {
-            "Aviator\\Helpdesk\\": "src/",
-            "Aviator\\Helpdesk\\Database\\": "database/"
-        }
+  "name": "aviator/helpdesk",
+  "autoload": {
+    "psr-4": {
+      "Aviator\\Helpdesk\\": "src/",
+      "Aviator\\Helpdesk\\Database\\": "database/"
     },
-    "require": {
-        "php" : ">=7.0.0",
-        "laravel/framework": "~5.4.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~5.7.0",
-        "orchestra/testbench-browser-kit": "3.4.x@dev",
-        "orchestra/database": "3.4.x"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Aviator\\Helpdesk\\Tests\\": "tests/"
-        }
+    "files": [
+      "src/Helpers/functions.php"
+    ]
+  },
+  "require": {
+    "php" : ">=7.0.0",
+    "laravel/framework": "~5.4.0",
+    "aviator/makeable": "^0.1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.7.0",
+    "orchestra/testbench-browser-kit": "3.4.x@dev",
+    "orchestra/database": "3.4.x"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Aviator\\Helpdesk\\Tests\\": "tests/"
     }
+  }
 }

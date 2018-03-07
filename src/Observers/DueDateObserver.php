@@ -2,11 +2,10 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\DueDate;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class DueDateObserver
+class DueDateObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,13 +15,6 @@ class DueDateObserver
      */
     public function created(DueDate $observed)
     {
-        $action = new Action;
-
-        $action->name = 'Due Date Added';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = DueDate::class;
-        $action->save();
+        $this->createAction('due date added', $observed);
     }
 }

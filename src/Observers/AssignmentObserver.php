@@ -2,12 +2,10 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
-use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class AssignmentObserver
+class AssignmentObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,41 +14,12 @@ class AssignmentObserver
      */
     public function created(Assignment $observed)
     {
-        $this->createAction($observed);
-        $this->sendNotification($observed);
-    }
+        $this->createAction('assigned', $observed);
 
-    /**
-     * Create the action.
-     * @param  Assignment $observed
-     * @return void
-     */
-    protected function createAction(Assignment $observed)
-    {
-        $action = new Action;
-
-        $action->name = 'Assigned';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = Assignment::class;
-        $action->save();
-    }
-
-    /**
-     * Send the notification.
-     * @param  Assignment $assignment
-     * @return void
-     */
-    protected function sendNotification(Assignment $assignment)
-    {
-        $notification = config('helpdesk.notifications.internal.assignedToAgent.class');
-
-        if (isset($assignment->assignee->user)) {
-            Notification::send(
-                $assignment->assignee->user,
-                new $notification($assignment->ticket)
-            );
-        }
+        $this->sendNotification(
+            $observed,
+            'assignee.user',
+            'assignedToAgent'
+        );
     }
 }

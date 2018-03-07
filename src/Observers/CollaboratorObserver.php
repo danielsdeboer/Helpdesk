@@ -2,12 +2,10 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator;
-use Illuminate\Support\Facades\Notification;
+use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
-class CollaboratorObserver
+class CollaboratorObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
@@ -16,41 +14,12 @@ class CollaboratorObserver
      */
     public function created(Collaborator $observed)
     {
-        $this->createAction($observed);
-        $this->sendNotification($observed);
-    }
+        $this->createAction('collaborator added', $observed);
 
-    /**
-     * Create the action.
-     * @param \Aviator\Helpdesk\Models\Collaborator $observed
-     * @return void
-     */
-    protected function createAction(Collaborator $observed)
-    {
-        $action = new Action;
-
-        $action->name = 'Collaborator Added';
-        $action->subject_id = $observed->ticket_id;
-        $action->subject_type = Ticket::class;
-        $action->object_id = $observed->id;
-        $action->object_type = Collaborator::class;
-        $action->save();
-    }
-
-    /**
-     * Send the notification.
-     * @param \Aviator\Helpdesk\Models\Collaborator $collaborator
-     * @return void
-     */
-    protected function sendNotification(Collaborator $collaborator)
-    {
-        $notification = config('helpdesk.notifications.internal.collaborator.class');
-
-        if (isset($collaborator->agent->user)) {
-            Notification::send(
-                $collaborator->agent->user,
-                new $notification($collaborator->ticket)
-            );
-        }
+        $this->sendNotification(
+            $observed,
+            'agent.user',
+            'collaborator'
+        );
     }
 }

@@ -64,6 +64,8 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->commands([
             CreateSuper::class,
         ]);
+
+        $this->app->register(NotificationsProvider::class);
     }
 
     /**

@@ -36,7 +36,7 @@ class ClosingTest extends TestCase
         $user = $ticket->user;
         $ticket->user->delete();
 
-        $closing = Closing::create([
+        $closing = Closing::query()->create([
             'note' => 'test note',
             'agent_id' => 1,
             'is_visible' => true,
