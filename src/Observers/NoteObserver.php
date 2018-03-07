@@ -17,6 +17,6 @@ class NoteObserver extends AbstractObserver
      */
     public function created(Note $observed)
     {
-        $this->createAction(ucwords('note added'), $observed);
+        $this->createAction('note added', $observed);
     }
 }

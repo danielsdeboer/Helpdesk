@@ -17,6 +17,6 @@ class DueDateObserver extends AbstractObserver
      */
     public function created(DueDate $observed)
     {
-        $this->createAction(ucwords('due date added'), $observed);
+        $this->createAction('due date added', $observed);
     }
 }

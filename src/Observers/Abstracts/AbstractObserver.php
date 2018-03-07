@@ -34,7 +34,7 @@ abstract class AbstractObserver
      */
     protected function createAction (string $name, ActionBase $model)
     {
-        $this->action->name = ucfirst($name);
+        $this->action->name = ucwords($name);
         $this->action->subject_id = $model->ticket_id;
         $this->action->subject_type = Ticket::class;
         $this->action->object_id = $model->id;

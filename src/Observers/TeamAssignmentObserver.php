@@ -17,7 +17,7 @@ class TeamAssignmentObserver extends AbstractObserver
      */
     public function created(TeamAssignment $observed)
     {
-        $this->createAction(ucwords('assigned to team'), $observed);
+        $this->createAction('assigned to team', $observed);
         $this->sendNotification($observed);
     }
 

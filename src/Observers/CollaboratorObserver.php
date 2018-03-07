@@ -17,7 +17,7 @@ class CollaboratorObserver extends AbstractObserver
      */
     public function created(Collaborator $observed)
     {
-        $this->createAction(ucwords('collaborator added'), $observed);
+        $this->createAction('collaborator added', $observed);
         $this->sendNotification($observed);
     }
 

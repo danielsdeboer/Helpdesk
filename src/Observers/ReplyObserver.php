@@ -19,7 +19,7 @@ class ReplyObserver extends AbstractObserver
      */
     public function created(Reply $observed)
     {
-        $this->createAction(ucwords('reply added'), $observed);
+        $this->createAction('reply added', $observed);
         $this->sendUserNotification($observed);
         $this->sendAgentNotification($observed);
     }
