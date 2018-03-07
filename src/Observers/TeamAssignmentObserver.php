@@ -2,10 +2,7 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\TeamAssignment;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
 class TeamAssignmentObserver extends AbstractObserver
@@ -25,6 +22,6 @@ class TeamAssignmentObserver extends AbstractObserver
                $teamLead,
                'assignedToTeam'
             );
-       }
+        }
     }
 }

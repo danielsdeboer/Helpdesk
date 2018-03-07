@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
-use Illuminate\Support\Facades\Notification;
 
 class ClosingObserver extends AbstractObserver
 {

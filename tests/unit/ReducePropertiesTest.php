@@ -23,5 +23,4 @@ class ReducePropertiesTest extends TestCase
 
         $this->assertSame(null, $result);
     }
-
 }

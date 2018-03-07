@@ -21,8 +21,6 @@ function reduceProperties ($initialObject, string $path)
             if ($object && is_object($object)) {
                 return $object->$prop;
             }
-
-            return null;
         },
         $initialObject
     );
