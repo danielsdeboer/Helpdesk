@@ -28,11 +28,9 @@ class TeamAssignmentObserver extends AbstractObserver
      */
     protected function sendNotification(TeamAssignment $observed)
     {
-        $notification = config('helpdesk.notifications.internal.assignedToTeam.class');
-
         Notification::send(
             $observed->team->teamLeads,
-            new $notification($observed->ticket)
+            $this->factory->make('assignedToTeam', $observed->ticket)
         );
     }
 }

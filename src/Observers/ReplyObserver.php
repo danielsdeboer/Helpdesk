@@ -31,9 +31,10 @@ class ReplyObserver extends AbstractObserver
     private function sendUserNotification (Reply $reply)
     {
         if ($reply->agent && isset($reply->ticket->user)) {
-            $notification = config('helpdesk.notifications.external.replied.class');
-
-            Notification::send($reply->ticket->user, new $notification($reply->ticket));
+            Notification::send(
+                $reply->ticket->user,
+                $this->factory->make('agentReplied', $reply->ticket)
+            );
         }
     }
 
@@ -44,9 +45,10 @@ class ReplyObserver extends AbstractObserver
     private function sendAgentNotification (Reply $reply)
     {
         if ($reply->user && isset($reply->ticket->assignment->assignee)) {
-            $notification = config('helpdesk.notifications.internal.replied.class');
-
-            Notification::send($reply->ticket->assignment->assignee, new $notification($reply->ticket));
+            Notification::send(
+                $reply->ticket->assignment->assignee,
+                $this->factory->make('userReplied', $reply->ticket)
+            );
         }
     }
 }

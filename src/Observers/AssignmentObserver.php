@@ -28,12 +28,10 @@ class AssignmentObserver extends AbstractObserver
      */
     protected function sendNotification(Assignment $assignment)
     {
-        $notification = config('helpdesk.notifications.internal.assignedToAgent.class');
-
         if (isset($assignment->assignee->user)) {
             Notification::send(
                 $assignment->assignee->user,
-                new $notification($assignment->ticket)
+                $this->factory->make('assignedToAgent', $assignment->ticket)
             );
         }
     }

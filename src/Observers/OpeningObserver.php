@@ -29,10 +29,11 @@ class OpeningObserver extends AbstractObserver
      */
     protected function sendNotification(Opening $observed)
     {
-        $notification = config('helpdesk.notifications.external.opened.class');
-
         if (isset($observed->ticket->user)) {
-            Notification::send($observed->ticket->user, new $notification($observed->ticket));
+            Notification::send(
+                $observed->ticket->user,
+                $this->factory->make('opened', $observed->ticket)
+            );
         }
     }
 }

@@ -28,12 +28,10 @@ class CollaboratorObserver extends AbstractObserver
      */
     protected function sendNotification(Collaborator $collaborator)
     {
-        $notification = config('helpdesk.notifications.internal.collaborator.class');
-
         if (isset($collaborator->agent->user)) {
             Notification::send(
                 $collaborator->agent->user,
-                new $notification($collaborator->ticket)
+                $this->factory->make('collaborator', $collaborator->ticket)
             );
         }
     }
