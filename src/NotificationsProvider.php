@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk;
 
+use Aviator\Helpdesk\Factories\NotificationFactory;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,9 +20,13 @@ class NotificationsProvider extends ServiceProvider
      */
     public function register ()
     {
-        $this->app->bind(
+        $this->app->singleton(
             NotificationFactoryInterface::class,
-            config('helpdesk.notificationFactory')
+            function () {
+                return new NotificationFactory(
+                    config('helpdesk.notifications.classMap')
+                );
+            }
         );
     }
 }
