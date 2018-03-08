@@ -4,9 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Closed;
-use Aviator\Helpdesk\Notifications\Generic;
 
 class ClosingTest extends AbstractModelTest
 {

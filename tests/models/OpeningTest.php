@@ -4,9 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Opened;
-use Aviator\Helpdesk\Notifications\Generic;
 
 class OpeningTest extends AbstractModelTest
 {

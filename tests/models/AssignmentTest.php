@@ -5,9 +5,6 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\Internal\AssignedToAgent;
-use Aviator\Helpdesk\Notifications\Generic;
 
 class AssignmentTest extends AbstractModelTest
 {

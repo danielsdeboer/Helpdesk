@@ -2,9 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\Internal\AssignedToTeam;
-
 class TeamAssignmentTest extends AbstractModelTest
 {
     /** @test */

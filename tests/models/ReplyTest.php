@@ -6,9 +6,6 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
-use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
 
 class ReplyTest extends AbstractModelTest
 {
