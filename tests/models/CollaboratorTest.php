@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\Internal\Collaborator;
 use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
 
-class CollaboratorTest extends TestCase
+class CollaboratorTest extends AbstractModelTest
 {
     /** @test */
     public function creating_an_collaborator_creates_an_action_via_the_collaborator_observer()
@@ -23,11 +23,7 @@ class CollaboratorTest extends TestCase
     {
         $collab = $this->make->collaborator;
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $collab->agent->user,
-            Collaborator::class
-        );
+        $this->assertSentTo($collab->agent->user);
     }
 
     /** @test */
@@ -63,10 +59,6 @@ class CollaboratorTest extends TestCase
             'created_by' => factory(Agent::class)->create(),
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            CollaboratorModel::all(),
-            Collaborator::class
-        );
+        $this->assertNotSentTo(CollaboratorModel::all());
     }
 }

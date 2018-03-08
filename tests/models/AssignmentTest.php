@@ -7,8 +7,9 @@ use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\Internal\AssignedToAgent;
+use Aviator\Helpdesk\Notifications\Generic;
 
-class AssignmentTest extends TestCase
+class AssignmentTest extends AbstractModelTest
 {
     /** @test */
     public function creating_an_assignment_creates_an_action_via_the_assignment_observer()
@@ -23,11 +24,7 @@ class AssignmentTest extends TestCase
     {
         $assignment = $this->make->assignment;
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $assignment->assignee->user,
-            AssignedToAgent::class
-        );
+        $this->assertSentTo($assignment->assignee->user);
     }
 
     /** @test */
@@ -40,10 +37,6 @@ class AssignmentTest extends TestCase
             'is_visible' => false,
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            Agent::all(),
-            AssignedToAgent::class
-        );
+        $this->assertNotSentTo(Agent::all());
     }
 }
