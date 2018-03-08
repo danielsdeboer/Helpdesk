@@ -47,9 +47,6 @@ class Generic extends Notification implements ShouldQueue
         $this->setParams($params);
     }
 
-    /**
-     *
-     */
     public function setParams(array $params)
     {
         foreach ($params as $field => $value) {
@@ -92,7 +89,8 @@ class Generic extends Notification implements ShouldQueue
         return $message;
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->$name;
     }
 }

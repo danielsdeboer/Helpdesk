@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\Internal\Collaborator;
 use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
 
