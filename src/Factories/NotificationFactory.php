@@ -13,38 +13,46 @@ class NotificationFactory implements NotificationFactoryInterface
     use MakeableTrait;
 
     /** @var array */
-    private $classMap = [];
+    private $config = [];
+
+    /** @var string */
+    private $className;
 
     /**
      * Constructor.
-     * @param array $classMap
+     * @param string $className
+     * @param array $config
      */
-    public function __construct(array $classMap)
+    public function __construct(string $className, array $config)
     {
-        $this->classMap = $classMap;
-    }
+        $this->className = $className;
 
-    /**
-     * @param string $classKey
-     * @param Ticket $ticket
-     * @return Notification
-     * @throws DefinitionNotFound
-     */
-    public function make (string $classKey, Ticket $ticket) : Notification
-    {
-        try {
-            return new $this->classMap[$classKey]($ticket);
-        } catch (Exception $e) {
-            $this->throwDefinitionException($classKey);
+        foreach ($config as $name => $field) {
+            $this->config[$name] = array_merge($field, config('helpdesk.from'));
         }
     }
 
     /**
-     * @param string $classKey
+     * @param string $name
+     * @param Ticket $ticket
+     * @return Notification
      * @throws DefinitionNotFound
      */
-    private function throwDefinitionException (string $classKey)
+    public function make (string $name, Ticket $ticket) : Notification
     {
-        throw new DefinitionNotFound('The definition "' . $classKey . '" was not found in the notification factory.');
+        try {
+            return new $this->className($ticket, $this->config[$name]);
+        } catch (Exception $e) {
+            $this->throwDefinitionException($name);
+        }
+    }
+
+    /**
+     * @param string $name
+     * @throws DefinitionNotFound
+     */
+    private function throwDefinitionException (string $name)
+    {
+        throw new DefinitionNotFound('The definition "' . $name . '" was not found in the notification factory.');
     }
 }

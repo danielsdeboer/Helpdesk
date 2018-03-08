@@ -6,11 +6,8 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\External\Replied as ExternalReply;
-use Aviator\Helpdesk\Notifications\Internal\Replied as InternalReply;
 
-class ReplyTest extends TestCase
+class ReplyTest extends AbstractModelTest
 {
     /** @test */
     public function it_creates_an_action_via_its_observer()
@@ -33,11 +30,7 @@ class ReplyTest extends TestCase
     {
         $reply = $this->make->reply;
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $reply->ticket->user,
-            ExternalReply::class
-        );
+        $this->assertSentTo($reply->ticket->user);
     }
 
     /** @test */
@@ -47,11 +40,7 @@ class ReplyTest extends TestCase
             ->assignToAgent($this->make->agent)
             ->externalReply('this is a reply', $this->make->user);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $ticket->assignment->assignee,
-            InternalReply::class
-        );
+        $this->assertSentTo($ticket->assignment->assignee);
     }
 
     /** @test */
@@ -76,11 +65,7 @@ class ReplyTest extends TestCase
             'is_visible' => true,
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            Agent::all(),
-            InternalReply::class
-        );
+        $this->assertNotSentTo(Agent::all());
     }
 
     /** @test */
@@ -106,11 +91,7 @@ class ReplyTest extends TestCase
             'is_visible' => true,
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            Agent::all(),
-            InternalReply::class
-        );
+        $this->assertNotSentTo(Agent::all());
     }
 
     /** @test */
@@ -118,11 +99,14 @@ class ReplyTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        $this->withoutEvents();
+
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
+            'uuid' => 1,
 
         ]);
 
@@ -130,6 +114,8 @@ class ReplyTest extends TestCase
         $ticket->assignToAgent($agent);
         $agent->delete();
 
+        $this->withEvents();
+
         Reply::create([
             'ticket_id' => $ticket->id,
             'body' => 'Something',
@@ -138,11 +124,7 @@ class ReplyTest extends TestCase
             'is_visible' => true,
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            $user,
-            ExternalReply::class
-        );
+        $this->assertNotSentTo($user);
     }
 
     /** @test */
@@ -150,16 +132,21 @@ class ReplyTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        $this->withoutEvents();
+
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
+            'uuid' => 1,
         ]);
 
         $agent = $this->make->agent;
         $ticket->assignToAgent($agent);
         $user->delete();
+
+        $this->withEvents();
 
         Reply::create([
             'ticket_id' => $ticket->id,
@@ -169,10 +156,6 @@ class ReplyTest extends TestCase
             'is_visible' => true,
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            $user,
-            ExternalReply::class
-        );
+        $this->assertNotSentTo($user);
     }
 }

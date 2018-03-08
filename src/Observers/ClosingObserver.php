@@ -18,7 +18,7 @@ class ClosingObserver extends AbstractObserver
 
         $this->sendNotification(
             $observed,
-            'ticket.user',//$observed->ticket->user,
+            'ticket.user',
             'closed'
         );
     }

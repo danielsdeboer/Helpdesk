@@ -51,75 +51,64 @@ return [
         'name' => 'Helpdesk Notifier',
     ],
 
+    'notification' => \Aviator\Helpdesk\Notifications\Generic::class,
+
     'notifications' => [
-        'classMap'=> [
-            'closed' => Aviator\Helpdesk\Notifications\External\Closed::class,
-            'opened' => Aviator\Helpdesk\Notifications\External\Opened::class,
-            'agentReplied' => Aviator\Helpdesk\Notifications\External\Replied::class,
-            'assignedToAgent' => Aviator\Helpdesk\Notifications\Internal\AssignedToAgent::class,
-            'assignedToTeam' => Aviator\Helpdesk\Notifications\Internal\AssignedToTeam::class,
-            'collaborator' => Aviator\Helpdesk\Notifications\Internal\Collaborator::class,
-            'userReplied' => Aviator\Helpdesk\Notifications\Internal\Replied::class,
+
+        'opened' => [
+            'subject' => 'Your ticket has been opened!',
+            'greeting' => 'Hey there.',
+            'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
+            'route' => 'helpdesk.tickets.public',
+            'idType' => 'uuid',
         ],
 
-        'external' => [
-            'opened' => [
-                'class' => \Aviator\Helpdesk\Notifications\External\Opened::class,
-                'subject' => 'Your ticket has been opened!',
-                'greeting' => 'Hey there.',
-                'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-                'route' => 'helpdesk.tickets.public',
-            ],
-
-            'replied' => [
-                'class' => \Aviator\Helpdesk\Notifications\External\Replied::class,
-                'subject' => 'Your ticket has been replied to!',
-                'greeting' => 'Hey there.',
-                'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-                'route' => 'helpdesk.tickets.public',
-            ],
-
-            'closed' => [
-                'class' => \Aviator\Helpdesk\Notifications\External\Closed::class,
-                'subject' => 'Your ticket has been closed.',
-                'greeting' => 'Hey there.',
-                'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
-                'route' => 'helpdesk.tickets.public',
-            ],
+        'agentReplied' => [
+            'subject' => 'Your ticket has been replied to!',
+            'greeting' => 'Hey there.',
+            'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
+            'route' => 'helpdesk.tickets.public',
+            'idType' => 'uuid',
         ],
 
-        'internal' => [
-            'assignedToAgent' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToAgent::class,
-                'subject' => 'A ticket has been assigned to you',
-                'greeting' => 'Hey there.',
-                'line' => '',
-                'route' => 'helpdesk.tickets.show',
-            ],
+        'closed' => [
+            'subject' => 'Your ticket has been closed.',
+            'greeting' => 'Hey there.',
+            'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
+            'route' => 'helpdesk.tickets.public',
+            'idType' => 'uuid',
+        ],
 
-            'assignedToTeam' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\AssignedToTeam::class,
-                'subject' => 'A ticket has been assigned to your team',
-                'greeting' => 'Hey there.',
-                'line' => '',
-                'route' => 'helpdesk.tickets.show',
-            ],
+        'assignedToAgent' => [
+            'subject' => 'A ticket has been assigned to you',
+            'greeting' => 'Hey there.',
+            'line' => '',
+            'route' => 'helpdesk.tickets.show',
+            'idType' => 'id',
+        ],
 
-            'replied' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\Replied::class,
-                'subject' => 'A ticket has been replied to',
-                'greeting' => 'Hey there.',
-                'line' => '',
-                'route' => 'helpdesk.tickets.show',
-            ],
+        'assignedToTeam' => [
+            'subject' => 'A ticket has been assigned to your team',
+            'greeting' => 'Hey there.',
+            'line' => '',
+            'route' => 'helpdesk.tickets.show',
+            'idType' => 'id',
+        ],
 
-            'collaborator' => [
-                'class' => \Aviator\Helpdesk\Notifications\Internal\Collaborator::class,
-                'subject' => 'You\'ve been added as a collaborator',
-                'greeting' => 'Hey there.',
-                'line' => '',
-                'route' => 'helpdesk.tickets.show',
-            ],
+        'userReplied' => [
+            'subject' => 'A ticket has been replied to',
+            'greeting' => 'Hey there.',
+            'line' => '',
+            'route' => 'helpdesk.tickets.show',
+            'idType' => 'id',
+        ],
+
+        'collaborator' => [
+            'subject' => 'You\'ve been added as a collaborator',
+            'greeting' => 'Hey there.',
+            'line' => '',
+            'route' => 'helpdesk.tickets.show',
+            'idType' => 'id',
         ],
     ],
 

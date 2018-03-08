@@ -2,10 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\Notifications\Internal\AssignedToTeam;
-
-class TeamAssignmentTest extends TestCase
+class TeamAssignmentTest extends AbstractModelTest
 {
     /** @test */
     public function creating_a_team_assignment_creates_an_action_via_the_team_assignment_observer()
@@ -22,10 +19,6 @@ class TeamAssignmentTest extends TestCase
         $assignment = $this->make->teamAssignment($team);
         $this->make->agent->makeTeamLeadOf($team);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $assignment->team->teamLeads,
-            AssignedToTeam::class
-        );
+        $this->assertSentTo($assignment->team->teamLeads);
     }
 }

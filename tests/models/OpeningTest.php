@@ -4,10 +4,9 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\Notifications\External\Opened;
 
-class OpeningTest extends TestCase
+class OpeningTest extends AbstractModelTest
 {
     /** @test */
     public function creating_an_opening_creates_an_action_via_its_observer()
@@ -22,11 +21,7 @@ class OpeningTest extends TestCase
     {
         $opening = $this->make->opening;
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertSentTo(
-            $opening->ticket->user,
-            Opened::class
-        );
+        $this->assertSentTo($opening->ticket->user);
     }
 
     /** @test */
@@ -39,11 +34,6 @@ class OpeningTest extends TestCase
             'status' => 'open',
         ]);
 
-        /* @noinspection PhpUndefinedMethodInspection */
-        Notification::assertNotSentTo(
-            //$opening->ticket->user,
-            User::all(),
-            Opened::class
-        );
+        $this->assertNotSentTo(User::all());
     }
 }

@@ -24,7 +24,8 @@ class NotificationsProvider extends ServiceProvider
             NotificationFactoryInterface::class,
             function () {
                 return new NotificationFactory(
-                    config('helpdesk.notifications.classMap')
+                    config('helpdesk.notification'),
+                    config('helpdesk.notifications')
                 );
             }
         );
