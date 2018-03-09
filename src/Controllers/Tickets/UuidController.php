@@ -14,7 +14,11 @@ class UuidController extends Controller
      */
     public function show($uuid)
     {
-        $ticket = Ticket::whereUuid($uuid)->firstOrFail();
+        $ticket = Ticket::whereUuid($uuid)->first();
+
+        if (! $ticket) {
+            return redirect()->route('helpdesk.tickets.index');
+        }
 
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,

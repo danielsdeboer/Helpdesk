@@ -4,7 +4,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'as' => config('helpdesk.routes.helpdesk.prefix') . '.',
+    'as' => 'helpdesk.',
     'prefix' => config('helpdesk.routes.helpdesk.prefix'),
     'middleware' => 'web',
 ], function () {
@@ -19,7 +19,7 @@ Route::group([
 
     // Admin Group
     Route::group([
-        'as' => config('helpdesk.routes.admin.prefix') . '.',
+        'as' => 'admin.',
         'prefix' => config('helpdesk.routes.admin.prefix'),
     ], function () {
 
@@ -31,12 +31,12 @@ Route::group([
             Route::post(
                 config('helpdesk.routes.admin.team-members.add'),
                 config('helpdesk.controllers.admin.team-members.add')
-            )->name(config('helpdesk.routes.admin.team-members.add'));
+            )->name('add');
 
             Route::post(
                 config('helpdesk.routes.admin.team-members.remove'),
                 config('helpdesk.controllers.admin.team-members.remove')
-            )->name(config('helpdesk.routes.admin.team-members.remove'));
+            )->name('remove');
         });
 
         Route::resource(
@@ -65,7 +65,7 @@ Route::group([
 
     // Dashboard Group
     Route::group([
-        'as' => config('helpdesk.routes.dashboard.prefix') . '.',
+        'as' => 'dashboard.',
         'prefix' => config('helpdesk.routes.dashboard.prefix'),
     ], function () {
         Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
@@ -75,22 +75,22 @@ Route::group([
         Route::get(
             config('helpdesk.routes.dashboard.user'),
             config('helpdesk.controllers.dashboard.user')
-        )->name(config('helpdesk.routes.dashboard.user'));
+        )->name('user');
 
         Route::get(
             config('helpdesk.routes.dashboard.agent'),
             config('helpdesk.controllers.dashboard.agent')
-        )->name(config('helpdesk.routes.dashboard.agent'));
+        )->name('agent');
 
         Route::get(
             config('helpdesk.routes.dashboard.supervisor'),
             config('helpdesk.controllers.dashboard.supervisor')
-        )->name(config('helpdesk.routes.dashboard.supervisor'));
+        )->name('supervisor');
     });
 
     // Tickets Group
     Route::group([
-        'as' => config('helpdesk.routes.tickets.prefix') . '.',
+        'as' => 'tickets.',
         'prefix' => config('helpdesk.routes.tickets.prefix'),
     ], function () {
 
@@ -98,66 +98,66 @@ Route::group([
         Route::get(
             config('helpdesk.routes.tickets.index.route'),
             config('helpdesk.controllers.tickets.index')
-        )->name(config('helpdesk.routes.tickets.index.name'));
+        )->name('index');
 
         // Opened index
         Route::get(
             config('helpdesk.routes.tickets.opened.route'),
             config('helpdesk.controllers.tickets.opened')
-        )->name(config('helpdesk.routes.tickets.opened.name'));
+        )->name('opened');
 
         // Closed index
         Route::get(
             config('helpdesk.routes.tickets.closed.route'),
             config('helpdesk.controllers.tickets.closed')
-        )->name(config('helpdesk.routes.tickets.closed.name'));
+        )->name('closed');
 
         // Show
         Route::get(
             config('helpdesk.routes.tickets.show.route'),
             config('helpdesk.controllers.tickets.show')
-        )->name(config('helpdesk.routes.tickets.show.name'));
+        )->name('show');
 
         // Show by uuid
         Route::get(
             config('helpdesk.routes.tickets.uuid.route'),
             config('helpdesk.controllers.tickets.uuid.show')
-        )->name(config('helpdesk.routes.tickets.uuid.name'));
+        )->name('public');
 
         // Assign
         Route::post(
             config('helpdesk.routes.tickets.assign.route'),
             config('helpdesk.controllers.tickets.assign')
-        )->name(config('helpdesk.routes.tickets.assign.name'));
+        )->name('assign');
 
         // Reply
         Route::post(
             config('helpdesk.routes.tickets.reply.route'),
             config('helpdesk.controllers.tickets.reply')
-        )->name(config('helpdesk.routes.tickets.reply.name'));
+        )->name('reply');
 
         // Close
         Route::post(
             config('helpdesk.routes.tickets.close.route'),
             config('helpdesk.controllers.tickets.close')
-        )->name(config('helpdesk.routes.tickets.close.name'));
+        )->name('close');
 
         // Note
         Route::post(
             config('helpdesk.routes.tickets.note.route'),
             config('helpdesk.controllers.tickets.note')
-        )->name(config('helpdesk.routes.tickets.note.name'));
+        )->name('note');
 
         // Note
         Route::post(
             config('helpdesk.routes.tickets.open.route'),
             config('helpdesk.controllers.tickets.open')
-        )->name(config('helpdesk.routes.tickets.open.name'));
+        )->name('open');
 
         // Add Collaborator
         Route::post(
             config('helpdesk.routes.tickets.collab.route'),
             config('helpdesk.controllers.tickets.collab')
-        )->name(config('helpdesk.routes.tickets.collab.name'));
+        )->name('collab');
     });
 });
