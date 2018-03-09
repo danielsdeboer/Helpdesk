@@ -83,7 +83,7 @@ class Generic extends Notification implements ShouldQueue
         $message->line($this->line);
         $message->action(
             'View your ticket',
-            route($route, $this->ticket->{$this->idType})
+            route($this->route, $this->ticket->{$this->idType})
         );
 
         return $message;

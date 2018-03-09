@@ -13,9 +13,18 @@ abstract class AbstractModelTest extends TestCase
         Notification::assertSentTo(
             $user,
             Generic::class,
-            function ($notification) {
-                return $notification->address === config('helpdesk.from.address')
-                    && $notification->name === config('helpdesk.from.name');
+            function ($notification) use ($user) {
+                $mailData = $notification->toMail($user)->toArray();
+
+                $this->assertSame($notification->address, config('helpdesk.from.address'));
+                $this->assertSame($notification->name, config('helpdesk.from.name'));
+                $this->assertSame($notification->subject, $mailData['subject']);
+                $this->assertSame($notification->greeting, $mailData['greeting']);
+                $this->assertSame($notification->line, $mailData['introLines'][0]);
+
+                $this->assertFalse(filter_var($notification->route, FILTER_VALIDATE_URL));
+
+                return true;
             }
         );
     }
