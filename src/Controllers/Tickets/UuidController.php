@@ -16,7 +16,7 @@ class UuidController extends Controller
     {
         $ticket = Ticket::whereUuid($uuid)->first();
 
-        if (!$ticket) {
+        if (! $ticket) {
             return redirect()->route('helpdesk.tickets.index');
         }
 
@@ -27,6 +27,5 @@ class UuidController extends Controller
             'withReply' => true,
             'showPrivate' => false,
         ]);
-
     }
 }
