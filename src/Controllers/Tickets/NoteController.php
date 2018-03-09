@@ -28,6 +28,10 @@ class NoteController extends Controller
      */
     protected function create(Request $request, Ticket $ticket)
     {
+        if (!$ticket) {
+            return redirect()->route('helpdesk.tickets.index');
+        }
+
         /** @var \Aviator\Helpdesk\Models\Agent $agent */
         $agent = Agent::query()
             ->where('user_id', auth()->user()->id)
