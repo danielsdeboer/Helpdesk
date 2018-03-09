@@ -57,7 +57,7 @@ return [
 
         'opened' => [
             'subject' => 'Your ticket has been opened!',
-            'greeting' => 'Hey there.',
+            'greeting' => 'Hey there,',
             'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
             'route' => 'helpdesk.tickets.public',
             'idType' => 'uuid',
@@ -65,7 +65,7 @@ return [
 
         'agentReplied' => [
             'subject' => 'Your ticket has been replied to!',
-            'greeting' => 'Hey there.',
+            'greeting' => 'Hey there,',
             'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
             'route' => 'helpdesk.tickets.public',
             'idType' => 'uuid',
@@ -73,40 +73,40 @@ return [
 
         'closed' => [
             'subject' => 'Your ticket has been closed.',
-            'greeting' => 'Hey there.',
-            'line' => 'Your ticket has been marked as closed. You may press the button below to view the ticket and re-open it if desired.',
+            'greeting' => 'Hey there,',
+            'line' => 'Your ticket has been marked as closed. Click the button below to view the ticket and re-open it if desired.',
             'route' => 'helpdesk.tickets.public',
             'idType' => 'uuid',
         ],
 
         'assignedToAgent' => [
             'subject' => 'A ticket has been assigned to you',
-            'greeting' => 'Hey there.',
-            'line' => '',
+            'greeting' => 'Hey there,',
+            'line' => 'We have assigned you a ticket. Click the button below to view your ticket.',
             'route' => 'helpdesk.tickets.show',
             'idType' => 'id',
         ],
 
         'assignedToTeam' => [
             'subject' => 'A ticket has been assigned to your team',
-            'greeting' => 'Hey there.',
-            'line' => '',
+            'greeting' => 'Hey there,',
+            'line' => 'We have assigned a ticket to your team. Click the button below to view the ticket.',
             'route' => 'helpdesk.tickets.show',
             'idType' => 'id',
         ],
 
         'userReplied' => [
             'subject' => 'A ticket has been replied to',
-            'greeting' => 'Hey there.',
-            'line' => '',
+            'greeting' => 'Hey there,',
+            'line' => 'A user has replied to a ticket. Click the button below to view the ticket.',
             'route' => 'helpdesk.tickets.show',
             'idType' => 'id',
         ],
 
         'collaborator' => [
             'subject' => 'You\'ve been added as a collaborator',
-            'greeting' => 'Hey there.',
-            'line' => '',
+            'greeting' => 'Hey there,',
+            'line' => 'You have been added as a collaborator. Click the button below to view the ticket.',
             'route' => 'helpdesk.tickets.show',
             'idType' => 'id',
         ],
