@@ -8,19 +8,32 @@ use Aviator\Helpdesk\Queries\TicketsQuery;
 
 class TicketsQueryTest extends TestCase
 {
+    /** @test */
+    public function it_returns_tickets ()
+    {
+        $this->make->tickets(10);
+
+        $tickets = TicketsQuery::make()->query()->get();
+
+        $this->assertCount(10, $tickets);
+    }
+
     /**
      * @group query
      * @group query.ticket
      * @test
      */
-    public function itReturnsTicketsBySoonestDueFirst()
+    public function it_returns_tickets_by_soonest_due_first ()
     {
         $ticket1 = factory(Ticket::class)->create()->dueOn('+2 days');
         $ticket2 = factory(Ticket::class)->create()->dueOn('yesterday');
         $ticket3 = factory(Ticket::class)->create()->dueOn('+10 years');
         $ticket4 = factory(Ticket::class)->create()->dueOn('-10 years');
 
-        $results = TicketsQuery::make()->orderByDueSoonest()->query()->get();
+        $results = TicketsQuery::make()
+            ->orderByDueSoonest()
+            ->query()
+            ->get();
 
         $this->assertEquals($ticket4->id, $results[0]->id);
         $this->assertEquals($ticket2->id, $results[1]->id);
@@ -33,7 +46,7 @@ class TicketsQueryTest extends TestCase
      * @group query.ticket
      * @test
      */
-    public function itReturnsOpenOnly()
+    public function it_returns_open_only ()
     {
         $agent = factory(Agent::class)->create();
         $ticket1 = factory(Ticket::class)->create()->dueOn('+2 days');

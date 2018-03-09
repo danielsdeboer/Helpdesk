@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @property mixed assignee
  * @property mixed ticket_id
@@ -13,19 +15,14 @@ namespace Aviator\Helpdesk\Models;
  */
 class Assignment extends ActionBase
 {
-    public function assignee()
-    {
-        return $this->belongsTo(Agent::class, 'assigned_to');
-    }
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.assignments';
 
     /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
+     * @return BelongsTo
      */
-    public function __construct(array $attributes = [])
+    public function assignee () : BelongsTo
     {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.assignments'));
+        return $this->belongsTo(Agent::class, 'assigned_to');
     }
 }

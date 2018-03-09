@@ -4,7 +4,13 @@ namespace Aviator\Helpdesk\Interfaces;
 
 interface TicketContent
 {
-    public function partial();
+    /**
+     * @return string
+     */
+    public function partial() : string;
 
-    public function title();
+    /**
+     * @return string
+     */
+    public function title() : string;
 }

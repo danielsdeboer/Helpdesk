@@ -2,7 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Traits\MorphsWithTrashed;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -14,28 +16,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Database\Eloquent\Model object
  * @property \Illuminate\Database\Eloquent\Model subject
  */
-class Action extends Model
+class Action extends AbstractModel
 {
-    use SoftDeletes;
+    use SoftDeletes, MorphsWithTrashed;
 
-    public function subject()
-    {
-        return $this->morphTo()->withTrashed();
-    }
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.actions';
 
-    public function object()
+    /**
+     * @return MorphTo
+     */
+    public function subject () : MorphTo
     {
-        return $this->morphTo()->withTrashed();
+        return $this->morphToWithTrashed('subject');
     }
 
     /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
+     * @return MorphTo
      */
-    public function __construct(array $attributes = [])
+    public function object () : MorphTo
     {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.actions'));
+        return $this->morphToWithTrashed('object');
     }
 }

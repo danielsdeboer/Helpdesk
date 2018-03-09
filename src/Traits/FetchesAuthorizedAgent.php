@@ -13,7 +13,7 @@ use Aviator\Helpdesk\Models\Agent;
 trait FetchesAuthorizedAgent
 {
     /**
-     * @return \Aviator\Helpdesk\Models\Agent
+     * @return \Aviator\Helpdesk\Models\Agent|null
      */
     protected function fetchAuthorizedAgent()
     {

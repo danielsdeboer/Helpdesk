@@ -2,12 +2,11 @@
 
 namespace Aviator\Helpdesk\Traits;
 
-/**
- * Trait AutoUuids.
- * @mixin \Illuminate\Database\Eloquent\Model
- */
 trait AutoUuids
 {
+    /**
+     * Boot the trait.
+     */
     protected static function boot()
     {
         parent::boot();

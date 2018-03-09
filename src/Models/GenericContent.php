@@ -8,6 +8,10 @@ namespace Aviator\Helpdesk\Models;
  */
 class GenericContent extends ContentBase
 {
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.generic_contents';
+
+    /** @var array */
     protected $fillable = [
         'title',
         'body',
@@ -18,15 +22,4 @@ class GenericContent extends ContentBase
      * @var string
      */
     protected $partial = 'helpdesk::tickets.show.content.generic';
-
-    /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.generic_contents'));
-    }
 }

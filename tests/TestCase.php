@@ -142,6 +142,7 @@ abstract class TestCase extends Orchestra
         $app->config->set('helpdesk.tables.closings', $prefix . 'closings');
         $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
         $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
+        $app->config->set('helpdesk.tables.collaborators', $prefix . 'collaborators');
     }
 
     protected function withoutErrorHandling ()

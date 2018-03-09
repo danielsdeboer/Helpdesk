@@ -3,6 +3,8 @@
 namespace Aviator\Helpdesk\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,12 +19,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Collection teamLeads
  * @method static Builder withTrashed()
  */
-class Agent extends Model
+class Agent extends AbstractModel
 {
     use SoftDeletes, Notifiable;
 
     /** @var \Illuminate\Database\Eloquent\Model */
     protected $userModelName;
+
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.agents';
 
     /** @var array */
     protected $dates = [
@@ -44,11 +49,10 @@ class Agent extends Model
      * Set the table name from the Helpdesk config.
      * @param array $attributes
      */
-    public function __construct(array $attributes = [])
+    public function __construct (array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('helpdesk.tables.agents'));
         $this->userModelName = config('helpdesk.userModel');
     }
 
@@ -60,7 +64,7 @@ class Agent extends Model
      * Route notifications for the mail channel.
      * @return string
      */
-    public function routeNotificationForMail()
+    public function routeNotificationForMail () : string
     {
         $email = config('helpdesk.userModelEmailColumn');
 
@@ -70,9 +74,9 @@ class Agent extends Model
     /**
      * Make the Agent a team lead.
      * @param \Aviator\Helpdesk\Models\Team $team
-     * @return $this
+     * @return Agent
      */
-    public function makeTeamLeadOf(Team $team)
+    public function makeTeamLeadOf (Team $team) : Agent
     {
         // If the agent is already in the team but not team lead
         // we need to detach first. This does nothing otherwise.
@@ -88,9 +92,9 @@ class Agent extends Model
     /**
      * Make the Agent a team lead.
      * @param \Aviator\Helpdesk\Models\Team $team
-     * @return $this
+     * @return Agent
      */
-    public function removeTeamLeadOf(Team $team)
+    public function removeTeamLeadOf (Team $team) : Agent
     {
         $this->teams()->detach($team);
 
@@ -104,9 +108,9 @@ class Agent extends Model
     /**
      * Add the agent to a team.
      * @param Team $team
-     * @return $this
+     * @return Agent
      */
-    public function addToTeam(Team $team)
+    public function addToTeam (Team $team) : Agent
     {
         $this->teams()->attach($team->id);
 
@@ -115,10 +119,10 @@ class Agent extends Model
 
     /**
      * Remove the agent from a team.
-     * @param  Team   $team
-     * @return $this
+     * @param Team $team
+     * @return Agent
      */
-    public function removeFromTeam(Team $team)
+    public function removeFromTeam (Team $team) : Agent
     {
         $this->teams()->detach($team->id);
 
@@ -128,9 +132,9 @@ class Agent extends Model
     /**
      * Add the agent to multiple teams.
      * @param array $teams
-     * @return $this
+     * @return Agent
      */
-    public function addToTeams(array $teams)
+    public function addToTeams (array $teams) : Agent
     {
         foreach ($teams as $team) {
             $this->teams()->attach($team);
@@ -141,10 +145,10 @@ class Agent extends Model
 
     /**
      * Remove the agent from multiple teams.
-     * @param  array $teams
-     * @return $this
+     * @param array $teams
+     * @return Agent
      */
-    public function removeFromTeams(array $teams)
+    public function removeFromTeams (array $teams) : Agent
     {
         foreach ($teams as $team) {
             $this->teams()->detach($team);
@@ -159,10 +163,10 @@ class Agent extends Model
 
     /**
      * Is this agent a member of this team.
-     * @param  Team    $team
+     * @param Team $team
      * @return bool
      */
-    public function isMemberOf(Team $team)
+    public function isMemberOf (Team $team) : bool
     {
         return $team->agents->pluck('id')->contains($this->id);
     }
@@ -171,7 +175,7 @@ class Agent extends Model
      * Check if the user is a supervisor.
      * @return bool
      */
-    public function isSuper ()
+    public function isSuper () : bool
     {
         return (bool) $this->is_super;
     }
@@ -180,22 +184,28 @@ class Agent extends Model
      * Relationships
      */
 
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo */
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user () : BelongsTo
     {
         return $this->belongsTo($this->userModelName);
     }
 
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany */
-    public function teams()
+    /**
+     * @return BelongsToMany
+     */
+    public function teams() : BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
             ->withTimestamps();
     }
 
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany */
-    public function teamLeads()
+    /**
+     * @return BelongsToMany
+     */
+    public function teamLeads () : BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')

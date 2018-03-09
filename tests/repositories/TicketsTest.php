@@ -240,7 +240,7 @@ class TicketsTest extends TestCase
     }
 
     /** @test */
-    public function the_team_method_returns_null_if_agent_is_not_set()
+    public function the_team_method_returns_an_empty_collection_if_agent_is_not_set()
     {
         $user = $this->make->user;
 
@@ -248,7 +248,7 @@ class TicketsTest extends TestCase
 
         $tickets = Tickets::forUser($user)->team();
 
-        $this->assertNull($tickets);
+        $this->assertCount(0, $tickets);
     }
 
     /** @test */
@@ -328,7 +328,7 @@ class TicketsTest extends TestCase
     }
 
     /** @test */
-    public function the_unassigned_method_returns_null_for_users()
+    public function the_unassigned_method_returns_an_empty_collection_for_users()
     {
         $user = $this->make->user;
 
@@ -336,11 +336,11 @@ class TicketsTest extends TestCase
 
         $tickets = Tickets::forUser($user)->unassigned();
 
-        $this->assertNull($tickets);
+        $this->assertCount(0, $tickets);
     }
 
     /** @test */
-    public function the_unassigned_method_returns_null_for_agents()
+    public function the_unassigned_method_returns_an_empty_collection_for_agents()
     {
         $agent = $this->make->agent;
 
@@ -348,7 +348,7 @@ class TicketsTest extends TestCase
 
         $tickets = Tickets::forAgent($agent)->unassigned();
 
-        $this->assertNull($tickets);
+        $this->assertCount(0, $tickets);
     }
 
     /** @test */

@@ -38,16 +38,20 @@ class Generic extends Notification implements ShouldQueue
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
+     * @param Ticket $ticket
+     * @param array $params
      */
-    public function __construct(Ticket $ticket, array $params = [])
+    public function __construct (Ticket $ticket, array $params = [])
     {
         $this->ticket = $ticket;
         $this->setParams($params);
     }
 
-    public function setParams(array $params)
+    /**
+     * @param array $params
+     * @return Generic
+     */
+    public function setParams (array $params) : Generic
     {
         foreach ($params as $field => $value) {
             $this->{$field} = $value;
@@ -58,22 +62,18 @@ class Generic extends Notification implements ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via () : array
     {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail () : MailMessage
     {
         $message = new MailMessage;
 
@@ -89,7 +89,11 @@ class Generic extends Notification implements ShouldQueue
         return $message;
     }
 
-    public function __get($name)
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function __get ($name)
     {
         return $this->$name;
     }

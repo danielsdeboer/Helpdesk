@@ -11,23 +11,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Collection teamLeads
  * @property \Illuminate\Support\Collection agents
  * @property mixed team_lead
+ * @property mixed teamLead
  */
-class Team extends Model
+class Team extends AbstractModel
 {
     use SoftDeletes;
 
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.teams';
+
+    /** @var array */
     protected $guarded = [];
-
-    /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.teams'));
-    }
 
     ////////////////
     // Public API //

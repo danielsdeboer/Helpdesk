@@ -9,13 +9,6 @@ use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 class NotificationsProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application services.
-     */
-    public function boot ()
-    {
-    }
-
-    /**
      * Register application bindings.
      */
     public function register ()

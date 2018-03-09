@@ -58,7 +58,7 @@ class TicketsQuery implements QueryInterface
      * TicketsQuery constructor.
      * @param Agent|null $agent
      */
-    public function __construct(Agent $agent = null)
+    public function __construct (Agent $agent = null)
     {
         $this->agent = $agent;
         $this->user = auth()->user();
@@ -74,7 +74,7 @@ class TicketsQuery implements QueryInterface
      * @param  mixed[] ...$args
      * @return $this
      */
-    public static function make(...$args)
+    public static function make (...$args)
     {
         return new self(...$args);
     }
@@ -84,20 +84,20 @@ class TicketsQuery implements QueryInterface
      * @param  mixed[]
      * @return Builder
      */
-    public static function builder(...$args)
+    public static function builder (...$args) : Builder
     {
-        return (new self(...$args))->query();
+        return self::make(...$args)->query();
     }
 
-    ////////////////
-    // Public Api //
-    ////////////////
+    /*
+     * Public Api
+     */
 
     /**
      * Return the builder instance.
      * @return Builder
      */
-    public function query()
+    public function query () : Builder
     {
         $this->build();
 
@@ -107,9 +107,9 @@ class TicketsQuery implements QueryInterface
     /**
      * Set the relations array.
      * @param array $relations
-     * @return $this
+     * @return TicketsQuery
      */
-    public function withRelations(array $relations)
+    public function withRelations (array $relations) : TicketsQuery
     {
         $this->relations = $relations;
 
@@ -119,9 +119,9 @@ class TicketsQuery implements QueryInterface
     /**
      * Add an order by clause to the query builder, returning
      * results ordered by due soonest first.
-     * @return $this
+     * @return TicketsQuery
      */
-    public function orderByDueSoonest()
+    public function orderByDueSoonest () : TicketsQuery
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'asc');
 
@@ -130,9 +130,9 @@ class TicketsQuery implements QueryInterface
 
     /**
      * Order by due date descending, eg latest first.
-     * @return $this
+     * @return TicketsQuery
      */
-    public function orderByDueOnDesc()
+    public function orderByDueOnDesc () : TicketsQuery
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'desc');
 
@@ -141,10 +141,11 @@ class TicketsQuery implements QueryInterface
 
     /**
      * Get open tickets only.
-     * @return $this
+     * @return TicketsQuery
      */
-    public function openOnly()
+    public function openOnly () : TicketsQuery
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->query->opened();
 
         return $this;
@@ -152,10 +153,11 @@ class TicketsQuery implements QueryInterface
 
     /**
      * Get open tickets only.
-     * @return $this
+     * @return TicketsQuery
      */
-    public function closedOnly()
+    public function closedOnly () : TicketsQuery
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->query->closed();
 
         return $this;
@@ -164,24 +166,24 @@ class TicketsQuery implements QueryInterface
     /**
      * Push a select onto the select stack.
      * @param string $select
-     * @return $this
+     * @return TicketsQuery
      */
-    public function addSelect($select)
+    public function addSelect (string $select) : TicketsQuery
     {
         $this->selects[] = $select;
 
         return $this;
     }
 
-    //////////////////
-    // Internal API //
-    //////////////////
+    /*
+     * Internal Api
+     */
 
     /**
      * Build the query base.
      * @return void
      */
-    protected function build()
+    protected function build ()
     {
         $this->query
             ->select($this->selects)

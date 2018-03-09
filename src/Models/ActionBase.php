@@ -3,6 +3,8 @@
 namespace Aviator\Helpdesk\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -10,62 +12,55 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int id
  * @property Ticket ticket
  */
-class ActionBase extends Model
+abstract class ActionBase extends AbstractModel
 {
     use SoftDeletes;
 
-    /**
-     * Fields to be mutated to dates.
-     * @var array
-     */
+    /** @var array */
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    /**
-     * Fields exempt from mass assignment.
-     * @var array
-     */
+    /** @var array */
     protected $guarded = [];
 
-    /**
-     * Fields to cast as types.
-     * @var array
-     */
+    /** @var array */
     protected $casts = [
         'is_visible' => 'boolean',
     ];
 
     /**
-     * Owned by ticket.
+     * @return BelongsTo
      */
-    public function ticket()
+    public function ticket () : BelongsTo
     {
         return $this->belongsTo(Ticket::class);
     }
 
     /**
-     * Owned by an agent.
+     * @return BelongsTo
      */
-    public function agent()
+    public function agent () : BelongsTo
     {
         return $this->belongsTo(Agent::class);
     }
 
     /**
-     * Owned by an user.
+     * @return BelongsTo
      */
-    public function user()
+    public function user () : BelongsTo
     {
-        return $this->belongsTo(config('helpdesk.userModel'));
+        return $this->belongsTo(
+            config('helpdesk.userModel')
+        );
     }
 
     /**
-     * Associated with one action.
+     * @return MorphOne
      */
-    public function action()
+    public function action () : MorphOne
     {
         return $this->morphOne(Action::class, 'object');
     }

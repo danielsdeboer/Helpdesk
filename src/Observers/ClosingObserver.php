@@ -9,7 +9,7 @@ class ClosingObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param  Closing $observed
+     * @param Closing $observed
      * @return void
      */
     public function created (Closing $observed)

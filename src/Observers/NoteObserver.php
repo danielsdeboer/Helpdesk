@@ -9,11 +9,10 @@ class NoteObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     *
-     * @param  Note $observed
+     * @param Note $observed
      * @return void
      */
-    public function created(Note $observed)
+    public function created (Note $observed)
     {
         $this->createAction('note added', $observed);
     }

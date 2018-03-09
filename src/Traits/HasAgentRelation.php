@@ -3,14 +3,18 @@
 namespace Aviator\Helpdesk\Traits;
 
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Trait HasAgentRelation.
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 trait HasAgentRelation
 {
-    public function agent ()
+    /**
+     * The agent relationship.
+     * @return HasOne
+     */
+    public function agent () : HasOne
     {
         return $this->hasOne(Agent::class);
     }

@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @property \Aviator\Helpdesk\Models\Team team
  * @property \Aviator\Helpdesk\Models\Action action
@@ -12,20 +14,13 @@ namespace Aviator\Helpdesk\Models;
  */
 class TeamAssignment extends ActionBase
 {
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.team_assignments';
+
     /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
+     * @return BelongsTo
      */
-    public function __construct (array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(
-            config('helpdesk.tables.team_assignments')
-        );
-    }
-
-    public function team ()
+    public function team () : BelongsTo
     {
         return $this->belongsTo(Team::class);
     }

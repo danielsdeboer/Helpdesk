@@ -4,27 +4,21 @@ namespace Aviator\Helpdesk\Repositories;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
+use Closure;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class Tickets
 {
-    /**
-     * The user.
-     * @var mixed
-     */
+    /** @var Model */
     protected $user;
 
-    /**
-     * The agent.
-     * @var \Aviator\Helpdesk\Models\Agent
-     */
+    /** @var Agent */
     protected $agent;
 
-    /**
-     * Is the agent a supervisor.
-     * @var bool
-     */
+    /** @var bool */
     protected $super;
 
     /*
@@ -35,8 +29,9 @@ class Tickets
      * Static constructor with agent.
      * @param  \Aviator\Helpdesk\Models\Agent $agent
      * @return \Aviator\Helpdesk\Repositories\Tickets
+     * @throws Exception
      */
-    public static function forAgent($agent)
+    public static function forAgent ($agent) : Tickets
     {
         return (new self)->setAgent($agent);
     }
@@ -45,8 +40,9 @@ class Tickets
      * Static constructor with user.
      * @param mixed $user
      * @return \Aviator\Helpdesk\Repositories\Tickets
+     * @throws Exception
      */
-    public static function forUser($user)
+    public static function forUser ($user) : Tickets
     {
         return (new self)->setUser($user);
     }
@@ -55,8 +51,9 @@ class Tickets
      * Static constructor with user.
      * @param  mixed $agent
      * @return \Aviator\Helpdesk\Repositories\Tickets
+     * @throws Exception
      */
-    public static function forSuper(Agent $agent)
+    public static function forSuper (Agent $agent) : Tickets
     {
         return (new self)->setAgent($agent)->setSuper($agent);
     }
@@ -69,7 +66,7 @@ class Tickets
      * Return tickets assigned to the agent's team.
      * @return Collection
      */
-    public function team()
+    public function team () : Collection
     {
         if ($this->super) {
             return $this->superTeam();
@@ -78,13 +75,15 @@ class Tickets
         if ($this->agent) {
             return $this->agentTeam();
         }
+
+        return new Collection;
     }
 
     /**
      * Return overdue tickets.
      * @return Collection
      */
-    public function overdue()
+    public function overdue () : Collection
     {
         if ($this->super) {
             return $this->superOverdue();
@@ -101,8 +100,9 @@ class Tickets
      * Get overdue tickets for a super.
      * @return Collection
      */
-    protected function superOverdue()
+    protected function superOverdue() : Collection
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->ticketQuery()
             ->overdue()
             ->get()
@@ -115,7 +115,7 @@ class Tickets
      * Return all open tickets.
      * @return Collection
      */
-    public function all()
+    public function all () : Collection
     {
         if ($this->super) {
             return $this->ticketQuery()
@@ -127,7 +127,7 @@ class Tickets
 
         if ($this->agent) {
             return $this->ticketQuery()
-                ->whereHas('assignment', function ($query) {
+                ->whereHas('assignment', function (Builder $query) {
                     $query->where('assigned_to', $this->agent->id);
                 })
                 ->get()
@@ -143,22 +143,25 @@ class Tickets
 
     /**
      * Get unassigned tickets.
-     * @return Collection | null
+     * @return Collection
      */
-    public function unassigned()
+    public function unassigned () : Collection
     {
         if ($this->super) {
+            /** @noinspection PhpUndefinedMethodInspection */
             return $this->ticketQuery()
                 ->unassigned()
                 ->get();
         }
+
+        return new Collection;
     }
 
     /**
      * Get all tickets the agent is collaborating on.
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function collaborating()
+    public function collaborating () : Collection
     {
         return $this->ticketQuery()
             ->whereHas('collaborators', $this->collabCb())
@@ -172,9 +175,9 @@ class Tickets
     /**
      * Get the collaborator callback. Laravel wants a Closure here to we can't just use
      * this method as the callback. Instead we return a Closure.
-     * @return \Closure
+     * @return Closure
      */
-    protected function collabCb()
+    protected function collabCb () : Closure
     {
         return function (Builder $query) {
             $query->where('agent_id', $this->agent->id);
@@ -189,17 +192,18 @@ class Tickets
      * Get a base ticket query with the opened scope.
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function ticketQuery()
+    protected function ticketQuery() : Builder
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Ticket::with('user')
             ->opened();
     }
 
     /**
      * Get the ids of this agent's teams.
-     * @return array
+     * @return Collection
      */
-    protected function teamIds()
+    protected function teamIds () : Collection
     {
         return $this->agent->teams->pluck('id');
     }
@@ -208,13 +212,14 @@ class Tickets
      * Get overdue tickets for an agent.
      * @return Collection
      */
-    protected function agentOverdue()
+    protected function agentOverdue () : Collection
     {
+        /** @noinspection PhpStaticAsDynamicMethodCallInspection */
         return Ticket::with('user', 'dueDate')
-            ->whereHas('assignment', function ($query) {
+            ->whereHas('assignment', function (Builder $query) {
                 $query->where('assigned_to', $this->agent->id);
             })
-            ->orWhereHas('teamAssignment', function ($query) {
+            ->orWhereHas('teamAssignment', function (Builder $query) {
                 $query->whereIn('team_id', $this->teamIds());
             })
             ->overdue()
@@ -228,8 +233,9 @@ class Tickets
      * Get overdue tickets for a user.
      * @return Collection
      */
-    protected function userOverdue()
+    protected function userOverdue () : Collection
     {
+        /** @noinspection PhpStaticAsDynamicMethodCallInspection */
         return Ticket::with('user', 'dueDate')
             ->where('user_id', $this->user->id)
             ->overdue()
@@ -240,10 +246,11 @@ class Tickets
      * Get tickets assigned to an agents teams.
      * @return Collection
      */
-    protected function agentTeam()
+    protected function agentTeam () : Collection
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Ticket::with('user', 'opening')
-            ->whereHas('teamAssignment', function ($query) {
+            ->whereHas('teamAssignment', function (Builder $query) {
                 $query->whereIn('team_id', $this->teamIds());
             })
             ->opened()
@@ -255,8 +262,9 @@ class Tickets
      * Get tickets assigned to an agents teams.
      * @return Collection
      */
-    protected function superTeam()
+    protected function superTeam () : Collection
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Ticket::with('user', 'opening')
             ->whereHas('teamAssignment')
             ->opened()
@@ -271,9 +279,10 @@ class Tickets
     /**
      * Set the agent.
      * @param Agent $agent
-     * @return $this
+     * @return Tickets
+     * @throws Exception
      */
-    public function setAgent(Agent $agent)
+    public function setAgent (Agent $agent) : Tickets
     {
         $this->agent = $agent;
         $this->setUser($agent->user);
@@ -285,7 +294,7 @@ class Tickets
      * User getter.
      * @return mixed
      */
-    public function getUser()
+    public function getUser ()
     {
         return $this->user;
     }
@@ -293,9 +302,9 @@ class Tickets
     /**
      * Super setter.
      * @param Agent $agent
-     * @return $this
+     * @return Tickets
      */
-    public function setSuper(Agent $agent)
+    public function setSuper (Agent $agent) : Tickets
     {
         if ($agent->isSuper()) {
             $this->super = true;
@@ -317,7 +326,7 @@ class Tickets
      * Agent getter.
      * @return Agent
      */
-    public function getAgent()
+    public function getAgent () : Agent
     {
         return $this->agent;
     }
@@ -325,17 +334,17 @@ class Tickets
     /**
      * Set the user.
      * @param mixed $user
-     * @return $this
-     * @throws \Exception
+     * @return Tickets
+     * @throws Exception
      */
-    public function setUser($user)
+    public function setUser($user) : Tickets
     {
         $userModel = config('helpdesk.userModel');
 
         if ($user instanceof $userModel) {
             $this->user = $user;
         } else {
-            throw new \Exception('You must provide an instance of ' . $userModel);
+            throw new Exception('You must provide an instance of ' . $userModel);
         }
 
         return $this;
