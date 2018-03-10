@@ -32,7 +32,7 @@ class TicketTest extends TestCase
         $ticket = $this->make->ticket;
         $content = $this->make->content;
 
-        $ticket->withContent($content);
+        $ticket->contents()->add($content);
 
         $this->assertSame($content, $ticket->content);
         $this->assertNotNull($ticket->content->title);
@@ -44,7 +44,7 @@ class TicketTest extends TestCase
     {
         $ticket = $this->make->ticket;
 
-        $ticket->createContent(GenericContent::class, [
+        $ticket->contents()->create(new GenericContent, [
             'title' => 'test title',
             'body' => 'test body',
         ]);
