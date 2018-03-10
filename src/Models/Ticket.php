@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Helpers\Ticket\Contents;
+use Aviator\Helpdesk\Helpers\Ticket\Status;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
@@ -340,9 +340,13 @@ class Ticket extends AbstractModel
         return $this->fresh('collaborators');
     }
 
-    /*
-     * Non-fluent public methods
+    /**
+     * @return \Aviator\Helpdesk\Helpers\Ticket\Status
      */
+//    public function status ()
+//    {
+//        return new Status($this);
+//    }
 
     /**
      * Find the internal user who should receive notifications for
