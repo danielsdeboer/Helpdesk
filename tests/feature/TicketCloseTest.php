@@ -55,7 +55,7 @@ class TicketCloseTest extends TestCase
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isClosed());
+        $this->assertTrue($ticket->status()->closed());
     }
 
     /**
@@ -94,7 +94,7 @@ class TicketCloseTest extends TestCase
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isClosed());
+        $this->assertTrue($ticket->status()->closed());
         $this->assertEquals('test body', $ticket->closing->note);
     }
 }

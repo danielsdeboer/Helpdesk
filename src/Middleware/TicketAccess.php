@@ -42,14 +42,14 @@ class TicketAccess
             /*
              * The assignee can view the ticket.
              */
-            if ($ticket->isAssignedTo($agent)) {
+            if ($ticket->status()->assignedTo($agent)) {
                 return $next($request);
             }
 
             /*
              * Collaborators can view the ticket
              */
-            if ($ticket->hasCollaborator($agent)) {
+            if ($ticket->status()->collaborates($agent)) {
                 return $next($request);
             }
 
@@ -64,11 +64,11 @@ class TicketAccess
                 }
             }
         }
-
+        
         /*
          * The ticket creator can access this ticket.
          */
-        if ($ticket->isOwnedBy($request->user())) {
+        if ($ticket->status()->ownedBy($request->user())) {
             return $next($request);
         }
 

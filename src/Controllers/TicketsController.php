@@ -134,7 +134,7 @@ class TicketsController extends Controller
                 return $this->showForSuper();
             case $agent && $this->ticket->teamAssignment && $agent->isMemberOf($this->ticket->teamAssignment->team):
                 return $this->showForTeamLead();
-            case $agent && $this->ticket->hasCollaborator($agent):
+            case $agent && $this->ticket->status()->collaborates($agent):
                 return $this->showForCollab();
             default:
                 return $this->showForAgent();

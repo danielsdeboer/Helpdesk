@@ -14,8 +14,8 @@
         </div>
 
         <div class="level-right">
-          @if ($ticket->isOpen())
-            @if ($ticket->isOverdue())
+          @if ($ticket->status()->open())
+            @if ($ticket->status()->overdue())
               <div class="level-item">
                 <span class="tag is-danger is-medium">Overdue</span>
               </div>
@@ -25,19 +25,19 @@
               </div>
             @endif
 
-            @if (!$ticket->isAssigned())
+            @if (!$ticket->status()->assigned())
               <div class="level-item">
                 <span class="tag is-danger is-medium">Not Assigned</span>
               </div>
             @endif
 
-            @if ($ticket->isAssignedToAnyAgent())
+            @if ($ticket->status()->assignedToAnAgent())
               <div class="level-item">
                 <span class="tag is-success is-medium">Assigned</span>
               </div>
             @endif
 
-            @if ($ticket->isAssignedToAnyTeam())
+            @if ($ticket->status()->assignedToATeam())
               <div class="level-item">
                 <span class="tag is-warning is-medium">Assigned To Team</span>
               </div>
