@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use Carbon\Carbon;
+
 class DatabaseTest extends TestCase
 {
     /**
