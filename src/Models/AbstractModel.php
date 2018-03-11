@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Aviator\Helpdesk\Models;
 
 use Illuminate\Database\Eloquent\Model;
