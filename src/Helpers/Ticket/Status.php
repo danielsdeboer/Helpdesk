@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Helpers\Ticket;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Team;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
 
 class Status extends TicketHelper
 {

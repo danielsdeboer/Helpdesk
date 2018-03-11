@@ -109,7 +109,7 @@ class TicketsQuery implements QueryInterface
      * @param array $relations
      * @return TicketsQuery
      */
-    public function withRelations (array $relations) : TicketsQuery
+    public function withRelations (array $relations) : self
     {
         $this->relations = $relations;
 
@@ -121,7 +121,7 @@ class TicketsQuery implements QueryInterface
      * results ordered by due soonest first.
      * @return TicketsQuery
      */
-    public function orderByDueSoonest () : TicketsQuery
+    public function orderByDueSoonest () : self
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'asc');
 
@@ -132,7 +132,7 @@ class TicketsQuery implements QueryInterface
      * Order by due date descending, eg latest first.
      * @return TicketsQuery
      */
-    public function orderByDueOnDesc () : TicketsQuery
+    public function orderByDueOnDesc () : self
     {
         $this->query->orderBy($this->dueDatesTable . '.due_on', 'desc');
 
@@ -143,9 +143,9 @@ class TicketsQuery implements QueryInterface
      * Get open tickets only.
      * @return TicketsQuery
      */
-    public function openOnly () : TicketsQuery
+    public function openOnly () : self
     {
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         $this->query->opened();
 
         return $this;
@@ -155,9 +155,9 @@ class TicketsQuery implements QueryInterface
      * Get open tickets only.
      * @return TicketsQuery
      */
-    public function closedOnly () : TicketsQuery
+    public function closedOnly () : self
     {
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         $this->query->closed();
 
         return $this;
@@ -168,7 +168,7 @@ class TicketsQuery implements QueryInterface
      * @param string $select
      * @return TicketsQuery
      */
-    public function addSelect (string $select) : TicketsQuery
+    public function addSelect (string $select) : self
     {
         $this->selects[] = $select;
 

@@ -3,7 +3,6 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;

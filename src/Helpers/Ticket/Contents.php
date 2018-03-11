@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Helpers\Ticket;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 
 class Contents extends TicketHelper
 {
@@ -14,7 +14,7 @@ class Contents extends TicketHelper
      */
     public function add (TicketContent $content) : Ticket
     {
-        /** @noinspection PhpParamsInspection */
+        /* @noinspection PhpParamsInspection */
         $this->ticket->content()
             ->associate($content)
             ->save();
