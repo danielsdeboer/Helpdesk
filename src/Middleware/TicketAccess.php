@@ -64,7 +64,7 @@ class TicketAccess
                 }
             }
         }
-        
+
         /*
          * The ticket creator can access this ticket.
          */

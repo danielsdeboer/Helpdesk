@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class Ticket.
@@ -536,13 +537,13 @@ class Ticket extends AbstractModel
     /**
      * Return tickets that are accessible to the current user.
      * @param Builder $query
-     * @param User|Agent $user
+     * @param \Illuminate\Foundation\Auth\User $user
      * @return Builder
      */
-    public function scopeAccessibleToUser ($query, $user) : Builder
+    public function scopeAccessibleToUser ($query, Authenticatable $user) : Builder
     {
         return $query->where(
-            config('helpdesk.tables.tickets') . '.user_id',
+            'user_id',
             $user->id
         );
     }
@@ -575,6 +576,41 @@ class Ticket extends AbstractModel
                 $query->where('agent_id', $agent->id);
             });
         });
+    }
+
+    /**
+     * Scope the query to tickets assigned to the given agent's team.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeTeam (Builder $query, Agent $agent)
+    {
+        return $query->whereHas(
+            'teamAssignment',
+            function (Builder $query) use ($agent) {
+                return $query->whereIn(
+                    'team_id',
+                    $agent->teams->pluck('id')
+                );
+            }
+        );
+    }
+
+    /**
+     * Scope the query to tickets the given user is collaborating on.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeCollaborating (Builder $query, Agent $agent)
+    {
+        return $query->whereHas(
+            'collaborators',
+            function (Builder $query) use ($agent) {
+                return $query->where('agent_id', $agent->id);
+            }
+        );
     }
 
     /*
