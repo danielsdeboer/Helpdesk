@@ -23,4 +23,15 @@ class TicketShowPublicTest extends TestCase
         $this->visit(self::URI . $ticket->uuid)
             ->dontSee('id="ticket-toolbar"');
     }
+
+    /** @test */
+    public function visiting_a_deleted_ticket_will_redirect_to_ticket_overview ()
+    {
+        $ticket = $this->make->ticket;
+
+        $ticket->delete();
+
+        $this->get(self::URI . $ticket->uuid)
+            ->assertRedirectedTo('/helpdesk/tickets');
+    }
 }
