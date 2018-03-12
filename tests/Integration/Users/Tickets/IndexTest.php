@@ -16,7 +16,6 @@ class IndexTest extends TestCase
             ->assertRedirect('login');
     }
 
-
     /** @test */
     public function agents_may_not_visit ()
     {

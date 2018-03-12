@@ -10,6 +10,7 @@ class NotificationsProvider extends ServiceProvider
 {
     /** @var bool */
     protected $defer = true;
+
     /**
      * Register application bindings.
      */

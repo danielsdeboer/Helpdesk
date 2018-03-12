@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Controllers\Users;
 
-use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class TicketsController extends Controller
 {

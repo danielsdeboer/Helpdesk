@@ -2,12 +2,12 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
-use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Http\Request;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Queries\TicketsQuery;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class TicketsController extends Controller
 {

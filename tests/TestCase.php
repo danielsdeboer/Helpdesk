@@ -2,19 +2,19 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use PHPUnit\Framework\Assert;
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Support\Facades\Route;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler;
+use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
-use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Route;
-use Orchestra\Testbench\TestCase as Orchestra;
-use PHPUnit\Framework\Assert;
 
 abstract class TestCase extends Orchestra
 {
@@ -56,12 +56,12 @@ abstract class TestCase extends Orchestra
         $this->get = new Get();
 
         TestResponse::macro('data', function ($key) {
-            /** @noinspection PhpUndefinedFieldInspection */
+            /* @noinspection PhpUndefinedFieldInspection */
             return $this->original->getData()[$key];
         });
 
         Collection::macro('assertContains', function ($value) {
-            /** @noinspection PhpParamsInspection */
+            /* @noinspection PhpParamsInspection */
             Assert::assertTrue(
                 $this->contains($value),
                 'Failed asserting that the collection contains the given value.'
@@ -69,7 +69,7 @@ abstract class TestCase extends Orchestra
         });
 
         Collection::macro('assertDoesntContain', function ($value) {
-            /** @noinspection PhpParamsInspection */
+            /* @noinspection PhpParamsInspection */
             Assert::assertFalse(
                 $this->contains($value),
                 'Failed asserting that the collection does not contain the given value.'
