@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
 
 class UsersOnlyBKTest extends BKTestCase
