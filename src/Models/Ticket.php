@@ -166,7 +166,7 @@ class Ticket extends Model
      */
     public function close($note, $creator)
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException;
         }
 
@@ -200,7 +200,7 @@ class Ticket extends Model
      */
     public function open($note, $creator)
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException;
         }
 
@@ -233,7 +233,7 @@ class Ticket extends Model
      */
     public function note($body, $creator, $isVisible = true)
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException;
         }
 
@@ -291,7 +291,7 @@ class Ticket extends Model
          * Since the user class can vary, throw an exception if something
          * else is provided.
          */
-        if (! $user instanceof $userClass) {
+        if (!$user instanceof $userClass) {
             throw new CreatorMustBeAUserException;
         }
 
@@ -346,7 +346,7 @@ class Ticket extends Model
     {
         $collabs = $this->collaborators()->with('agent')->get();
 
-        if (! $collabs->pluck('agent.id')->contains($collab->id)) {
+        if (!$collabs->pluck('agent.id')->contains($collab->id)) {
             Collaborator::query()->create([
                 'ticket_id' => $this->id,
                 'agent_id' => $collab->id,
@@ -465,7 +465,7 @@ class Ticket extends Model
      */
     public function isAssignedToAnyTeam()
     {
-        return $this->teamAssignment && ! $this->assignment;
+        return $this->teamAssignment && !$this->assignment;
     }
 
     /**
