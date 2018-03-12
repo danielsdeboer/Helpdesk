@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class AgentTest extends TestCase
+class AgentTest extends BKTestCase
 {
     /** @test */
     public function it_belongs_to_a_user()

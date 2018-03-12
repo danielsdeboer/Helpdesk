@@ -2,12 +2,12 @@
 
 namespace Aviator\Helpdesk\Tests\factories;
 
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Notifications\Notification;
 use Aviator\Helpdesk\Factories\DefinitionNotFound;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 
-class NotificationFactoryTest extends TestCase
+class NotificationFactoryBKTest extends BKTestCase
 {
     /** @test */
     public function it_produces_a_new_notification_instance ()

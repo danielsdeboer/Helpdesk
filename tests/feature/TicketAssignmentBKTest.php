@@ -4,9 +4,9 @@ namespace Aviator\Helpdesk\Tests\Feature;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketAssignmentTest extends TestCase
+class TicketAssignmentBKTest extends BKTestCase
 {
     protected $user;
     protected $agent;

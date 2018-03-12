@@ -5,9 +5,9 @@ namespace Aviator\Helpdesk\Tests\Feature;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketCloseTest extends TestCase
+class TicketCloseBKTest extends BKTestCase
 {
     /**
      * @group feature
@@ -55,7 +55,7 @@ class TicketCloseTest extends TestCase
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isClosed());
+        $this->assertTrue($ticket->status()->closed());
     }
 
     /**
@@ -94,7 +94,7 @@ class TicketCloseTest extends TestCase
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isClosed());
+        $this->assertTrue($ticket->status()->closed());
         $this->assertEquals('test body', $ticket->closing->note);
     }
 }

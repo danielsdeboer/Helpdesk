@@ -51,7 +51,7 @@ class Generic extends Notification implements ShouldQueue
      * @param array $params
      * @return Generic
      */
-    public function setParams (array $params) : Generic
+    public function setParams (array $params) : self
     {
         foreach ($params as $field => $value) {
             $this->{$field} = $value;

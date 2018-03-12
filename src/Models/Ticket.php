@@ -6,13 +6,15 @@ use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Aviator\Helpdesk\Helpers\Ticket\Status;
+use Aviator\Helpdesk\Helpers\Ticket\Contents;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Aviator\Helpdesk\Interfaces\TicketContent;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
@@ -50,7 +52,7 @@ class Ticket extends AbstractModel
 
     /** @var string */
     protected $configKey = 'helpdesk.tables.tickets';
-    
+
     /** @var array */
     protected $dates = [
         'created_at',
@@ -90,7 +92,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false) : Ticket
+    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false) : self
     {
         Assignment::query()
             ->create([
@@ -112,7 +114,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToTeam ($team, Agent $creator = null, $isVisible = false) : Ticket
+    public function assignToTeam ($team, Agent $creator = null, $isVisible = false) : self
     {
         TeamAssignment::query()
             ->create([
@@ -126,6 +128,14 @@ class Ticket extends AbstractModel
     }
 
     /**
+     * @return \Aviator\Helpdesk\Helpers\Ticket\Contents
+     */
+    public function contents () : Contents
+    {
+        return new Contents($this);
+    }
+
+    /**
      * Add a due date. Optionally set the creator.
      *
      * Visibility is assumed true for due dates since
@@ -135,7 +145,7 @@ class Ticket extends AbstractModel
      * @param  bool $isVisible
      * @return Ticket
      */
-    public function dueOn ($date, Agent $creator = null, $isVisible = true) : Ticket
+    public function dueOn ($date, Agent $creator = null, $isVisible = true) : self
     {
         DueDate::query()
             ->create([
@@ -158,7 +168,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function close ($note, $creator) : Ticket
+    public function close ($note, $creator) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('An agent or user must be provided when closing a ticket.');
@@ -192,7 +202,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function open ($note, $creator) : Ticket
+    public function open ($note, $creator) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('A user or agent is required when opening a ticket.');
@@ -224,7 +234,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function note ($body, $creator, $isVisible = true) : Ticket
+    public function note ($body, $creator, $isVisible = true) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('A user or agent is required when adding a note.');
@@ -254,7 +264,7 @@ class Ticket extends AbstractModel
      * @param  Agent $agent
      * @return Ticket
      */
-    public function internalReply ($body, Agent $agent) : Ticket
+    public function internalReply ($body, Agent $agent) : self
     {
         Reply::query()
             ->create([
@@ -276,7 +286,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorMustBeAUserException
      */
-    public function externalReply ($body, $user) : Ticket
+    public function externalReply ($body, $user) : self
     {
         $userClass = config('helpdesk.userModel');
 
@@ -300,44 +310,11 @@ class Ticket extends AbstractModel
     }
 
     /**
-     * Associate the content model with a ticket.
-     * @param TicketContent $content
-     * @return Ticket
-     */
-    public function withContent (TicketContent $content) : Ticket
-    {
-        /** @noinspection PhpParamsInspection */
-        $this->content()->associate($content);
-
-        $this->save();
-
-        return $this;
-    }
-
-    /**
-     * Create and associate the ticket content.
-     * @param string $class
-     * @param array $attributes
-     * @return Ticket
-     */
-    public function createContent ($class, array $attributes) : Ticket
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $content = $class::create($attributes);
-
-        $this->content()->associate($content);
-
-        $this->save();
-
-        return $this;
-    }
-
-    /**
      * @param \Aviator\Helpdesk\Models\Agent $collab
      * @param \Aviator\Helpdesk\Models\Agent $creator
      * @return Ticket
      */
-    public function addCollaborator (Agent $collab, Agent $creator) : Ticket
+    public function addCollaborator (Agent $collab, Agent $creator) : self
     {
         $collabs = $this->collaborators()->with('agent')->get();
 
@@ -357,16 +334,20 @@ class Ticket extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return Ticket
      */
-    public function removeCollaborator (Agent $agent) : Ticket
+    public function removeCollaborator (Agent $agent) : self
     {
         $this->collaborators()->where('agent_id', $agent->id)->delete();
 
         return $this->fresh('collaborators');
     }
 
-    /*
-     * Non-fluent public methods
+    /**
+     * @return \Aviator\Helpdesk\Helpers\Ticket\Status
      */
+    public function status ()
+    {
+        return new Status($this);
+    }
 
     /**
      * Find the internal user who should receive notifications for
@@ -401,99 +382,6 @@ class Ticket extends AbstractModel
         throw new SupervisorNotFoundException('A supervisor has not been created.');
     }
 
-    /**
-     * Is the ticket open.
-     * @return bool
-     */
-    public function isOpen () : bool
-    {
-        return $this->status === 'open';
-    }
-
-    /**
-     * Is the ticket closed.
-     * @return bool
-     */
-    public function isClosed () : bool
-    {
-        return $this->status === 'closed';
-    }
-
-    /**
-     * Is the ticket overdue.
-     * @return bool
-     */
-    public function isOverdue () : bool
-    {
-        return $this->dueDate && $this->dueDate->due_on->lte(Carbon::now());
-    }
-
-    /**
-     * Is the ticket assigned to an agent or team.
-     * @return bool
-     */
-    public function isAssigned () : bool
-    {
-        return $this->assignment || $this->teamAssignment;
-    }
-
-    /**
-     * Is the ticket assigned to an agent.
-     * @return bool
-     */
-    public function isAssignedToAnyAgent () : bool
-    {
-        return (bool) $this->assignment;
-    }
-
-    /**
-     * Check if the ticket is assigned to a particular agent.
-     * @param Agent $agent
-     * @return bool
-     */
-    public function isAssignedTo (Agent $agent) : bool
-    {
-        return $this->assignment && (int) $this->assignment->assigned_to === (int) $agent->id;
-    }
-
-    /**
-     * Is the ticket assigned to a team.
-     * @return bool
-     */
-    public function isAssignedToAnyTeam () : bool
-    {
-        return $this->teamAssignment && ! $this->assignment;
-    }
-
-    /**
-     * @param \Aviator\Helpdesk\Models\Team $team
-     * @return bool
-     */
-    public function isAssignedToTeam (Team $team) : bool
-    {
-        return $this->teamAssignment->team->id === $team->id;
-    }
-
-    /**
-     * Is the given agent a collaborator on this ticket?
-     * @param \Aviator\Helpdesk\Models\Agent $agent
-     * @return bool
-     */
-    public function hasCollaborator (Agent $agent) : bool
-    {
-        return $this->collaborators->pluck('agent.id')->contains($agent->id);
-    }
-
-    /**
-     * Check if the ticket is owned by a user.
-     * @param $user
-     * @return bool
-     */
-    public function isOwnedBy ($user) : bool
-    {
-        return (int) $user->id === (int) $this->user_id;
-    }
-
     /*
      * Scopes
      */
@@ -508,7 +396,7 @@ class Ticket extends AbstractModel
      */
     public function scopeUuid (Builder $query, string $uuid)
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        /* @noinspection PhpIncompatibleReturnTypeInspection */
         return $query->where('uuid', $uuid)->first();
     }
 
@@ -649,12 +537,15 @@ class Ticket extends AbstractModel
     /**
      * Return tickets that are accessible to the current user.
      * @param Builder $query
-     * @param User|Agent $user
+     * @param \Illuminate\Foundation\Auth\User $user
      * @return Builder
      */
-    public function scopeAccessibleToUser ($query, $user) : Builder
+    public function scopeAccessibleToUser ($query, Authenticatable $user) : Builder
     {
-        return $query->where(config('helpdesk.tables.tickets') . '.user_id', $user->id);
+        return $query->where(
+            'user_id',
+            $user->id
+        );
     }
 
     /**
@@ -685,6 +576,41 @@ class Ticket extends AbstractModel
                 $query->where('agent_id', $agent->id);
             });
         });
+    }
+
+    /**
+     * Scope the query to tickets assigned to the given agent's team.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeTeam (Builder $query, Agent $agent)
+    {
+        return $query->whereHas(
+            'teamAssignment',
+            function (Builder $query) use ($agent) {
+                return $query->whereIn(
+                    'team_id',
+                    $agent->teams->pluck('id')
+                );
+            }
+        );
+    }
+
+    /**
+     * Scope the query to tickets the given user is collaborating on.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeCollaborating (Builder $query, Agent $agent)
+    {
+        return $query->whereHas(
+            'collaborators',
+            function (Builder $query) use ($agent) {
+                return $query->where('agent_id', $agent->id);
+            }
+        );
     }
 
     /*

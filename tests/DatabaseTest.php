@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class DatabaseTest extends TestCase
+class DatabaseTest extends BKTestCase
 {
     /**
      * @group database

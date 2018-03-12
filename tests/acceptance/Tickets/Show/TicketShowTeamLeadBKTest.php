@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 
-class TicketShowTeamLeadTest extends TestCase
+class TicketShowTeamLeadBKTest extends BKTestCase
 {
     const URI = 'helpdesk/tickets/';
 

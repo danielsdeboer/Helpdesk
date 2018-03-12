@@ -5,9 +5,9 @@ namespace Aviator\Helpdesk\Tests\Feature;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketOpenTest extends TestCase
+class TicketOpenBKTest extends BKTestCase
 {
     /**
      * @group feature
@@ -53,10 +53,11 @@ class TicketOpenTest extends TestCase
         $ticket->close(null, $user);
         $response = $this->call('POST', 'helpdesk/tickets/open/' . $ticket->id);
 
+        /** @var Ticket $ticket */
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isOpen());
+        $this->assertTrue($ticket->status()->open());
         $this->assertEquals(2, $ticket->openings->count());
     }
 
@@ -94,10 +95,11 @@ class TicketOpenTest extends TestCase
             'note' => 'test body',
         ]);
 
+        /** @var Ticket $ticket */
         $ticket = $ticket->fresh();
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->isOpen());
+        $this->assertTrue($ticket->status()->open());
         $this->assertEquals('test body', $ticket->opening->note);
         $this->assertEquals(2, $ticket->openings->count());
     }

@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class NoteTest extends TestCase
+class NoteTest extends BKTestCase
 {
     /** @test */
     public function creating_a_note_creates_an_action_via_its_observer()

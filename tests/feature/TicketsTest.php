@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Feature;
 
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketsTest extends TestCase
+class TicketsTest extends BKTestCase
 {
     /** @test */
     public function a_guest_cannot_view_tickets ()

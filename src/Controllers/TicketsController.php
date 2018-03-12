@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Queries\TicketsQuery;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class TicketsController extends Controller
 {
@@ -43,19 +44,23 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
+     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(TicketsRepository $tickets)
     {
         $agent = Agent::query()
             ->where('user_id', auth()->user()->id)
             ->first();
 
-        $open = TicketsQuery::make($agent)
-            ->withRelations($this->relations)
-            ->openOnly()
-            ->orderByDueSoonest()
-            ->query();
+        $open = $tickets->with($this->relations)
+            ->open();
+//            ->orderBy('dueDate', 'asc');
+//        $open = TicketsQuery::make($agent)
+//            ->withRelations($this->relations)
+//            ->openOnly()
+//            ->orderByDueSoonest()
+//            ->query();
 
         $closed = TicketsQuery::make($agent)
             ->withRelations($this->relations)
@@ -134,7 +139,7 @@ class TicketsController extends Controller
                 return $this->showForSuper();
             case $agent && $this->ticket->teamAssignment && $agent->isMemberOf($this->ticket->teamAssignment->team):
                 return $this->showForTeamLead();
-            case $agent && $this->ticket->hasCollaborator($agent):
+            case $agent && $this->ticket->status()->collaborates($agent):
                 return $this->showForCollab();
             default:
                 return $this->showForAgent();

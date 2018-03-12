@@ -36,6 +36,7 @@ class HelpdeskServiceProvider extends ServiceProvider
         ]);
 
         $this->app->register(NotificationsProvider::class);
+        $this->app->register(RepositoriesProvider::class);
     }
 
     /**

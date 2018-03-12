@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class AgentDashboardTest extends TestCase
+class AgentDashboardTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/dashboard/agent';

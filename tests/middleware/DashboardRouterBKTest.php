@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 
-class DashboardRouterTest extends TestCase
+class DashboardRouterBKTest extends BKTestCase
 {
     /** @var string */
     protected $routerUri;

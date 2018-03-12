@@ -3,7 +3,7 @@
     <div class="container">
       <div class="modal-app nav">
 
-        @if ($ticket->isOpen() && isset($withAssign))
+        @if ($ticket->status()->open() && isset($withAssign))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Assign',
             'modal' => 'assign',
@@ -11,7 +11,7 @@
           ])
         @endif
 
-        @if ($ticket->isOpen() && isset($withReply))
+        @if ($ticket->status()->open() && isset($withReply))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Add Reply',
             'modal' => 'reply',
@@ -19,7 +19,7 @@
           ])
         @endif
 
-        @if ($ticket->isOpen() && isset($withNote))
+        @if ($ticket->status()->open() && isset($withNote))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Add Note',
             'modal' => 'note',
@@ -27,7 +27,7 @@
           ])
         @endif
 
-        @if ($ticket->isOpen() && isset($withClose))
+        @if ($ticket->status()->open() && isset($withClose))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Close Ticket',
             'modal' => 'close',
@@ -35,7 +35,7 @@
           ])
         @endif
 
-        @if ($ticket->isClosed() && isset($withOpen))
+        @if ($ticket->status()->closed() && isset($withOpen))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Reopen Ticket',
             'modal' => 'open',
@@ -43,7 +43,7 @@
           ])
         @endif
 
-        @if ($ticket->isOpen() && isset($withCollab))
+        @if ($ticket->status()->open() && isset($withCollab))
           @include('helpdesk::partials.toolbar.item', [
             'text' => 'Add Collaborator',
             'modal' => 'collab',

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Builder;
 

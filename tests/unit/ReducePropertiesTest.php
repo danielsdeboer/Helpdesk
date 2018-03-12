@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Tests\fixtures\LevelOne;
 
-class ReducePropertiesTest extends TestCase
+class ReducePropertiesTest extends BKTestCase
 {
     /** @test */
     public function it_takes_an_object_and_a_dot_notated_path_and_gets_the_properties ()

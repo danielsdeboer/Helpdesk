@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class UserDashboardTest extends TestCase
+class UserDashboardTest extends BKTestCase
 {
     const URI = 'helpdesk/dashboard/user';
 
@@ -19,7 +19,7 @@ class UserDashboardTest extends TestCase
     public function a_user_can_visit_their_dashboard()
     {
         $this->be($this->make->user);
-        $this->get(self::URI);
+        $this->visit(self::URI);
 
         $this->assertResponseOk();
     }

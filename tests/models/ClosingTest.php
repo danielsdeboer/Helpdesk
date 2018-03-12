@@ -6,7 +6,7 @@ use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Notifications\External\Closed;
 
-class ClosingTest extends AbstractModelTest
+class ClosingTest extends AbstractModelBKTest
 {
     /** @test */
     public function creating_a_closing_creates_an_action_via_its_observer()

@@ -11,12 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler;
-use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
+use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowserKit;
 
-abstract class TestCase extends Orchestra
+abstract class BKTestCase extends OrchestraBrowserKit
 {
     /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
     protected $make;
@@ -55,24 +54,10 @@ abstract class TestCase extends Orchestra
         $this->make = new Make();
         $this->get = new Get();
 
-        TestResponse::macro('data', function ($key) {
-            /* @noinspection PhpUndefinedFieldInspection */
-            return $this->original->getData()[$key];
-        });
-
         Collection::macro('assertContains', function ($value) {
-            /* @noinspection PhpParamsInspection */
             Assert::assertTrue(
                 $this->contains($value),
                 'Failed asserting that the collection contains the given value.'
-            );
-        });
-
-        Collection::macro('assertDoesntContain', function ($value) {
-            /* @noinspection PhpParamsInspection */
-            Assert::assertFalse(
-                $this->contains($value),
-                'Failed asserting that the collection does not contain the given value.'
             );
         });
     }

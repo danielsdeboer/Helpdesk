@@ -8,6 +8,9 @@ use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 
 class NotificationsProvider extends ServiceProvider
 {
+    /** @var bool */
+    protected $defer = true;
+
     /**
      * Register application bindings.
      */

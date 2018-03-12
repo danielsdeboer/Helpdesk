@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
 
-class AgentsOnlyTest extends TestCase
+class AgentsOnlyBKTest extends BKTestCase
 {
     public function setUp()
     {

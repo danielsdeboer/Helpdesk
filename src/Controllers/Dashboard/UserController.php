@@ -3,7 +3,7 @@
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
 use Illuminate\Routing\Controller;
-use Aviator\Helpdesk\Repositories\Tickets;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class UserController extends Controller
 {
@@ -17,13 +17,14 @@ class UserController extends Controller
 
     /**
      * Display an index of the controller.
-     * @return Response
+     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
+     * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(TicketsRepository $tickets)
     {
         return view('helpdesk::dashboard.index', [
-            'open' => Tickets::forUser(auth()->user())->all(),
-            'overdue' => Tickets::forUser(auth()->user())->overdue(),
+            'open' => $tickets->open()->get(),
+            'overdue' => $tickets->overdue()->get(),
             'tab' => 'dashboard',
         ]);
     }
