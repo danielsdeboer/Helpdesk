@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk;
 
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Support\ServiceProvider;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class RepositoriesProvider extends ServiceProvider
 {

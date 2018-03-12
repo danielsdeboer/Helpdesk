@@ -2,22 +2,22 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Helpers\Ticket\Contents;
-use Aviator\Helpdesk\Helpers\Ticket\Status;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Aviator\Helpdesk\Helpers\Ticket\Status;
+use Aviator\Helpdesk\Helpers\Ticket\Contents;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class Ticket.
@@ -52,7 +52,7 @@ class Ticket extends AbstractModel
 
     /** @var string */
     protected $configKey = 'helpdesk.tables.tickets';
-    
+
     /** @var array */
     protected $dates = [
         'created_at',
@@ -92,7 +92,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false) : Ticket
+    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false) : self
     {
         Assignment::query()
             ->create([
@@ -114,7 +114,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToTeam ($team, Agent $creator = null, $isVisible = false) : Ticket
+    public function assignToTeam ($team, Agent $creator = null, $isVisible = false) : self
     {
         TeamAssignment::query()
             ->create([
@@ -145,7 +145,7 @@ class Ticket extends AbstractModel
      * @param  bool $isVisible
      * @return Ticket
      */
-    public function dueOn ($date, Agent $creator = null, $isVisible = true) : Ticket
+    public function dueOn ($date, Agent $creator = null, $isVisible = true) : self
     {
         DueDate::query()
             ->create([
@@ -168,7 +168,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function close ($note, $creator) : Ticket
+    public function close ($note, $creator) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('An agent or user must be provided when closing a ticket.');
@@ -202,7 +202,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function open ($note, $creator) : Ticket
+    public function open ($note, $creator) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('A user or agent is required when opening a ticket.');
@@ -234,7 +234,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function note ($body, $creator, $isVisible = true) : Ticket
+    public function note ($body, $creator, $isVisible = true) : self
     {
         if (! $creator) {
             throw new CreatorRequiredException('A user or agent is required when adding a note.');
@@ -264,7 +264,7 @@ class Ticket extends AbstractModel
      * @param  Agent $agent
      * @return Ticket
      */
-    public function internalReply ($body, Agent $agent) : Ticket
+    public function internalReply ($body, Agent $agent) : self
     {
         Reply::query()
             ->create([
@@ -286,7 +286,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorMustBeAUserException
      */
-    public function externalReply ($body, $user) : Ticket
+    public function externalReply ($body, $user) : self
     {
         $userClass = config('helpdesk.userModel');
 
@@ -314,7 +314,7 @@ class Ticket extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Agent $creator
      * @return Ticket
      */
-    public function addCollaborator (Agent $collab, Agent $creator) : Ticket
+    public function addCollaborator (Agent $collab, Agent $creator) : self
     {
         $collabs = $this->collaborators()->with('agent')->get();
 
@@ -334,7 +334,7 @@ class Ticket extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return Ticket
      */
-    public function removeCollaborator (Agent $agent) : Ticket
+    public function removeCollaborator (Agent $agent) : self
     {
         $this->collaborators()->where('agent_id', $agent->id)->delete();
 
@@ -396,7 +396,7 @@ class Ticket extends AbstractModel
      */
     public function scopeUuid (Builder $query, string $uuid)
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        /* @noinspection PhpIncompatibleReturnTypeInspection */
         return $query->where('uuid', $uuid)->first();
     }
 

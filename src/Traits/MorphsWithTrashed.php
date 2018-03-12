@@ -12,7 +12,7 @@ trait MorphsWithTrashed
      */
     protected function morphToWithTrashed (string $name) : MorphTo
     {
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         return $this->morphTo($name)->withTrashed();
     }
 }

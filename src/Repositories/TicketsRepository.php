@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
+use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Collection;
 
 class TicketsRepository
 {
@@ -38,7 +38,7 @@ class TicketsRepository
      */
     public function __construct (Ticket $ticket, User $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             abort(430);
         }
 
@@ -175,7 +175,7 @@ class TicketsRepository
     private function addScope (string $name, $arguments = []) : self
     {
         $this->query->scopes([
-            $name => is_array($arguments) ? $arguments : [$arguments]
+            $name => is_array($arguments) ? $arguments : [$arguments],
         ]);
 
         return $this;

@@ -2,12 +2,11 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property mixed user
@@ -76,7 +75,7 @@ class Agent extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent
      */
-    public function makeTeamLeadOf (Team $team) : Agent
+    public function makeTeamLeadOf (Team $team) : self
     {
         // If the agent is already in the team but not team lead
         // we need to detach first. This does nothing otherwise.
@@ -94,7 +93,7 @@ class Agent extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent
      */
-    public function removeTeamLeadOf (Team $team) : Agent
+    public function removeTeamLeadOf (Team $team) : self
     {
         $this->teams()->detach($team);
 
@@ -110,7 +109,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return Agent
      */
-    public function addToTeam (Team $team) : Agent
+    public function addToTeam (Team $team) : self
     {
         $this->teams()->attach($team->id);
 
@@ -122,7 +121,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return Agent
      */
-    public function removeFromTeam (Team $team) : Agent
+    public function removeFromTeam (Team $team) : self
     {
         $this->teams()->detach($team->id);
 
@@ -134,7 +133,7 @@ class Agent extends AbstractModel
      * @param array $teams
      * @return Agent
      */
-    public function addToTeams (array $teams) : Agent
+    public function addToTeams (array $teams) : self
     {
         foreach ($teams as $team) {
             $this->teams()->attach($team);
@@ -148,7 +147,7 @@ class Agent extends AbstractModel
      * @param array $teams
      * @return Agent
      */
-    public function removeFromTeams (array $teams) : Agent
+    public function removeFromTeams (array $teams) : self
     {
         foreach ($teams as $team) {
             $this->teams()->detach($team);

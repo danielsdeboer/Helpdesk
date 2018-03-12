@@ -14,36 +14,36 @@ class TicketsRepositoryBKTest extends BKTestCase
         return app(TicketsRepository::class);
     }
 
-   /** @test */
-   public function it_scopes_queries_to_the_user ()
-   {
-       $user = $this->make->user;
+    /** @test */
+    public function it_scopes_queries_to_the_user ()
+    {
+        $user = $this->make->user;
 
-       // The ticket assigned to this user
-       $this->make->ticket($user);
+        // The ticket assigned to this user
+        $this->make->ticket($user);
 
-       // Some other ticket
-       $this->make->ticket;
+        // Some other ticket
+        $this->make->ticket;
 
-       $this->be($user);
-       $repo = $this->repo();
+        $this->be($user);
+        $repo = $this->repo();
 
-       $this->assertCount(1, $repo->get());
-   }
+        $this->assertCount(1, $repo->get());
+    }
 
-   /** @test */
-   public function it_scopes_queries_to_the_agent ()
-   {
-       $agent = $this->make->agent;
+    /** @test */
+    public function it_scopes_queries_to_the_agent ()
+    {
+        $agent = $this->make->agent;
 
-       $this->make->ticket->assignToAgent($agent);
-       $this->make->ticket;
+        $this->make->ticket->assignToAgent($agent);
+        $this->make->ticket;
 
-       $this->be($agent->user);
-       $repo = $this->repo();
+        $this->be($agent->user);
+        $repo = $this->repo();
 
-       $this->assertCount(1, $repo->get());
-   }
+        $this->assertCount(1, $repo->get());
+    }
 
     /** @test */
     public function it_scopes_queries_to_the_super ()
@@ -56,56 +56,56 @@ class TicketsRepositoryBKTest extends BKTestCase
         $repo = $this->repo();
 
         $this->assertCount(2, $repo->get());
-   }
+    }
 
     /**
      * @test
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-   public function it_gets_open_tickets ()
-   {
-       $super = $this->make->super;
+    public function it_gets_open_tickets ()
+    {
+        $super = $this->make->super;
 
-       $this->make->ticket;
-       $this->make->ticket->close(null, $super);
-       $this->make->ticket->close(null, $super);
+        $this->make->ticket;
+        $this->make->ticket->close(null, $super);
+        $this->make->ticket->close(null, $super);
 
-       $this->be($super->user);
-       $repo = $this->repo()->open();
+        $this->be($super->user);
+        $repo = $this->repo()->open();
 
-       $this->assertCount(1, $repo->get());
-   }
+        $this->assertCount(1, $repo->get());
+    }
 
     /**
      * @test
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-   public function it_gets_closed_tickets ()
-   {
-       $super = $this->make->super;
+    public function it_gets_closed_tickets ()
+    {
+        $super = $this->make->super;
 
-       $this->make->ticket;
-       $this->make->ticket->close(null, $super);
-       $this->make->ticket->close(null, $super);
+        $this->make->ticket;
+        $this->make->ticket->close(null, $super);
+        $this->make->ticket->close(null, $super);
 
-       $this->be($super->user);
-       $repo = $this->repo()->closed();
+        $this->be($super->user);
+        $repo = $this->repo()->closed();
 
-       $this->assertCount(2, $repo->get());
-   }
+        $this->assertCount(2, $repo->get());
+    }
 
-   /** @test */
-   public function it_gets_overdue_tickets ()
-   {
-       $super = $this->make->super;
+    /** @test */
+    public function it_gets_overdue_tickets ()
+    {
+        $super = $this->make->super;
 
-       $this->make->ticket;
-       $this->make->ticket->dueOn('10 days ago');
-       $this->make->ticket->dueOn('1 year ago');
+        $this->make->ticket;
+        $this->make->ticket->dueOn('10 days ago');
+        $this->make->ticket->dueOn('1 year ago');
 
-       $this->be($super->user);
-       $repo = $this->repo()->overdue();
+        $this->be($super->user);
+        $repo = $this->repo()->overdue();
 
-       $this->assertCount(2, $repo->get());
-   }
+        $this->assertCount(2, $repo->get());
+    }
 }
