@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
 
-class ReplyTest extends AbstractModelTest
+class ReplyTest extends AbstractModelBKTest
 {
     /** @test */
     public function it_creates_an_action_via_its_observer()

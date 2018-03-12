@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 
-class TicketAccessTest extends TestCase
+class TicketAccessBKTest extends BKTestCase
 {
     /** @const string */
     const URI = 'guarded/';

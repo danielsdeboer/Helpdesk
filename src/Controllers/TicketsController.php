@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Http\Request;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
@@ -43,19 +44,23 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
+     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(TicketsRepository $tickets)
     {
         $agent = Agent::query()
             ->where('user_id', auth()->user()->id)
             ->first();
 
-        $open = TicketsQuery::make($agent)
-            ->withRelations($this->relations)
-            ->openOnly()
-            ->orderByDueSoonest()
-            ->query();
+        $open = $tickets->with($this->relations)
+            ->open();
+//            ->orderBy('dueDate', 'asc');
+//        $open = TicketsQuery::make($agent)
+//            ->withRelations($this->relations)
+//            ->openOnly()
+//            ->orderByDueSoonest()
+//            ->query();
 
         $closed = TicketsQuery::make($agent)
             ->withRelations($this->relations)

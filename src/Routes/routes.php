@@ -90,15 +90,15 @@ Route::group([
 
     // Tickets Group
     Route::group([
-        'as' => config('helpdesk.routes.tickets.prefix') . '.',
+        'as' => 'tickets.',
         'prefix' => config('helpdesk.routes.tickets.prefix'),
     ], function () {
 
         // Index
         Route::get(
             config('helpdesk.routes.tickets.index.route'),
-            config('helpdesk.controllers.tickets.index')
-        )->name(config('helpdesk.routes.tickets.index.name'));
+            '\Aviator\Helpdesk\Controllers\Users\TicketsController@index'
+        )->name('index');
 
         // Opened index
         Route::get(

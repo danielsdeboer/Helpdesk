@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class UserDashboardTest extends TestCase
+class UserDashboardTest extends BKTestCase
 {
     const URI = 'helpdesk/dashboard/user';
 

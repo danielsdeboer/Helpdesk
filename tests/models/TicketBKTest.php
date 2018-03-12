@@ -8,7 +8,7 @@ use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 
-class TicketTest extends TestCase
+class TicketBKTest extends BKTestCase
 {
     /** @test */
     public function it_has_an_automatically_generated_uuid()

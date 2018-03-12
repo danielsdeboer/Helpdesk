@@ -6,17 +6,16 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
-use Orchestra\Testbench\TestCase as Orchestra;
+use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowserKit;
 use PHPUnit\Framework\Assert;
 
-abstract class TestCase extends Orchestra
+abstract class BKTestCase extends OrchestraBrowserKit
 {
     /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
     protected $make;
@@ -55,21 +54,10 @@ abstract class TestCase extends Orchestra
         $this->make = new Make();
         $this->get = new Get();
 
-        TestResponse::macro('data', function ($key) {
-            return $this->original->getData()[$key];
-        });
-
         Collection::macro('assertContains', function ($value) {
             Assert::assertTrue(
                 $this->contains($value),
                 'Failed asserting that the collection contains the given value.'
-            );
-        });
-
-        Collection::macro('assertDoesntContain', function ($value) {
-            Assert::assertFalse(
-                $this->contains($value),
-                'Failed asserting that the collection does not contain the given value.'
             );
         });
     }

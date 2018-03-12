@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Repositories;
 
 use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 
@@ -27,6 +28,9 @@ class TicketsRepository
         'opening',
     ];
 
+    /** @var int */
+    private $resultsPerPage = 24;
+
     /**
      * Constructor.
      * @param \Aviator\Helpdesk\Models\Ticket $ticket
@@ -41,6 +45,23 @@ class TicketsRepository
         $this->query = $ticket->query();
         $this->user = $user;
         $this->scopeToUser();
+    }
+
+    /**
+     * @return \Aviator\Helpdesk\Repositories\TicketsRepository
+     */
+    public function clone ()
+    {
+        return new self(new Ticket, $this->user);
+    }
+
+    /**
+     * Get a count of the result set.
+     * @return int
+     */
+    public function count () : int
+    {
+        return $this->query->count();
     }
 
     /**
@@ -65,6 +86,29 @@ class TicketsRepository
             ->with($this->relations)
             ->orderBy($this->orderByColumn, $this->orderByDirection)
             ->get();
+    }
+
+    /**
+     * @param int $resultsPerPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function paginate (int $resultsPerPage = null) : LengthAwarePaginator
+    {
+        return $this->query
+            ->with($this->relations)
+            ->orderBy($this->orderByColumn, $this->orderByDirection)
+            ->paginate($resultsPerPage ?: $this->resultsPerPage);
+    }
+
+    /**
+     * @param array $relations
+     * @return $this
+     */
+    public function with (array $relations)
+    {
+        $this->relations = $relations;
+
+        return $this;
     }
 
     /**

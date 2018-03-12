@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class TeamTest extends TestCase
+class TeamTest extends BKTestCase
 {
     /** @test */
     public function adding_multiple_team_leads ()

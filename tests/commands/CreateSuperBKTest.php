@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Artisan;
 
-class CreateSuperTest extends TestCase
+class CreateSuperBKTest extends BKTestCase
 {
     /**
      * @test

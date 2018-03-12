@@ -1,11 +1,12 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Fixtures;
 
 use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Tests\User;
 use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;

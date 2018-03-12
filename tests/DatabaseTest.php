@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Carbon\Carbon;
 
-class DatabaseTest extends TestCase
+class DatabaseTest extends BKTestCase
 {
     /**
      * @group database

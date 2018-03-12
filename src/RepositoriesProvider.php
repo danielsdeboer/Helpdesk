@@ -8,10 +8,13 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoriesProvider extends ServiceProvider
 {
+    /** @var bool */
+    protected $defer = true;
+
     /**
-     * Bootstrap the application services.
+     * Register any application services.
      */
-    public function boot ()
+    public function register ()
     {
         $this->app->bind(
             TicketsRepository::class,

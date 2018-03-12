@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class AdminTeamsDeleteTest extends TestCase
+class AdminTeamsDeleteTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/admin/teams';

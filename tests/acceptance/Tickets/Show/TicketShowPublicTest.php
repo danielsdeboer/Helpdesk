@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class TicketShowPublicTest extends TestCase
+class TicketShowPublicTest extends BKTestCase
 {
     const URI = 'helpdesk/tickets/public/';
 

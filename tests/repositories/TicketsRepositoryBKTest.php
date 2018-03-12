@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
-class TicketsRepositoryTest extends TestCase
+class TicketsRepositoryBKTest extends BKTestCase
 {
     /**
      * @return \Aviator\Helpdesk\Repositories\TicketsRepository

@@ -6,7 +6,7 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Queries\TicketsQuery;
 
-class TicketsQueryTest extends TestCase
+class TicketsQueryBKTest extends BKTestCase
 {
     /** @test */
     public function it_returns_tickets ()

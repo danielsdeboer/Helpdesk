@@ -6,7 +6,7 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Helpers\Helpers;
 
-class HelpersTest extends TestCase
+class HelpersBKTest extends BKTestCase
 {
     /**
      * @group unit

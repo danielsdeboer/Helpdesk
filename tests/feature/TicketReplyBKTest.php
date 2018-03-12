@@ -5,19 +5,19 @@ namespace Aviator\Helpdesk\Tests\Feature;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketCloseTest extends TestCase
+class TicketReplyBKTest extends BKTestCase
 {
     /**
      * @group feature
      * @group feature.tickets
-     * @group feature.tickets.closings
+     * @group feature.tickets.replies
      * @test
      */
-    public function a_guest_cannot_close()
+    public function a_guest_cannot_reply()
     {
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . factory(Ticket::class)->create()->id);
+        $response = $this->call('POST', 'helpdesk/tickets/reply/' . factory(Ticket::class)->create()->id);
 
         $this->assertRedirectedTo('login');
     }
@@ -25,13 +25,13 @@ class TicketCloseTest extends TestCase
     /**
      * @group feature
      * @group feature.tickets
-     * @group feature.tickets.closings
+     * @group feature.tickets.replies
      * @test
      */
-    public function a_user_cannot_close_someone_elses_ticket()
+    public function a_user_cannot_reply_to_someone_elses_ticket()
     {
         $this->be(factory(User::class)->create());
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . factory(Ticket::class)->create()->id);
+        $response = $this->call('POST', 'helpdesk/tickets/reply/' . factory(Ticket::class)->create()->id);
 
         $this->assertResponseStatus(403);
     }
@@ -39,10 +39,10 @@ class TicketCloseTest extends TestCase
     /**
      * @group feature
      * @group feature.tickets
-     * @group feature.tickets.closings
+     * @group feature.tickets.replies
      * @test
      */
-    public function a_user_can_close_to_their_own_ticket()
+    public function a_user_can_reply_to_their_own_ticket()
     {
         $user = factory(User::class)->create();
         $ticket = factory(Ticket::class)->create([
@@ -50,27 +50,29 @@ class TicketCloseTest extends TestCase
         ]);
 
         $this->be($user);
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . $ticket->id);
-
-        $ticket = $ticket->fresh();
+        $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
+            'reply_body' => 'test body',
+        ]);
 
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->status()->closed());
+        $this->assertEquals('test body', $ticket->externalReplies->first()->body);
     }
 
     /**
      * @group feature
      * @group feature.tickets
-     * @group feature.tickets.closings
+     * @group feature.tickets.replies
      * @test
      */
-    public function an_agent_cannot_close_an_unassigned_ticket()
+    public function an_agent_cannot_reply_to_an_unassigned_ticket()
     {
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create();
 
         $this->be($agent->user);
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . $ticket->id);
+        $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
+            'body' => 'test body',
+        ]);
 
         $this->assertResponseStatus(403);
     }
@@ -78,23 +80,20 @@ class TicketCloseTest extends TestCase
     /**
      * @group feature
      * @group feature.tickets
-     * @group feature.tickets.closings
+     * @group feature.tickets.replies
      * @test
      */
-    public function an_agent_can_close_an_assigned_ticket()
+    public function an_agent_can_reply_to_an_assigned_ticket()
     {
         $agent = factory(Agent::class)->create();
         $ticket = factory(Ticket::class)->create()->assignToAgent($agent);
 
         $this->be($agent->user);
-        $response = $this->call('POST', 'helpdesk/tickets/close/' . $ticket->id, [
-            'note' => 'test body',
+        $response = $this->call('POST', 'helpdesk/tickets/reply/' . $ticket->id, [
+            'reply_body' => 'test body',
         ]);
 
-        $ticket = $ticket->fresh();
-
         $this->assertRedirectedTo('helpdesk/tickets/' . $ticket->id);
-        $this->assertTrue($ticket->status()->closed());
-        $this->assertEquals('test body', $ticket->closing->note);
+        $this->assertEquals('test body', $ticket->internalReplies->first()->body);
     }
 }

@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
 
-class SupervisorsOnlyTest extends TestCase
+class SupervisorsOnlyBKTest extends BKTestCase
 {
     /** @const string */
     const URI = '/guarded';

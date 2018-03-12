@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Aviator\Helpdesk\Notifications\Generic;
 use Illuminate\Support\Facades\Notification;
 
-abstract class AbstractModelTest extends TestCase
+abstract class AbstractModelBKTest extends BKTestCase
 {
     protected function assertSentTo($user)
     {

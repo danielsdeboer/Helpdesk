@@ -5,9 +5,9 @@ namespace Aviator\Helpdesk\Tests\Feature;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\BKTestCase;
 
-class TicketOpenTest extends TestCase
+class TicketOpenBKTest extends BKTestCase
 {
     /**
      * @group feature

@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class ActionTest extends TestCase
+class ActionTest extends BKTestCase
 {
     /** @test */
     public function it_has_an_object()

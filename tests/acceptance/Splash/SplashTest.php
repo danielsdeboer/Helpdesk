@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class SplashTest extends TestCase
+class SplashTest extends BKTestCase
 {
     /** @test */
     public function the_splash_exists()

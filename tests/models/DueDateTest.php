@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Carbon\Carbon;
 
-class DueDateTest extends TestCase
+class DueDateTest extends BKTestCase
 {
     /** @test */
     public function creating_a_due_date_creates_an_action_via_its_observer()
