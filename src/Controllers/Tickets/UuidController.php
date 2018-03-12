@@ -16,10 +16,6 @@ class UuidController extends Controller
     {
         $ticket = Ticket::whereUuid($uuid)->first();
 
-        if (!$ticket) {
-            return redirect()->route('helpdesk.tickets.index');
-        }
-
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,
             'withOpen' => true,
