@@ -23,7 +23,7 @@ class ClosingController extends Controller
      */
     protected function create(Request $request, Ticket $ticket)
     {
-        if (! $ticket) {
+        if (!$ticket) {
             return redirect()->route('helpdesk.tickets.index');
         }
 
