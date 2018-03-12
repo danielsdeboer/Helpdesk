@@ -23,10 +23,6 @@ class AssignmentController extends Controller
      */
     protected function create(Request $request, Ticket $ticket)
     {
-        if (!$ticket) {
-            return redirect()->route('helpdesk.tickets.index');
-        }
-
         $agent = Agent::findOrFail($request->agent_id);
 
         $ticket->assignToAgent($agent, null, true);
