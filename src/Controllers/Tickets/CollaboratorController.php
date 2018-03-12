@@ -23,7 +23,7 @@ class CollaboratorController extends Controller
      */
     public function create(Ticket $ticket)
     {
-        if (! $ticket) {
+        if (!$ticket) {
             return redirect()->route('helpdesk.tickets.index');
         }
 
