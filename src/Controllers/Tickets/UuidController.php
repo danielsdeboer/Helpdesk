@@ -23,6 +23,5 @@ class UuidController extends Controller
             'withReply' => true,
             'showPrivate' => false,
         ]);
-
     }
 }
