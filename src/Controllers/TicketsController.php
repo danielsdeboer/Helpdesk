@@ -128,7 +128,7 @@ class TicketsController extends Controller
             ->findOrFail($id);
 
         switch (true) {
-            case ! $agent:
+            case !$agent:
                 return $this->showForUser();
             case $agent && $agent->isSuper():
                 return $this->showForSuper();
@@ -314,7 +314,7 @@ class TicketsController extends Controller
             return true;
         }
 
-        if (! $agent && $ticket->user->id == $user->id) {
+        if (!$agent && $ticket->user->id == $user->id) {
             $this->for = 'user';
 
             return true;
