@@ -21,12 +21,14 @@
 @endif
 
 {{-- CLOSE A TICKET --}}
-<div class="modal" v-bind:class="{
-  'is-active': modals.close.visible
-}" v-if="modals.close.visible"
-     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<div
+  class="modal"
+  v-bind:class="{
+    'is-active': modals.close.visible
+  }"
+  v-if="modals.close.visible"
+  @keydown.esc="close('close')"
+>
   <div class="modal-background" @click="toggle('close')"></div>
   <div class="modal-content">
     <div class="box">
@@ -55,9 +57,13 @@
 </div>
 
 {{-- REPLY TO A TICKET --}}
-<div class="modal" v-bind:class="{
-  'is-active': modals.reply.visible
-}" v-if="modals.reply.visible"
+<div
+  class="modal"
+  v-bind:class="{
+    'is-active': modals.reply.visible
+  }"
+  v-if="modals.reply.visible"
+  @keydown.esc="close('reply')"
 >
   <div class="modal-background" @click="toggle('reply')"></div>
   <div class="modal-content">
@@ -93,6 +99,7 @@
     'is-active': modals.open.visible
   }"
   v-if="modals.open.visible"
+  @keydown.esc="close('open')"
 >
   <div class="modal-background" @click="toggle('open')"></div>
   <div class="modal-content">
@@ -134,20 +141,26 @@
     data: {
       modals: {
         close: {
-          visible: false,
+          visible: false
         },
         open: {
-          visible: false,
+          visible: false
         },
         reply: {
-          visible: false,
-        },
-      },
+          visible: false
+        }
+      }
     },
 
     methods: {
-      toggle: function(modal) {
-        this.modals[modal].visible = ! this.modals[modal].visible;
+      toggle: function (modal) {
+        this.modals[modal].visible = ! this.modals[modal].visible
+      },
+
+      close: function (modal) {
+        if (this.modals[modal].visible) {
+            this.toggle(modal)
+        }
       }
     }
   });
