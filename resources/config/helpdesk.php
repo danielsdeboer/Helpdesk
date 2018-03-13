@@ -58,7 +58,6 @@ return [
     'notification' => \Aviator\Helpdesk\Notifications\Generic::class,
 
     'notifications' => [
-
         'opened' => [
             'subject' => 'Your ticket has been opened!',
             'greeting' => 'Hey there,',

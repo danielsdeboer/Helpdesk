@@ -630,7 +630,7 @@ class Ticket extends AbstractModel
     /**
      * @return MorphTo
      */
-    public function content () : MorphTo
+    public function content ()
     {
         return $this->morphTo()->withTrashed();
     }
@@ -638,7 +638,7 @@ class Ticket extends AbstractModel
     /**
      * @return MorphMany
      */
-    public function actions () : MorphMany
+    public function actions ()
     {
         return $this->morphMany(Action::class, 'subject');
     }
@@ -646,7 +646,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function assignments () : HasMany
+    public function assignments ()
     {
         return $this->hasMany(Assignment::class);
     }
@@ -654,7 +654,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasOne
      */
-    public function assignment () : HasOne
+    public function assignment ()
     {
         return $this->hasOne(Assignment::class)
             ->latest();
@@ -663,7 +663,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function teamAssignments() : HasMany
+    public function teamAssignments ()
     {
         return $this->hasMany(TeamAssignment::class);
     }
@@ -671,7 +671,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasOne
      */
-    public function teamAssignment() : HasOne
+    public function teamAssignment ()
     {
         return $this->hasOne(TeamAssignment::class)
             ->latest();
@@ -680,7 +680,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function dueDates () : HasMany
+    public function dueDates ()
     {
         return $this->hasMany(DueDate::class);
     }
@@ -688,7 +688,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasOne
      */
-    public function dueDate () : HasOne
+    public function dueDate ()
     {
         return $this->hasOne(DueDate::class)->latest();
     }
@@ -696,7 +696,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function internalReplies () : HasMany
+    public function internalReplies ()
     {
         return $this->hasMany(Reply::class)->whereNotNull('agent_id');
     }
@@ -704,7 +704,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function externalReplies () : HasMany
+    public function externalReplies ()
     {
         return $this->hasMany(Reply::class)->whereNotNull('user_id');
     }
@@ -712,7 +712,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasOne
      */
-    public function closing () : HasOne
+    public function closing ()
     {
         return $this->hasOne(Closing::class)->latest();
     }
@@ -720,7 +720,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function closings () : HasMany
+    public function closings ()
     {
         return $this->hasMany(Closing::class);
     }
@@ -728,7 +728,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasOne
      */
-    public function opening () : HasOne
+    public function opening ()
     {
         return $this->hasOne(Opening::class)->orderBy('id', 'desc');
     }
@@ -736,7 +736,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function openings () : HasMany
+    public function openings ()
     {
         return $this->hasMany(Opening::class);
     }
@@ -744,7 +744,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function notes () : HasMany
+    public function notes ()
     {
         return $this->hasMany(Note::class);
     }
@@ -752,7 +752,7 @@ class Ticket extends AbstractModel
     /**
      * @return HasMany
      */
-    public function collaborators () : HasMany
+    public function collaborators ()
     {
         return $this->hasMany(Collaborator::class);
     }
