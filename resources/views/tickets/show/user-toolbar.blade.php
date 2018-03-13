@@ -24,7 +24,9 @@
 <div class="modal" v-bind:class="{
   'is-active': modals.close.visible
 }" v-if="modals.close.visible"
->
+     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+     xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div class="modal-background" @click="toggle('close')"></div>
   <div class="modal-content">
     <div class="box">
@@ -85,9 +87,12 @@
 </div>
 
 {{-- OPEN A TICKET --}}
-<div class="modal" v-bind:class="{
-  'is-active': modals.open.visible
-}" v-if="modals.open.visible"
+<div
+  class="modal"
+  v-bind:class="{
+    'is-active': modals.open.visible
+  }"
+  v-if="modals.open.visible"
 >
   <div class="modal-background" @click="toggle('open')"></div>
   <div class="modal-content">
@@ -131,7 +136,7 @@
         close: {
           visible: false,
         },
-        assign: {
+        open: {
           visible: false,
         },
         reply: {
