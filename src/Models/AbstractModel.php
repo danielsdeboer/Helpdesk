@@ -17,8 +17,10 @@ abstract class AbstractModel extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(
-            config($this->configKey)
-        );
+        if ($this->configKey) {
+            $this->setTable(
+                config($this->configKey)
+            );
+        }
     }
 }
