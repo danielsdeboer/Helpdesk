@@ -38,6 +38,7 @@
           'is-active': isVisible
         }"
         v-on:keydown.esc="close"
+        v-cloak
       >
         <div class="modal-background" @click="close"></div>
 

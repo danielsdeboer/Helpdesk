@@ -109,8 +109,43 @@ class ShowTest extends TestCase
         $response->assertSee('id="status-tag-closed"');
     }
 
-    public function it_only_ever_shows_add_reply_and_close_ticket_to_the_user ()
+    /** @test */
+    public function when_a_ticket_is_open_a_user_may_close_or_reply ()
     {
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
 
+        $this->be($user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSee('id="toolbar-action-close"');
+        $response->assertSee('id="toolbar-action-reply"');
+        $response->assertDontSee('id="toolbar-action-open"');
+
+        $ticket->close('note', $user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertDontSee('id="toolbar-action-close"');
+        $response->assertDontSee('id="toolbar-action-reply"');
+        $response->assertSee('id="toolbar-action-open"');
+    }
+
+    /** @test */
+    public function a_user_does_not_see_agent_actions ()
+    {
+        $adminActions = ['assign', 'note', 'collab'];
+
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+
+        $this->be($user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        foreach ($adminActions as $action) {
+            $response->assertDontSee('id="toolbar-action-' . $action . '"');
+        }
     }
 }
