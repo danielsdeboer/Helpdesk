@@ -27,7 +27,7 @@
     'is-active': modals.close.visible
   }"
   v-if="modals.close.visible"
-  @keydown.esc="close('close')"
+  v-on:keydown.esc="close('close')"
 >
   <div class="modal-background" @click="toggle('close')"></div>
   <div class="modal-content">
@@ -63,7 +63,7 @@
     'is-active': modals.reply.visible
   }"
   v-if="modals.reply.visible"
-  @keydown.esc="close('reply')"
+  v-on:keydown.esc="close('reply')"
 >
   <div class="modal-background" @click="toggle('reply')"></div>
   <div class="modal-content">
@@ -99,7 +99,7 @@
     'is-active': modals.open.visible
   }"
   v-if="modals.open.visible"
-  @keydown.esc="close('open')"
+  v-on:keydown.esc="close('open')"
 >
   <div class="modal-background" @click="toggle('open')"></div>
   <div class="modal-content">
