@@ -14266,6 +14266,14 @@ namespace Illuminate\Foundation\Testing {
         {
             return $key;
         }
+
+        /**
+         * @param $name
+         * @return void
+         */
+        public function assertActiveHeaderTab ($name)
+        {
+        }
     }
 }
 

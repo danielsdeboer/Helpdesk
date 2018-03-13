@@ -60,6 +60,26 @@ abstract class TestCase extends Orchestra
             return $this->original->getData()[$key];
         });
 
+        TestResponse::macro(
+            'assertActiveHeaderTab',
+            function (string $activeTab) {
+                $inactiveTabs = array_filter(
+                    ['dashboard', 'tickets', 'admin'],
+                    function ($item) use ($activeTab) {
+                        return $item !== $activeTab;
+                    }
+                );
+
+                /** @var TestResponse $this */
+                $this->assertSee('id="header-tab-'. $activeTab . '-active"');
+
+                foreach ($inactiveTabs as $tab) {
+                    /** @var TestResponse $this */
+                    $this->assertDontSee('id="header-tab-'. $tab . '-active"');
+                }
+            }
+        );
+
         Collection::macro('assertContains', function ($value) {
             /* @noinspection PhpParamsInspection */
             Assert::assertTrue(

@@ -28,6 +28,7 @@ class TicketsController extends Controller
      * Display an index of the resource.
      * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
      * @return \Illuminate\Contracts\View\View
+     * @throws \InvalidArgumentException
      */
     public function index (TicketsRepository $tickets)
     {
@@ -44,7 +45,6 @@ class TicketsController extends Controller
             'openCount' => $openTickets->count(),
             'closed' => $closedTickets->paginate(),
             'closedCount' => $closedTickets->count(),
-            'tab' => 'tickets',
         ]);
     }
 

@@ -13,41 +13,7 @@
           </div>
         </div>
 
-        <div class="level-right">
-          @if ($ticket->status()->open())
-            @if ($ticket->status()->overdue())
-              <div class="level-item">
-                <span class="tag is-danger is-medium">Overdue</span>
-              </div>
-            @else
-              <div class="level-item">
-                <span class="tag is-success is-medium">On Time</span>
-              </div>
-            @endif
-
-            @if (!$ticket->status()->assigned())
-              <div class="level-item">
-                <span class="tag is-danger is-medium">Not Assigned</span>
-              </div>
-            @endif
-
-            @if ($ticket->status()->assignedToAnAgent())
-              <div class="level-item">
-                <span class="tag is-success is-medium">Assigned</span>
-              </div>
-            @endif
-
-            @if ($ticket->status()->assignedToATeam())
-              <div class="level-item">
-                <span class="tag is-warning is-medium">Assigned To Team</span>
-              </div>
-            @endif
-          @else
-            <div class="level-item">
-              <span class="tag is-info is-medium">Closed</span>
-            </div>
-          @endif
-        </div>
+        @include('helpdesk::tickets.show.status')
       </div>
 
       @if($ticket->content)

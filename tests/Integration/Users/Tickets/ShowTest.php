@@ -69,4 +69,48 @@ class ShowTest extends TestCase
 
         dd(request()->is('*helpdesk/tickets*'));
     }
+
+    /** @test */
+    public function it_shows_the_header_with_tickets_tab_active ()
+    {
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+
+        $this->be($user);
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertActiveHeaderTab('tickets');
+    }
+
+    /** @test */
+    public function it_shows_tickets_statuses ()
+    {
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+
+        $this->be($user);
+
+        $response = $this->get($this->url($ticket->id));
+        $response->assertSee('id="status-tag-not-assigned"');
+
+        $ticket->assignToTeam($this->make->team);
+
+        $response = $this->get($this->url($ticket->id));
+        $response->assertSee('id="status-tag-assigned-to-team"');
+
+        $ticket->assignToAgent($this->make->agent);
+
+        $response = $this->get($this->url($ticket->id));
+        $response->assertSee('id="status-tag-assigned"');
+
+        $ticket->close(null, $user);
+
+        $response = $this->get($this->url($ticket->id));
+        $response->assertSee('id="status-tag-closed"');
+    }
+
+    public function it_only_ever_shows_add_reply_and_close_ticket_to_the_user ()
+    {
+
+    }
 }

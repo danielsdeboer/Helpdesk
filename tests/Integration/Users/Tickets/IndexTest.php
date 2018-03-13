@@ -66,9 +66,7 @@ class IndexTest extends TestCase
         $this->be($user);
         $response = $this->get($this->url);
 
-        $response->assertSee('id="header-tab-tickets-active"');
-        $response->assertDontSee('id="header-tab-dashboard-active"');
-        $response->assertDontSee('id="header-tab-admin-active"');
+        $response->assertActiveHeaderTab('tickets');
     }
 
     /** @test */

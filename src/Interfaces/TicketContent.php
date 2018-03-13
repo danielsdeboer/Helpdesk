@@ -7,12 +7,12 @@ interface TicketContent
     /**
      * @return string
      */
-    public function partial () : string;
+    public function partial ();
 
     /**
      * @return string
      */
-    public function title () : string;
+    public function title ();
 
     /**
      * Inherited from Model.

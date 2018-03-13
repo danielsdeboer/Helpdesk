@@ -47,9 +47,7 @@ return [
     ],
 
     'header' => [
-        'links' => [
-            ''
-        ]
+        'links' => []
     ],
 
     'from' => [
