@@ -88,6 +88,21 @@ Route::group([
         )->name('supervisor');
     });
 
+    Route::group([
+        'as' => 'agents.',
+        'prefix' => config('helpdesk.routes.agents.prefix')
+    ], function () {
+        Route::group([
+            'as' => 'tickets.',
+            'prefix' => config('helpdesk.routes.agents.tickets.prefix')
+        ], function () {
+            Route::get(
+                config('helpdesk.routes.agents.tickets.index'),
+                'Aviator\Helpdesk\Controllers\Agents\TicketsController@index'
+            )->name('index');
+        });
+    });
+
     // Tickets Group
     Route::group([
         'as' => 'tickets.',
@@ -97,7 +112,7 @@ Route::group([
         // Index
         Route::get(
             config('helpdesk.routes.tickets.index.route'),
-            config('helpdesk.controllers.tickets.index')
+            'Aviator\Helpdesk\Controllers\Users\TicketsController@index'
         )->name('index');
 
         // Opened index
@@ -114,8 +129,8 @@ Route::group([
 
         // Show
         Route::get(
-            config('helpdesk.routes.tickets.show.route'),
-            config('helpdesk.controllers.tickets.show')
+            config('helpdesk.routes.tickets.show'),
+            'Aviator\Helpdesk\Controllers\Users\TicketsController@show'
         )->name('show');
 
         // Show by uuid

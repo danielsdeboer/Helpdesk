@@ -42,7 +42,7 @@ class TicketsRepository
             abort(430);
         }
 
-        $this->query = $ticket->query();
+        $this->query = $ticket::query();
         $this->user = $user;
         $this->scopeToUser();
     }
@@ -71,9 +71,18 @@ class TicketsRepository
      */
     public function find (int $id)
     {
-        return $this->query
-            ->with($this->relations)
+        return $this->query()
             ->find($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Ticket|null
+     */
+    public function findOrFail (int $id)
+    {
+        return $this->query()
+            ->findOrFail($id);
     }
 
     /**
@@ -82,8 +91,7 @@ class TicketsRepository
      */
     public function get () : Collection
     {
-        return $this->query
-            ->with($this->relations)
+        return $this->query()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
             ->get();
     }
@@ -91,11 +99,11 @@ class TicketsRepository
     /**
      * @param int $resultsPerPage
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @throws \InvalidArgumentException
      */
     public function paginate (int $resultsPerPage = null) : LengthAwarePaginator
     {
-        return $this->query
-            ->with($this->relations)
+        return $this->query()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
             ->paginate($resultsPerPage ?: $this->resultsPerPage);
     }
@@ -179,6 +187,14 @@ class TicketsRepository
         ]);
 
         return $this;
+    }
+
+    /**
+     * @return $this|\Illuminate\Database\Eloquent\Builder|static
+     */
+    private function query ()
+    {
+        return $this->query->with($this->relations);
     }
 
     /**

@@ -24,6 +24,9 @@
   "autoload-dev": {
     "psr-4": {
       "Aviator\\Helpdesk\\Tests\\": "tests/"
-    }
+    },
+    "files": [
+      "tests/fixtures/functions.php"
+    ]
   }
 }

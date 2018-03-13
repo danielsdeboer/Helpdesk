@@ -1,27 +1,45 @@
 <nav class="nav has-shadow">
   <div class="container is-fluid">
-    <div class="nav-left">
+    <div class="nav-left" role="tablist">
       <a
         href="{{ route('helpdesk.dashboard.router') }}"
-        class="nav-item is-tab @if(isset($tab) && $tab == 'dashboard') is-active @endif"
-        id="header-tab-dashboard"
+        @if(request()->is('*dashboard*'))
+          class="nav-item is-tab is-active"
+          id="header-tab-dashboard-active"
+        @else
+          class="nav-item is-tab"
+          id="header-tab-dashboard"
+        @endif
+        role="tab"
       >
         Dashboard
       </a>
 
       <a
         href="{{ route('helpdesk.tickets.index') }}"
-        class="nav-item is-tab @if(isset($tab) && $tab == 'tickets') is-active @endif"
-        id="header-tab-tickets"
+        @if(request()->is('*tickets*'))
+          class="nav-item is-tab is-active"
+          id="header-tab-tickets-active"
+        @else
+          class="nav-item is-tab"
+          id="header-tab-tickets"
+        @endif
+        role="tab"
       >
         Tickets
       </a>
 
-      @if (isset($isSuper) && $isSuper)
+      @if (auth()->user()->agent && auth()->user()->agent->isSuper())
         <a
           href="{{ route('helpdesk.admin') }}"
-          class="nav-item is-tab @if(isset($tab) && $tab == 'admin') is-active @endif"
-          id="header-tab-admin"
+          @if(request()->is('*admin*'))
+            class="nav-item is-tab is-active"
+            id="header-tab-admin-active"
+          @else
+            class="nav-item is-tab"
+            id="header-tab-admin"
+          @endif
+          role="tab"
         >
           Admin
         </a>

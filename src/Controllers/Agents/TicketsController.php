@@ -1,8 +1,7 @@
 <?php
 
-namespace Aviator\Helpdesk\Controllers\Users;
+namespace Aviator\Helpdesk\Controllers\Agents;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
@@ -21,7 +20,7 @@ class TicketsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('helpdesk.users');
+        $this->middleware('helpdesk.agents');
     }
 
     /**
@@ -58,7 +57,7 @@ class TicketsController extends Controller
     {
         return view('helpdesk::tickets.show')->with([
             'for' => 'user',
-            'ticket' => $tickets->with($this->relations)->findOrFail($id),
+            'ticket' => $tickets->with($this->relations)->find($id),
             'withOpen' => true,
             'withClose' => true,
             'withReply' => true,

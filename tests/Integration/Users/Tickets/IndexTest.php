@@ -1,6 +1,8 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
+
+use Aviator\Helpdesk\Tests\TestCase;
 
 class IndexTest extends TestCase
 {
@@ -37,22 +39,36 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_sees_their_own_open_and_closed_tickets ()
+    public function users_only_see_their_own_open_and_closed_tickets ()
     {
         $user = $this->make->user;
         $openTicket = $this->make->ticket($user);
         $closedTicket = $this->make->ticket($user)->close(null, $user);
-        $notTheirOpenTicket = $this->make->ticket;
-        $notTheirClosedTicket = $this->make->ticket->close(null, $user);
+        $otherOpenTicket = $this->make->ticket;
+        $otherClosedTicket = $this->make->ticket->close(null, $user);
 
         $this->be($user);
 
         $response = $this->get($this->url);
 
         $response->data('open')->assertContains($openTicket);
-        $response->data('open')->assertDoesntContain($notTheirOpenTicket);
+        $response->data('open')->assertDoesntContain($otherOpenTicket);
         $response->data('closed')->assertContains($closedTicket);
-        $response->data('closed')->assertDoesntContain($notTheirClosedTicket);
+        $response->data('closed')->assertDoesntContain($otherClosedTicket);
+    }
+
+    /** @test */
+    public function only_the_header_tickets_tab_is_enabled ()
+    {
+        $this->withoutErrorHandling();
+        $user = $this->make->user;
+
+        $this->be($user);
+        $response = $this->get($this->url);
+
+        $response->assertSee('id="header-tab-tickets-active"');
+        $response->assertDontSee('id="header-tab-dashboard-active"');
+        $response->assertDontSee('id="header-tab-admin-active"');
     }
 
     /** @test */
@@ -62,6 +78,7 @@ class IndexTest extends TestCase
         $this->make->ticket($user);
 
         $this->be($user);
+
         $response = $this->get($this->url);
 
         $response->assertSee('<a id="open-see-more" class="button is-disabled">No more to show...</a>');

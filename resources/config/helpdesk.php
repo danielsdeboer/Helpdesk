@@ -46,6 +46,12 @@ return [
         'collaborators' => 'collaborators',
     ],
 
+    'header' => [
+        'links' => [
+            ''
+        ]
+    ],
+
     'from' => [
         'address' => 'noreply@test.com',
         'name' => 'Helpdesk Notifier',
@@ -134,6 +140,14 @@ return [
             'supervisor' => 'supervisor',
         ],
 
+        'agents' => [
+            'prefix' => 'agents',
+            'tickets' => [
+                'prefix' => 'tickets',
+                'index' => '/',
+            ],
+        ],
+
         'tickets' => [
             'prefix' => 'tickets',
             'index' => [
@@ -148,10 +162,8 @@ return [
                 'route' => 'closed',
                 'name' => 'closed',
             ],
-            'show' => [
-                'route' => '{ticket}',
-                'name' => 'show',
-            ],
+            'show' => '{ticket}',
+
             'uuid' => [
                 'route' => 'public/{uuid}',
                 'name' => 'public',
