@@ -3,30 +3,26 @@
   <tr>
     <th>Ticket Name</th>
     <th>Placed By</th>
-    <th>Opened</th>
+    <th>Created At</th>
+    <th>Closed At</th>
+    <th>Closed By</th>
   </tr>
   <tbody>
   @foreach($tickets as $ticket)
     <tr>
-      <td><a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ str_limit($ticket->content->title(), 50) }}</a></td>
+      <td>
+        <a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">
+          {{ str_limit($ticket->content->title(), 50) }}
+        </a>
+      </td>
 
-      <td>{{ $ticket->user->name or '(deleted)' }}</td>
+      <td>{{ $ticket->user->name ?? '(Deleted User)' }}</td>
 
-      @if (isset($withOpened))
-        <td>{{ $ticket->opening->created_at->diffForHumans() }}</td>
-      @endif
+      <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
 
-      @if (isset($withDue))
-        <td>{{ isset($ticket->dueDate->due_on) ? $ticket->dueDate->due_on->diffForHumans() : '' }}</td>
-      @endif
+      <td>{{ $ticket->closig->created_at->format('Y-m-d') }}</td>
 
-      @if (isset($withDueToday))
-        <td>Today</td>
-      @endif
-
-      @if (isset($withLastAction))
-        <td>{{ $ticket->actions->last()->created_at->diffForHumans() }}</td>
-      @endif
+      <td>{{ $ticket->closing->user->name ?? 'You' }}</td>
     </tr>
   @endforeach
 </table>
