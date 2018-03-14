@@ -9,6 +9,7 @@ class ClosedTicketsController extends Controller
 {
     /** @var array */
     protected $relations = [
+        'user',
         'content',
         'closing',
         'closing.user',
