@@ -69,7 +69,7 @@ Route::group([
         'prefix' => config('helpdesk.routes.dashboard.prefix'),
     ], function () {
         Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
-            ->middleware(\Aviator\Helpdesk\Middleware\DashboardRouter::class)
+            ->middleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class)
             ->name('router');
 
         Route::get(
@@ -108,6 +108,9 @@ Route::group([
         'as' => 'tickets.',
         'prefix' => config('helpdesk.routes.tickets.prefix'),
     ], function () {
+        Route::get('redirect', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
+            ->middleware(\Aviator\Helpdesk\Middleware\TicketsRedirector::class)
+            ->name('redirect');
 
         // Index
         Route::get(

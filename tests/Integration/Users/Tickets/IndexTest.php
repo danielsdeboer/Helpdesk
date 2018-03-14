@@ -19,13 +19,14 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_may_not_visit ()
+    public function agents_are_redirected_to_their_own_tickets_index ()
     {
         $this->be($this->make->agent->user);
 
         $response = $this->get($this->url);
 
-        $response->assertStatus(403);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('helpdesk.agents.tickets.index'));
     }
 
     /** @test */

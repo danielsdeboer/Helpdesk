@@ -21,7 +21,7 @@ class TicketsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('helpdesk.users');
+        $this->middleware('helpdesk.redirect.tickets');
     }
 
     /**

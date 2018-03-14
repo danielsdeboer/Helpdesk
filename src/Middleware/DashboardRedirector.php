@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
 
-class DashboardRouter
+class DashboardRedirector
 {
     /**
      * Handle an incoming request.

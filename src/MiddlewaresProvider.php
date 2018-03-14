@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk;
 
+use Aviator\Helpdesk\Middleware\TicketsRedirector;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Database\Eloquent\Model;
@@ -10,8 +11,7 @@ use Aviator\Helpdesk\Middleware\UsersOnly;
 use Aviator\Helpdesk\Middleware\AgentsOnly;
 use Aviator\Helpdesk\Middleware\SupersOnly;
 use Aviator\Helpdesk\Middleware\TicketAccess;
-use Aviator\Helpdesk\Middleware\TicketAssignee;
-use Aviator\Helpdesk\Middleware\DashboardRouter;
+use Aviator\Helpdesk\Middleware\DashboardRedirector;
 
 class MiddlewaresProvider extends ServiceProvider
 {
@@ -20,9 +20,9 @@ class MiddlewaresProvider extends ServiceProvider
         'helpdesk.users' => UsersOnly::class,
         'helpdesk.agents' => AgentsOnly::class,
         'helpdesk.supervisors' => SupersOnly::class,
-        'helpdesk.redirect.dashboard' => DashboardRouter::class,
+        'helpdesk.redirect.dashboard' => DashboardRedirector::class,
+        'helpdesk.redirect.tickets' => TicketsRedirector::class,
         'helpdesk.ticket.owner' => TicketAccess::class,
-        'helpdesk.ticket.assignee' => TicketAssignee::class,
     ];
 
     /**

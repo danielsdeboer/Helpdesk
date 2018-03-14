@@ -28,13 +28,14 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function agents_may_not_visit ()
+    public function agents_are_redirected_to_their_tickets_index ()
     {
         $this->be($this->make->agent->user);
 
         $response = $this->get($this->url());
 
-        $response->assertStatus(403);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('helpdesk.agents.tickets.index'));
     }
 
     /** @test */
@@ -66,8 +67,6 @@ class ShowTest extends TestCase
 
         $response2 = $this->get($this->url($ticket2->id));
         $response2->assertStatus(200);
-
-        dd(request()->is('*helpdesk/tickets*'));
     }
 
     /** @test */
