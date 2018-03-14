@@ -19,10 +19,6 @@
       <td>{{ $ticket->user->name ?? '(Deleted User)' }}</td>
 
       <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
-
-      <td>{{ $ticket->closing->created_at->format('Y-m-d') }}</td>
-
-      <td>{{ $ticket->closing->user->name ?? 'You' }}</td>
     </tr>
   @endforeach
 </table>
