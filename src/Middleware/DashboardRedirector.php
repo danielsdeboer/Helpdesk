@@ -3,21 +3,22 @@
 namespace Aviator\Helpdesk\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class DashboardRedirector
 {
     /**
      * Handle an incoming request.
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
+     * @param \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         /*
          * Guests must log in.
          */
-        if (auth()->guest()) {
+        if (!$request->user()) {
             return redirect(
                 route('login')
             );
@@ -26,7 +27,7 @@ class DashboardRedirector
         /*
          * Supervisors get redirected to their dashboard.
          */
-        if (auth()->user()->agent && auth()->user()->agent->isSuper()) {
+        if ($request->user()->agent && $request->user()->agent->isSuper()) {
             return redirect(
                 route('helpdesk.dashboard.supervisor')
             );
@@ -35,7 +36,7 @@ class DashboardRedirector
         /*
          * Agents get redirected to their dashboard.
          */
-        if (auth()->user()->agent) {
+        if ($request->user()->agent) {
             return redirect(
                 route('helpdesk.dashboard.agent')
             );

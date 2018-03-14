@@ -42,24 +42,20 @@ Route::group([
         Route::resource(
             config('helpdesk.routes.admin.agents'),
             config('helpdesk.controllers.admin.agents'),
-            [
-                'except' => [
-                    'create',
-                    'edit',
-                    'update',
-                ],
-            ]
+            ['except' => [
+                'create',
+                'edit',
+                'update',
+            ]]
         );
 
         Route::resource(
             config('helpdesk.routes.admin.teams'),
             config('helpdesk.controllers.admin.teams'),
-            [
-                'except' => [
-                    'create',
-                    'edit',
-                ],
-            ]
+            ['except' => [
+                'create',
+                'edit',
+            ]]
         );
     });
 
@@ -88,47 +84,33 @@ Route::group([
         )->name('supervisor');
     });
 
-    Route::group([
-        'as' => 'agents.',
-        'prefix' => config('helpdesk.routes.agents.prefix')
-    ], function () {
-        Route::group([
-            'as' => 'tickets.',
-            'prefix' => config('helpdesk.routes.agents.tickets.prefix')
-        ], function () {
-            Route::get(
-                config('helpdesk.routes.agents.tickets.index'),
-                'Aviator\Helpdesk\Controllers\Agents\TicketsController@index'
-            )->name('index');
-        });
-    });
-
     // Tickets Group
     Route::group([
         'as' => 'tickets.',
         'prefix' => config('helpdesk.routes.tickets.prefix'),
     ], function () {
-        Route::get('redirect', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
-            ->middleware(\Aviator\Helpdesk\Middleware\TicketsRedirector::class)
-            ->name('redirect');
 
-        // Index
+        /*
+         * The tickets index. This index provides a list of open and closed
+         * tickets. It is meant for users only. Agents will be redirected
+         * to the agents tickets page (below).
+         */
         Route::get(
-            config('helpdesk.routes.tickets.index.route'),
-            'Aviator\Helpdesk\Controllers\Users\TicketsController@index'
+            config('helpdesk.routes.tickets.index'),
+            'Aviator\Helpdesk\Controllers\TicketsController@index'
         )->name('index');
 
         // Opened index
         Route::get(
-            config('helpdesk.routes.tickets.opened.route'),
-            config('helpdesk.controllers.tickets.opened')
-        )->name('opened');
+            config('helpdesk.routes.tickets.opened'),
+            'Aviator\Helpdesk\Controllers\OpenTicketsController@index'
+        )->name('opened.index');
 
         // Closed index
         Route::get(
-            config('helpdesk.routes.tickets.closed.route'),
-            config('helpdesk.controllers.tickets.closed')
-        )->name('closed');
+            config('helpdesk.routes.tickets.closed'),
+            'Aviator\Helpdesk\Controllers\ClosedTicketsController@index'
+        )->name('closed.index');
 
         // Show
         Route::get(

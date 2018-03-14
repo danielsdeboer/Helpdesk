@@ -14256,7 +14256,7 @@ namespace Illuminate\Foundation\Testing {
     /*
      * Documents the data macro.
      */
-    class TestResponse extends \Illuminate\Foundation\Testing\TestResponse
+    class TestResponse
     {
         /**
          * @param string $key
@@ -14278,7 +14278,7 @@ namespace Illuminate\Foundation\Testing {
 }
 
 namespace Illuminate\Support {
-    class Collection extends \Illuminate\Support\Collection
+    class Collection
     {
         /**
          * @param mixed $value
@@ -14293,7 +14293,7 @@ namespace Illuminate\Support {
          * @param mixed $value
          * @return bool
          */
-        public function assertDoesntContain ($value)
+        public function assertNotContains ($value)
         {
             return true;
         }

@@ -88,7 +88,7 @@ abstract class TestCase extends Orchestra
             );
         });
 
-        Collection::macro('assertDoesntContain', function ($value) {
+        Collection::macro('assertNotContains', function ($value) {
             /* @noinspection PhpParamsInspection */
             Assert::assertFalse(
                 $this->contains($value),

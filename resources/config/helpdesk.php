@@ -142,23 +142,15 @@ return [
             'tickets' => [
                 'prefix' => 'tickets',
                 'index' => '/',
+                'show' => '{ticket}'
             ],
         ],
 
         'tickets' => [
             'prefix' => 'tickets',
-            'index' => [
-                'route' => '/',
-                'name' => 'index',
-            ],
-            'opened' => [
-                'route' => 'open',
-                'name' => 'opened',
-            ],
-            'closed' => [
-                'route' => 'closed',
-                'name' => 'closed',
-            ],
+            'index' => '/',
+            'opened' => 'opened',
+            'closed' => 'closed',
             'show' => '{ticket}',
 
             'uuid' => [

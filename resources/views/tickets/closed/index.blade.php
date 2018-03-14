@@ -7,12 +7,15 @@
 
       {{ $closed->links('helpdesk::pagination.bulma') }}
 
-      <div class="section">
-        @include('helpdesk::dashboard.sections.table', [
-          'tickets' => $closed,
-          'withDue' => true,
+      @if (!auth()->user()->agent)
+        @include('helpdesk::tickets.closed.index.table-user', [
+          'tickets' => $closed
         ])
-      </div>
+      @else
+        @include('helpdesk::tickets.closed.index.table-agent', [
+          'tickets' => $closed
+        ])
+      @endif
 
       {{ $closed->links('helpdesk::pagination.bulma') }}
     </div>
