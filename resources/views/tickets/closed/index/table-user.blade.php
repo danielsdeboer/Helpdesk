@@ -25,7 +25,7 @@
       </td>
 
       <td>
-        {{ $ticket->closing->agent ?? 'You' }}
+        {{ $ticket->closing->agent->user->name ?? 'You' }}
       </td>
     </tr>
   @endforeach
