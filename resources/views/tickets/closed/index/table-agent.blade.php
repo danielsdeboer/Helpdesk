@@ -20,7 +20,7 @@
 
       <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
 
-      <td>{{ $ticket->closig->created_at->format('Y-m-d') }}</td>
+      <td>{{ $ticket->closing->created_at->format('Y-m-d') }}</td>
 
       <td>{{ $ticket->closing->user->name ?? 'You' }}</td>
     </tr>
