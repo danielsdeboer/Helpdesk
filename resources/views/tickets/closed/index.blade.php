@@ -1,7 +1,7 @@
 @extends('helpdesk::layout.main')
 
 @section('content')
-  <div class="section" id="open">
+  <div class="section">
     <div class="container">
       <h1 class="title">Closed Tickets</h1>
 

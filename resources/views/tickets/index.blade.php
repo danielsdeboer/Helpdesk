@@ -56,7 +56,7 @@
         <a
           id="closed-see-more"
           class="button"
-          href="{{ route('helpdesk.tickets.closed') }}"
+          href="{{ route('helpdesk.tickets.closed.index') }}"
         >
           See all {{ $closedCount }}...
         </a>

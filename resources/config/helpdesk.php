@@ -149,7 +149,7 @@ return [
         'tickets' => [
             'prefix' => 'tickets',
             'index' => '/',
-            'opened' => 'opened',
+            'opened' => 'open',
             'closed' => 'closed',
             'show' => '{ticket}',
 
