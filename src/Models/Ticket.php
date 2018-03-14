@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Aviator\Helpdesk\Interfaces\TicketContent;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
@@ -306,6 +307,18 @@ class Ticket extends AbstractModel
                 'is_visible' => true,
             ]);
 
+        return $this;
+    }
+
+    /**
+     * Associate the content model with a ticket.
+     * @param TicketContent $content
+     * @return $this
+     */
+    public function withContent (TicketContent $content)
+    {
+        $this->content()->associate($content);
+        $this->save();
         return $this;
     }
 
