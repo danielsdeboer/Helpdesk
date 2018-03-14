@@ -115,7 +115,7 @@ Route::group([
         // Show
         Route::get(
             config('helpdesk.routes.tickets.show'),
-            'Aviator\Helpdesk\Controllers\Users\TicketsController@show'
+            'Aviator\Helpdesk\Controllers\TicketsController@show'
         )->name('show');
 
         // Show by uuid
