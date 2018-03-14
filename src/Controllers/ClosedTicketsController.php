@@ -32,7 +32,7 @@ class ClosedTicketsController extends Controller
     public function index (TicketsRepository $tickets)
     {
         return view('helpdesk::tickets.closed.index')->with([
-            'closed' => $tickets->closed()->paginate(),
+            'closed' => $tickets->with($this->relations)->closed()->paginate(),
         ]);
     }
 }
