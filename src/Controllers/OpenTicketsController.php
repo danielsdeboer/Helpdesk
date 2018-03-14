@@ -10,7 +10,7 @@ class OpenTicketsController extends Controller
     /** @var array */
     protected $relations = [
         'content',
-        'assignment.assignee.agent.user',
+        'assignment.assignee.user',
     ];
 
     /**
