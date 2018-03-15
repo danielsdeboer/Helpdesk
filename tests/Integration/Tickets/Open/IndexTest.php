@@ -54,10 +54,10 @@ class IndexTest extends TestCase
         $response = $this->get($this->url);
 
         $response->assertStatus(200);
-        $response->data('closed')->assertContains($ticket1);
-        $response->data('closed')->assertNotContains($ticket2);
-        $response->data('closed')->assertNotContains($ticket3);
-        $response->data('closed')->assertNotContains($ticket4);
+        $response->data('open')->assertContains($ticket1);
+        $response->data('open')->assertNotContains($ticket2);
+        $response->data('open')->assertNotContains($ticket3);
+        $response->data('open')->assertNotContains($ticket4);
     }
 
     /** @test */
@@ -158,5 +158,68 @@ class IndexTest extends TestCase
         $this->assertSame($ticket3->id, $response->data('closed')[0]->id);
         $this->assertSame($ticket2->id, $response->data('closed')[1]->id);
         $this->assertSame($ticket1->id, $response->data('closed')[2]->id);
+    }
+
+    /** @test */
+    public function users_see_the_user_table ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket1 = $this->make->ticket($user)->assignToAgent($agent);
+        $ticket2 = $this->make->ticket($user);
+
+        $this->be($user);
+        $response = $this->get($this->url);
+
+        $response->assertSuccessful();
+        $response->assertSeeInOrder([
+            '<td id="row-1-title">',
+            $ticket1->content->title(),
+            '<td id="row-1-created">',
+            $ticket1->created_at->format('Y-m-d'),
+            '<td id="row-1-assignee">',
+            $ticket1->assignment->assignee->user->name,
+        ]);
+        $response->assertSeeInOrder([
+            '<td id="row-2-title">',
+            $ticket2->content->title(),
+            '<td id="row-2-created">',
+            $ticket2->created_at->format('Y-m-d'),
+            '<td id="row-2-assignee">',
+            'No One Yet'
+        ]);
+    }
+
+    /** @test */
+    public function agents_see_the_agent_table ()
+    {
+        $user1 = $this->make->user;
+        $user2 = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket1 = $this->make->ticket($user1)->assignToAgent($agent);
+        $ticket2 = $this->make->ticket($user2)->assignToAgent($agent);
+
+        $user2->delete();
+
+        $this->be($agent->user);
+        $response = $this->get($this->url);
+
+        $response->assertSuccessful();
+        $response->assertSeeInOrder([
+            '<td id="row-1-title">',
+            $ticket1->content->title(),
+            '<td id="row-1-user">',
+            $ticket1->user->name,
+            '<td id="row-1-created">',
+            $ticket1->created_at->format('Y-m-d'),
+        ]);
+        $response->assertSeeInOrder([
+            '<td id="row-2-title">',
+            $ticket2->content->title(),
+            '<td id="row-2-user">',
+            '(Deleted User)',
+            '<td id="row-2-created">',
+            $ticket2->created_at->format('Y-m-d'),
+        ]);
     }
 }
