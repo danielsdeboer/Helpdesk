@@ -2,10 +2,8 @@
   <thead>
   <tr>
     <th>Ticket Name</th>
-    <th>Placed By</th>
+    <th>Created By</th>
     <th>Created At</th>
-    <th>Closed At</th>
-    <th>Closed By</th>
   </tr>
   <tbody>
   @foreach($tickets as $ticket)

@@ -28,32 +28,6 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function agents_are_redirected_to_their_tickets_index ()
-    {
-        $this->be($this->make->agent->user);
-
-        $response = $this->get($this->url());
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('helpdesk.agents.tickets.index'));
-    }
-
-    /** @test */
-    public function users_can_visit ()
-    {
-        $user = $this->make->user;
-        $ticket = $this->make->ticket($user);
-
-        $this->be($user);
-
-        $response = $this->get(
-            $this->url($ticket->id)
-        );
-
-        $response->assertStatus(200);
-    }
-
-    /** @test */
     public function users_can_only_visit_their_own_tickets ()
     {
         $user = $this->make->user;
@@ -82,7 +56,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_tickets_statuses ()
+    public function it_shows_tickets_status_tags ()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
@@ -132,7 +106,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function a_user_does_not_see_agent_actions ()
+    public function users_dont_see_agent_actions ()
     {
         $adminActions = ['assign', 'note', 'collab'];
 
@@ -146,5 +120,60 @@ class ShowTest extends TestCase
         foreach ($adminActions as $action) {
             $response->assertDontSee('id="toolbar-action-' . $action . '"');
         }
+    }
+
+    /** @test */
+    public function agents_dont_see_team_lead_actions ()
+    {
+        $agentActions = ['reply', 'note', 'close', 'collab'];
+        $leadActions = ['assign'];
+
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+        $agent = $this->make->agent->assign($ticket);
+
+        $this->be($agent->user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        foreach ($agentActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
+
+        foreach ($leadActions as $action) {
+            $response->assertDontSee('id="toolbar-action-' . $action . '"');
+        }
+    }
+
+    /** @test */
+    public function users_dont_see_private_actions ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket($user)->assignToAgent($agent, null, false);
+
+        $this->be($user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+        $response->assertSee('id="action-opened"');
+        $response->assertDontSee('id="action-assigned"');
+    }
+
+    /** @test */
+    public function agents_see_private_actions ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket($user)->assignToAgent($agent, null, false);
+
+        $this->be($agent->user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+        $response->assertSee('id="action-opened"');
+        $response->assertSee('id="action-assigned"');
     }
 }

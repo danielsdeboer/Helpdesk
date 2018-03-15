@@ -71,6 +71,26 @@ class Agent extends AbstractModel
     }
 
     /**
+     * Assign a ticket to this agent.
+     * @param \Aviator\Helpdesk\Models\Ticket $ticket
+     * @param \Aviator\Helpdesk\Models\Agent|null $assigner
+     * @param bool $public
+     * @return $this
+     */
+    public function assign (Ticket $ticket, Agent $assigner = null, $public = true)
+    {
+        Assignment::query()
+            ->create([
+                'ticket_id' => $ticket->id,
+                'assigned_to' => $this->id,
+                'agent_id' => $assigner->id ?? null,
+                'is_visible' => $public,
+            ]);
+
+        return $this;
+    }
+
+    /**
      * Make the Agent a team lead.
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent

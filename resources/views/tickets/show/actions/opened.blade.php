@@ -1,7 +1,7 @@
 @extends('helpdesk::tickets.show.action')
 
 @section('action-content')
-  <strong id="action-header-{{ $action->id }}">{{ $action->name }}</strong>
+  <strong id="action-opened">{{ $action->name }}</strong>
 
   <br>
 
