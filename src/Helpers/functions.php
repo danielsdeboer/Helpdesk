@@ -25,3 +25,8 @@ function reduceProperties ($initialObject, string $path)
         $initialObject
     );
 }
+
+function helpdeskRoute (string $name)
+{
+    return config('helpdesk.routes.' . $name);
+}

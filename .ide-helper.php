@@ -14274,6 +14274,14 @@ namespace Illuminate\Foundation\Testing {
         public function assertActiveHeaderTab ($name)
         {
         }
+
+        /**
+         * @param array $values
+         * @return void
+         */
+        public function assertSeeInOrder (array $values)
+        {
+        }
     }
 }
 

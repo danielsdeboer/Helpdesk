@@ -184,39 +184,10 @@ return [
         ],
     ],
 
-    'controllers' => [
-        'admin' => [
-            'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
-            'teams' => '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
-            'team-members' => [
-                'add' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@add',
-                'remove' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@remove',
-            ],
-        ],
-        'dashboard' => [
-            'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
-            'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
-            'supervisor' => '\Aviator\Helpdesk\Controllers\Dashboard\SupervisorController@index',
-        ],
-
-        'tickets' => [
-            'index' => '\Aviator\Helpdesk\Controllers\TicketsController@index',
-            'opened' => '\Aviator\Helpdesk\Controllers\TicketsController@opened',
-            'closed' => '\Aviator\Helpdesk\Controllers\TicketsController@closed',
-            'show' => '\Aviator\Helpdesk\Controllers\TicketsController@show',
-            'uuid' => [
-                'show' => '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show',
-            ],
-            'assign' => '\Aviator\Helpdesk\Controllers\Tickets\AssignmentController@create',
-            'close' => '\Aviator\Helpdesk\Controllers\Tickets\ClosingController@create',
-            'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
-            'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
-            'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
-            'collab' => '\Aviator\Helpdesk\Controllers\Tickets\CollaboratorController@create',
-        ],
-    ],
-
-    'footerText' => '<strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>',
+    'footerText' => '
+        <strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. 
+        Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>
+    ',
 
     'footerCopyrightText' => '&copy; 2017 Aviator Creative</a>',
 ];

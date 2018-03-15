@@ -80,6 +80,23 @@ abstract class TestCase extends Orchestra
             }
         );
 
+        TestResponse::macro('assertSeeInOrder', function (array $values) {
+            $position = 0;
+
+            foreach ($values as $value) {
+                $valuePosition = mb_strpos($this->getContent(), $value, $position);
+
+                if ($valuePosition === false || $valuePosition < $position) {
+                    Assert::fail(
+                        'Failed asserting that \'' . $this->getContent() .
+                        '\' contains "' . $value . '" in specified order.'
+                    );
+                }
+
+                $position = $valuePosition + mb_strlen($value);
+            }
+        });
+
         Collection::macro('assertContains', function ($value) {
             /* @noinspection PhpParamsInspection */
             Assert::assertTrue(

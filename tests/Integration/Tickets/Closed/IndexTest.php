@@ -134,7 +134,7 @@ class IndexTest extends TestCase
 
         // We have pagination due to the number of results.
         $response->assertStatus(200);
-        $response->assertSee('nav class="pagination"');
+        $response->assertSee('<ul class="pagination-list">');
     }
 
     /** @test */
@@ -159,5 +159,81 @@ class IndexTest extends TestCase
         $this->assertSame($ticket3->id, $response->data('closed')[0]->id);
         $this->assertSame($ticket2->id, $response->data('closed')[1]->id);
         $this->assertSame($ticket1->id, $response->data('closed')[2]->id);
+    }
+
+    /** @test */
+    public function users_see_the_user_table ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket1 = $this->make->ticket($user)->close(null, $agent);
+        $ticket2 = $this->make->ticket($user)->close(null, $user);
+
+        $this->be($user);
+        $response = $this->get($this->url);
+
+        $response->assertSuccessful();
+        $response->assertSeeInOrder([
+            '<td id="row-1-title">',
+            $ticket1->content->title(),
+            '<td id="row-1-created">',
+            $ticket1->created_at->format('Y-m-d'),
+            '<td id="row-1-closed">',
+            $ticket1->closing->created_at->format('Y-m-d'),
+            '<td id="row-1-who">',
+            $agent->user->name,
+        ]);
+        $response->assertSeeInOrder([
+            '<td id="row-2-title">',
+            $ticket2->content->title(),
+            '<td id="row-2-created">',
+            $ticket2->created_at->format('Y-m-d'),
+            '<td id="row-2-closed">',
+            $ticket2->closing->created_at->format('Y-m-d'),
+            '<td id="row-2-who">',
+            'You'
+        ]);
+    }
+
+    /** @test */
+    public function agents_see_the_agents_table ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ticket1 = $this->make->ticket($user)
+            ->assignToAgent($agent)
+            ->close(null, $agent);
+        $ticket2 = $this->make->ticket($user)
+            ->assignToAgent($agent)
+            ->close(null, $user);
+
+        $this->be($agent->user);
+        $response = $this->get($this->url);
+
+        $response->assertSuccessful();
+        $response->assertSeeInOrder([
+            '<td id="row-1-title">',
+            $ticket1->content->title(),
+            '<td id="row-1-user">',
+            $ticket1->user->name,
+            '<td id="row-1-created">',
+            $ticket1->created_at->format('Y-m-d'),
+            '<td id="row-1-closed">',
+            $ticket1->closing->created_at->format('Y-m-d'),
+            '<td id="row-1-who">',
+            'You',
+        ]);
+        $response->assertSeeInOrder([
+            '<td id="row-2-title">',
+            $ticket2->content->title(),
+            '<td id="row-2-user">',
+            $ticket2->user->name,
+            '<td id="row-2-created">',
+            $ticket2->created_at->format('Y-m-d'),
+            '<td id="row-2-closed">',
+            $ticket2->closing->created_at->format('Y-m-d'),
+            '<td id="row-2-who">',
+            $ticket2->user->name
+        ]);
     }
 }

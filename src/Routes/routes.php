@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'as' => 'helpdesk.',
-    'prefix' => config('helpdesk.routes.helpdesk.prefix'),
+    'prefix' => helpdeskRoute('helpdesk.prefix'),
     'middleware' => 'web',
 ], function () {
 
@@ -20,7 +20,7 @@ Route::group([
     // Admin Group
     Route::group([
         'as' => 'admin.',
-        'prefix' => config('helpdesk.routes.admin.prefix'),
+        'prefix' => helpdeskRoute('admin.prefix'),
     ], function () {
 
         // Team Members Group
@@ -29,135 +29,146 @@ Route::group([
             'prefix' => 'team-members',
         ], function () {
             Route::post(
-                config('helpdesk.routes.admin.team-members.add'),
-                config('helpdesk.controllers.admin.team-members.add')
+                helpdeskRoute('admin.team-members.add'),
+                '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@add'
             )->name('add');
 
             Route::post(
-                config('helpdesk.routes.admin.team-members.remove'),
-                config('helpdesk.controllers.admin.team-members.remove')
+                helpdeskRoute('admin.team-members.remove'),
+                '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@remove'
             )->name('remove');
         });
 
         Route::resource(
-            config('helpdesk.routes.admin.agents'),
-            config('helpdesk.controllers.admin.agents'),
-            ['except' => [
-                'create',
-                'edit',
-                'update',
-            ]]
+            helpdeskRoute('admin.agents'),
+            '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
+            ['except' => ['create', 'edit', 'update']]
         );
 
         Route::resource(
-            config('helpdesk.routes.admin.teams'),
-            config('helpdesk.controllers.admin.teams'),
-            ['except' => [
-                'create',
-                'edit',
-            ]]
+            helpdeskRoute('admin.teams'),
+            '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
+            ['except' => ['create', 'edit']]
         );
     });
 
     // Dashboard Group
     Route::group([
         'as' => 'dashboard.',
-        'prefix' => config('helpdesk.routes.dashboard.prefix'),
+        'prefix' => helpdeskRoute('dashboard.prefix'),
     ], function () {
         Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
             ->middleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class)
             ->name('router');
 
         Route::get(
-            config('helpdesk.routes.dashboard.user'),
-            config('helpdesk.controllers.dashboard.user')
+            helpdeskRoute('dashboard.user'),
+            '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index'
         )->name('user');
 
         Route::get(
-            config('helpdesk.routes.dashboard.agent'),
-            config('helpdesk.controllers.dashboard.agent')
+            helpdeskRoute('dashboard.agent'),
+            '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index'
         )->name('agent');
 
         Route::get(
-            config('helpdesk.routes.dashboard.supervisor'),
-            config('helpdesk.controllers.dashboard.supervisor')
+            helpdeskRoute('dashboard.supervisor'),
+            '\Aviator\Helpdesk\Controllers\Dashboard\SupervisorController@index'
         )->name('supervisor');
     });
 
     // Tickets Group
     Route::group([
         'as' => 'tickets.',
-        'prefix' => config('helpdesk.routes.tickets.prefix'),
+        'prefix' => helpdeskRoute('tickets.prefix'),
     ], function () {
-
         /*
          * The tickets index. This index provides a list of open and closed
-         * tickets. It is meant for users only. Agents will be redirected
-         * to the agents tickets page (below).
+         * tickets with links to paginated open/closed indexes.
          */
         Route::get(
-            config('helpdesk.routes.tickets.index'),
+            helpdeskRoute('tickets.index'),
             'Aviator\Helpdesk\Controllers\TicketsController@index'
         )->name('index');
 
-        // Opened index
+        /*
+         * Paginated index of open tickets.
+         */
         Route::get(
-            config('helpdesk.routes.tickets.opened'),
+            helpdeskRoute('tickets.opened'),
             'Aviator\Helpdesk\Controllers\OpenTicketsController@index'
         )->name('opened.index');
 
-        // Closed index
+        /*
+         * Paginated index of closed tickets.
+         */
         Route::get(
-            config('helpdesk.routes.tickets.closed'),
+            helpdeskRoute('tickets.closed'),
             'Aviator\Helpdesk\Controllers\ClosedTicketsController@index'
         )->name('closed.index');
 
-        // Show
+        /*
+         * Private (authorized) view for a single ticket.
+         */
         Route::get(
-            config('helpdesk.routes.tickets.show'),
+            helpdeskRoute('tickets.show'),
             'Aviator\Helpdesk\Controllers\TicketsController@show'
         )->name('show');
 
-        // Show by uuid
+        /*
+         * Public (permalink, read-only) view for a single ticket.
+         */
         Route::get(
-            config('helpdesk.routes.tickets.uuid.route'),
-            config('helpdesk.controllers.tickets.uuid.show')
+            helpdeskRoute('tickets.uuid.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show'
         )->name('public');
 
-        // Assign
+        /*
+         * Create an assignment.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.assign.route'),
-            config('helpdesk.controllers.tickets.assign')
+            helpdeskRoute('tickets.assign.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\AssignmentController@create'
         )->name('assign');
 
-        // Reply
+        /*
+         * Create a reply.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.reply.route'),
-            config('helpdesk.controllers.tickets.reply')
+            helpdeskRoute('tickets.reply.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create'
         )->name('reply');
 
-        // Close
+        /*
+         * Create a closing.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.close.route'),
-            config('helpdesk.controllers.tickets.close')
+            helpdeskRoute('tickets.close.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\ClosingController@create'
         )->name('close');
 
-        // Note
+        /*
+         * Create a note.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.note.route'),
-            config('helpdesk.controllers.tickets.note')
+            helpdeskRoute('tickets.note.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create'
         )->name('note');
 
-        // Note
+        /*
+         * Create an opening.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.open.route'),
-            config('helpdesk.controllers.tickets.open')
+            helpdeskRoute('tickets.open.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create'
         )->name('open');
 
-        // Add Collaborator
+        /*
+         * Create a collaborator.
+         */
         Route::post(
-            config('helpdesk.routes.tickets.collab.route'),
-            config('helpdesk.controllers.tickets.collab')
+            helpdeskRoute('tickets.collab.route'),
+            '\Aviator\Helpdesk\Controllers\Tickets\CollaboratorController@create'
         )->name('collab');
     });
 });
