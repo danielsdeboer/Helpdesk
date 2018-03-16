@@ -37,6 +37,7 @@ use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
  * @property \Aviator\Helpdesk\Models\Note notes
  * @property Agent agent
  * @property int user_id
+ * @property string|null permalink
  * @method Builder accessibleToUser($user)
  * @method Builder accessibleToAgent($user)
  * @method static Builder assigned()
@@ -63,6 +64,15 @@ class Ticket extends AbstractModel
 
     /** @var array */
     protected $guarded = [];
+
+    /**
+     * Alias for UUID.
+     * @return string|null
+     */
+    public function getPermalinkAttribute ()
+    {
+        return $this->uuid;
+    }
 
     /**
      * Find a single model with actions.

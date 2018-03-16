@@ -1,4 +1,4 @@
-<div class="modal-app nav has-margin-bottom">
+<div class="modal-app nav">
   @if ($ticket->status()->open())
     @include('helpdesk::partials.toolbar.item', [
       'text' => 'Close Ticket',

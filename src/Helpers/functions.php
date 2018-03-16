@@ -26,7 +26,19 @@ function reduceProperties ($initialObject, string $path)
     );
 }
 
+/**
+ * @param string $name
+ * @return mixed
+ */
 function helpdeskRoute (string $name)
 {
     return config('helpdesk.routes.' . $name);
+}
+
+/**
+ * @return bool
+ */
+function isAgent ()
+{
+    return auth()->user() && auth()->user()->agent;
 }

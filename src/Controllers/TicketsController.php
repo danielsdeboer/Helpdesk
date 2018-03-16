@@ -8,11 +8,15 @@ use Aviator\Helpdesk\Repositories\TicketsRepository;
 class TicketsController extends Controller
 {
     /** @var array */
-    protected $relations = [
+    protected $indexRelations = [
         'assignment',
         'teamAssignment',
         'dueDate',
         'collaborators',
+    ];
+
+    protected $showRelations = [
+
     ];
 
     /**
@@ -32,18 +36,19 @@ class TicketsController extends Controller
     public function index (TicketsRepository $tickets)
     {
         $openTickets = $tickets->clone()
-            ->with($this->relations)
-            ->open();
+            ->with($this->indexRelations)
+            ->open()
+            ->paginate();
 
         $closedTickets = $tickets->clone()
-            ->with($this->relations)
-            ->closed();
+            ->with($this->indexRelations)
+            ->paginate();
 
         return view('helpdesk::tickets.index')->with([
-            'open' => $openTickets->paginate(),
-            'openCount' => $openTickets->count(),
-            'closed' => $closedTickets->paginate(),
-            'closedCount' => $closedTickets->count(),
+            'open' => $openTickets,
+            'openCount' => $openTickets->total(),
+            'closed' => $closedTickets,
+            'closedCount' => $closedTickets->total(),
         ]);
     }
 
@@ -56,7 +61,7 @@ class TicketsController extends Controller
     public function show (TicketsRepository $tickets, int $id)
     {
         return view('helpdesk::tickets.show')->with([
-            'ticket' => $tickets->with($this->relations)->findOrFail($id),
+            'ticket' => $tickets->with($this->indexRelations)->findOrFail($id),
         ]);
     }
 }

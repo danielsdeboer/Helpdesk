@@ -1,9 +1,11 @@
 @if (auth()->user())
   <div class="section {{ $withClass or '' }}" id="ticket-toolbar">
     <div class="container">
-      @if (auth()->user()->agent)
+      @if (isAgent())
         @include('helpdesk::tickets.show.agent-toolbar')
-      @else
+      @endif
+
+      @if (!auth()->guest() && !isAgent())
         @include('helpdesk::tickets.show.user-toolbar')
       @endif
     </div>

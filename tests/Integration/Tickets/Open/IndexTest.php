@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Integration\Tickets\Closed;
+namespace Aviator\Helpdesk\Tests\Integration\Tickets\Open;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
@@ -96,17 +96,17 @@ class IndexTest extends TestCase
         $response = $this->get($this->url);
 
         $response->assertStatus(200);
-        $tickets = $response->data('closed');
+        $tickets = $response->data('open');
 
         $tickets->assertNotContains($ticket1);
         $tickets->assertNotContains($ticket2);
         $tickets->assertNotContains($ticket3);
         $tickets->assertNotContains($ticket4);
 
-        $tickets->assertNotContains($ticket5);
-        $tickets->assertContains($ticket6);
-        $tickets->assertNotContains($ticket7);
-        $tickets->assertContains($ticket8);
+        $tickets->assertContains($ticket5);
+        $tickets->assertNotContains($ticket6);
+        $tickets->assertContains($ticket7);
+        $tickets->assertNotContains($ticket8);
     }
 
     /** @test */
@@ -114,7 +114,7 @@ class IndexTest extends TestCase
     {
         $this->withoutErrorHandling();
         $user = $this->make->user;
-        $ticket = $this->make->ticket($user)->close(null, $user);
+        $ticket = $this->make->ticket($user);
 
         $this->be($user);
         $response = $this->get($this->url);
@@ -123,26 +123,22 @@ class IndexTest extends TestCase
         $response->assertStatus(200);
         $response->assertDontSee('nav class="pagination"');
 
-        $this->make
-            ->tickets(24, $user)
-            ->each(function (Ticket $ticket) use ($user) {
-                $ticket->close(null, $user);
-            });
+        $this->make->tickets(24, $user);
 
         $response = $this->get($this->url);
 
         // We have pagination due to the number of results.
         $response->assertStatus(200);
-        $response->assertSee('nav class="pagination"');
+        $response->assertSee('ul class="pagination-list"');
     }
 
     /** @test */
     public function results_are_ordered_by_latest_first ()
     {
         $user = $this->make->user;
-        $ticket1 = $this->make->ticket($user)->close(null, $user);
-        $ticket2 = $this->make->ticket($user)->close(null, $user);
-        $ticket3 = $this->make->ticket($user)->close(null, $user);
+        $ticket1 = $this->make->ticket($user);
+        $ticket2 = $this->make->ticket($user);
+        $ticket3 = $this->make->ticket($user);
 
         $ticket1->created_at = Carbon::parse('2 years ago');
         $ticket1->save();
@@ -155,9 +151,9 @@ class IndexTest extends TestCase
         $response = $this->get($this->url);
 
         $response->assertStatus(200);
-        $this->assertSame($ticket3->id, $response->data('closed')[0]->id);
-        $this->assertSame($ticket2->id, $response->data('closed')[1]->id);
-        $this->assertSame($ticket1->id, $response->data('closed')[2]->id);
+        $this->assertSame($ticket3->id, $response->data('open')[0]->id);
+        $this->assertSame($ticket2->id, $response->data('open')[1]->id);
+        $this->assertSame($ticket1->id, $response->data('open')[2]->id);
     }
 
     /** @test */

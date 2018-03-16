@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
+namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets\Permalink;
 
 use Aviator\Helpdesk\Tests\TestCase;
 
@@ -21,10 +21,20 @@ class ShowTest extends TestCase
     /** @test */
     public function guests_may_visit ()
     {
-        $this->withoutErrorHandling();
         $ticket = $this->make->ticket;
 
-        $response = $this->get($this->url($ticket->uuid));
+        $response = $this->get($this->url($ticket->permalink));
         $response->assertSuccessful();
+    }
+
+    /** @test */
+    public function guests_do_not_see_the_action_bar ()
+    {
+        $ticket = $this->make->ticket;
+
+        $response = $this->get($this->url($ticket->permalink));
+
+        $response->assertSuccessful()
+            ->assertDontSee('id="ticket-toolbar"');
     }
 }

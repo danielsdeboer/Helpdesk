@@ -10,7 +10,7 @@ class IndexTest extends TestCase
     protected $url = 'helpdesk/tickets';
 
     /** @test */
-    public function guests_may_not_visit ()
+    public function guests_are_redirected_to_login ()
     {
         $response = $this->get($this->url);
 
