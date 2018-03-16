@@ -9,8 +9,8 @@ class TicketsController extends Controller
 {
     /** @var array */
     protected $indexRelations = [
-        'users',
-        'contents',
+        'user',
+        'content',
         'actions',
     ];
 
