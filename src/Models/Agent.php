@@ -191,6 +191,25 @@ class Agent extends AbstractModel
     }
 
     /**
+     * @param Team $team
+     * @return bool
+     */
+    public function isLeadOf (Team $team) : bool
+    {
+        return $this->teamLeads->pluck('id')->contains($team->id);
+    }
+
+    /**
+     * @param Ticket $ticket
+     * @return bool
+     */
+    public function isLeadFor (Ticket $ticket) : bool
+    {
+        return $ticket->teamAssignment
+            && $this->isLeadOf($ticket->teamAssignment->team);
+    }
+
+    /**
      * Check if the user is a supervisor.
      * @return bool
      */

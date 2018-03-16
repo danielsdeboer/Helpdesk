@@ -160,4 +160,29 @@ class AgentTest extends BKTestCase
         $this->assertSame(false, $agent->is_super);
         $this->assertSame(true, $super->is_super);
     }
+
+    /** @test */
+    public function it_can_check_if_an_agent_is_lead_of_a_team ()
+    {
+        $agent = $this->make->agent;
+        $leadOf = $this->make->team;
+        $notLeadOf = $this->make->team;
+        $agent->makeTeamLeadOf($leadOf);
+
+        $this->assertTrue($agent->isLeadOf($leadOf));
+        $this->assertFalse($agent->isLeadOf($notLeadOf));
+    }
+
+    /** @test */
+    public function it_can_check_if_an_agent_is_lead_for_a_ticket ()
+    {
+        $team1 = $this->make->team;
+        $team2 = $this->make->team;
+        $agent = $this->make->agent->makeTeamLeadOf($team1);
+        $ticket1 = $this->make->ticket->assignToTeam($team1);
+        $ticket2 = $this->make->ticket->assignToTeam($team2);
+
+        $this->assertTrue($agent->isLeadFor($ticket1));
+        $this->assertFalse($agent->isLeadFor($ticket2));
+    }
 }

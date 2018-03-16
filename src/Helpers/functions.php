@@ -30,15 +30,24 @@ function reduceProperties ($initialObject, string $path)
  * @param string $name
  * @return mixed
  */
-function helpdeskRoute (string $name)
+function hd_route (string $name)
 {
     return config('helpdesk.routes.' . $name);
 }
 
 /**
+ * Get the current agent. Return null if guest or user.
+ * @return \Aviator\Helpdesk\Models\Agent|null
+ */
+function hd_agent ()
+{
+    return auth()->user()->agent ?? null;
+}
+
+/**
  * @return bool
  */
-function isAgent ()
+function hd_is_agent ()
 {
     return auth()->user() && auth()->user()->agent;
 }

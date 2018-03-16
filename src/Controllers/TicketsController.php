@@ -15,6 +15,7 @@ class TicketsController extends Controller
         'dueDate',
     ];
 
+    /** @var array */
     protected $showRelations = [
         'actions',
         'agent'
