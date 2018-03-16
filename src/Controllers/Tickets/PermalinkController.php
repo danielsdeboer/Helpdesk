@@ -5,16 +5,16 @@ namespace Aviator\Helpdesk\Controllers\Tickets;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 
-class UuidController extends Controller
+class PermalinkController extends Controller
 {
     /**
      * Display a instance of the resource.
-     * @param  Ticket $ticket
+     * @param Ticket $ticket
      * @return Reponse
      */
-    public function show($uuid)
+    public function show(Ticket $ticket, string $uuid)
     {
-        $ticket = Ticket::whereUuid($uuid)->first();
+        $ticket = Ticket::where('uuid', $uuid)->first();
 
         if (! $ticket) {
             return redirect()->route('helpdesk.tickets.index');

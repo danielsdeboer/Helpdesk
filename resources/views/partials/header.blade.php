@@ -11,7 +11,7 @@
         'name' => 'tickets'
       ])
 
-      @if (auth()->user()->agent && auth()->user()->agent->isSuper())
+      @if (auth()->user() && auth()->user()->agent && auth()->user()->agent->isSuper())
         @include('helpdesk::partials.header.tab', [
           'route' => 'helpdesk.admin',
           'name' => 'admin'

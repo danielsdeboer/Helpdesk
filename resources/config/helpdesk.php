@@ -152,11 +152,7 @@ return [
             'opened' => 'open',
             'closed' => 'closed',
             'show' => '{ticket}',
-
-            'uuid' => [
-                'route' => 'public/{uuid}',
-                'name' => 'public',
-            ],
+            'permalink' => 'permalink/{uuid}',
             'assign' => [
                 'route' => 'assign/{ticket}',
                 'name' => 'assign',

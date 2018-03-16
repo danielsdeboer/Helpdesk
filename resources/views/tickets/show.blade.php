@@ -20,7 +20,7 @@
         @include($ticket->content->partial())
       @endif
 
-      <a href="{{ route('helpdesk.tickets.public', $ticket->uuid) }}">Permalink</a>
+      <a href="{{ route('helpdesk.tickets.permalink.show', $ticket->uuid) }}">Permalink</a>
     </div>
   </div>
 

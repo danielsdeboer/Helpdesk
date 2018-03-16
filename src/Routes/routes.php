@@ -119,9 +119,9 @@ Route::group([
          * Public (permalink, read-only) view for a single ticket.
          */
         Route::get(
-            helpdeskRoute('tickets.uuid.route'),
-            '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show'
-        )->name('public');
+            helpdeskRoute('tickets.permalink'),
+            '\Aviator\Helpdesk\Controllers\Tickets\PermalinkController@show'
+        )->name('permalink.show');
 
         /*
          * Create an assignment.
