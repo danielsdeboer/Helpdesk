@@ -9,10 +9,9 @@ class TicketsController extends Controller
 {
     /** @var array */
     protected $indexRelations = [
-        'assignment',
-        'teamAssignment',
-        'dueDate',
-        'collaborators',
+        'users',
+        'contents',
+        'actions',
     ];
 
     protected $showRelations = [
