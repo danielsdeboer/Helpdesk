@@ -16,7 +16,8 @@ class TicketsController extends Controller
     ];
 
     protected $showRelations = [
-
+        'actions',
+        'agent'
     ];
 
     /**
