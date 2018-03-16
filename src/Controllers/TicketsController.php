@@ -12,6 +12,7 @@ class TicketsController extends Controller
         'user',
         'content',
         'actions',
+        'dueDate',
     ];
 
     protected $showRelations = [
