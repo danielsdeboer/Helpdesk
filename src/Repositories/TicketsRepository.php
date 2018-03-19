@@ -112,7 +112,7 @@ class TicketsRepository extends Repository
      */
     protected function prepare ()
     {
-        if (! $this->user && ! $this->permalinkApplied) {
+        if (!$this->user && !$this->permalinkApplied) {
             abort(403, 'Guests may only request tickets via permalinks.');
         }
 

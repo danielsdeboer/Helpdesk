@@ -15,7 +15,7 @@ class AgentsOnly
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->user()) {
+        if (!$request->user()) {
             return redirect('login');
         }
 

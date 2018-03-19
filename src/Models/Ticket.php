@@ -181,7 +181,7 @@ class Ticket extends AbstractModel
      */
     public function close ($note, $creator) : self
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException('An agent or user must be provided when closing a ticket.');
         }
 
@@ -215,7 +215,7 @@ class Ticket extends AbstractModel
      */
     public function open ($note, $creator) : self
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException('A user or agent is required when opening a ticket.');
         }
 
@@ -247,7 +247,7 @@ class Ticket extends AbstractModel
      */
     public function note ($body, $creator, $isVisible = true) : self
     {
-        if (! $creator) {
+        if (!$creator) {
             throw new CreatorRequiredException('A user or agent is required when adding a note.');
         }
 
@@ -305,7 +305,7 @@ class Ticket extends AbstractModel
          * Since the user class can vary, throw an exception if something
          * else is provided.
          */
-        if (! $user instanceof $userClass) {
+        if (!$user instanceof $userClass) {
             throw new CreatorMustBeAUserException('External replies may only be created by a user.');
         }
 

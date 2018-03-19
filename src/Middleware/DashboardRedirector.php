@@ -18,7 +18,7 @@ class DashboardRedirector
         /*
          * Guests must log in.
          */
-        if (! $request->user()) {
+        if (!$request->user()) {
             return redirect(
                 route('login')
             );
