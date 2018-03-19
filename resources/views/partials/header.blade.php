@@ -1,30 +1,21 @@
 <nav class="nav has-shadow">
   <div class="container is-fluid">
-    <div class="nav-left">
-      <a
-        href="{{ route('helpdesk.dashboard.router') }}"
-        class="nav-item is-tab @if(isset($tab) && $tab == 'dashboard') is-active @endif"
-        id="header-tab-dashboard"
-      >
-        Dashboard
-      </a>
+    <div class="nav-left" role="tablist">
+      @include('helpdesk::partials.header.tab', [
+        'route' => 'helpdesk.dashboard.router',
+        'name' => 'dashboard'
+      ])
 
-      <a
-        href="{{ route('helpdesk.tickets.index') }}"
-        class="nav-item is-tab @if(isset($tab) && $tab == 'tickets') is-active @endif"
-        id="header-tab-tickets"
-      >
-        Tickets
-      </a>
+      @include('helpdesk::partials.header.tab', [
+        'route' => 'helpdesk.tickets.index',
+        'name' => 'tickets'
+      ])
 
-      @if (isset($isSuper) && $isSuper)
-        <a
-          href="{{ route('helpdesk.admin') }}"
-          class="nav-item is-tab @if(isset($tab) && $tab == 'admin') is-active @endif"
-          id="header-tab-admin"
-        >
-          Admin
-        </a>
+      @if (auth()->user() && auth()->user()->agent && auth()->user()->agent->isSuper())
+        @include('helpdesk::partials.header.tab', [
+          'route' => 'helpdesk.admin',
+          'name' => 'admin'
+        ])
       @endif
     </div>
 
@@ -41,6 +32,10 @@
     </div>
 
     <div class="nav-right">
+      @foreach(config('helpdesk.header.links') as $route => $text)
+        @include('helpdesk::partials.header.item', compact('route', 'text'))
+      @endforeach
+
       <div class="nav-item">
         <span class="icon">
           <a href="/">

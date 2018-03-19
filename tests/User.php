@@ -3,22 +3,18 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Aviator\Helpdesk\Traits\HasAgentRelation;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property mixed id
  * @property string email
  * @property \Aviator\Helpdesk\Models\Agent agent
  */
-class User extends Model implements AuthorizableContract, AuthenticatableContract
+class User extends Authenticatable
 {
-    use Authorizable, Authenticatable, HasAgentRelation, Notifiable;
+    use HasAgentRelation, Notifiable;
 
     /**
      * The attributes that are mass assignable.

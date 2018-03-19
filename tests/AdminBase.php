@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-abstract class AdminBase extends TestCase
+abstract class AdminBase extends BKTestCase
 {
     /**
      * Act as the supervisor.

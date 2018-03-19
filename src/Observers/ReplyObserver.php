@@ -3,14 +3,12 @@
 namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Reply;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Observers\Abstracts\AbstractObserver;
 
 class ReplyObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     *
      * @param  Reply $observed
      * @return void
      */

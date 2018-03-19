@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class SuperDashboardTest extends TestCase
+class SuperDashboardTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/dashboard/supervisor';

@@ -2,21 +2,26 @@
 
 namespace Aviator\Helpdesk\Tests;
 
+use PHPUnit\Framework\Assert;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
+use Aviator\Helpdesk\Tests\Fixtures\Get;
+use Aviator\Helpdesk\Tests\Fixtures\Make;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler;
+use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
-use Orchestra\Testbench\BrowserKit\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    /** @var \Aviator\Helpdesk\Tests\Make */
+    /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
     protected $make;
 
-    /** @var \Aviator\Helpdesk\Tests\Get */
+    /** @var \Aviator\Helpdesk\Tests\Fixtures\Get */
     protected $get;
 
     /** @var array */
@@ -49,6 +54,64 @@ abstract class TestCase extends Orchestra
 
         $this->make = new Make();
         $this->get = new Get();
+
+        TestResponse::macro('data', function ($key) {
+            /* @noinspection PhpUndefinedFieldInspection */
+            return $this->original->getData()[$key];
+        });
+
+        TestResponse::macro(
+            'assertActiveHeaderTab',
+            function (string $activeTab) {
+                $inactiveTabs = array_filter(
+                    ['dashboard', 'tickets', 'admin'],
+                    function ($item) use ($activeTab) {
+                        return $item !== $activeTab;
+                    }
+                );
+
+                /* @var TestResponse $this */
+                $this->assertSee('id="header-tab-' . $activeTab . '-active"');
+
+                foreach ($inactiveTabs as $tab) {
+                    /* @var TestResponse $this */
+                    $this->assertDontSee('id="header-tab-' . $tab . '-active"');
+                }
+            }
+        );
+
+        TestResponse::macro('assertSeeInOrder', function (array $values) {
+            $position = 0;
+
+            foreach ($values as $value) {
+                $valuePosition = mb_strpos($this->getContent(), $value, $position);
+
+                if ($valuePosition === false || $valuePosition < $position) {
+                    Assert::fail(
+                        'Failed asserting that \'' . $this->getContent() .
+                        '\' contains "' . $value . '" in specified order.'
+                    );
+                }
+
+                $position = $valuePosition + mb_strlen($value);
+            }
+        });
+
+        Collection::macro('assertContains', function ($value) {
+            /* @noinspection PhpParamsInspection */
+            Assert::assertTrue(
+                $this->contains($value),
+                'Failed asserting that the collection contains the given value.'
+            );
+        });
+
+        Collection::macro('assertNotContains', function ($value) {
+            /* @noinspection PhpParamsInspection */
+            Assert::assertFalse(
+                $this->contains($value),
+                'Failed asserting that the collection does not contain the given value.'
+            );
+        });
     }
 
     /**
@@ -142,6 +205,7 @@ abstract class TestCase extends Orchestra
         $app->config->set('helpdesk.tables.closings', $prefix . 'closings');
         $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
         $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
+        $app->config->set('helpdesk.tables.collaborators', $prefix . 'collaborators');
     }
 
     protected function withoutErrorHandling ()

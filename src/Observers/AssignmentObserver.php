@@ -9,7 +9,7 @@ class AssignmentObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param \Aviator\Helpdesk\Models\Assignment $observed
+     * @param Assignment $observed
      * @return void
      */
     public function created(Assignment $observed)

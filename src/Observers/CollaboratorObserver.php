@@ -9,7 +9,7 @@ class CollaboratorObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param \Aviator\Helpdesk\Models\Collaborator $observed
+     * @param Collaborator $observed
      * @return void
      */
     public function created(Collaborator $observed)

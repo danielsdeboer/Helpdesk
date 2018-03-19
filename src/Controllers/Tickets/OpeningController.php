@@ -19,13 +19,16 @@ class OpeningController extends Controller
 
     /**
      * Create a new assignment.
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
     protected function create(Request $request, Ticket $ticket)
     {
-        $agent = Agent::where('user_id', auth()->user()->id)->first();
+        $agent = Agent::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
 
-        if ($ticket->isClosed()) {
+        if ($ticket->status()->closed()) {
             if ($agent) {
                 $ticket->open($request->note, $agent);
             } else {
@@ -33,6 +36,6 @@ class OpeningController extends Controller
             }
         }
 
-        return redirect(route('helpdesk.tickets.show', $ticket->id));
+        return redirect()->route('helpdesk.tickets.show', $ticket->id);
     }
 }

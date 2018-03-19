@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @property mixed ticket_id
  * @property mixed id
@@ -12,45 +14,13 @@ namespace Aviator\Helpdesk\Models;
  */
 class Collaborator extends ActionBase
 {
-    /**
-     * Fields to be cast.
-     * @var array
-     */
-    protected $casts = [
-        'is_visible' => 'boolean',
-    ];
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.collaborators';
 
     /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
+     * @return BelongsTo
      */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.collaborators'));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function agent()
-    {
-        return $this->belongsTo(Agent::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function ticket()
-    {
-        return $this->belongsTo(Ticket::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function createdBy()
+    public function createdBy () : BelongsTo
     {
         return $this->belongsTo(Agent::class, 'created_by');
     }

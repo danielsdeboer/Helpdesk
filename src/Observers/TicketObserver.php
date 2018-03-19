@@ -7,10 +7,21 @@ use Aviator\Helpdesk\Models\Opening;
 
 class TicketObserver
 {
+    /** @var Opening */
+    private $opening;
+
+    /**
+     * Constructor.
+     * @param Opening $opening
+     */
+    public function __construct (Opening $opening)
+    {
+        $this->opening = $opening;
+    }
+
     /**
      * Listen to the created event.
-     *
-     * @param  Ticket
+     * @param Ticket $ticket
      * @return void
      */
     public function created(Ticket $ticket)
@@ -23,7 +34,7 @@ class TicketObserver
      */
     protected function createOpening (Ticket $ticket)
     {
-        Opening::query()->create([
+        $this->opening->create([
             'ticket_id' => $ticket->id,
             'agent_id' => $ticket->agent ? $ticket->agent->id : null,
             'user_id' => $ticket->user ? $ticket->user->id : null,

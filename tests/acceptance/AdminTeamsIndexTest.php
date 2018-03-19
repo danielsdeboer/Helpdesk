@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests;
 
 use Illuminate\Support\Facades\Route;
 
-class AdminTeamsIndexTest extends TestCase
+class AdminTeamsIndexTest extends BKTestCase
 {
     const URI = 'helpdesk/admin/teams';
 

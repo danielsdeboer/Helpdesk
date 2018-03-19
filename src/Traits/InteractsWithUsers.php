@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Traits;
 
+use Illuminate\Support\Collection;
+
 trait InteractsWithUsers
 {
     /** @var \Illuminate\Database\Eloquent\Model */
@@ -24,7 +26,7 @@ trait InteractsWithUsers
      * Get a list of users. If a callback is set, filter with that. Otherwise get all users.
      * @return mixed
      */
-    protected function fetchUsers()
+    protected function fetchUsers ()
     {
         if (!config('helpdesk.callbacks.user')) {
             return $this->fetchAllUsers();
@@ -34,17 +36,17 @@ trait InteractsWithUsers
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    protected function fetchAllUsers ()
+    protected function fetchAllUsers () : Collection
     {
         return $this->userModelName::all();
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    protected function fetchFilteredUsers ()
+    protected function fetchFilteredUsers () : Collection
     {
         $class = config('helpdesk.callbacks.user');
         /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $callback */

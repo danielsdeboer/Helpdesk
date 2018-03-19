@@ -11,27 +11,22 @@ use Carbon\Carbon;
  */
 class DueDate extends ActionBase
 {
+    /** @var array */
     protected $casts = [
         'due_on' => 'date',
+        'is_visible' => 'boolean',
     ];
 
-    /**
-     * Set the table name from the Helpdesk config.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->setTable(config('helpdesk.tables.due_dates'));
-    }
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.due_dates';
 
     /**
      * Enforce the dateString format for due_on. This is useful
      * for sqlite which doesn't have a date type.
      * @param mixed $value
+     * @return void
      */
-    public function setDueOnAttribute($value)
+    public function setDueOnAttribute ($value)
     {
         $this->attributes['due_on'] = Carbon::parse($value)->toDateString();
     }

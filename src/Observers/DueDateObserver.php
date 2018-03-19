@@ -9,8 +9,7 @@ class DueDateObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     *
-     * @param  DueDate
+     * @param DueDate $observed
      * @return void
      */
     public function created(DueDate $observed)

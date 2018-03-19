@@ -31,6 +31,10 @@
       padding-bottom: 0;
     }
 
+    .has-margin-bottom {
+      margin-bottom: 1rem !important;
+    }
+
     .modal-background {
       background-color: rgba(50, 50, 50, 0.6);
     }
@@ -49,6 +53,8 @@
     .select select {
       width: 100%;
     }
+
+    [v-cloak] { display: none }
   </style>
 </head>
 <body>

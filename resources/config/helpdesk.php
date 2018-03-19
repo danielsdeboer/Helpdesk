@@ -46,6 +46,10 @@ return [
         'collaborators' => 'collaborators',
     ],
 
+    'header' => [
+        'links' => [],
+    ],
+
     'from' => [
         'address' => 'noreply@test.com',
         'name' => 'Helpdesk Notifier',
@@ -54,12 +58,11 @@ return [
     'notification' => \Aviator\Helpdesk\Notifications\Generic::class,
 
     'notifications' => [
-
         'opened' => [
             'subject' => 'Your ticket has been opened!',
             'greeting' => 'Hey there,',
             'line' => 'Your ticket has been opened. A member of our customer service staff will be in touch shortly.',
-            'route' => 'helpdesk.tickets.public',
+            'route' => 'helpdesk.tickets.permalink.show',
             'idType' => 'uuid',
         ],
 
@@ -67,7 +70,7 @@ return [
             'subject' => 'Your ticket has been replied to!',
             'greeting' => 'Hey there,',
             'line' => 'Your ticket has been replied to. Click the button below to review the reply.',
-            'route' => 'helpdesk.tickets.public',
+            'route' => 'helpdesk.tickets.permalink.show',
             'idType' => 'uuid',
         ],
 
@@ -75,7 +78,7 @@ return [
             'subject' => 'Your ticket has been closed.',
             'greeting' => 'Hey there,',
             'line' => 'Your ticket has been marked as closed. Click the button below to view the ticket and re-open it if desired.',
-            'route' => 'helpdesk.tickets.public',
+            'route' => 'helpdesk.tickets.permalink.show',
             'idType' => 'uuid',
         ],
 
@@ -134,28 +137,22 @@ return [
             'supervisor' => 'supervisor',
         ],
 
+        'agents' => [
+            'prefix' => 'agents',
+            'tickets' => [
+                'prefix' => 'tickets',
+                'index' => '/',
+                'show' => '{ticket}',
+            ],
+        ],
+
         'tickets' => [
             'prefix' => 'tickets',
-            'index' => [
-                'route' => '/',
-                'name' => 'index',
-            ],
-            'opened' => [
-                'route' => 'open',
-                'name' => 'opened',
-            ],
-            'closed' => [
-                'route' => 'closed',
-                'name' => 'closed',
-            ],
-            'show' => [
-                'route' => '{ticket}',
-                'name' => 'show',
-            ],
-            'uuid' => [
-                'route' => 'public/{uuid}',
-                'name' => 'public',
-            ],
+            'index' => '/',
+            'opened' => 'open',
+            'closed' => 'closed',
+            'show' => '{ticket}',
+            'permalink' => 'permalink/{uuid}',
             'assign' => [
                 'route' => 'assign/{ticket}',
                 'name' => 'assign',
@@ -183,39 +180,10 @@ return [
         ],
     ],
 
-    'controllers' => [
-        'admin' => [
-            'agents' => '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
-            'teams' => '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
-            'team-members' => [
-                'add' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@add',
-                'remove' => '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@remove',
-            ],
-        ],
-        'dashboard' => [
-            'user' => '\Aviator\Helpdesk\Controllers\Dashboard\UserController@index',
-            'agent' => '\Aviator\Helpdesk\Controllers\Dashboard\AgentController@index',
-            'supervisor' => '\Aviator\Helpdesk\Controllers\Dashboard\SupervisorController@index',
-        ],
-
-        'tickets' => [
-            'index' => '\Aviator\Helpdesk\Controllers\TicketsController@index',
-            'opened' => '\Aviator\Helpdesk\Controllers\TicketsController@opened',
-            'closed' => '\Aviator\Helpdesk\Controllers\TicketsController@closed',
-            'show' => '\Aviator\Helpdesk\Controllers\TicketsController@show',
-            'uuid' => [
-                'show' => '\Aviator\Helpdesk\Controllers\Tickets\UuidController@show',
-            ],
-            'assign' => '\Aviator\Helpdesk\Controllers\Tickets\AssignmentController@create',
-            'close' => '\Aviator\Helpdesk\Controllers\Tickets\ClosingController@create',
-            'reply' => '\Aviator\Helpdesk\Controllers\Tickets\ReplyController@create',
-            'note' => '\Aviator\Helpdesk\Controllers\Tickets\NoteController@create',
-            'open' => '\Aviator\Helpdesk\Controllers\Tickets\OpeningController@create',
-            'collab' => '\Aviator\Helpdesk\Controllers\Tickets\CollaboratorController@create',
-        ],
-    ],
-
-    'footerText' => '<strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>',
+    'footerText' => '
+        <strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. 
+        Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>
+    ',
 
     'footerCopyrightText' => '&copy; 2017 Aviator Creative</a>',
 ];
