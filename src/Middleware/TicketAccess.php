@@ -19,7 +19,7 @@ class TicketAccess
         /*
          * Deny guests
          */
-        if (! $request->user()) {
+        if (!$request->user()) {
             return abort(403);
         }
 

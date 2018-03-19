@@ -28,7 +28,7 @@ trait InteractsWithUsers
      */
     protected function fetchUsers ()
     {
-        if (! config('helpdesk.callbacks.user')) {
+        if (!config('helpdesk.callbacks.user')) {
             return $this->fetchAllUsers();
         }
 

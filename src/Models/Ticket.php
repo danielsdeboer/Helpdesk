@@ -342,7 +342,7 @@ class Ticket extends AbstractModel
     {
         $collabs = $this->collaborators()->with('agent')->get();
 
-        if (! $collabs->pluck('agent.id')->contains($collab->id)) {
+        if (!$collabs->pluck('agent.id')->contains($collab->id)) {
             Collaborator::query()->create([
                 'ticket_id' => $this->id,
                 'agent_id' => $collab->id,
@@ -404,6 +404,99 @@ class Ticket extends AbstractModel
 
         // If all else fails, throw an exception
         throw new SupervisorNotFoundException('A supervisor has not been created.');
+    }
+
+    /**
+     * Is the ticket open.
+     * @return bool
+     */
+    public function isOpen()
+    {
+        return $this->status === 'open';
+    }
+
+    /**
+     * Is the ticket closed.
+     * @return bool
+     */
+    public function isClosed()
+    {
+        return $this->status === 'closed';
+    }
+
+    /**
+     * Is the ticket overdue.
+     * @return bool
+     */
+    public function isOverdue()
+    {
+        return $this->dueDate && $this->dueDate->due_on->lte(Carbon::now());
+    }
+
+    /**
+     * Is the ticket assigned to an agent or team.
+     * @return bool
+     */
+    public function isAssigned()
+    {
+        return $this->assignment || $this->teamAssignment;
+    }
+
+    /**
+     * Is the ticket assigned to an agent.
+     * @return bool
+     */
+    public function isAssignedToAnyAgent()
+    {
+        return (bool) $this->assignment;
+    }
+
+    /**
+     * Check if the ticket is assigned to a particular agent.
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return bool
+     */
+    public function isAssignedTo (Agent $agent)
+    {
+        return $this->assignment && (int) $this->assignment->assigned_to === (int) $agent->id;
+    }
+
+    /**
+     * Is the ticket assigned to a team.
+     * @return bool
+     */
+    public function isAssignedToAnyTeam()
+    {
+        return $this->teamAssignment && !$this->assignment;
+    }
+
+    /**
+     * @param \Aviator\Helpdesk\Models\Team $team
+     * @return bool
+     */
+    public function isAssignedToTeam (Team $team)
+    {
+        return $this->teamAssignment->team->id === $team->id;
+    }
+
+    /**
+     * Is the given agent a collaborator on this ticket?
+     * @param \Aviator\Helpdesk\Models\Agent $agent
+     * @return bool
+     */
+    public function hasCollaborator(Agent $agent)
+    {
+        return $this->collaborators->pluck('agent.id')->contains($agent->id);
+    }
+
+    /**
+     * Check if the ticket is owned by a user.
+     * @param $user
+     * @return bool
+     */
+    public function isOwnedBy ($user)
+    {
+        return (int) $user->id === (int) $this->user_id;
     }
 
     /*

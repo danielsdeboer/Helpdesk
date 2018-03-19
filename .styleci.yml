@@ -6,3 +6,5 @@ enabled:
 disabled:
   - concat_without_spaces
   - function_declaration
+  - not_operator_with_successor_space
+

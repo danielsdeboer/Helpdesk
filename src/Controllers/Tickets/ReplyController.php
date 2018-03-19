@@ -26,10 +26,6 @@ class ReplyController extends Controller
      */
     protected function create(Request $request, Ticket $ticket)
     {
-        if (! $ticket) {
-            return redirect()->route('helpdesk.tickets.index');
-        }
-
         $agent = Agent::where('user_id', auth()->user()->id)->first();
 
         $this->validate($request, [
