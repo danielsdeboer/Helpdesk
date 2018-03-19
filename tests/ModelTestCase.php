@@ -1,8 +1,7 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Models;
+namespace Aviator\Helpdesk\Tests;
 
-use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Aviator\Helpdesk\Notifications\Generic;
 use Illuminate\Support\Facades\Notification;

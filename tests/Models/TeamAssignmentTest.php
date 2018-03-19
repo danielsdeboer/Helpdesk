@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Tests\ModelTestCase;
+
 class TeamAssignmentTest extends ModelTestCase
 {
     /** @test */

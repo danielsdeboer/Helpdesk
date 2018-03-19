@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
