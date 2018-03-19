@@ -8,10 +8,10 @@ use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 
-class TicketBKTest extends BKTestCase
+class TicketTest extends TestCase
 {
     /** @test */
-    public function it_has_an_automatically_generated_uuid()
+    public function it_has_an_automatically_generated_uuid ()
     {
         $ticket = $this->make->ticket;
 
@@ -19,7 +19,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_belongs_to_a_user()
+    public function it_belongs_to_a_user ()
     {
         $ticket = $this->make->ticket;
 
@@ -27,7 +27,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_can_have_polymorphic_generic_content()
+    public function it_can_have_polymorphic_generic_content ()
     {
         $ticket = $this->make->ticket;
         $content = $this->make->content;
@@ -40,7 +40,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_can_create_the_content()
+    public function it_can_create_the_content ()
     {
         $ticket = $this->make->ticket;
 
@@ -54,7 +54,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_assigned_to_an_agent_automatically()
+    public function it_may_be_assigned_to_an_agent_automatically ()
     {
         $ticket = $this->make->ticket;
         $agent = $this->make->agent;
@@ -65,7 +65,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_assigned_to_an_agent_by_an_agent()
+    public function it_may_be_assigned_to_an_agent_by_an_agent ()
     {
         $ticket = $this->make->ticket;
         $agent = $this->make->agent;
@@ -81,7 +81,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_assigned_to_an_assignment_team_automatically()
+    public function it_may_be_assigned_to_an_assignment_team_automatically ()
     {
         $ticket = $this->make->ticket;
         $team = $this->make->team;
@@ -92,7 +92,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_assigned_to_an_assignment_team_by_an_agent()
+    public function it_may_be_assigned_to_an_assignment_team_by_an_agent ()
     {
         $ticket = $this->make->ticket;
         $team = $this->make->team;
@@ -105,7 +105,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_given_a_due_date_automatically()
+    public function it_may_be_given_a_due_date_automatically ()
     {
         $ticket = $this->make->ticket;
 
@@ -115,7 +115,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_given_a_due_date_by_a_user()
+    public function it_may_be_given_a_due_date_by_a_user ()
     {
         $ticket = $this->make->ticket;
         $creator = $this->make->agent;
@@ -127,7 +127,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_have_many_actions()
+    public function it_may_have_many_actions ()
     {
         $ticket = $this->make->ticket;
         $agent = $this->make->agent;
@@ -139,7 +139,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_not_be_closed_automatically()
+    public function it_may_not_be_closed_automatically ()
     {
         $ticket = $this->make->ticket;
 
@@ -153,7 +153,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_closed_with_a_note()
+    public function it_may_be_closed_with_a_note ()
     {
         $ticket = $this->make->ticket;
         $user = factory(config('helpdesk.userModel'))->create();
@@ -165,7 +165,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_opened_after_being_closed_with_a_note()
+    public function it_may_be_opened_after_being_closed_with_a_note ()
     {
         $ticket = $this->make->ticket;
         $user = $this->make->user;
@@ -178,7 +178,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_not_be_opened_with_no_user()
+    public function it_may_not_be_opened_with_no_user ()
     {
         $ticket = $this->make->ticket;
 
@@ -194,7 +194,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_can_create_a_note()
+    public function it_can_create_a_note ()
     {
         $ticket = $this->make->ticket;
 
@@ -204,7 +204,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_can_have_many_notes()
+    public function it_can_have_many_notes ()
     {
         $ticket = $this->make->ticket;
 
@@ -217,7 +217,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_creates_notes_with_default_visibility_of_true()
+    public function it_creates_notes_with_default_visibility_of_true ()
     {
         $ticket = $this->make->ticket;
 
@@ -227,7 +227,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_create_notes_with_visibility_set_to_false()
+    public function it_may_create_notes_with_visibility_set_to_false ()
     {
         $ticket = $this->make->ticket;
 
@@ -237,7 +237,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_replied_to_by_an_agent()
+    public function it_may_be_replied_to_by_an_agent ()
     {
         $ticket = $this->make->ticket;
         $agent = $this->make->agent;
@@ -248,7 +248,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function a_reply_created_by_an_agent_is_visible_to_the_user()
+    public function a_reply_created_by_an_agent_is_visible_to_the_user ()
     {
         $ticket = $this->make->ticket;
         $agent = $this->make->agent;
@@ -259,7 +259,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_may_be_replied_to_by_a_user()
+    public function it_may_be_replied_to_by_a_user ()
     {
         $ticket = $this->make->ticket;
         $user = $this->make->user;
@@ -270,7 +270,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_a_uuid_scope()
+    public function it_has_a_uuid_scope ()
     {
         $ticket = $this->make->ticket;
 
@@ -293,7 +293,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_an_unassigned_scope()
+    public function it_has_an_unassigned_scope ()
     {
         $tickets = $this->make->tickets(10);
         $assignee = $this->make->agent;
@@ -305,7 +305,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_unassigned_scope_returns_only_open_tickets()
+    public function the_unassigned_scope_returns_only_open_tickets ()
     {
         $tickets = $this->make->tickets(2);
 
@@ -317,7 +317,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_assigned_scope()
+    public function it_has_assigned_scope ()
     {
         $tickets = $this->make->tickets(10);
         $assignee = $this->make->agent;
@@ -329,7 +329,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_assigned_scope_returns_only_open_tickets()
+    public function the_assigned_scope_returns_only_open_tickets ()
     {
         $agent = $this->make->agent;
 
@@ -346,7 +346,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_overdue_scope()
+    public function it_has_overdue_scope ()
     {
         $tickets = $this->make->tickets(10);
 
@@ -357,7 +357,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_overdue_scope_returns_only_open_tickets()
+    public function the_overdue_scope_returns_only_open_tickets ()
     {
         $tickets = $this->make->tickets(10)
             ->each(function (ticket $ticket) {
@@ -372,7 +372,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_ontime_scope()
+    public function it_has_ontime_scope ()
     {
         $tickets = $this->make->tickets(10);
 
@@ -383,7 +383,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_ontime_scope_returns_only_open_tickets()
+    public function the_ontime_scope_returns_only_open_tickets ()
     {
         /** @var \Illuminate\Support\Collection $tickets */
         $tickets = $this->make->tickets(10)
@@ -399,7 +399,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_due_today_scope()
+    public function it_has_due_today_scope ()
     {
         $tickets = $this->make->tickets(10);
 
@@ -410,7 +410,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_duetoday_scope_returns_only_open_tickets()
+    public function the_duetoday_scope_returns_only_open_tickets ()
     {
         $tickets = $this->make->tickets(2)
             ->each(function (Ticket $ticket) {
@@ -425,7 +425,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_opened_scope()
+    public function it_has_opened_scope ()
     {
         $tickets = $this->make->tickets(10);
         $user = $this->make->user;
@@ -437,7 +437,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_teamed_scope()
+    public function it_has_teamed_scope ()
     {
         $tickets = $this->make->tickets(10);
         $team = $this->make->team;
@@ -449,7 +449,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_teamed_scope_returns_only_open_tickets()
+    public function the_teamed_scope_returns_only_open_tickets ()
     {
         $tickets = $this->make->tickets(2)
             ->each(function (Ticket $ticket) {
@@ -465,7 +465,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_with_actions_scope_which_returns_actions_sorted_ascending()
+    public function it_has_with_actions_scope_which_returns_actions_sorted_ascending ()
     {
         $team = $this->make->team;
         $agent = $this->make->agent;
@@ -492,7 +492,7 @@ class TicketBKTest extends BKTestCase
      * @test
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-    public function it_has_an_is_open_method()
+    public function it_has_an_is_open_method ()
     {
         $ticket = $this->make->ticket;
 
@@ -507,7 +507,7 @@ class TicketBKTest extends BKTestCase
      * @test
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-    public function it_has_an_is_closed_method()
+    public function it_has_an_is_closed_method ()
     {
         $ticket = $this->make->ticket;
 
@@ -625,7 +625,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_accessible_scope_returns_tickets_accessible_to_a_user()
+    public function the_accessible_scope_returns_tickets_accessible_to_a_user ()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -646,7 +646,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_accessible_scope_returns_tickets_accessible_to_an_agent()
+    public function the_accessible_scope_returns_tickets_accessible_to_an_agent ()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -662,7 +662,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_accessible_scope_returns_tickets_accessible_to_an_agent_who_is_a_team_lead()
+    public function the_accessible_scope_returns_tickets_accessible_to_an_agent_who_is_a_team_lead ()
     {
         $user = $this->make->user;
         $team = $this->make->team;
@@ -682,7 +682,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function the_accessible_scope_returns_tickets_accessible_to_a_supervisor()
+    public function the_accessible_scope_returns_tickets_accessible_to_a_supervisor ()
     {
         $user = $this->make->user;
         $team = $this->make->team;
@@ -724,7 +724,7 @@ class TicketBKTest extends BKTestCase
     }
 
     /** @test */
-    public function a_ticket_can_add_a_collaborating_agent_only_once()
+    public function a_ticket_can_add_a_collaborating_agent_only_once ()
     {
         $ticket = $this->make->ticket;
         $collab = $this->make->agent;

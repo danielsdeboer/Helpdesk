@@ -136,13 +136,13 @@ class ShowTest extends TestCase
 
         $response = $this->get($this->url($ticket->id));
 
-//        foreach ($agentActions as $action) {
-//            $response->assertSee('id="toolbar-action-' . $action . '"');
-//        }
-//
-//        foreach ($leadActions as $action) {
-//            $response->assertDontSee('id="toolbar-action-' . $action . '"');
-//        }
+        foreach ($agentActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
+
+        foreach ($leadActions as $action) {
+            $response->assertDontSee('id="toolbar-action-' . $action . '"');
+        }
     }
 
     /** @test */

@@ -12,11 +12,12 @@
       'icon' => 'reply'
     ])
 
-    @if (hd_agent()->isSuper())
+    {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
+    @if ($ticket->status()->assignedToAnAgent)
       @include('helpdesk::partials.toolbar.item', [
-        'text' => 'Super Sees This',
-        'modal' => 'reply',
-        'icon' => 'reply'
+        'text' => 'Reassign',
+        'modal' => 'reassign',
+        'icon' => 'reassign'
       ])
     @endif
   @endif
@@ -28,8 +29,6 @@
       'icon' => 'lock_open'
     ])
   @endif
-
-  {{-- Ticket Closing --}}
 
   <form-modal
     modal-name="close"
@@ -56,6 +55,26 @@
   >
     <p class="control">
       <textarea name="note" class="textarea" placeholder="Note (optional)"></textarea>
+    </p>
+  </form-modal>
+
+  <form-modal
+    modal-name="reassign"
+    modal-title="Reassign This Ticket"
+    action-route="{{ route('helpdesk.tickets.assign', $ticket->id) }}"
+    csrf-token="{{ csrf_token() }}"
+    button-text="Assign Ticket"
+    :available-modals="modals"
+    @close-modal="close"
+  >
+    <p class="control">
+      <span class="select">
+        <select name="agent_id" title="agent-id">
+          @foreach ($agents as $agent)
+            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+          @endforeach
+        </select>
+      </span>
     </p>
   </form-modal>
 
