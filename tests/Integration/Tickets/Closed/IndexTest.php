@@ -167,31 +167,40 @@ class IndexTest extends TestCase
         $user = $this->make->user;
         $agent = $this->make->agent;
         $ticket1 = $this->make->ticket($user)->close(null, $agent);
+        /*
+         * Sorting is time-dependent
+         */
+        sleep(1);
         $ticket2 = $this->make->ticket($user)->close(null, $user);
 
         $this->be($user);
         $response = $this->get($this->url);
 
         $response->assertSuccessful();
+
+        /*
+         * Since closed tickets are ordered by most recently created first,
+         * ticket 2 will be first.
+         */
         $response->assertSeeInOrder([
             '<td id="row-1-title">',
-            $ticket1->content->title(),
+            $ticket2->content->title(),
             '<td id="row-1-created">',
-            $ticket1->created_at->format('Y-m-d'),
+            $ticket2->created_at->format('Y-m-d'),
             '<td id="row-1-closed">',
-            $ticket1->closing->created_at->format('Y-m-d'),
+            $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-1-who">',
-            $agent->user->name,
+            'You',
         ]);
         $response->assertSeeInOrder([
             '<td id="row-2-title">',
-            $ticket2->content->title(),
+            $ticket1->content->title(),
             '<td id="row-2-created">',
-            $ticket2->created_at->format('Y-m-d'),
+            $ticket1->created_at->format('Y-m-d'),
             '<td id="row-2-closed">',
-            $ticket2->closing->created_at->format('Y-m-d'),
+            $ticket1->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
-            'You',
+            $agent->user->name,
         ]);
     }
 
