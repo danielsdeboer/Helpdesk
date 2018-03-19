@@ -70,8 +70,9 @@ class TicketsController extends Controller
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,
             'agents' => $ticket->teamAssignment
-                ? $agents->inTeam($ticket->teamAssignment->team)->get()
-                : $agents->get()
+                ? $agents->clone()->inTeam($ticket->teamAssignment->team)->get()
+                : $agents->clone()->get(),
+            'collaborators' => $agents->clone()->exceptAuthorized()->get(),
         ]);
     }
 }

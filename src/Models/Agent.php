@@ -236,6 +236,24 @@ class Agent extends AbstractModel
         });
     }
 
+    /**
+     * Get all agents except the currently signed in agent.
+     * @param Builder $query
+     * @return $this|Builder
+     */
+    public function scopeExceptAuthorized (Builder $query)
+    {
+        if (auth()->user() && auth()->user()->agent) {
+            return $query->where(
+                $this->table.'.id',
+                '!=',
+                auth()->user()->agent->id
+            );
+        }
+
+        return $query;
+    }
+
     /*
      * Relationships
      */

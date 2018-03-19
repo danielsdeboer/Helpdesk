@@ -2,30 +2,26 @@
 
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Routing\Controller;
-use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\View\View;
 
 class PermalinkController extends Controller
 {
     /**
      * Display a instance of the resource.
-     * @param Ticket $ticket
-     * @return Reponse
+     * @param TicketsRepository $tickets
+     * @param string $permalink
+     * @return View
      */
-    public function show(Ticket $ticket, string $uuid)
+    public function show(TicketsRepository $tickets, string $permalink)
     {
-        $ticket = Ticket::where('uuid', $uuid)->first();
-
-        if (! $ticket) {
-            return redirect()->route('helpdesk.tickets.index');
-        }
+        $ticket = $tickets->permalink($permalink)->first();
 
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,
-            'withOpen' => true,
-            'withClose' => true,
-            'withReply' => true,
-            'showPrivate' => false,
+            'agents' => [],
+            'collaborators' => [],
         ]);
     }
 }

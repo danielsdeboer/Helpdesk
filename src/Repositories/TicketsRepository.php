@@ -2,10 +2,9 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class TicketsRepository extends Repository
 {
@@ -25,6 +24,9 @@ class TicketsRepository extends Repository
         'opening',
     ];
 
+    /** @var bool */
+    private $permalinkApplied = false;
+
     /**
      * Constructor.
      * @param \Aviator\Helpdesk\Models\Ticket $ticket
@@ -32,13 +34,9 @@ class TicketsRepository extends Repository
      */
     public function __construct (Ticket $ticket, User $user = null)
     {
-        if (! $user) {
-            abort(430);
-        }
-
         $this->query = $ticket::query();
         $this->user = $user;
-        $this->scopeToUser();
+        $this->addAutoScopes();
     }
 
     /**
@@ -98,15 +96,43 @@ class TicketsRepository extends Repository
     }
 
     /**
+     * @param string $permalink
+     * @return $this
+     */
+    public function permalink (string $permalink)
+    {
+        $this->permalinkApplied = true;
+
+        return $this->addScope('permalink', $permalink);
+    }
+
+    /**
+     * Pre-run query prepare. Can be over-ridden.
+     * @return Builder
+     */
+    protected function prepare ()
+    {
+        if (!$this->user && !$this->permalinkApplied) {
+            abort(403, 'Guests may only request tickets via permalinks.');
+        }
+
+        return $this->query();
+    }
+
+    /**
      * Apply query scopes based on whether the user is an agent or not.
      * @return $this
      */
-    private function scopeToUser () : self
+    private function addAutoScopes ()
     {
-        if ($this->user->agent) {
+        if ($this->user && $this->user->agent) {
             return $this->addScope('accessibleToAgent', $this->user->agent);
         }
 
-        return $this->addScope('accessibleToUser', $this->user);
+        if ($this->user) {
+            return $this->addScope('accessibleToUser', $this->user);
+        }
+
+        return $this;
     }
 }

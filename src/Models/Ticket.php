@@ -424,6 +424,16 @@ class Ticket extends AbstractModel
     }
 
     /**
+     * @param Builder $query
+     * @param string $permalink
+     * @return Builder
+     */
+    public function scopePermalink (Builder $query, string $permalink)
+    {
+        return $query->where('uuid', $permalink);
+    }
+
+    /**
      * Get unassigned tickets. A team assignment isn't
      * considered an assignment for these purposes since
      * a team assignment is an automatic intermediary

@@ -133,18 +133,55 @@ class ShowTest extends TestCase
         $agent = $this->make->agent->assign($ticket);
 
         $this->be($agent->user);
-
-        $this->withoutErrorHandling();
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-//        foreach ($agentActions as $action) {
-//            $response->assertSee('id="toolbar-action-' . $action . '"');
-//        }
-//
-//        foreach ($leadActions as $action) {
-//            $response->assertDontSee('id="toolbar-action-' . $action . '"');
-//        }
+
+        foreach ($agentActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
+
+        foreach ($leadActions as $action) {
+            $response->assertDontSee('id="toolbar-action-' . $action . '"');
+        }
+    }
+
+    /** @test */
+    public function team_leads_see_all_actions ()
+    {
+        $openActions = ['reply', 'note', 'close', 'assign'];
+
+        $assignedActions = ['reassign', 'collab'];
+
+        $closedActions = ['open'];
+
+        $user = $this->make->user;
+        $ticket = $this->make->ticket($user);
+        $agent = $this->make->agent;
+        $team = $this->make->team->assign($ticket)->addLead($agent);
+
+        $this->be($agent->user);
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+
+        foreach ($openActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
+
+        $this->make->agent->assign($ticket);
+        $response = $this->get($this->url($ticket->id));
+
+        foreach ($assignedActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
+
+        $ticket->close(null, $agent);
+        $response = $this->get($this->url($ticket->id));
+
+        foreach ($closedActions as $action) {
+            $response->assertSee('id="toolbar-action-' . $action . '"');
+        }
     }
 
     /** @test */

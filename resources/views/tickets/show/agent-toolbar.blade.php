@@ -7,6 +7,13 @@
         'modal' => 'reassign',
         'icon' => 'person_pin_circle'
       ])
+
+      {{-- Collaborators are visible once a ticket has been assigned to an agent --}}
+      @include('helpdesk::partials.toolbar.item', [
+        'text' => 'Add Collaborator',
+        'modal' => 'collab',
+        'icon' => 'people'
+      ])
     @else
       @include('helpdesk::partials.toolbar.item', [
         'text' => 'Assign',
@@ -32,8 +39,6 @@
       'modal' => 'note',
       'icon' => 'note_add'
     ])
-
-
   @endif
 
   @if ($ticket->status()->closed())
@@ -144,6 +149,28 @@
         <input type="checkbox" name="note_is_visible" value="1">
         Note is visible to the customer
       </label>
+    </p>
+  </form-modal>
+
+  <form-modal
+    modal-name="collab"
+    modal-title="Add a Collaborator"
+    action-route="{{ route('helpdesk.tickets.collab', $ticket->id) }}"
+    csrf-token="{{ csrf_token() }}"
+    button-text="Add Note"
+    :available-modals="modals"
+    @close-modal="close"
+  >
+    <p class="control">
+      <span class="select">
+        <select name="collab-id" title="collab-id">
+          @if (isset($collaborators))
+            @foreach($collaborators as $agent)
+              <option value="{{ $agent->id }}" id="collab-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+            @endforeach
+          @endif
+        </select>
+      </span>
     </p>
   </form-modal>
 </div>

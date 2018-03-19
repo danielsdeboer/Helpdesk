@@ -34,12 +34,24 @@ class AgentsRepository extends Repository
     }
 
     /**
+     * Get all the agents in the given team.
      * @param Team $team
      * @return AgentsRepository
      */
     public function inTeam (Team $team)
     {
         $this->addScope('inTeam', $team);
+
+        return $this;
+    }
+
+    /**
+     * Scope the query to exclude the currently signed-in agent.
+     * @return $this
+     */
+    public function exceptAuthorized ()
+    {
+        $this->addScope('exceptAuthorized');
 
         return $this;
     }

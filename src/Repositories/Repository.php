@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -25,6 +24,8 @@ abstract class Repository
     protected $resultsPerPage = 24;
 
     /**
+     * Get a fresh instance of the repository.
+     * @return static
      */
     public function clone ()
     {
@@ -37,7 +38,7 @@ abstract class Repository
      */
     public function count () : int
     {
-        return $this->query->count();
+        return $this->prepare()->count();
     }
 
     /**
@@ -47,8 +48,7 @@ abstract class Repository
      */
     public function find (int $id)
     {
-        return $this->query()
-            ->find($id);
+        return $this->prepare()->find($id);
     }
 
     /**
@@ -57,8 +57,16 @@ abstract class Repository
      */
     public function findOrFail (int $id)
     {
-        return $this->query()
-            ->findOrFail($id);
+        return $this->prepare()->findOrFail($id);
+    }
+
+    /**
+     * Get the first item of the result set.
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function first ()
+    {
+        return $this->prepare()->first();
     }
 
     /**
@@ -67,7 +75,7 @@ abstract class Repository
      */
     public function get () : Collection
     {
-        return $this->query()
+        return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
             ->get();
     }
@@ -80,7 +88,7 @@ abstract class Repository
      */
     public function paginate (int $resultsPerPage = null) : LengthAwarePaginator
     {
-        return $this->query()
+        return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
             ->paginate($resultsPerPage ?: $this->resultsPerPage);
     }
@@ -116,5 +124,13 @@ abstract class Repository
     protected function query ()
     {
         return $this->query->with($this->relations);
+    }
+
+    /**
+     * Pre-run query prepare. Can be over-ridden.
+     * @return Repository|\Illuminate\Database\Eloquent\Builder
+     */
+    protected function prepare () {
+        return $this->query();
     }
 }
