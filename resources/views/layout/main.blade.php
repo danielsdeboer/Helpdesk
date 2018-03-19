@@ -53,6 +53,8 @@
     .select select {
       width: 100%;
     }
+
+    [v-cloak] { display: none }
   </style>
 </head>
 <body>
