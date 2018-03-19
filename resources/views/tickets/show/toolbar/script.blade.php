@@ -74,25 +74,23 @@
 
     data: {
       modals: {
-        close: {
-          visible: false
-        },
-        open: {
-          visible: false
-        },
-        reply: {
-          visible: false
-        }
+        close: false,
+        open: false,
+        reply: false,
+        assign: false,
+        reassign: false,
+        note: false,
+        collab: false,
       }
     },
 
     methods: {
       toggle: function (modal) {
-        this.modals[modal].visible = ! this.modals[modal].visible
+        this.modals[modal] = ! this.modals[modal]
       },
 
       close: function ({modalName}) {
-        if (this.modals[modalName].visible) {
+        if (this.modals[modalName]) {
           this.toggle(modalName)
         }
       }

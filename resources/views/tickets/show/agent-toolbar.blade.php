@@ -17,7 +17,13 @@
       @include('helpdesk::partials.toolbar.item', [
         'text' => 'Reassign',
         'modal' => 'reassign',
-        'icon' => 'reassign'
+        'icon' => 'person_pin_circle'
+      ])
+    @else
+      @include('helpdesk::partials.toolbar.item', [
+        'text' => 'Assign',
+        'modal' => 'assign',
+        'icon' => 'person_pin_circle'
       ])
     @endif
   @endif
@@ -61,6 +67,26 @@
   <form-modal
     modal-name="reassign"
     modal-title="Reassign This Ticket"
+    action-route="{{ route('helpdesk.tickets.assign', $ticket->id) }}"
+    csrf-token="{{ csrf_token() }}"
+    button-text="Reassign Ticket"
+    :available-modals="modals"
+    @close-modal="close"
+  >
+    <p class="control">
+      <span class="select">
+        <select name="agent_id" title="agent-id">
+          @foreach ($agents as $agent)
+            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+          @endforeach
+        </select>
+      </span>
+    </p>
+  </form-modal>
+
+  <form-modal
+    modal-name="assign"
+    modal-title="Assign This Ticket"
     action-route="{{ route('helpdesk.tickets.assign', $ticket->id) }}"
     csrf-token="{{ csrf_token() }}"
     button-text="Assign Ticket"
