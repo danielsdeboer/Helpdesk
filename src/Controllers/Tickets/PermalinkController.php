@@ -13,13 +13,6 @@ class PermalinkController extends Controller
     /** @var array */
     protected $showRelations = [
         'actions',
-        'teamAssignment.team.agents',
-        'opening.agent',
-        'notes.agent',
-        'dueDates.agent',
-        'internalReplies.agent',
-        'externalReplies.user',
-        'closing.agent',
     ];
 
     /**
