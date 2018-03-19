@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Builder;
 
 class TicketsRepository extends Repository
 {
@@ -112,7 +112,7 @@ class TicketsRepository extends Repository
      */
     protected function prepare ()
     {
-        if (!$this->user && !$this->permalinkApplied) {
+        if (! $this->user && ! $this->permalinkApplied) {
             abort(403, 'Guests may only request tickets via permalinks.');
         }
 

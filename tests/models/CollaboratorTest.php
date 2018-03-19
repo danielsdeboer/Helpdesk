@@ -4,8 +4,8 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
 use Aviator\Helpdesk\Tests\Models\ModelTestCase;
+use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
 
 class CollaboratorTest extends ModelTestCase
 {

@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Tickets\Closed;
 
+use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Carbon\Carbon;
 
 class IndexTest extends TestCase
 {
@@ -191,7 +191,7 @@ class IndexTest extends TestCase
             '<td id="row-2-closed">',
             $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
-            'You'
+            'You',
         ]);
     }
 
@@ -233,7 +233,7 @@ class IndexTest extends TestCase
             '<td id="row-2-closed">',
             $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
-            $ticket2->user->name
+            $ticket2->user->name,
         ]);
     }
 }

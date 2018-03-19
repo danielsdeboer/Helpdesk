@@ -2,9 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Tickets\Open;
 
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Tests\TestCase;
 
 class IndexTest extends TestCase
 {
@@ -182,7 +181,7 @@ class IndexTest extends TestCase
             '<td id="row-2-created">',
             $ticket2->created_at->format('Y-m-d'),
             '<td id="row-2-assignee">',
-            'No One Yet'
+            'No One Yet',
         ]);
     }
 

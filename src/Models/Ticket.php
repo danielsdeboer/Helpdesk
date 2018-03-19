@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
@@ -10,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Helpers\Ticket\Status;
 use Aviator\Helpdesk\Helpers\Ticket\Contents;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -329,6 +329,7 @@ class Ticket extends AbstractModel
     {
         $this->content()->associate($content);
         $this->save();
+
         return $this;
     }
 
