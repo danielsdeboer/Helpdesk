@@ -4,9 +4,9 @@ namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
-use Aviator\Helpdesk\Notifications\External\Closed;
+use Aviator\Helpdesk\Tests\Models\ModelTestCase;
 
-class ClosingTestCase extends ModelTestCase
+class ClosingTest extends ModelTestCase
 {
     /** @test */
     public function creating_a_closing_creates_an_action_via_its_observer()
@@ -34,7 +34,7 @@ class ClosingTestCase extends ModelTestCase
 
         $this->withEvents();
 
-        $closing = Closing::create([
+        Closing::query()->create([
             'note' => 'test note',
             'agent_id' => 1,
             'is_visible' => true,

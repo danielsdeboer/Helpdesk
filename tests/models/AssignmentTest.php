@@ -5,8 +5,9 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Tests\Models\ModelTestCase;
 
-class AssignmentTestCase extends ModelTestCase
+class AssignmentTest extends ModelTestCase
 {
     /** @test */
     public function creating_an_assignment_creates_an_action_via_the_assignment_observer()
