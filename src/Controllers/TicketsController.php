@@ -19,8 +19,13 @@ class TicketsController extends Controller
     /** @var array */
     protected $showRelations = [
         'actions',
-        'agent.user',
-        'teamAssignment.team'
+        'teamAssignment.team.agents',
+        'opening.agent',
+        'notes.agent',
+        'dueDates.agent',
+        'internalReplies.agent',
+        'externalReplies.user',
+        'closing.agent',
     ];
 
     /**
@@ -65,7 +70,7 @@ class TicketsController extends Controller
      */
     public function show (AgentsRepository $agents, TicketsRepository $tickets, int $id)
     {
-        $ticket = $tickets->with($this->indexRelations)->findOrFail($id);
+        $ticket = $tickets->with($this->showRelations)->findOrFail($id);
 
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,
