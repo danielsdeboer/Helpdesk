@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Notifications\Internal\Collaborator;
 use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
 
-class CollaboratorTest extends AbstractModelBKTest
+class CollaboratorTestCase extends ModelTestCase
 {
     /** @test */
     public function creating_an_collaborator_creates_an_action_via_the_collaborator_observer()

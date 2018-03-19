@@ -1,13 +1,14 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Tests\User;
 
-class ReplyTest extends AbstractModelBKTest
+class ReplyTest extends ModelTestCase
 {
     /** @test */
     public function it_creates_an_action_via_its_observer()
@@ -46,7 +47,8 @@ class ReplyTest extends AbstractModelBKTest
     /** @test */
     public function if_user_doesnt_exist_dont_send_notification_to_agent()
     {
-        $ticket = Ticket::create([
+        /** @var Ticket $ticket */
+        $ticket = Ticket::query()->create([
             'user_id' => factory(config('helpdesk.userModel'))->create()->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
@@ -57,7 +59,7 @@ class ReplyTest extends AbstractModelBKTest
         $agent = $this->make->agent;
         $ticket->assignToAgent($agent);
 
-        Reply::create([
+        Reply::query()->create([
             'ticket_id' => $ticket->id,
             'body' => 'Something',
             'agent_id' => $agent->id,
@@ -71,7 +73,8 @@ class ReplyTest extends AbstractModelBKTest
     /** @test */
     public function if_the_ticket_is_not_assigned_dont_notify_an_agent()
     {
-        $ticket = Ticket::create([
+        /** @var Ticket $ticket */
+        $ticket = Ticket::query()->create([
             'user_id' => factory(config('helpdesk.userModel'))->create()->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
@@ -83,7 +86,7 @@ class ReplyTest extends AbstractModelBKTest
         $ticket->assignToAgent($agent);
         $agent->delete();
 
-        Reply::create([
+        Reply::query()->create([
             'ticket_id' => $ticket->id,
             'body' => 'Something',
             'agent_id' => $agent->id,
@@ -101,7 +104,8 @@ class ReplyTest extends AbstractModelBKTest
 
         $this->withoutEvents();
 
-        $ticket = Ticket::create([
+        /** @var Ticket $ticket */
+        $ticket = Ticket::query()->create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
@@ -116,7 +120,7 @@ class ReplyTest extends AbstractModelBKTest
 
         $this->withEvents();
 
-        Reply::create([
+        Reply::query()->create([
             'ticket_id' => $ticket->id,
             'body' => 'Something',
             'agent_id' => $agent->id,
@@ -134,7 +138,8 @@ class ReplyTest extends AbstractModelBKTest
 
         $this->withoutEvents();
 
-        $ticket = Ticket::create([
+        /** @var Ticket $ticket */
+        $ticket = Ticket::query()->create([
             'user_id' => $user->id,
             'content_id' => factory(GenericContent::class)->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
@@ -148,7 +153,7 @@ class ReplyTest extends AbstractModelBKTest
 
         $this->withEvents();
 
-        Reply::create([
+        Reply::query()->create([
             'ticket_id' => $ticket->id,
             'body' => 'Something',
             'agent_id' => $agent->id,

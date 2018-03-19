@@ -1,20 +1,24 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Aviator\Helpdesk\Notifications\Generic;
 use Illuminate\Support\Facades\Notification;
 
-abstract class AbstractModelBKTest extends BKTestCase
+abstract class ModelTestCase extends TestCase
 {
-    protected function assertSentTo($user)
+    /**
+     * @param $notifiable
+     */
+    protected function assertSentTo ($notifiable)
     {
         Notification::assertSentTo(
-            $user,
+            $notifiable,
             Generic::class,
-            function ($notification) use ($user) {
-                $mailData = $notification->toMail($user)->toArray();
+            function ($notification) use ($notifiable) {
+                $mailData = $notification->toMail($notifiable)->toArray();
 
                 $this->assertSame($notification->address, config('helpdesk.from.address'));
                 $this->assertSame($notification->name, config('helpdesk.from.name'));
@@ -29,20 +33,28 @@ abstract class AbstractModelBKTest extends BKTestCase
         );
     }
 
-    protected function assertNotSentTo($user)
+    /**
+     * @param $notifiable
+     */
+    protected function assertNotSentTo ($notifiable)
     {
         Notification::assertNotSentTo(
-            $user,
+            $notifiable,
             Generic::class
         );
     }
 
     protected function withEvents()
     {
-        Model::setEventDispatcher(app('events'));
+        Model::setEventDispatcher(
+            app('events')
+        );
     }
 
-    protected function withoutEvents()
+    /**
+     * Mock the event dispatcher so all events are silenced and collected.
+     */
+    protected function withoutEvents ()
     {
         Model::unsetEventDispatcher();
     }

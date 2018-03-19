@@ -6,7 +6,7 @@ use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Notifications\External\Opened;
 
-class OpeningTest extends AbstractModelBKTest
+class OpeningTestCase extends ModelTestCase
 {
     /** @test */
     public function creating_an_opening_creates_an_action_via_its_observer()

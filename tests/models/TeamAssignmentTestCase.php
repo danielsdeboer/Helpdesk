@@ -2,7 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-class TeamAssignmentTest extends AbstractModelBKTest
+class TeamAssignmentTestCase extends ModelTestCase
 {
     /** @test */
     public function creating_a_team_assignment_creates_an_action_via_the_team_assignment_observer()

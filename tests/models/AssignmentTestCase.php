@@ -6,7 +6,7 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
 
-class AssignmentTest extends AbstractModelBKTest
+class AssignmentTestCase extends ModelTestCase
 {
     /** @test */
     public function creating_an_assignment_creates_an_action_via_the_assignment_observer()
