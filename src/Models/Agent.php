@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use function foo\func;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -78,7 +77,7 @@ class Agent extends AbstractModel
      * @param bool $public
      * @return $this
      */
-    public function assign (Ticket $ticket, Agent $assigner = null, $public = true)
+    public function assign (Ticket $ticket, self $assigner = null, $public = true)
     {
         Assignment::query()
             ->create([
@@ -245,7 +244,7 @@ class Agent extends AbstractModel
     {
         if (auth()->user() && auth()->user()->agent) {
             return $query->where(
-                $this->table.'.id',
+                $this->table . '.id',
                 '!=',
                 auth()->user()->agent->id
             );

@@ -70,12 +70,12 @@ abstract class TestCase extends Orchestra
                     }
                 );
 
-                /** @var TestResponse $this */
-                $this->assertSee('id="header-tab-'. $activeTab . '-active"');
+                /* @var TestResponse $this */
+                $this->assertSee('id="header-tab-' . $activeTab . '-active"');
 
                 foreach ($inactiveTabs as $tab) {
-                    /** @var TestResponse $this */
-                    $this->assertDontSee('id="header-tab-'. $tab . '-active"');
+                    /* @var TestResponse $this */
+                    $this->assertDontSee('id="header-tab-' . $tab . '-active"');
                 }
             }
         );

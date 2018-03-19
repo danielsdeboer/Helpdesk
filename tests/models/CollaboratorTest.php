@@ -4,7 +4,7 @@ namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
+use Aviator\Helpdesk\Models\Collaborator;
 
 class CollaboratorTest extends ModelTestCase
 {
@@ -51,12 +51,12 @@ class CollaboratorTest extends ModelTestCase
     /** @test */
     public function if_collaborator_doesnt_exist_dont_send_notification()
     {
-        CollaboratorModel::query()->create([
+        Collaborator::query()->create([
             'agent_id' => 9932,
             'ticket_id' => factory(Ticket::class)->create()->id,
             'created_by' => factory(Agent::class)->create(),
         ]);
 
-        $this->assertNotSentTo(CollaboratorModel::all());
+        $this->assertNotSentTo(Collaborator::all());
     }
 }

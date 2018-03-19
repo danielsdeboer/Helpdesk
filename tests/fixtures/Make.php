@@ -78,7 +78,7 @@ class Make
     public function agentNamed (string $name)
     {
         return factory(Agent::class)->create([
-            'user_id' => factory(User::class)->create(['name' => $name])->id
+            'user_id' => factory(User::class)->create(['name' => $name])->id,
         ]);
     }
 

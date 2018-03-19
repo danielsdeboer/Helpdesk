@@ -196,7 +196,7 @@ class ShowTest extends TestCase
         $this->make->team->addLead($agent1)->assign($ticket)->addMembers([
             $agent2,
             $agent3,
-            $agent4
+            $agent4,
         ]);
 
         $this->be($agent1->user);

@@ -18,7 +18,7 @@ class TicketsRedirector
         /*
          * Guests may not access this route.
          */
-        if (!$request->user()) {
+        if (! $request->user()) {
             return redirect(
                 route('login')
             );
