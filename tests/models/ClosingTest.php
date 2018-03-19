@@ -1,10 +1,9 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Closing;
-use Aviator\Helpdesk\Tests\Models\ModelTestCase;
 
 class ClosingTest extends ModelTestCase
 {

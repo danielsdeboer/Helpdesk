@@ -1,12 +1,13 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Tests\TestCase;
 
 class TicketTest extends TestCase
 {

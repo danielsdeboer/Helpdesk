@@ -1,10 +1,11 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
 
-class DueDateTest extends BKTestCase
+class DueDateTest extends TestCase
 {
     /** @test */
     public function creating_a_due_date_creates_an_action_via_its_observer()

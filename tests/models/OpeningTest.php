@@ -1,10 +1,10 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Aviator\Helpdesk\Tests\Models\ModelTestCase;
+use Aviator\Helpdesk\Tests\User;
 
 class OpeningTest extends ModelTestCase
 {

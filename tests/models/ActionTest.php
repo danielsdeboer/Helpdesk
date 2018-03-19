@@ -1,8 +1,10 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
-class ActionTest extends BKTestCase
+use Aviator\Helpdesk\Tests\TestCase;
+
+class ActionTest extends TestCase
 {
     /** @test */
     public function it_has_an_object()

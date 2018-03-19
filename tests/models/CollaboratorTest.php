@@ -1,11 +1,10 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Collaborator as CollaboratorModel;
-use Aviator\Helpdesk\Tests\Models\ModelTestCase;
 
 class CollaboratorTest extends ModelTestCase
 {

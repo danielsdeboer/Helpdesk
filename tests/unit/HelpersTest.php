@@ -1,18 +1,16 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Helpers;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Helpers\Helpers;
+use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Tests\User;
 
-class HelpersBKTest extends BKTestCase
+class HelpersTest extends TestCase
 {
-    /**
-     * @group unit
-     * @group unit.help
-     * @test
-     */
+    /** @test */
     public function action_creator_returns_the_agent_name()
     {
         $agent = factory(Agent::class)->create();
@@ -25,11 +23,7 @@ class HelpersBKTest extends BKTestCase
         );
     }
 
-    /**
-     * @group unit
-     * @group unit.help
-     * @test
-     */
+    /** @test */
     public function action_creator_returns_the_user_name()
     {
         $user = factory(User::class)->create();
@@ -45,11 +39,7 @@ class HelpersBKTest extends BKTestCase
         );
     }
 
-    /**
-     * @group unit
-     * @group unit.help
-     * @test
-     */
+    /** @test */
     public function action_creator_returns_deleted_user()
     {
         $user = factory(User::class)->create();

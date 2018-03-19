@@ -1,8 +1,10 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
-class TeamTest extends BKTestCase
+use Aviator\Helpdesk\Tests\TestCase;
+
+class TeamTest extends TestCase
 {
     /** @test */
     public function adding_multiple_team_leads ()

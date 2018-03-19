@@ -1,8 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
-
-use Aviator\Helpdesk\Tests\Models\ModelTestCase;
+namespace Aviator\Helpdesk\Tests\Models;
 
 class TeamAssignmentTest extends ModelTestCase
 {

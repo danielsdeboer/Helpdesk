@@ -3,10 +3,10 @@
 namespace Aviator\Helpdesk\Tests\Seeders;
 
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\BKTestCase;
 use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
+use Aviator\Helpdesk\Tests\TestCase;
 
-class HelpdeskSeederBKTest extends BKTestCase
+class SeederTest extends TestCase
 {
     /**
      * @group seeders

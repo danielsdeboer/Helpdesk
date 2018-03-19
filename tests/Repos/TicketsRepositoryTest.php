@@ -1,10 +1,11 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Repos;
 
 use Aviator\Helpdesk\Repositories\TicketsRepository;
+use Aviator\Helpdesk\Tests\TestCase;
 
-class TicketsRepositoryBKTest extends BKTestCase
+class TicketsRepositoryTest extends TestCase
 {
     /**
      * @return \Aviator\Helpdesk\Repositories\TicketsRepository

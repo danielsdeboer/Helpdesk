@@ -1,8 +1,10 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
-class NoteTest extends BKTestCase
+use Aviator\Helpdesk\Tests\TestCase;
+
+class NoteTest extends TestCase
 {
     /** @test */
     public function creating_a_note_creates_an_action_via_its_observer()
