@@ -23,9 +23,10 @@ class IndexTest extends TestCase
     {
         $this->be($this->make->agent->user);
 
+        $this->withoutErrorHandling();
         $response = $this->get($this->url);
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 
     /** @test */

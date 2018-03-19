@@ -7,29 +7,23 @@ use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class TicketsRepository
+class TicketsRepository extends Repository
 {
-    /** @var \Aviator\Helpdesk\Models\Ticket */
-    private $query;
-
     /** @var \Illuminate\Foundation\Auth\User */
     private $user;
 
     /** @var string */
-    private $orderByColumn = 'created_at';
+    protected $orderByColumn = 'created_at';
 
     /** @var string */
-    private $orderByDirection = 'desc';
+    protected $orderByDirection = 'desc';
 
     /** @var array */
-    private $relations = [
+    protected $relations = [
         'user',
         'dueDate',
         'opening',
     ];
-
-    /** @var int */
-    private $resultsPerPage = 24;
 
     /**
      * Constructor.
@@ -45,78 +39,6 @@ class TicketsRepository
         $this->query = $ticket::query();
         $this->user = $user;
         $this->scopeToUser();
-    }
-
-    /**
-     * @return \Aviator\Helpdesk\Repositories\TicketsRepository
-     */
-    public function clone ()
-    {
-        return new self(new Ticket, $this->user);
-    }
-
-    /**
-     * Get a count of the result set.
-     * @return int
-     */
-    public function count () : int
-    {
-        return $this->query->count();
-    }
-
-    /**
-     * Get a single ticket by id.
-     * @param int $id
-     * @return Ticket|null
-     */
-    public function find (int $id)
-    {
-        return $this->query()
-            ->find($id);
-    }
-
-    /**
-     * @param int $id
-     * @return Ticket|null
-     */
-    public function findOrFail (int $id)
-    {
-        return $this->query()
-            ->findOrFail($id);
-    }
-
-    /**
-     * Get a collection of tickets.
-     * @return \Illuminate\Support\Collection
-     */
-    public function get () : Collection
-    {
-        return $this->query()
-            ->orderBy($this->orderByColumn, $this->orderByDirection)
-            ->get();
-    }
-
-    /**
-     * @param int $resultsPerPage
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     * @throws \InvalidArgumentException
-     */
-    public function paginate (int $resultsPerPage = null) : LengthAwarePaginator
-    {
-        return $this->query()
-            ->orderBy($this->orderByColumn, $this->orderByDirection)
-            ->paginate($resultsPerPage ?: $this->resultsPerPage);
-    }
-
-    /**
-     * @param array $relations
-     * @return $this
-     */
-    public function with (array $relations)
-    {
-        $this->relations = $relations;
-
-        return $this;
     }
 
     /**
@@ -173,28 +95,6 @@ class TicketsRepository
     public function unassigned ()
     {
         return $this->addScope('unassigned');
-    }
-
-    /**
-     * @param string $name
-     * @param $arguments
-     * @return $this
-     */
-    private function addScope (string $name, $arguments = []) : self
-    {
-        $this->query->scopes([
-            $name => is_array($arguments) ? $arguments : [$arguments],
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * @return $this|\Illuminate\Database\Eloquent\Builder|static
-     */
-    private function query ()
-    {
-        return $this->query->with($this->relations);
     }
 
     /**

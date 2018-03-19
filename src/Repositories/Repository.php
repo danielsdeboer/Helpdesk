@@ -28,7 +28,7 @@ abstract class Repository
      */
     public function clone ()
     {
-        return app(self::class);
+        return app(static::class);
     }
 
     /**
