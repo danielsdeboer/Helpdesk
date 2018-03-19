@@ -13,7 +13,7 @@
 
     computed: {
       isVisible: function () {
-        return this.availableModals[this.modalName].visible
+        return !!this.availableModals[this.modalName]
       }
     },
 
@@ -86,7 +86,7 @@
 
     methods: {
       toggle: function (modal) {
-        this.modals[modal] = ! this.modals[modal]
+        this.modals[modal] = !this.modals[modal]
       },
 
       close: function ({modalName}) {
