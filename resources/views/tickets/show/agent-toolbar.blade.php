@@ -1,19 +1,7 @@
 <div class="modal-app nav" v-cloak>
-@if ($ticket->status()->open())
-    @include('helpdesk::partials.toolbar.item', [
-      'text' => 'Close Ticket',
-      'modal' => 'close',
-      'icon' => 'lock_outline'
-    ])
-
-    @include('helpdesk::partials.toolbar.item', [
-      'text' => 'Add Reply',
-      'modal' => 'reply',
-      'icon' => 'reply'
-    ])
-
+  @if ($ticket->status()->open())
     {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
-  @if ($ticket->status()->assignedToAnAgent())
+    @if ($ticket->status()->assignedToAnAgent())
       @include('helpdesk::partials.toolbar.item', [
         'text' => 'Reassign',
         'modal' => 'reassign',
@@ -26,9 +14,29 @@
         'icon' => 'person_pin_circle'
       ])
     @endif
+
+    @include('helpdesk::partials.toolbar.item', [
+      'text' => 'Add Reply',
+      'modal' => 'reply',
+      'icon' => 'reply'
+    ])
+
+    @include('helpdesk::partials.toolbar.item', [
+      'text' => 'Close Ticket',
+      'modal' => 'close',
+      'icon' => 'lock_outline'
+    ])
+
+    @include('helpdesk::partials.toolbar.item', [
+      'text' => 'Add Note',
+      'modal' => 'note',
+      'icon' => 'note_add'
+    ])
+
+
   @endif
 
-@if ($ticket->status()->closed())
+  @if ($ticket->status()->closed())
     @include('helpdesk::partials.toolbar.item', [
       'text' => 'Reopen Ticket',
       'modal' => 'open',
@@ -115,6 +123,27 @@
   >
     <p class="control">
       <textarea name="reply_body" class="textarea" placeholder="Reply Body"></textarea>
+    </p>
+  </form-modal>
+
+  <form-modal
+    modal-name="note"
+    modal-title="Add a Note"
+    action-route="{{ route('helpdesk.tickets.note', $ticket->id) }}"
+    csrf-token="{{ csrf_token() }}"
+    button-text="Add Note"
+    :available-modals="modals"
+    @close-modal="close"
+  >
+    <p class="control">
+      <textarea id='note-body' name="note_body" class="textarea" placeholder="Note Body"></textarea>
+    </p>
+
+    <p class="control">
+      <label class="checkbox">
+        <input type="checkbox" name="note_is_visible" value="1">
+        Note is visible to the customer
+      </label>
     </p>
   </form-modal>
 </div>
