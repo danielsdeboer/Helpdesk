@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
-use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Models\GenericContent;
 
 class OpeningTest extends ModelTestCase
