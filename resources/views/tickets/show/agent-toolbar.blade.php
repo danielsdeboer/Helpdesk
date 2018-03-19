@@ -13,7 +13,7 @@
     ])
 
     {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
-    @if ($ticket->status()->assignedToAnAgent)
+    @if ($ticket->status()->assignedToAnAgent())
       @include('helpdesk::partials.toolbar.item', [
         'text' => 'Reassign',
         'modal' => 'reassign',

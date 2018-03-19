@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
+use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
@@ -64,6 +65,7 @@ class TicketsController extends Controller
     {
         return view('helpdesk::tickets.show')->with([
             'ticket' => $tickets->with($this->indexRelations)->findOrFail($id),
+            'agents' => Agent::all(),
         ]);
     }
 }
