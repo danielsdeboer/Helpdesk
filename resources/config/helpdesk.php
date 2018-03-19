@@ -47,7 +47,7 @@ return [
     ],
 
     'header' => [
-        'links' => []
+        'links' => [],
     ],
 
     'from' => [
@@ -142,7 +142,7 @@ return [
             'tickets' => [
                 'prefix' => 'tickets',
                 'index' => '/',
-                'show' => '{ticket}'
+                'show' => '{ticket}',
             ],
         ],
 

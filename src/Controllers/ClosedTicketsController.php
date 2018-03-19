@@ -14,7 +14,7 @@ class ClosedTicketsController extends Controller
         'closing',
         'closing.user',
         'closing.agent',
-        'closing.agent.user'
+        'closing.agent.user',
     ];
 
     /**

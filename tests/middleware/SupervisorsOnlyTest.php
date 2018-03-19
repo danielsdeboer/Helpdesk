@@ -19,7 +19,9 @@ class SupervisorsOnlyTest extends TestCase
 
         Route::any($this->url, [
             'middleware' => 'helpdesk.supervisors',
-            function () { return 'Guarded.'; }
+            function () {
+                return 'Guarded.';
+            },
         ]);
     }
 

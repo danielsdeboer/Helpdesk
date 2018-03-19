@@ -29,7 +29,9 @@ class TicketAccessTest extends TestCase
 
         Route::any('/guarded/{ticket}', [
             'middleware' => 'helpdesk.ticket.owner',
-            function (Ticket $ticket) { return $ticket; },
+            function (Ticket $ticket) {
+                return $ticket;
+            },
         ]);
     }
 

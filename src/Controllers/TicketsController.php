@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
-use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class TicketsController extends Controller

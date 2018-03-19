@@ -15,11 +15,11 @@ class UsersOnly
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user()) {
+        if (! $request->user()) {
             return redirect('login');
         }
 
-        if (!$request->user()->agent) {
+        if (! $request->user()->agent) {
             return $next($request);
         }
 

@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\GenericContent;
-use Aviator\Helpdesk\Tests\User;
 
 class ReplyTest extends ModelTestCase
 {

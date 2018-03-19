@@ -21,7 +21,7 @@ class UsersOnlyTest extends TestCase
             'middleware' => 'helpdesk.users',
             function () {
                 return 'Guarded.';
-            }
+            },
         ]);
     }
 

@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
 
 class AgentsRepository extends Repository
 {
@@ -64,15 +64,15 @@ class AgentsRepository extends Repository
 
         $this->query->join(
             $table,
-            $this->agentsTable.'.user_id',
+            $this->agentsTable . '.user_id',
             '=',
-            $table.'.id'
+            $table . '.id'
         );
 
         $this->query->select([
-           $this->agentsTable.'.*',
-           $table.'.name as user_name',
-           $table.'.email as user_email',
+           $this->agentsTable . '.*',
+           $table . '.name as user_name',
+           $table . '.email as user_email',
         ]);
     }
 }

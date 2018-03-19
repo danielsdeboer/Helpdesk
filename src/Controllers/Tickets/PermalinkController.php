@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
+use Illuminate\View\View;
+use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
-use Illuminate\Routing\Controller;
-use Illuminate\View\View;
 
 class PermalinkController extends Controller
 {

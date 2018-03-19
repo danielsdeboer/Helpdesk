@@ -130,7 +130,8 @@ abstract class Repository
      * Pre-run query prepare. Can be over-ridden.
      * @return Repository|\Illuminate\Database\Eloquent\Builder
      */
-    protected function prepare () {
+    protected function prepare ()
+    {
         return $this->query();
     }
 }
