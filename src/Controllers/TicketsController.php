@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
@@ -19,7 +20,8 @@ class TicketsController extends Controller
     /** @var array */
     protected $showRelations = [
         'actions',
-        'agent'
+        'agent.user',
+        'teamAssignment.team'
     ];
 
     /**
@@ -57,15 +59,20 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource.
+     * @param AgentsRepository $agents
      * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
      * @param int $id
      * @return \Illuminate\Contracts\View\View
      */
-    public function show (TicketsRepository $tickets, int $id)
+    public function show (AgentsRepository $agents, TicketsRepository $tickets, int $id)
     {
+        $ticket = $tickets->with($this->indexRelations)->findOrFail($id);
+
         return view('helpdesk::tickets.show')->with([
-            'ticket' => $tickets->with($this->indexRelations)->findOrFail($id),
-            'agents' => Agent::all(),
+            'ticket' => $ticket,
+            'agents' => $ticket->teamAssignment
+                ? $agents->inTeam($ticket->teamAssignment->team)->get()
+                : $agents->get()
         ]);
     }
 }

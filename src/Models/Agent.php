@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use function foo\func;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -216,6 +217,23 @@ class Agent extends AbstractModel
     public function isSuper () : bool
     {
         return (bool) $this->is_super;
+    }
+
+    /*
+     * Scopes
+     */
+
+    /**
+     * Scope to agents in a particular team.
+     * @param Builder $query
+     * @param Team $team
+     * @return Builder
+     */
+    public function scopeInTeam (Builder $query, Team $team)
+    {
+        return $query->whereHas('teams', function (Builder $query) use ($team) {
+            $query->where('team_id', $team->id);
+        });
     }
 
     /*

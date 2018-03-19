@@ -36,6 +36,55 @@ class Team extends AbstractModel
         return $agent->teamLeads && $agent->teamLeads->pluck('id')->contains($this->id);
     }
 
+    /**
+     * Add a team lead.
+     * @param Agent $agent
+     * @return $this
+     */
+    public function addLead (Agent $agent)
+    {
+        $agent->makeTeamLeadOf($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Agent $agent
+     * @return $this
+     */
+    public function addMember (Agent $agent)
+    {
+        $agent->addToTeam($this);
+
+        return $this;
+    }
+
+    /**
+     * Add multiple members.
+     * @param array $agents
+     * @return $this
+     */
+    public function addMembers (array $agents)
+    {
+        foreach ($agents as $agent) {
+            $this->addMember($agent);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assign a ticket to this team.
+     * @param Ticket $ticket
+     * @return $this
+     */
+    public function assign (Ticket $ticket)
+    {
+        $ticket->assignToTeam($this);
+
+        return $this;
+    }
+
     ///////////////////
     // Relationships //
     ///////////////////

@@ -148,6 +148,32 @@ class ShowTest extends TestCase
     }
 
     /** @test */
+    public function agents_are_listed_alphabetically ()
+    {
+        $agent1 = $this->make->agentNamed('zzz');
+        $agent2 = $this->make->agentNamed('aaa');
+        $agent3 = $this->make->agentNamed('ggg');
+        $agent4 = $this->make->agentNamed('yyy');
+
+        $ticket = $this->make->ticket;
+        $this->make->team->addLead($agent1)->assign($ticket)->addMembers([
+            $agent2,
+            $agent3,
+            $agent4
+        ]);
+
+        $this->be($agent1->user);
+        $response = $this->get($this->url($ticket->id));
+
+        $sorted = ['aaa', 'ggg', 'yyy', 'zzz'];
+        $count = 0;
+        $response->data('agents')->each(function ($item) use ($sorted, &$count) {
+            $this->assertSame($sorted[$count], $item->user_name);
+            $count++;
+        });
+    }
+
+    /** @test */
     public function users_dont_see_private_actions ()
     {
         $user = $this->make->user;

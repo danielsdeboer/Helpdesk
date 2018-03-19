@@ -1,8 +1,11 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Models;
 
-class AgentTest extends BKTestCase
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Tests\TestCase;
+
+class AgentTest extends TestCase
 {
     /** @test */
     public function it_belongs_to_a_user()
@@ -184,5 +187,29 @@ class AgentTest extends BKTestCase
 
         $this->assertTrue($agent->isLeadFor($ticket1));
         $this->assertFalse($agent->isLeadFor($ticket2));
+    }
+
+    /** @test */
+    public function it_can_scope_to_a_team ()
+    {
+        $agent1 = $this->make->agent;
+        $agent2 = $this->make->agent;
+        $agent3 = $this->make->agent;
+        $agent4 = $this->make->agent;
+
+        $team = $this->make->team->addMember($agent1);
+
+        $all = Agent::all();
+        $scoped = Agent::inTeam($team)->get();
+
+        $this->assertCount(6, $all);
+        $this->assertCount(1, $scoped);
+        $this->assertSame($agent1->id, $scoped->first()->id);
+
+        $team->addMember($agent4);
+
+        $scoped = Agent::inTeam($team)->get();
+
+        $this->assertCount(2, $scoped);
     }
 }

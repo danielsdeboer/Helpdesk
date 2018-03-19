@@ -72,6 +72,26 @@ class Make
     }
 
     /**
+     * @param string $name
+     * @return Agent
+     */
+    public function agentNamed (string $name)
+    {
+        return factory(Agent::class)->create([
+            'user_id' => factory(User::class)->create(['name' => $name])->id
+        ]);
+    }
+
+    /**
+     * @param int $count
+     * @return Collection
+     */
+    public function agents (int $count)
+    {
+        return factory(Agent::class, $count)->create();
+    }
+
+    /**
      * @return \Aviator\Helpdesk\Models\Closing
      */
     public function closing ()
