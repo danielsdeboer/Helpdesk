@@ -1,7 +1,5 @@
-@include('helpdesk::tickets.show.toolbar.script')
-
 <div class="modal-app nav" v-cloak>
-  @if ($ticket->status()->open())
+@if ($ticket->status()->open())
     @include('helpdesk::partials.toolbar.item', [
       'text' => 'Close Ticket',
       'modal' => 'close',
@@ -15,7 +13,7 @@
     ])
 
     {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
-    @if ($ticket->status()->assignedToAnAgent())
+  @if ($ticket->status()->assignedToAnAgent())
       @include('helpdesk::partials.toolbar.item', [
         'text' => 'Reassign',
         'modal' => 'reassign',
@@ -30,7 +28,7 @@
     @endif
   @endif
 
-  @if ($ticket->status()->closed())
+@if ($ticket->status()->closed())
     @include('helpdesk::partials.toolbar.item', [
       'text' => 'Reopen Ticket',
       'modal' => 'open',
@@ -78,7 +76,7 @@
     <p class="control">
       <span class="select">
         <select name="agent_id" title="agent-id">
-          @foreach ($agents as $agent)
+        @foreach ($agents as $agent)
             <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
           @endforeach
         </select>
@@ -98,7 +96,7 @@
     <p class="control">
       <span class="select">
         <select name="agent_id" title="agent-id">
-          @foreach ($agents as $agent)
+        @foreach ($agents as $agent)
             <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
           @endforeach
         </select>
@@ -121,4 +119,4 @@
   </form-modal>
 </div>
 
-
+@include('helpdesk::tickets.show.toolbar.script')
