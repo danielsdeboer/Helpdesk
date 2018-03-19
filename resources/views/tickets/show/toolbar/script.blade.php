@@ -33,12 +33,9 @@
 
     template: `
       <div
-        class="modal"
-        v-bind:class="{
-          'is-active': isVisible
-        }"
+        class="modal is-active"
         v-on:keydown.esc="close"
-        v-cloak
+        v-if="isVisible"
       >
         <div class="modal-background" @click="close"></div>
 

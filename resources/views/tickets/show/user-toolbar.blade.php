@@ -1,4 +1,6 @@
-<div class="modal-app nav">
+@include('helpdesk::tickets.show.toolbar.script')
+
+<div class="modal-app nav" v-cloak>
   @if ($ticket->status()->open())
     @include('helpdesk::partials.toolbar.item', [
       'text' => 'Close Ticket',
@@ -65,5 +67,3 @@
     </p>
   </form-modal>
 </div>
-
-@include('helpdesk::tickets.show.toolbar.script')

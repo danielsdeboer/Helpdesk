@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
