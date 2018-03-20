@@ -29,7 +29,7 @@
       </td>
 
       <td id="row-{{ $loop->iteration }}-who">
-        {{ $ticket->closing->user->name ?? 'You' }}
+        {{ $ticket->closing->user->name ?? $ticket->closing->agent->user->name }}
       </td>
     </tr>
   @endforeach

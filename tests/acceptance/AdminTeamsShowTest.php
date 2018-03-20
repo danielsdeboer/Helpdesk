@@ -89,4 +89,16 @@ class AdminTeamsShowTest extends BKTestCase
         $this->see('<a href="http://localhost/helpdesk/tickets/' . $ticket1->id . '">' . $ticket1->content->title() . '</a>')
             ->see('<a href="http://localhost/helpdesk/tickets/' . $ticket2->id . '">' . $ticket2->content->title() . '</a>');
     }
+
+    /** @test */
+    public function it_displays_nothing_to_see_here_on_no_tickets ()
+    {
+        $super = $this->make->super;
+        $team1 = $this->make->team;
+
+        $this->be($super->user);
+        $this->visit(self::URI);
+
+        $this->see('<p>Nothing to see here!</p>');
+    }
 }
