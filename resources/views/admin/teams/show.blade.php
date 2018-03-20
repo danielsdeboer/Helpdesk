@@ -84,17 +84,30 @@
           </thead>
 
           <tbody>
-            @foreach($tickets as $ticket)
-              <tr>
-                <td>
-                  <a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ $ticket->content->title() }}</a>
-                </td>
+            @if ($tickets->count() > 0)
+              @foreach($tickets as $ticket)
+                <tr>
+                  <td>
+                    <a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ $ticket->content->title() }}</a>
+                  </td>
 
-                <td>
-                  {{ $ticket->created_at->toDateString() }}
+                  <td>
+                    {{ $ticket->created_at->toDateString() }}
+                  </td>
+                </tr>
+              @endforeach
+            @else
+              <tr>
+                <td colspan="2" class="has-text-centered">
+                  <section class="section">
+                    <span class="icon is-large">
+                      <i class="material-icons is-mi-large">mood</i>
+                    </span>
+                    <p>Nothing to see here!</p>
+                  </section>
                 </td>
               </tr>
-            @endforeach
+            @endif
           </tbody>
         </table>
       </div>

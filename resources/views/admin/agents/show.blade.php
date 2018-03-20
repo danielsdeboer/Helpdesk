@@ -97,12 +97,12 @@
             @else
               <tr>
                 <td colspan="2" class="has-text-centered">
-                  <div>
+                  <section class="section">
                     <span class="icon is-large">
                       <i class="material-icons is-mi-large">mood</i>
                     </span>
                     <p>Nothing to see here!</p>
-                  </div>
+                  </section>
                 </td>
               </tr>
             @endif
@@ -113,7 +113,4 @@
       @include('helpdesk::admin.agents.show.footer')
     </div>
   </section>
-
-
-
 @endsection
