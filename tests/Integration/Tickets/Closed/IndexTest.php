@@ -231,7 +231,6 @@ class IndexTest extends TestCase
             $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-1-who">',
             $ticket2->user->name,
-
         ]);
         $response->assertSeeInOrder([
             '<td id="row-2-title">',
@@ -243,7 +242,6 @@ class IndexTest extends TestCase
             '<td id="row-2-closed">',
             $ticket1->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
-            //$ticket2->user->name,
             $ticket1->closing->agent->user->name,
         ]);
     }
