@@ -127,6 +127,7 @@ return [
             'team-members' => [
                 'add' => 'add',
                 'remove' => 'remove',
+                'make-team-lead' => 'make-team-lead',
             ],
         ],
 
@@ -181,7 +182,7 @@ return [
     ],
 
     'footerText' => '
-        <strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>. 
+        <strong>Helpdesk</strong> by <a href="http://aviatorcreative.ca/">Aviator Creative</a>.
         Source code licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>
     ',
 

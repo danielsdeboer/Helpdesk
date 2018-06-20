@@ -41,6 +41,7 @@
           <thead>
             <tr>
               <th>Agent Name</th>
+              <th>Team Lead</th>
               <th>Added</th>
               <th></th>
             </tr>
@@ -54,21 +55,36 @@
                 </td>
 
                 <td>
+                  @if(isset($agent->is_team_lead))
+                    {{ $agent->is_team_lead }}
+                  @endif
+                </td>
+
+                <td>
                   {{ $agent->pivot->created_at->toDateString() }}
                 </td>
 
 
                 <td>
-                  <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
-                    {{ csrf_field() }}
+                  <div style="display:flex; justify-content:flex-end; box-sizing:border-box">
+                    <form class="form" method="POST" action="{{ route('helpdesk.admin.agents.show', $agent->id) }}">
+                      {{ csrf_field() }}
 
-                    <input type="hidden" name="agent_id" value="{{ $agent->id }}">
-                    <input type="hidden" name="team_id" value="{{ $team->id }}">
-                    <input type="hidden" name="from" value="agent">
-                    <p class="control has-addons has-addons-right">
+                      <input type="hidden" name="agent_id" value="{{ $agent->id }}">
+                      <input type="hidden" name="team_id" value="{{ $team->id }}">
+                      <input type="hidden" name="from" value="agent">
+                      <button class="button" style="margin: 0 .5em 0 0;">Make Team Lead</button>
+                    </form>
+
+                    <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
+                      {{ csrf_field() }}
+
+                      <input type="hidden" name="agent_id" value="{{ $agent->id }}">
+                      <input type="hidden" name="team_id" value="{{ $team->id }}">
+                      <input type="hidden" name="from" value="agent">
                       <button class="button">Remove From Team</button>
-                    </p>
-                  </form>
+                    </form>
+                  </div>
                 </td>
               </tr>
             @endforeach
