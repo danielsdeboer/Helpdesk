@@ -17,7 +17,7 @@
 
         <div class="control is-grouped">
           <p class="control">
-            <button class="button is-primary">Add Team</button>
+            <button class="button is-info">Add Team</button>
           </p>
 
           <p class="control">
