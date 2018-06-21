@@ -54,18 +54,19 @@ class TeamMembersController extends Controller
         $agent = Agent::find($request->agent_id);
         $team = Team::find($request->team_id);
 
-        if (isset($request->team_lead)) {
-            if($agent->isLeadOf($team)) {
-                return redirect()->back()->withErrors(['agentIsLead', 'The agent is already the lead of this team.']);
-            }
-
-            $agent->makeTeamLeadOf($team);
-        }
-
         try {
             $agent->addToTeam($team);
         } catch (QueryException $e) {
             return redirect()->back()->withErrors(['agentInTeam', 'The agent is already in this team.']);
+        }
+
+        if (isset($request->team_lead)) {
+            if($team->isTeamLead($agent)) {
+                return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
+            }
+
+            $team->teamLeads->first()->removeTeamLeadOf($team);
+            $agent->makeTeamLeadOf($team);
         }
 
         if ($request->from == 'agent') {
@@ -140,10 +141,11 @@ class TeamMembersController extends Controller
         $agent = Agent::find($request->agent_id);
         $team = Team::find($request->team_id);
 
-        if($agent->isLeadOf($team)) {
-            return redirect()->back()->withErrors(['agentIsLead', 'The agent is already the lead of this team.']);
+        if ($team->isTeamLead($agent)) {
+            return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
         }
 
+        $team->teamLeads->first()->removeTeamLeadOf($team);
         $agent->makeTeamLeadOf($team);
 
         return redirect(route('helpdesk.admin.teams.show', $request->team_id));

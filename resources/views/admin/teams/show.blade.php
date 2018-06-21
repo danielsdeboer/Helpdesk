@@ -67,13 +67,13 @@
 
                 <td>
                   <div class="div-button">
-                    <form class="form" method="POST" action="{{ route('helpdesk.admin.agents.show', $agent->id) }}">
+                    <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.make-team-lead') }}">
                       {{ csrf_field() }}
 
                       <input type="hidden" name="agent_id" value="{{ $agent->id }}">
                       <input type="hidden" name="team_id" value="{{ $team->id }}">
                       <input type="hidden" name="from" value="agent">
-                      <button class="button button--space">Make Team Lead</button>
+                      <button class="button button--margin">Make Team Lead</button>
                     </form>
 
                     <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
@@ -134,9 +134,9 @@
 
   <style>
     .div-button {
+      box-sizing: border-box;
       display: flex;
       justify-content: flex-end;
-      box-sizing: border-box;
     }
 
     .button--margin {
