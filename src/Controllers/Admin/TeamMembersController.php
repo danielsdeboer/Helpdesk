@@ -61,11 +61,16 @@ class TeamMembersController extends Controller
         }
 
         if (isset($request->team_lead)) {
+            //Check if the agent is already a team lead.
             if($team->isTeamLead($agent)) {
                 return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
             }
 
-            $team->teamLeads->first()->removeTeamLeadOf($team);
+            //Check if there is a team lead set.
+            if ($team->teamLeads->first()) {
+                $team->teamLeads->first()->removeTeamLeadOf($team);
+            }
+
             $agent->makeTeamLeadOf($team);
         }
 
@@ -141,11 +146,16 @@ class TeamMembersController extends Controller
         $agent = Agent::find($request->agent_id);
         $team = Team::find($request->team_id);
 
+        //Check if the agent is already a team lead.
         if ($team->isTeamLead($agent)) {
             return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
         }
 
-        $team->teamLeads->first()->removeTeamLeadOf($team);
+        //Check if there is a team lead set.
+        if ($team->teamLeads->first()) {
+            $team->teamLeads->first()->removeTeamLeadOf($team);
+        }
+
         $agent->makeTeamLeadOf($team);
 
         return redirect(route('helpdesk.admin.teams.show', $request->team_id));
