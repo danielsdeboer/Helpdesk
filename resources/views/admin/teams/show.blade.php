@@ -131,16 +131,4 @@
       @include('helpdesk::admin.teams.show.footer')
     </div>
   </section>
-
-  <style>
-    .div-button {
-      box-sizing: border-box;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .button--margin {
-      margin: 0 .5em 0 0;
-    }
-  </style>
 @endsection

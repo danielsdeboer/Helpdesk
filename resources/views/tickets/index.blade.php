@@ -1,7 +1,7 @@
 @extends('helpdesk::layout.main')
 
 @section('content')
-  <section class="hero is-primary">
+  <section class="hero is-info">
     <div class="hero-body">
       <div class="level is-mobile">
         <div class="level-item has-text-centered">
