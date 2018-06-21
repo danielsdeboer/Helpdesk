@@ -66,14 +66,14 @@
 
 
                 <td>
-                  <div style="display:flex; justify-content:flex-end; box-sizing:border-box">
+                  <div class="div-button">
                     <form class="form" method="POST" action="{{ route('helpdesk.admin.agents.show', $agent->id) }}">
                       {{ csrf_field() }}
 
                       <input type="hidden" name="agent_id" value="{{ $agent->id }}">
                       <input type="hidden" name="team_id" value="{{ $team->id }}">
                       <input type="hidden" name="from" value="agent">
-                      <button class="button" style="margin: 0 .5em 0 0;">Make Team Lead</button>
+                      <button class="button button--space">Make Team Lead</button>
                     </form>
 
                     <form class="form" method="POST" action="{{ route('helpdesk.admin.team-members.remove') }}">
@@ -131,4 +131,16 @@
       @include('helpdesk::admin.teams.show.footer')
     </div>
   </section>
+
+  <style>
+    .div-button {
+      display: flex;
+      justify-content: flex-end;
+      box-sizing: border-box;
+    }
+
+    .button--margin {
+      margin: 0 .5em 0 0;
+    }
+  </style>
 @endsection
