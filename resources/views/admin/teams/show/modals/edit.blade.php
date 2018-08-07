@@ -20,7 +20,7 @@
 
         <div class="control is-grouped">
           <p class="control">
-            <button class="button is-primary">Edit Team</button>
+            <button class="button is-info">Edit Team</button>
           </p>
 
           <p class="control">

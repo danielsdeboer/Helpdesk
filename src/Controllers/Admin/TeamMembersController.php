@@ -60,6 +60,20 @@ class TeamMembersController extends Controller
             return redirect()->back()->withErrors(['agentInTeam', 'The agent is already in this team.']);
         }
 
+        if (isset($request->team_lead)) {
+            //Check if the agent is already a team lead.
+            if ($team->isTeamLead($agent)) {
+                return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
+            }
+
+            //Check if there is a team lead set.
+            if ($team->teamLeads->first()) {
+                $team->teamLeads->first()->removeTeamLeadOf($team);
+            }
+
+            $agent->makeTeamLeadOf($team);
+        }
+
         if ($request->from == 'agent') {
             return redirect(route('helpdesk.admin.agents.show', $request->agent_id));
         }
@@ -100,6 +114,49 @@ class TeamMembersController extends Controller
         if ($request->from == 'agent') {
             return redirect(route('helpdesk.admin.agents.show', $request->agent_id));
         }
+
+        return redirect(route('helpdesk.admin.teams.show', $request->team_id));
+    }
+
+    /**
+     * Add an agent as the team lead.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function makeTeamLead(Request $request)
+    {
+        $this->validate($request, [
+            'agent_id' => [
+                'required',
+                'int',
+                Rule::exists(config('helpdesk.tables.agents'), 'id'),
+            ],
+
+            'team_id' => [
+                'required',
+                'int',
+                Rule::exists(config('helpdesk.tables.teams'), 'id'),
+            ],
+            'from' => [
+                'required',
+                Rule::in(['agent', 'team']),
+            ],
+        ]);
+
+        $agent = Agent::find($request->agent_id);
+        $team = Team::find($request->team_id);
+
+        //Check if the agent is already a team lead.
+        if ($team->isTeamLead($agent)) {
+            return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
+        }
+
+        //Check if there is a team lead set.
+        if ($team->teamLeads->first()) {
+            $team->teamLeads->first()->removeTeamLeadOf($team);
+        }
+
+        $agent->makeTeamLeadOf($team);
 
         return redirect(route('helpdesk.admin.teams.show', $request->team_id));
     }

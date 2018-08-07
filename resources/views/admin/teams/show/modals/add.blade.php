@@ -25,9 +25,16 @@
           </span>
         </p>
 
+        <div class="control">
+          <label class="checkbox">
+            <input name="team_lead" type="checkbox">
+            Make Team Lead
+          </label>
+        </div>
+
         <div class="control is-grouped">
           <p class="control">
-            <button class="button is-primary">Add Agent</button>
+            <button class="button is-info">Add Agent</button>
           </p>
 
           <p class="control">

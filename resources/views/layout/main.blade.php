@@ -11,6 +11,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+    /* Override bulma colors for nav items and links */
+    a.nav-item.is-tab.is-active {
+      color: #3273dc;
+      border-bottom-color: #3273dc;
+    }
+
+    a.nav-item.is-tab:hover {
+      border-bottom-color: #3273dc;
+    }
+    
+    .tabs li.is-active a {
+      color: #3273dc;
+    }
+
+    a {
+      color: #3273dc;
+    }
+
+    /* Team Page Table Modifiers */
+    .div-button {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .button--margin {
+      margin: 0 .5em 0 0;
+    }
+
     /* Vertical rhythm */
     .has-vr {
       margin-bottom: 2em;

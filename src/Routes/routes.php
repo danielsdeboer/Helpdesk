@@ -37,6 +37,11 @@ Route::group([
                 hd_route('admin.team-members.remove'),
                 '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@remove'
             )->name('remove');
+
+            Route::post(
+                hd_route('admin.team-members.make-team-lead'),
+                '\Aviator\Helpdesk\Controllers\Admin\TeamMembersController@makeTeamLead'
+            )->name('make-team-lead');
         });
 
         Route::resource(

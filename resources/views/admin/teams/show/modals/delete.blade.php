@@ -21,7 +21,7 @@
 
         <div class="control is-grouped">
           <p class="control">
-            <button class="button is-primary">Delete Team</button>
+            <button class="button is-info">Delete Team</button>
           </p>
 
           <p class="control">
