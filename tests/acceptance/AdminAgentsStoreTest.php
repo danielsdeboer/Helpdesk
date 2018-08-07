@@ -91,7 +91,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->post(self::URI, [
             'user_id' => $user->id,
         ]);
-
+        
         $this->assertEquals(4, $this->get->withTrashed->count->agent);
     }
 }
