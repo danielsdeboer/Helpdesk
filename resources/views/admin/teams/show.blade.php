@@ -55,8 +55,8 @@
                 </td>
 
                 <td>
-                  @if(isset($agent->is_team_lead))
-                    {{ $agent->is_team_lead }}
+                  @if(isset($agent->pivot->is_team_lead))
+                    {{ $agent->pivot->is_team_lead }}
                   @endif
                 </td>
 
