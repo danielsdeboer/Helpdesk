@@ -62,7 +62,7 @@ class TeamMembersController extends Controller
 
         if (isset($request->team_lead)) {
             //Check if the agent is already a team lead.
-            if($team->isTeamLead($agent)) {
+            if ($team->isTeamLead($agent)) {
                 return redirect()->back()->withErrors(['The agent is already the lead of this team.']);
             }
 

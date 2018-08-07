@@ -22,13 +22,12 @@ class MakeTeamLeadTest extends TestCase
             [
                 'agent_id' => $super->id,
                 'team_id' => $team->id,
-                'from' => 'agent'
+                'from' => 'agent',
             ]
         );
 
         $response->assertRedirect('helpdesk/admin/teams/1');
         $this->assertTrue($super->isLeadOf($team));
         $this->assertFalse($agent2->isLeadOf($team));
-
     }
 }
