@@ -69,9 +69,9 @@ class TicketsController extends Controller
 
         if ($ticket->teamAssignment) {
             $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
-        } else if (auth()->user()->is_super) {
+        } elseif (auth()->user()->is_super) {
             $agentsCollection = $agents->clone()->get();
-        } else if ($ticket->assignment) {
+        } elseif ($ticket->assignment) {
             foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
                 $teamMembers->push($team->agents);
             }
