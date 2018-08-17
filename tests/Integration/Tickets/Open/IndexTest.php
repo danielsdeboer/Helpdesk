@@ -136,8 +136,8 @@ class IndexTest extends TestCase
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user);
-        $ticket2 = $this->make->ticket($user);
-        $ticket3 = $this->make->ticket($user);
+        $ticket2 = $this->make->ticket($user, '10 minutes ago');
+        $ticket3 = $this->make->ticket($user, '10 years ago');
 
         $ticket1->created_at = Carbon::parse('2 years ago');
         $ticket1->save();
@@ -156,12 +156,13 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_see_the_user_table ()
+    public function users_see_the_user_table_sorted_by_newest_first ()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
-        $ticket1 = $this->make->ticket($user)->assignToAgent($agent);
-        $ticket2 = $this->make->ticket($user);
+        $ticket1 = $this->make->ticket($user)
+            ->assignToAgent($agent);
+        $ticket2 = $this->make->ticket($user, '10 minutes ago');
 
         $this->be($user);
         $response = $this->get($this->url);
@@ -186,13 +187,14 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_the_agent_table ()
+    public function agents_see_the_agent_table_sorted_by_newest_first ()
     {
         $user1 = $this->make->user;
         $user2 = $this->make->user;
         $agent = $this->make->agent;
         $ticket1 = $this->make->ticket($user1)->assignToAgent($agent);
-        $ticket2 = $this->make->ticket($user2)->assignToAgent($agent);
+        $ticket2 = $this->make->ticket($user2, '1 year ago')
+            ->assignToAgent($agent);
 
         $user2->delete();
 
