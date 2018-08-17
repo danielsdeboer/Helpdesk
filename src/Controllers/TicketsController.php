@@ -69,14 +69,15 @@ class TicketsController extends Controller
 
         if ($ticket->teamAssignment) {
             $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
-        }
-        else if (auth()->user()->is_super) {
+        } else if (auth()->user()->is_super) {
             $agentsCollection = $agents->clone()->get();
-        } else {
+        } else if ($ticket->assignment) {
             foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
                 $teamMembers->push($team->agents);
             }
             $agentsCollection = $teamMembers->flatten();
+        } else {
+            $agentsCollection = $agents->clone()->get();
         }
 
         return view('helpdesk::tickets.show')->with([
