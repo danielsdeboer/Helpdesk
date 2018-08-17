@@ -162,16 +162,15 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_see_the_user_table ()
+    public function users_see_the_user_tickets_table ()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
-        $ticket1 = $this->make->ticket($user)->close(null, $agent);
-        /*
-         * Sorting is time-dependent
-         */
-        sleep(1);
-        $ticket2 = $this->make->ticket($user)->close(null, $user);
+        $ticket1 = $this->make->ticket($user, '1 day ago')
+            ->close(null, $agent);
+
+        $ticket2 = $this->make->ticket($user)
+            ->close(null, $user);
 
         $this->be($user);
         $response = $this->get($this->url);
@@ -209,13 +208,15 @@ class IndexTest extends TestCase
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
-        $ticket1 = $this->make->ticket($user)
+
+        $ticket1 = $this->make->ticket($user, '10 years ago')
             ->assignToAgent($agent)
             ->close(null, $agent);
-        sleep(1);
+
         $ticket2 = $this->make->ticket($user)
             ->assignToAgent($agent)
             ->close(null, $user);
+
         $this->be($agent->user);
         $response = $this->get($this->url);
 

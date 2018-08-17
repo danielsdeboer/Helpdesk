@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Models\Note;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Ticket;
@@ -198,14 +199,16 @@ class Make
     /**
      * Create a ticket, optionally owned by a user.
      * @param \Aviator\Helpdesk\Tests\User|null $user
+     * @param string $when
      * @return \Aviator\Helpdesk\Models\Ticket
      */
-    public function ticket (User $user = null)
+    public function ticket (User $user = null, string $when = 'now')
     {
         $user = $user ?: factory(User::class)->create();
 
         return factory(Ticket::class)->create([
             'user_id' => $user->id,
+            'created_at' => Carbon::parse($when),
         ]);
     }
 

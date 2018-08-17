@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Find.
- * @property \Aviator\Helpdesk\Tests\Get latest
+ * @property \Aviator\Helpdesk\Tests\Fixtures\Get latest
  * @property \Aviator\Helpdesk\Models\Agent agent
- * @property \Aviator\Helpdesk\Tests\Get count
- * @property \Aviator\Helpdesk\Tests\Get withTrashed
+ * @property \Aviator\Helpdesk\Tests\Fixtures\Get count
+ * @property \Aviator\Helpdesk\Tests\Fixtures\Get withTrashed
  * @property \Aviator\Helpdesk\Models\Team team
  */
 class Get
