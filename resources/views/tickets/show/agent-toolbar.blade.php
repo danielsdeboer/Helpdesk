@@ -2,28 +2,12 @@
   @if ($ticket->status()->open())
     {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
     @if ($ticket->status()->assignedToAnAgent())
-      @if (auth()->user()->is_super)
-        {{-- Allow for super user to reassign. --}}
+      @if (auth()->user()->is_super || auth()->user()->agent->teamLeads->count())
         @include('helpdesk::partials.toolbar.item', [
           'text' => 'Reassign',
           'modal' => 'reassign',
           'icon' => 'person_pin_circle'
         ])
-      @else
-        {{-- Allow team lead of current team to reassign. --}}
-        @foreach ($agents as $key => $agent)
-          @if ($agent->id == $ticket->user_id)
-            @foreach ($agent->teams as $index => $team)
-              @if ($team->pivot->is_team_lead)
-                @include('helpdesk::partials.toolbar.item', [
-                  'text' => 'Reassign',
-                  'modal' => 'reassign',
-                  'icon' => 'person_pin_circle'
-                ])
-              @endif
-            @endforeach
-          @endif
-        @endforeach
       @endif
 
       {{-- Collaborators are visible once a ticket has been assigned to an agent --}}

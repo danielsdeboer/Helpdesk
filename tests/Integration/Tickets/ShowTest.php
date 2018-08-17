@@ -263,11 +263,13 @@ class ShowTest extends TestCase
     public function team_leads_can_reassign_tickets ()
     {
         $user = $this->make->user;
+        $agent2 = $this->make->agent;
         $agent = $this->make->agent;
         $team = $this->make->team;
         $ticket = $this->make->ticket($user)->assignToAgent($agent, null, false);
 
         $agent->addToTeam($team);
+        $agent2->addToTeam($team);
         $ticket->assignToTeam($team);
         $agent->makeTeamLeadOf($team);
 
