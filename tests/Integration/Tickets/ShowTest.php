@@ -241,4 +241,43 @@ class ShowTest extends TestCase
         $response->assertSee('id="action-opened"');
         $response->assertSee('id="action-assigned"');
     }
+
+    /** @test */
+    public function supers_can_reassign_tickets ()
+    {
+        $user = $this->make->user;
+        $super = $this->make->super;
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticket($user)->assignToAgent($agent, null, false);
+
+        $this->be($super->user);
+        auth()->user()->is_super = 1;
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+        $response->assertSee('<p class="heading">Reassign</p>');
+    }
+
+    /** @test */
+    public function team_leads_can_reassign_tickets ()
+    {
+        $user = $this->make->user;
+        $agent2 = $this->make->agent;
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $ticket = $this->make->ticket($user)->assignToAgent($agent, null, false);
+
+        $agent->addToTeam($team);
+        $agent2->addToTeam($team);
+        $ticket->assignToTeam($team);
+        $agent->makeTeamLeadOf($team);
+
+        $this->be($agent->user);
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+        $response->assertSee('<p class="heading">Reassign</p>');
+    }
 }

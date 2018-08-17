@@ -63,13 +63,26 @@ class TicketsController extends Controller
      */
     public function show (AgentsRepository $agents, TicketsRepository $tickets, int $id)
     {
+        $teamMembers = collect();
+
         $ticket = $tickets->with($this->showRelations)->findOrFail($id);
+
+        if ($ticket->teamAssignment) {
+            $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
+        } elseif (auth()->user()->is_super) {
+            $agentsCollection = $agents->clone()->get();
+        } elseif ($ticket->assignment) {
+            foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
+                $teamMembers->push($team->agents);
+            }
+            $agentsCollection = $teamMembers->flatten();
+        } else {
+            $agentsCollection = $agents->clone()->get();
+        }
 
         return view('helpdesk::tickets.show')->with([
             'ticket' => $ticket,
-            'agents' => $ticket->teamAssignment
-                ? $agents->clone()->inTeam($ticket->teamAssignment->team)->get()
-                : $agents->clone()->get(),
+            'agents' => $agentsCollection,
             'collaborators' => $agents->clone()->exceptAuthorized()->get(),
         ]);
     }
