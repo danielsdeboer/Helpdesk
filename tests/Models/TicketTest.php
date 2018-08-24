@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Exception;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Exception;
 
 class TicketTest extends TestCase
 {
@@ -149,6 +149,7 @@ class TicketTest extends TestCase
             $ticket->close(null, null);
         } catch (CreatorRequiredException $exception) {
             $this->assertInstanceOf(CreatorRequiredException::class, $exception);
+
             return;
         }
 
@@ -191,6 +192,7 @@ class TicketTest extends TestCase
             $ticket->open(null, null);
         } catch (Exception $exception) {
             $this->assertInstanceOf(CreatorRequiredException::class, $exception);
+
             return;
         }
 
