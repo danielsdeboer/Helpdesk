@@ -12,11 +12,10 @@
   "require": {
     "php" : ">=7.0.0",
     "laravel/framework": "5.5.x",
-    "aviator/makeable": "^0.1.0",
-    "nesbot/carbon": "~1.20.0"
+    "aviator/makeable": "^0.1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "6.5.x",
+    "phpunit/phpunit": "6.x.x",
     "orchestra/testbench-browser-kit": "3.5.x",
     "orchestra/testbench": "3.5.x",
     "orchestra/database": "3.5.x"
