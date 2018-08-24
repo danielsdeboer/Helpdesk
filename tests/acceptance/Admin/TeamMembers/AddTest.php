@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests\Admin\TeamMembers;
 
+use Exception;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\AdminBase;
 use Illuminate\Database\QueryException;
@@ -59,7 +60,9 @@ class AddTest extends AdminBase
 
         try {
             $agent->addToTeam($team);
-        } catch (QueryException $e) {
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(QueryException::class, $exception);
+
             return;
         }
 
