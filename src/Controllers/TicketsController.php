@@ -68,7 +68,9 @@ class TicketsController extends Controller
         $ticket = $tickets->with($this->showRelations)->findOrFail($id);
 
         if ($ticket->teamAssignment) {
-            $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
+            $agentsCollection = auth()->user()->is_super
+            ? $agents->clone()->get()
+            : $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
         } elseif (auth()->user()->is_super) {
             $agentsCollection = $agents->clone()->get();
         } elseif ($ticket->assignment) {

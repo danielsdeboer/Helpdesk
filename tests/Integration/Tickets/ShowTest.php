@@ -243,6 +243,33 @@ class ShowTest extends TestCase
     }
 
     /** @test */
+    public function supers_can_assign_ticket_when_ticket_is_assigned_to_team ()
+    {
+        $user = $this->make->user;
+        $super = $this->make->super;
+        $agent = $this->make->agent;
+        $agent2 = $this->make->agent;
+        $team = $this->make->team;
+        $team2 = $this->make->team;
+
+        $agent->addToTeam($team);
+        $agent2->addToTeam($team2);
+        $agent->makeTeamLeadOf($team);
+        $ticket = $this->make->ticket($user)->assignToTeam($team, null, false);
+
+        $this->be($super->user);
+        auth()->user()->is_super = 1;
+
+        $response = $this->get($this->url($ticket->id));
+
+        $response->assertSuccessful();
+        $response->assertSee('<p class="heading">Assign</p>');
+        $response->assertViewHas('agents');
+        $response->assertSee($agent->user->name . '</option>');
+        $response->assertSee($agent2->user->name . '</option>');
+    }
+
+    /** @test */
     public function supers_can_reassign_tickets ()
     {
         $user = $this->make->user;
