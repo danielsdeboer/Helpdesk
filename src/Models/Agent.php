@@ -253,6 +253,26 @@ class Agent extends AbstractModel
         return $query;
     }
 
+    /**
+     * Get all enabled agents.
+     * @param Builder $query
+     * @return $this|Builder
+     */
+    public function scopeEnabled (Builder $query)
+    {
+        return $query->whereNull($this->table . '.is_disabled');
+    }
+
+    /**
+     * Get all disabled agents.
+     * @param Builder $query
+     * @return $this|Builder
+     */
+    public function scopeDisabled (Builder $query)
+    {
+        return $query->whereNotNull($this->table . '.is_disabled');
+    }
+
     /*
      * Relationships
      */

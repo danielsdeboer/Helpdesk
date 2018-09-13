@@ -40,7 +40,7 @@ class AgentsController extends Controller
         $users = $this->fetchUsers();
 
         return view('helpdesk::admin.agents.index')->with([
-            'agents' => Agent::with('user', 'teams')->get(),
+            'agents' => Agent::with('user', 'teams')->enabled()->get(),
             'users' => $users,
             'email' => $this->userModelEmailColumn,
             'isSuper' => true,
