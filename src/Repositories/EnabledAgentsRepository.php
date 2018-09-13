@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Repositories;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
 
-class AgentsRepository extends Repository
+class EnabledAgentsRepository extends Repository
 {
     /** @var array */
     protected $relations = [
@@ -31,12 +31,13 @@ class AgentsRepository extends Repository
         $this->query = $model::query();
         $this->agentsTable = $model->getTable();
         $this->addJoins();
+        $this->enabledAgents();
     }
 
     /**
      * Get all the agents in the given team.
      * @param Team $team
-     * @return AgentsRepository
+     * @return EnabledAgentsRepository
      */
     public function inTeam (Team $team)
     {
@@ -67,13 +68,21 @@ class AgentsRepository extends Repository
             $this->agentsTable . '.user_id',
             '=',
             $table . '.id'
-        )
-        ->where('is_disabled', '0');
+        );
 
         $this->query->select([
            $this->agentsTable . '.*',
            $table . '.name as user_name',
            $table . '.email as user_email',
         ]);
+    }
+
+    /**
+     * Selects only enabled agents to be listed within active lists.
+     * @return void
+     */
+    private function enabledAgents ()
+    {
+        $this->query->whereNull($this->agentsTable . '.is_disabled');
     }
 }

@@ -5,7 +5,7 @@ namespace Aviator\Helpdesk\Controllers\Tickets;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Repositories\AgentsRepository;
+use Aviator\Helpdesk\Repositories\EnabledAgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class PermalinkController extends Controller
@@ -17,12 +17,12 @@ class PermalinkController extends Controller
 
     /**
      * Display a instance of the resource.
-     * @param AgentsRepository $agents
+     * @param EnabledAgentsRepository $agents
      * @param TicketsRepository $tickets
      * @param string $permalink
      * @return View
      */
-    public function show(AgentsRepository $agents, TicketsRepository $tickets, string $permalink)
+    public function show(EnabledAgentsRepository $agents, TicketsRepository $tickets, string $permalink)
     {
         /** @var Ticket $ticket */
         $ticket = $tickets->with($this->showRelations)->permalink($permalink)->first();
