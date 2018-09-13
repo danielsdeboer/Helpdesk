@@ -67,7 +67,8 @@ class AgentsRepository extends Repository
             $this->agentsTable . '.user_id',
             '=',
             $table . '.id'
-        );
+        )
+        ->where('is_disabled', '0');
 
         $this->query->select([
            $this->agentsTable . '.*',
