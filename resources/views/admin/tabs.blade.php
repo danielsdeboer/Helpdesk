@@ -14,6 +14,13 @@
       >
         <a href="{{ route('helpdesk.admin.teams.index') }}">Teams</a>
       </li>
+
+      <li
+        @if (isset($adminTab) && $adminTab == 'disabled') class="is-active" @endif
+        id="tab-admin-disabled"
+      >
+        <a href="{{ route('helpdesk.admin.disabled.index') }}">Disabled Agents</a>
+      </li>
     </ul>
   </nav>
 </section>

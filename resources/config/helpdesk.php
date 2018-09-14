@@ -124,6 +124,7 @@ return [
             'prefix' => 'admin',
             'agents' => 'agents',
             'teams' => 'teams',
+            'disabled' => 'disabled',
             'team-members' => [
                 'add' => 'add',
                 'remove' => 'remove',

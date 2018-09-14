@@ -55,6 +55,12 @@ Route::group([
             '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
             ['except' => ['create', 'edit']]
         );
+
+        Route::resource(
+            hd_route('admin.disabled'),
+            '\Aviator\Helpdesk\Controllers\Admin\DisabledAgentsController',
+            ['except' => ['create', 'edit']]
+        );
     });
 
     // Dashboard Group
