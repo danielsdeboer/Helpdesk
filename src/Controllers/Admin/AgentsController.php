@@ -117,7 +117,7 @@ class AgentsController extends Controller
         $agent->is_disabled = Carbon::now()->toDateTimeString();
 
         // Remove the agent from any teams.
-        $agent->removeFromTeams($agent->teams->toArray());
+        $agent->removeFromTeams($agent->teams->all());
 
         $agent->save();
 

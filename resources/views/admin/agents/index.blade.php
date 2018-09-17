@@ -22,11 +22,17 @@
       <tbody>
         @foreach($agents as $agent)
           <tr>
-            <td><a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a></td>
+            <td class="table-has-va">
+              <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">
+                {{ $agent->user->name }}
+              </a>
+            </td>
 
-            <td>{{ $agent->user->$email }}</td>
+            <td class="table-has-va">
+              {{ $agent->user->$email }}
+            </td>
 
-            <td>
+            <td class="table-has-va">
               @foreach($agent->teams as $team)
                 @if($loop->last)
                   <a href="{{ route('helpdesk.admin.teams.show', $team->id) }}">{{ $team->name }}</a>
@@ -63,7 +69,7 @@
           this.users = [agent];
           this.modals[modal].visible = ! this.modals[modal].visible;
         },
-      }
+      },
     });
   </script>
 @endsection
