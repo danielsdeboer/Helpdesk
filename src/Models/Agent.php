@@ -109,15 +109,15 @@ class Agent extends AbstractModel
     }
 
     /**
-     * Make the Agent a team lead.
+     * Remove a team lead.
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent
      */
     public function removeTeamLeadOf (Team $team) : self
     {
-        $this->teams()->detach($team);
+        $this->teams()->detach($team->id);
 
-        $this->teams()->attach($team, [
+        $this->teams()->attach($team->id, [
             'is_team_lead' => 0,
         ]);
 

@@ -10,12 +10,13 @@
 
   @include('helpdesk::admin.agents.index.toolbar')
 
-  <section class="section">
+  <section class="section" id="modal-disable">
     <table class="table">
       <thead>
         <th>Name</th>
         <th>Email</th>
         <th>Teams</th>
+        <th></th>
       </thead>
 
       <tbody>
@@ -34,9 +35,35 @@
                 @endif
               @endforeach
             </td>
+            <td>
+              <button class="button" @click="toggle('disable', {{ $agent->user }})">
+                Disable Agent
+              </button>
+            </td>
           </tr>
         @endforeach
       </tbody>
     </table>
+    @include('helpdesk::admin.agents.index.modals.disable')
   </section>
+
+  <script>
+    var app = new Vue({
+      el: '#modal-disable',
+      data: {
+        modals: {
+          disable: {
+            visible: false,
+          },
+        },
+        users: {!! $users or '[]' !!},
+      },
+      methods: {
+        toggle: function(modal, agent) {
+          this.users = [agent];
+          this.modals[modal].visible = ! this.modals[modal].visible;
+        },
+      }
+    });
+  </script>
 @endsection

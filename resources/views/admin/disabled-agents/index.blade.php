@@ -16,6 +16,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Teams</th>
+        <th></th>
       </thead>
 
       <tbody>

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Traits\InteractsWithUsers;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Carbon\Carbon;
 
 class DisabledAgentsController extends Controller
 {
@@ -72,29 +73,29 @@ class DisabledAgentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Update an agent to add them to disabled list.
      * @return RedirectResponse
      */
-    public function store()
+    public function update($id)
     {
-        $agentsTable = config('helpdesk.tables.agents');
         $usersTable = config('helpdesk.tables.users');
 
         $this->validate(request(), [
             'user_id' => [
                 'required',
-                Rule::unique($agentsTable)->where(function (QueryBuilder $query) {
-                    $query->whereNull('deleted_at');
-                }),
                 Rule::exists($usersTable, 'id'),
             ],
         ]);
 
-        $agent = Agent::query()->create([
-            'user_id' => request('user_id'),
-        ]);
+        $agent = Agent::where('user_id', request()->user_id)->first();
+        $agent->is_disabled = Carbon::now()->toDateTimeString();
 
-        return redirect(route('helpdesk.admin.agents.show', $agent->id));
+        // Remove the agent from any teams.
+        $agent->removeFromTeams($agent->teams->toArray());
+
+        $agent->save();
+
+        return redirect(route('helpdesk.admin.disabled.index'));
     }
 
     /**
