@@ -23,14 +23,10 @@
         @foreach($agents as $agent)
           <tr>
             <td class="table-has-va">
-              <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">
-                {{ $agent->user->name }}
-              </a>
+              <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a>
             </td>
 
-            <td class="table-has-va">
-              {{ $agent->user->$email }}
-            </td>
+            <td class="table-has-va">{{ $agent->user->$email }}</td>
 
             <td class="table-has-va">
               @foreach($agent->teams as $team)

@@ -38,7 +38,7 @@ class AdminAgentsIndexTest extends AdminBase
         $this->visit(self::URI);
 
         $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent->user->id . '">' . $agent->user->name . '</a>')
-            ->see('<td>' . $agent->user->email . '</td>')
+            ->see('<td class="table-has-va">' . $agent->user->email . '</td>')
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
     }
 
