@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Traits\InteractsWithUsers;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Carbon\Carbon;
 
 class AgentsController extends Controller
 {

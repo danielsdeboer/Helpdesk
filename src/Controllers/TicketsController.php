@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Illuminate\Routing\Controller;
-use Aviator\Helpdesk\Repositories\EnabledAgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
+use Aviator\Helpdesk\Repositories\EnabledAgentsRepository;
 
 class TicketsController extends Controller
 {
