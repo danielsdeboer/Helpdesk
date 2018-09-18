@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Agent;
 
-use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Tests\TestCase;
 
 class DisableAgentTest extends TestCase
 {
