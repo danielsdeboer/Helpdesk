@@ -11,7 +11,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Traits\InteractsWithUsers;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class DisabledAgentsController extends Controller

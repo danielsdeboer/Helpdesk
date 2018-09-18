@@ -2,10 +2,8 @@
 
 namespace Aviator\Helpdesk;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Support\ServiceProvider;
-use Aviator\Helpdesk\Repositories\EnabledAgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class RepositoriesProvider extends ServiceProvider
