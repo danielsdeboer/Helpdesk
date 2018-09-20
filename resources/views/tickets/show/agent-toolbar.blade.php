@@ -2,7 +2,7 @@
   @if ($ticket->status()->open())
     {{-- If a ticket is assigned to a particular agent, team leads and supers can still reassign --}}
     @if ($ticket->status()->assignedToAnAgent())
-      @if (auth()->user()->is_super || auth()->user()->agent->teamLeads->count())
+      @if (auth()->user()->agent->is_super || auth()->user()->agent->teamLeads->count())
         @include('helpdesk::partials.toolbar.item', [
           'text' => 'Reassign',
           'modal' => 'reassign',
@@ -50,7 +50,7 @@
       'icon' => 'lock_open'
     ])
   @endif
-  
+
   <form-modal
     modal-name="close"
     modal-title="Close This Ticket"

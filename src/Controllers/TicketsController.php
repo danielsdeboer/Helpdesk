@@ -68,12 +68,15 @@ class TicketsController extends Controller
         $ticket = $tickets->with($this->showRelations)->findOrFail($id);
 
         if ($ticket->teamAssignment) {
-            $agentsCollection = auth()->user()->is_super
-            ? $agents->clone()->get()
-            : $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
-        } elseif (auth()->user()->is_super) {
-            $agentsCollection = $agents->clone()->get();
-        } elseif ($ticket->assignment) {
+            if (isset(auth()->user()->agent)) {
+                $agentsCollection = auth()->user()->agent->is_super
+                ? $agents->clone()->get()
+                : $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
+            } else {
+                $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
+            }
+        }
+        elseif ($ticket->assignment) {
             foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
                 $teamMembers->push($team->agents);
             }
