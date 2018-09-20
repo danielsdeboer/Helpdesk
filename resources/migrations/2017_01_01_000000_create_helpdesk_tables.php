@@ -30,6 +30,7 @@ class CreateHelpdeskTables extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('is_super')->default(0);
+            $table->timestamp('is_disabled')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

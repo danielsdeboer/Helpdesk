@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Controllers;
 
 use Illuminate\Routing\Controller;
-use Aviator\Helpdesk\Repositories\AgentsRepository;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
+use Aviator\Helpdesk\Repositories\EnabledAgentsRepository;
 
 class TicketsController extends Controller
 {
@@ -56,12 +56,12 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource.
-     * @param AgentsRepository $agents
+     * @param EnabledAgentsRepository $agents
      * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
      * @param int $id
      * @return \Illuminate\Contracts\View\View
      */
-    public function show (AgentsRepository $agents, TicketsRepository $tickets, int $id)
+    public function show (EnabledAgentsRepository $agents, TicketsRepository $tickets, int $id)
     {
         $teamMembers = collect();
 

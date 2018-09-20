@@ -5,17 +5,14 @@
   @include('helpdesk::partials.errors')
 
   @include('helpdesk::admin.tabs', [
-    'adminTab' => 'agents'
+    'adminTab' => 'disabled'
   ])
 
-  @include('helpdesk::admin.agents.index.toolbar')
-
-  <section class="section" id="modal-disable">
+  <section class="section" id="modal-enable">
     <table class="table">
       <thead>
         <th>Name</th>
         <th>Email</th>
-        <th>Teams</th>
         <th></th>
       </thead>
 
@@ -28,33 +25,26 @@
 
             <td class="table-has-va">{{ $agent->user->$email }}</td>
 
-            <td class="table-has-va">
-              @foreach($agent->teams as $team)
-                @if($loop->last)
-                  <a href="{{ route('helpdesk.admin.teams.show', $team->id) }}">{{ $team->name }}</a>
-                @else
-                  <a href="{{ route('helpdesk.admin.teams.show', $team->id) }}">{{ $team->name }}</a>,&nbsp;
-                @endif
-              @endforeach
-            </td>
             <td>
-              <button class="button" @click="toggle('disable', {{ $agent->user }})">
-                Disable Agent
+              <button class="button" @click="toggle('enable', {{ $agent->user }})">
+                Enable Agent
               </button>
             </td>
           </tr>
         @endforeach
       </tbody>
     </table>
-    @include('helpdesk::admin.agents.index.modals.disable')
+    @include('helpdesk::admin.agents.index.modals.enable')
   </section>
+
+  @include('helpdesk::partials.vue')
 
   <script>
     var app = new Vue({
-      el: '#modal-disable',
+      el: '#modal-enable',
       data: {
         modals: {
-          disable: {
+          enable: {
             visible: false,
           },
         },
@@ -65,7 +55,7 @@
           this.users = [agent];
           this.modals[modal].visible = ! this.modals[modal].visible;
         },
-      },
+      }
     });
   </script>
 @endsection

@@ -20,7 +20,7 @@
     a.nav-item.is-tab:hover {
       border-bottom-color: #3273dc;
     }
-    
+
     .tabs li.is-active a {
       color: #3273dc;
     }
@@ -41,6 +41,10 @@
     }
 
     /* Vertical rhythm */
+    #modal-disable .table-has-va, #modal-enable .table-has-va {
+      vertical-align: middle;
+    }
+    
     .has-vr {
       margin-bottom: 2em;
     }

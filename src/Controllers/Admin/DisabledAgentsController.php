@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
@@ -12,10 +11,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Aviator\Helpdesk\Traits\InteractsWithUsers;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class AgentsController extends Controller
+class DisabledAgentsController extends Controller
 {
     use ValidatesRequests, InteractsWithUsers;
 
@@ -40,8 +38,8 @@ class AgentsController extends Controller
     {
         $users = $this->fetchUsers();
 
-        return view('helpdesk::admin.agents.index')->with([
-            'agents' => Agent::with('user', 'teams')->enabled()->get(),
+        return view('helpdesk::admin.disabled-agents.index')->with([
+            'agents' => Agent::with('user', 'teams')->disabled()->get(),
             'users' => $users,
             'email' => $this->userModelEmailColumn,
             'isSuper' => true,
@@ -73,33 +71,7 @@ class AgentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     * @return RedirectResponse
-     */
-    public function store()
-    {
-        $agentsTable = config('helpdesk.tables.agents');
-        $usersTable = config('helpdesk.tables.users');
-
-        $this->validate(request(), [
-            'user_id' => [
-                'required',
-                Rule::unique($agentsTable)->where(function (QueryBuilder $query) {
-                    $query->whereNull('deleted_at');
-                }),
-                Rule::exists($usersTable, 'id'),
-            ],
-        ]);
-
-        $agent = Agent::query()->create([
-            'user_id' => request('user_id'),
-        ]);
-
-        return redirect(route('helpdesk.admin.agents.show', $agent->id));
-    }
-
-    /**
-     * Update an agent to add them to disabled list.
+     * Update an agent to make them active.
      * @return RedirectResponse
      */
     public function update($id)
@@ -114,14 +86,11 @@ class AgentsController extends Controller
         ]);
 
         $agent = Agent::where('user_id', request()->user_id)->first();
-        $agent->is_disabled = Carbon::now()->toDateTimeString();
-
-        // Remove the agent from any teams.
-        $agent->removeFromTeams($agent->teams->all());
+        $agent->is_disabled = null;
 
         $agent->save();
 
-        return redirect(route('helpdesk.admin.disabled.index'));
+        return redirect(route('helpdesk.admin.agents.show', $agent->id));
     }
 
     /**

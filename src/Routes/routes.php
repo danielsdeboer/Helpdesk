@@ -47,12 +47,18 @@ Route::group([
         Route::resource(
             hd_route('admin.agents'),
             '\Aviator\Helpdesk\Controllers\Admin\AgentsController',
-            ['except' => ['create', 'edit', 'update']]
+            ['except' => ['create', 'edit']]
         );
 
         Route::resource(
             hd_route('admin.teams'),
             '\Aviator\Helpdesk\Controllers\Admin\TeamsController',
+            ['except' => ['create', 'edit']]
+        );
+
+        Route::resource(
+            hd_route('admin.disabled'),
+            '\Aviator\Helpdesk\Controllers\Admin\DisabledAgentsController',
             ['except' => ['create', 'edit']]
         );
     });

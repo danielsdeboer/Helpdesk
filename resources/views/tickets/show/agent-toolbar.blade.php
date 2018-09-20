@@ -50,7 +50,7 @@
       'icon' => 'lock_open'
     ])
   @endif
-
+  
   <form-modal
     modal-name="close"
     modal-title="Close This Ticket"
