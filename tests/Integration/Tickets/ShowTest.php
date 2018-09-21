@@ -298,8 +298,8 @@ class ShowTest extends TestCase
         $agentOnSomeOtherTeam = $this->make->agent->addToTeam($this->make->team);
 
         // The ticket assigned to the super's team
-         $ticketAssignedToSupersTeam = $this->make->ticket($this->make->user)
-             ->assignToTeam($supersTeam);
+        $ticketAssignedToSupersTeam = $this->make->ticket($this->make->user)
+            ->assignToTeam($supersTeam);
 
         $this->be($super->user);
 
@@ -314,8 +314,6 @@ class ShowTest extends TestCase
         $this->assertSeeInAssignList($response, $agentOnNoTeam);
         $this->assertSeeInAssignList($response, $agentOnSomeOtherTeam);
     }
-
-
 
     /** @test */
     public function supers_can_reassign_tickets ()

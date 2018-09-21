@@ -75,11 +75,11 @@ class TicketsController extends Controller
             } else {
                 $agentsCollection = $agents->clone()->inTeam($ticket->teamAssignment->team)->get();
             }
-        }
-        elseif ($ticket->assignment) {
+        } elseif ($ticket->assignment) {
             foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
                 $teamMembers->push($team->agents);
             }
+            
             $agentsCollection = $teamMembers->flatten();
         } else {
             $agentsCollection = $agents->clone()->get();
