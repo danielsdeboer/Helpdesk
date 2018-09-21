@@ -2,10 +2,22 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
 
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
 
 class ShowTest extends TestCase
 {
+    private function assertSeeInAssignList (TestResponse $response, Agent $agent)
+    {
+        $response->assertSee(sprintf(
+            '<option value="%s" id="agent-option-%s">%s</option>',
+            $agent->user->id,
+            $agent->user->id,
+            $agent->user->name
+        ));
+    }
+
     /** @var string */
     protected $url = 'helpdesk/tickets/';
 
@@ -247,15 +259,15 @@ class ShowTest extends TestCase
     {
         $user = $this->make->user;
         $super = $this->make->super;
-        $agent = $this->make->agent;
+        $agent1 = $this->make->agent;
         $agent2 = $this->make->agent;
-        $team = $this->make->team;
+        $team1 = $this->make->team;
         $team2 = $this->make->team;
 
-        $agent->addToTeam($team);
+        $agent1->addToTeam($team1);
         $agent2->addToTeam($team2);
-        $agent->makeTeamLeadOf($team);
-        $ticket = $this->make->ticket($user)->assignToTeam($team, null, false);
+        $agent1->makeTeamLeadOf($team1);
+        $ticket = $this->make->ticket($user)->assignToTeam($team1, null, false);
 
         $this->be($super->user);
         auth()->user()->is_super = 1;
@@ -265,8 +277,42 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
         $response->assertSee('<p class="heading">Assign</p>');
         $response->assertViewHas('agents');
-        $response->assertSee($agent->user->name . '</option>');
+        $response->assertSee($agent1->user->name . '</option>');
         $response->assertSee($agent2->user->name . '</option>');
+    }
+
+    /** @test */
+    public function supers_can_assign_tickets_outside_of_their_own_team ()
+    {
+        // The super, their team, their fellow users
+        $super = $this->make->super;
+        $supersTeam = $this->make->team;
+        $agentOnSupersTeam = $this->make->agent;
+
+        $agentOnSupersTeam->addToTeam($supersTeam);
+        $super->addToTeam($supersTeam);
+        $super->makeTeamLeadOf($supersTeam);
+
+        // Everyone else
+        $agentOnNoTeam = $this->make->agent;
+        $agentOnSomeOtherTeam = $this->make->agent->addToTeam($this->make->team);
+
+        // The ticket assigned to the super's team
+        $ticketAssignedToSupersTeam = $this->make->ticket($this->make->user)
+            ->assignToTeam($supersTeam);
+
+        $this->be($super->user);
+
+        $response = $this->get(
+            $this->url($ticketAssignedToSupersTeam->id)
+        );
+
+        $response->assertSuccessful();
+        $response->assertSee('<p class="heading">Assign</p>');
+        $response->assertViewHas('agents');
+        $this->assertSeeInAssignList($response, $agentOnSupersTeam);
+        $this->assertSeeInAssignList($response, $agentOnNoTeam);
+        $this->assertSeeInAssignList($response, $agentOnSomeOtherTeam);
     }
 
     /** @test */
