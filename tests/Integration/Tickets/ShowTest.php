@@ -376,6 +376,5 @@ class ShowTest extends TestCase
         $response->assertViewHas('closed');
         $this->assertSame(0, count($content['closed']));
         $this->assertSame(1, count($content['open']));
-
     }
 }
