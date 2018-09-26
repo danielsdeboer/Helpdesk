@@ -44,6 +44,7 @@ class TicketsController extends Controller
 
         $closedTickets = $tickets->clone()
             ->with($this->indexRelations)
+            ->closed()
             ->paginate();
 
         return view('helpdesk::tickets.index')->with([
@@ -79,7 +80,7 @@ class TicketsController extends Controller
             foreach ($ticket->assignment->assignee->teamLeads as $key => $team) {
                 $teamMembers->push($team->agents);
             }
-            
+
             $agentsCollection = $teamMembers->flatten();
         } else {
             $agentsCollection = $agents->clone()->get();
