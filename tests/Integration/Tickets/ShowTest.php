@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ShowTest extends TestCase
 {
@@ -352,5 +353,29 @@ class ShowTest extends TestCase
 
         $response->assertSuccessful();
         $response->assertSee('<p class="heading">Reassign</p>');
+    }
+
+    /** @test */
+    public function can_not_see_open_tickets_in_closed_list ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $team = $this->make->team;
+        $ticket = $this->make->ticket($user)->assignToTeam($team, null, false);
+
+        $agent->addToTeam($team);
+        $agent->makeTeamLeadOf($team);
+
+        $this->be($agent->user);
+
+        $response = $this->get('/helpdesk/tickets/');
+
+        $content = $response->getOriginalContent()->getData();
+
+        //Check that closed tickets are being passed and not empty.
+        $response->assertViewHas('closed');
+        $this->assertSame(0, count($content['closed']));
+        $this->assertSame(1, count($content['open']));
+
     }
 }
