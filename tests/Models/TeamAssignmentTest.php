@@ -25,8 +25,11 @@ class TeamAssignmentTest extends ModelTestCase
     public function creating_an_assignment_fires_a_notification_to_the_assignee()
     {
         $team = $this->make->team;
-        $assignment = $this->make->teamAssignment($team);
+        // Making the agent team lead has to be done before the team assignment
+        // or else we have to refresh the "team->teamLeads" collection from
+        // the database.
         $this->make->agent->makeTeamLeadOf($team);
+        $assignment = $this->make->teamAssignment($team);
 
         $this->assertSentTo($assignment->team->teamLeads);
     }
