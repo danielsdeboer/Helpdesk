@@ -5,7 +5,6 @@ namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class ShowTest extends TestCase
 {

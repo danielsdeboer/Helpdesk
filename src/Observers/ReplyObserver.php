@@ -24,12 +24,16 @@ class ReplyObserver extends AbstractObserver
            );
         }
 
-        if ($observed->user) {
-            $this->sendNotification(
-               $observed,
-               'ticket.assignment.assignee',
-               'userReplied'
-           );
+        if (isset($observed->ticket->user->email)) {
+            if (!in_array($observed->ticket->user->email, config('helpdesk.ignored'))) {
+                if ($observed->user) {
+                    $this->sendNotification(
+                    $observed,
+                    'ticket.assignment.assignee',
+                    'userReplied'
+                );
+                }
+            }
         }
     }
 }

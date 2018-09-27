@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Observers;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Opening;
+use Carbon\Carbon;
 
 class TicketObserver
 {
@@ -17,6 +18,21 @@ class TicketObserver
     public function __construct (Opening $opening)
     {
         $this->opening = $opening;
+    }
+
+    /**
+     * Listen to the creating event.
+     * @param Ticket $ticket
+     * @return void
+     */
+    public function creating(Ticket $ticket)
+    {
+        //Check if user's email is on blacklist.
+        if (isset($ticket->user->email)) {
+            if (in_array($ticket->user->email, config('helpdesk.ignored'))) {
+                $ticket->is_ignored = Carbon::now()->toDateTimeString();
+            }
+        }
     }
 
     /**

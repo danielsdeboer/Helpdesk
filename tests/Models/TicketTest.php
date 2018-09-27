@@ -9,6 +9,7 @@ use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Illuminate\Support\Facades\Config;
 
 class TicketTest extends TestCase
 {
@@ -792,9 +793,7 @@ class TicketTest extends TestCase
         $this->assertTrue($ticket->collaborators->first()->is_visible);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function checking_if_a_ticket_is_owned_by_a_user ()
     {
         $user = $this->make->user;
@@ -804,5 +803,20 @@ class TicketTest extends TestCase
 
         $this->assertTrue($owned->status()->ownedBy($user));
         $this->assertFalse($notOwned->status()->ownedBy($user));
+    }
+
+    /** @test */
+    public function it_adds_a_user_to_ignored_list_on_creation ()
+    {
+        $ignoredUser = $this->make->user;
+        $this->be($ignoredUser);
+
+        Config::set('helpdesk.ignored', [
+            $ignoredUser->email,
+        ]);
+
+        $ticket = $this->make->ticket($ignoredUser);
+
+        $this->assertNotNull($ticket->is_ignored);
     }
 }

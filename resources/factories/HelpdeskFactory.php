@@ -36,6 +36,7 @@ $factory->define(Ticket::class, function (Faker\Generator $faker) {
         'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
         'status' => 'open',
         'uuid' => strtolower(str_random(32)),
+        'is_ignored' => null,
     ];
 });
 
