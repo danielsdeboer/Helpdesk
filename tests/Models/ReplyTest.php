@@ -8,7 +8,6 @@ use Aviator\Helpdesk\Models\Reply;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Models\GenericContent;
-use Illuminate\Support\Facades\Config;
 use Carbon\Carbon;
 
 class ReplyTest extends ModelTestCase
@@ -174,9 +173,7 @@ class ReplyTest extends ModelTestCase
         $agent = $this->make->agent;
         $ignoredUser = $this->make->user;
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ticket = Ticket::query()->create([
             'user_id' => $ignoredUser->id,

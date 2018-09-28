@@ -15,6 +15,7 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
+use Illuminate\Support\Facades\Config;
 
 abstract class TestCase extends Orchestra
 {
@@ -179,6 +180,17 @@ abstract class TestCase extends Orchestra
                 'is_super' => 1,
             ]);
         }
+    }
+
+    /**
+     * Create the supervisor user. This is necessary as the supervisor user
+     * is the fallback for notifications where an assignment or team assignment
+     * are not set.
+     * @return void
+     */
+    protected function addIgnoredUser(array $ignoredUsers)
+    {
+        Config::set('helpdesk.ignored', $ignoredUsers);
     }
 
     /**

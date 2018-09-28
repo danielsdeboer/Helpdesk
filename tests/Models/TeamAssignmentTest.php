@@ -4,7 +4,6 @@ namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Models\TeamAssignment;
-use Illuminate\Support\Facades\Config;
 use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\GenericContent;
@@ -40,9 +39,7 @@ class TeamAssignmentTest extends ModelTestCase
         $ignoredUser = $this->make->user;
         $team = $this->make->team;
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $agent->makeTeamLeadOf($team);
 

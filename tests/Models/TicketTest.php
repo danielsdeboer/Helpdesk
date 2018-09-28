@@ -9,7 +9,6 @@ use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Illuminate\Support\Facades\Config;
 
 class TicketTest extends TestCase
 {
@@ -811,9 +810,7 @@ class TicketTest extends TestCase
         $ignoredUser = $this->make->user;
         $this->be($ignoredUser);
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ticket = $this->make->ticket($ignoredUser);
 
