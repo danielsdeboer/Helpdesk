@@ -50,7 +50,7 @@ abstract class AbstractObserver
     protected function sendNotification (ActionBase $model, string $notifiable, string $classKey)
     {
         $notifiable = reduceProperties($model, $notifiable);
-
+        
         if ($notifiable && method_exists($notifiable, 'notify')) {
             $notifiable->notify(
                 $this->factory->make($classKey, $model->ticket)

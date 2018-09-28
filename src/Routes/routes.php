@@ -119,6 +119,14 @@ Route::group([
         )->name('closed.index');
 
         /*
+         * Paginated index of ignored tickets.
+         */
+        Route::get(
+            hd_route('tickets.ignored'),
+            'Aviator\Helpdesk\Controllers\IgnoredTicketsController@index'
+        )->name('ignored.index');
+
+        /*
          * Private (authorized) view for a single ticket.
          */
         Route::get(

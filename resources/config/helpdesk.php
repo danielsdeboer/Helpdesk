@@ -18,7 +18,7 @@ return [
      * be able to see their tickets.
      */
     'ignored' => [
-        
+
     ],
 
     /*
@@ -162,6 +162,7 @@ return [
             'index' => '/',
             'opened' => 'open',
             'closed' => 'closed',
+            'ignored' => 'ignored',
             'show' => '{ticket}',
             'permalink' => 'permalink/{uuid}',
             'assign' => [

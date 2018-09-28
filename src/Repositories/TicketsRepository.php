@@ -62,6 +62,14 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
+    public function ignored ()
+    {
+        return $this->addScope('ignored');
+    }
+
+    /**
+     * @return $this
+     */
     public function open ()
     {
         return $this->addScope('opened');

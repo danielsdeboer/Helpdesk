@@ -5,6 +5,9 @@ namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Support\Facades\Config;
 
 class ShowTest extends TestCase
 {
@@ -375,5 +378,40 @@ class ShowTest extends TestCase
         $response->assertViewHas('closed');
         $this->assertSame(0, count($content['closed']));
         $this->assertSame(1, count($content['open']));
+    }
+
+    /** @test */
+    public function ignored_tickets_are_only_seen_by_supers ()
+    {
+        $agent = $this->make->agent;
+        $super = $this->make->super;
+        $team = $this->make->team;
+        $user = $this->make->user;
+        $ignoredUser = $this->make->user;
+        $agent->makeTeamLeadOf($team);
+
+        $ticket = $this->make->ticket($user)->assignToTeam($team, null, false);
+
+        Config::set('helpdesk.ignored', [
+            $ignoredUser->email,
+        ]);
+
+        $ignoredTicket = Ticket::query()->create([
+            'user_id' => $ignoredUser->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            'uuid' => 2,
+        ]);
+
+        //An agent can't see the ignored list.
+        $response = $this->actingAs($agent->user)->get('helpdesk/tickets/');
+        $response->assertViewHas('ignored');
+        $response->assertDontSee('<div class="section" id="ignored">');
+
+        //A super can see the ignored list.
+        $response = $this->actingAs($super->user)->get('helpdesk/tickets/');
+        $response->assertViewHas('ignored');
+        $response->assertSee('<div class="section" id="ignored">');
     }
 }

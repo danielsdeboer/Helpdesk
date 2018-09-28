@@ -9,7 +9,8 @@ use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Team;
-use Illuminate\Foundation\Auth\User;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Tests\User;
 
 class TeamAssignmentTest extends ModelTestCase
 {
@@ -25,9 +26,6 @@ class TeamAssignmentTest extends ModelTestCase
     public function creating_an_assignment_fires_a_notification_to_the_assignee()
     {
         $team = $this->make->team;
-        // Making the agent team lead has to be done before the team assignment
-        // or else we have to refresh the "team->teamLeads" collection from
-        // the database.
         $this->make->agent->makeTeamLeadOf($team);
         $assignment = $this->make->teamAssignment($team);
 
@@ -54,23 +52,20 @@ class TeamAssignmentTest extends ModelTestCase
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 1,
-            'is_ignored' => Carbon::now()->toDateTimeString(),
         ]);
 
-        $ticket->assignToTeam($team, null, true);
-        //dd($ticket->user_id, $agent->user_id, $team->teamLeads);
+        //dd(User::find(4), $ignoredUser->id);
+        //$ticket->assignToTeam($team, null, true);
+        //dd($ticket);
 
-        $this->assertSentTo($team->teamLeads);
-
-        // TeamAssignment::query()->create([
-        //     'ticket_id' => $ticket->id,
-        //     'body' => 'Something',
-        //     'agent_id' => $agent->id,
-        //     'user_id' => $ignoredUser->id,
-        //     'is_visible' => true,
-        // ]);
-
-        // $this->assertSentTo($ignoredUser);
+        TeamAssignment::query()->create([
+            'ticket_id' => $ticket->id,
+            'agent_id' => null,
+            'team_id' => $team->id,
+            'is_visible' => true,
+        ]);
+        //dd($ignoredUser, $agent->user);
+        $this->assertSentTo($ignoredUser);
         // $this->assertNotSentTo($agent);
     }
 }

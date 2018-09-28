@@ -25,7 +25,7 @@ class ReplyObserver extends AbstractObserver
         }
 
         if (isset($observed->ticket->user->email)) {
-            if (!in_array($observed->ticket->user->email, config('helpdesk.ignored'))) {
+           if (!in_array($observed->ticket->user->email, config('helpdesk.ignored'))) {
                 if ($observed->user) {
                     $this->sendNotification(
                     $observed,
