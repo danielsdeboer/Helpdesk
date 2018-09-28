@@ -183,9 +183,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * Create the supervisor user. This is necessary as the supervisor user
-     * is the fallback for notifications where an assignment or team assignment
-     * are not set.
+     * Set the ignored users array.
      * @return void
      */
     protected function addIgnoredUser(array $ignoredUsers)

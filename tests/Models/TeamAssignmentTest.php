@@ -25,37 +25,20 @@ class TeamAssignmentTest extends ModelTestCase
     public function creating_an_assignment_fires_a_notification_to_the_assignee()
     {
         $user = $this->make->user;
-        $agent = $this->make->agent;
         $team = $this->make->team;
 
-        $agent->makeTeamLeadOf($team);
-        // $assignment = $this->make->teamAssignment($team);
+        $this->make->agent->makeTeamLeadOf($team);
+        $assignment = $this->make->teamAssignment($team);
 
-        // $this->assertSentTo($assignment->team->teamLeads);
-
-        $ticket = Ticket::query()->create([
-            'user_id' => $user->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
-            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
-            'status' => 'open',
-            'uuid' => 1,
-            'is_ignored' => null,
-        ]);
-
-        $assignment = factory(TeamAssignment::class)->create([
-            'ticket_id' => $ticket->id,
-            'team_id' => $team->id,
-            'agent_id' => null,
-            'is_visible' => true,
-        ]);
-
-        $this->assertSentTo($assignment->team->teamLeads[0]->user);
+        foreach ($assignment->team->teamLeads as $teamLead) {
+            $this->assertSentTo($teamLead->user);
+        }
     }
 
     /** @test */
     public function it_doesnt_send_a_notification_to_team_if_from_ignored_user ()
     {
-        //$user = $this->make->user;
+        $user = $this->make->user;
         $agent = $this->make->agent;
         $ignoredUser = $this->make->user;
         $team = $this->make->team;
@@ -72,18 +55,15 @@ class TeamAssignmentTest extends ModelTestCase
             'uuid' => 1,
         ]);
 
-        //dd(User::find(4), $ignoredUser->id);
-        //$ticket->assignToTeam($team, null, true);
-        //dd($ticket);
-
-        TeamAssignment::query()->create([
+        $assignment = TeamAssignment::query()->create([
             'ticket_id' => $ticket->id,
             'agent_id' => null,
             'team_id' => $team->id,
-            'is_visible' => true,
+            'is_visible' => false,
         ]);
-        //dd($ignoredUser, $agent->user);
-        $this->assertSentTo($ignoredUser);
-        // $this->assertNotSentTo($agent);
+
+        foreach ($assignment->team->teamLeads as $teamLead) {
+            $this->assertNotSentTo($teamLead->user);
+        }
     }
 }
