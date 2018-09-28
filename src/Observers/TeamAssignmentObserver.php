@@ -16,6 +16,7 @@ class TeamAssignmentObserver extends AbstractObserver
     {
         $this->createAction('assigned to team', $observed);
 
+        //dd($observed->team->teamLeads[0]->user);
         //check for blacklisted.
         foreach ($observed->team->teamLeads as $teamLead) {
             $this->sendNotification(

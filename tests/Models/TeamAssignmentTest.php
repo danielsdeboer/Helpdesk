@@ -24,11 +24,32 @@ class TeamAssignmentTest extends ModelTestCase
     /** @test */
     public function creating_an_assignment_fires_a_notification_to_the_assignee()
     {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
         $team = $this->make->team;
-        $this->make->agent->makeTeamLeadOf($team);
-        $assignment = $this->make->teamAssignment($team);
 
-        $this->assertSentTo($assignment->team->teamLeads);
+        $agent->makeTeamLeadOf($team);
+        // $assignment = $this->make->teamAssignment($team);
+
+        // $this->assertSentTo($assignment->team->teamLeads);
+
+        $ticket = Ticket::query()->create([
+            'user_id' => $user->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            'uuid' => 1,
+            'is_ignored' => null,
+        ]);
+
+        $assignment = factory(TeamAssignment::class)->create([
+            'ticket_id' => $ticket->id,
+            'team_id' => $team->id,
+            'agent_id' => null,
+            'is_visible' => true,
+        ]);
+
+        $this->assertSentTo($assignment->team->teamLeads[0]->user);
     }
 
     /** @test */
