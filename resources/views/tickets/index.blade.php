@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  @if (auth()->user()->agent->is_super)
+  @if (isset(auth()->user()->agent->is_super) && auth()->user()->agent->is_super)
     <div class="section" id="ignored">
       <div class="container">
         <h1 class="title">Ignored</h1>

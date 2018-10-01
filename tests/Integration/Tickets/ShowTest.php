@@ -7,7 +7,6 @@ use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Support\Facades\Config;
 
 class ShowTest extends TestCase
 {
@@ -392,9 +391,7 @@ class ShowTest extends TestCase
 
         $ticket = $this->make->ticket($user)->assignToTeam($team, null, false);
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ignoredTicket = Ticket::query()->create([
             'user_id' => $ignoredUser->id,

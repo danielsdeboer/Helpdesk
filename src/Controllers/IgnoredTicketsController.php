@@ -11,10 +11,6 @@ class IgnoredTicketsController extends Controller
     protected $relations = [
         'user',
         'content',
-        // 'closing',
-        // 'closing.user',
-        // 'closing.agent',
-        // 'closing.agent.user',
     ];
 
     /**

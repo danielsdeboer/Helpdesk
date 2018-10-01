@@ -5,7 +5,6 @@ namespace Aviator\Helpdesk\Tests\Integration\Tickets\Ignored;
 use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Illuminate\Support\Facades\Config;
 
 class IndexTest extends TestCase
 {
@@ -30,9 +29,7 @@ class IndexTest extends TestCase
         $ignoredUser = $this->make->user;
         $super = $this->make->super;
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ticket1 = $this->make->ticket($user);
         $ticket2 = $this->make->ticket($ignoredUser);
@@ -55,9 +52,7 @@ class IndexTest extends TestCase
         $ignoredUser = $this->make->user;
         $super = $this->make->super;
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ticket = $this->make->ticket($ignoredUser);
 
@@ -82,9 +77,7 @@ class IndexTest extends TestCase
         $ignoredUser = $this->make->user;
         $super = $this->make->super;
 
-        Config::set('helpdesk.ignored', [
-            $ignoredUser->email,
-        ]);
+        $this->addIgnoredUser([$ignoredUser->email]);
 
         $ticket1 = $this->make->ticket($ignoredUser);
         $ticket2 = $this->make->ticket($ignoredUser);

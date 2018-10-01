@@ -7,7 +7,7 @@
 
       {{ $ignored->links('helpdesk::pagination.bulma') }}
 
-      @if (auth()->user()->agent->is_super)
+      @if (isset(auth()->user()->agent->is_super) && auth()->user()->agent->is_super)
         @include('helpdesk::tickets.ignored.index.table-super', [
           'tickets' => $ignored
         ])
