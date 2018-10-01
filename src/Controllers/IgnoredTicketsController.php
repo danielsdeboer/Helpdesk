@@ -14,7 +14,7 @@ class IgnoredTicketsController extends Controller
     ];
 
     /**
-     * Construct with agents only middleware.
+     * Constructor.
      */
     public function __construct()
     {
@@ -29,8 +29,12 @@ class IgnoredTicketsController extends Controller
      */
     public function index (TicketsRepository $tickets)
     {
-        return view('helpdesk::tickets.ignored.index')->with([
-            'ignored' => $tickets->with($this->relations)->ignored()->paginate(),
-        ]);
+        if (isset(auth()->user()->agent->is_super) && auth()->user()->agent->is_super) {
+            return view('helpdesk::tickets.ignored.index')->with([
+                'ignored' => $tickets->with($this->relations)->ignored()->paginate(),
+            ]);
+        }
+
+        abort(404);
     }
 }

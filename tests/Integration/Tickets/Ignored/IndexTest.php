@@ -22,7 +22,6 @@ class IndexTest extends TestCase
     /** @test */
     public function only_supers_see_ignored_tickets ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $agent = $this->make->agent;
         $ignoredUser = $this->make->user;
@@ -39,14 +38,12 @@ class IndexTest extends TestCase
         $response->data('ignored')->assertContains($ticket2);
 
         $response = $this->actingAs($agent->user)->get($this->url);
-        $response->assertStatus(200);
-        $response->assertSee('<p>Nothing to see here.</p>');
+        $response->assertStatus(404);
     }
 
     /** @test */
     public function results_are_paginated_when_displaying_more_than_24_tickets ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $ignoredUser = $this->make->user;
         $super = $this->make->super;

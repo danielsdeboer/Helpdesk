@@ -27,7 +27,7 @@ class TicketObserver
      */
     public function creating(Ticket $ticket)
     {
-        //Check if user's email is on blacklist.
+        // Check if user's email is on blacklist.
         if (isset($ticket->user->email)) {
             if (in_array($ticket->user->email, config('helpdesk.ignored'))) {
                 $ticket->is_ignored = Carbon::now()->toDateTimeString();

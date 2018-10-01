@@ -18,7 +18,7 @@ return [
      * be able to see their tickets.
      */
     'ignored' => [
-
+        //'ignoreduser@email.com'
     ],
 
     /*

@@ -803,17 +803,4 @@ class TicketTest extends TestCase
         $this->assertTrue($owned->status()->ownedBy($user));
         $this->assertFalse($notOwned->status()->ownedBy($user));
     }
-
-    /** @test */
-    public function it_adds_a_user_to_ignored_list_on_creation ()
-    {
-        $ignoredUser = $this->make->user;
-        $this->be($ignoredUser);
-
-        $this->addIgnoredUser([$ignoredUser->email]);
-
-        $ticket = $this->make->ticket($ignoredUser);
-
-        $this->assertNotNull($ticket->is_ignored);
-    }
 }

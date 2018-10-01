@@ -19,7 +19,7 @@ class TeamAssignmentTest extends ModelTestCase
     }
 
     /** @test */
-    public function creating_an_assignment_fires_a_notification_to_the_assignee()
+    public function creating_a_team_assignment_fires_a_notification_to_the_team_leads ()
     {
         $user = $this->make->user;
         $team = $this->make->team;
