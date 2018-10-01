@@ -2,6 +2,7 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Reply;
@@ -163,5 +164,37 @@ class ReplyTest extends ModelTestCase
         ]);
 
         $this->assertNotSentTo($user);
+    }
+
+    /** @test */
+    public function it_doesnt_send_a_notification_to_assignee_if_ignored ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ignoredUser = $this->make->user;
+
+        $this->addIgnoredUser([$ignoredUser->email]);
+
+        $ticket = Ticket::query()->create([
+            'user_id' => $ignoredUser->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            'uuid' => 1,
+            'is_ignored' => Carbon::now()->toDateTimeString(),
+        ]);
+
+        $ticket->assignToAgent($agent);
+
+        Reply::query()->create([
+            'ticket_id' => $ticket->id,
+            'body' => 'Something',
+            'agent_id' => $agent->id,
+            'user_id' => $ignoredUser->id,
+            'is_visible' => true,
+        ]);
+
+        $this->assertSentTo($ignoredUser);
+        $this->assertNotSentTo($agent);
     }
 }

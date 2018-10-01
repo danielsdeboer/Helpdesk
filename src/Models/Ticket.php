@@ -629,6 +629,16 @@ class Ticket extends AbstractModel
     }
 
     /**
+     * Get tickets with closed status.
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIgnored (Builder $query) : Builder
+    {
+        return $query->whereNotNull('is_ignored');
+    }
+
+    /**
      * Get the ticket with actions, sorted oldest to newest.
      * @param Builder $query
      * @return Builder

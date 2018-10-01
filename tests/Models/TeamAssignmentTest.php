@@ -2,7 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
+use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
+use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\TeamAssignment;
 
 class TeamAssignmentTest extends ModelTestCase
 {
@@ -15,12 +19,48 @@ class TeamAssignmentTest extends ModelTestCase
     }
 
     /** @test */
-    public function creating_an_assignment_fires_a_notification_to_the_assignee()
+    public function creating_a_team_assignment_fires_a_notification_to_the_team_leads ()
     {
+        $user = $this->make->user;
         $team = $this->make->team;
-        $assignment = $this->make->teamAssignment($team);
-        $this->make->agent->makeTeamLeadOf($team);
 
-        $this->assertSentTo($assignment->team->teamLeads);
+        $this->make->agent->makeTeamLeadOf($team);
+        $assignment = $this->make->teamAssignment($team);
+
+        foreach ($assignment->team->teamLeads as $teamLead) {
+            $this->assertSentTo($teamLead->user);
+        }
+    }
+
+    /** @test */
+    public function it_doesnt_send_a_notification_to_team_if_from_ignored_user ()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ignoredUser = $this->make->user;
+        $team = $this->make->team;
+
+        $this->addIgnoredUser([$ignoredUser->email]);
+
+        $agent->makeTeamLeadOf($team);
+
+        $ticket = Ticket::query()->create([
+            'user_id' => $ignoredUser->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            'uuid' => 1,
+        ]);
+
+        $assignment = TeamAssignment::query()->create([
+            'ticket_id' => $ticket->id,
+            'agent_id' => null,
+            'team_id' => $team->id,
+            'is_visible' => false,
+        ]);
+
+        foreach ($assignment->team->teamLeads as $teamLead) {
+            $this->assertNotSentTo($teamLead->user);
+        }
     }
 }

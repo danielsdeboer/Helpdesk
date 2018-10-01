@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use PHPUnit\Framework\Assert;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Database\Eloquent\Collection;
@@ -179,6 +180,15 @@ abstract class TestCase extends Orchestra
                 'is_super' => 1,
             ]);
         }
+    }
+
+    /**
+     * Set the ignored users array.
+     * @return void
+     */
+    protected function addIgnoredUser(array $ignoredUsers)
+    {
+        Config::set('helpdesk.ignored', $ignoredUsers);
     }
 
     /**

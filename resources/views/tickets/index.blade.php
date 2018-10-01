@@ -67,4 +67,31 @@
       @endif
     </div>
   </div>
+
+  @if (isset(auth()->user()->agent->is_super) && auth()->user()->agent->is_super)
+    <div class="section" id="ignored">
+      <div class="container">
+        <h1 class="title">Ignored</h1>
+
+        @include('helpdesk::dashboard.sections.table', [
+          'tickets' => $ignored,
+          'withLastAction' => true
+        ])
+
+        @if ($ignored->hasMorePages())
+          <a
+            id="ignored-see-more"
+            class="button"
+            href="{{ route('helpdesk.tickets.ignored.index') }}"
+          >
+            See all {{ $ignoredCount }}...
+          </a>
+        @else
+          <a id="ignored-see-more" class="button is-disabled">
+            No more to show...
+          </a>
+        @endif
+      </div>
+    </div>
+  @endif
 @endsection

@@ -792,9 +792,7 @@ class TicketTest extends TestCase
         $this->assertTrue($ticket->collaborators->first()->is_visible);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function checking_if_a_ticket_is_owned_by_a_user ()
     {
         $user = $this->make->user;

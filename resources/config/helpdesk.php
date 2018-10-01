@@ -13,6 +13,15 @@ return [
     'userModelEmailColumn' => 'email',
 
     /*
+     * List of users that will be ignored. They can do anything a typical customer can,
+     * however, no notifications from them will be received and only super users will
+     * be able to see their tickets.
+     */
+    'ignored' => [
+        //'ignoreduser@email.com'
+    ],
+
+    /*
      * Callbacks. These are used to easily change what queries are executed when looking up
      * users, etc.
      */
@@ -153,6 +162,7 @@ return [
             'index' => '/',
             'opened' => 'open',
             'closed' => 'closed',
+            'ignored' => 'ignored',
             'show' => '{ticket}',
             'permalink' => 'permalink/{uuid}',
             'assign' => [

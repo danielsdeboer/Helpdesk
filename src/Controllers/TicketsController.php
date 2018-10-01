@@ -47,11 +47,18 @@ class TicketsController extends Controller
             ->closed()
             ->paginate();
 
+        $ignoredTickets = $tickets->clone()
+            ->with($this->indexRelations)
+            ->ignored()
+            ->paginate();
+
         return view('helpdesk::tickets.index')->with([
             'open' => $openTickets,
             'openCount' => $openTickets->total(),
             'closed' => $closedTickets,
             'closedCount' => $closedTickets->total(),
+            'ignored' => $ignoredTickets,
+            'ignoredCount' => $ignoredTickets->total(),
         ]);
     }
 

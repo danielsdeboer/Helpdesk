@@ -49,7 +49,6 @@ abstract class AbstractObserver
      */
     protected function sendNotification (ActionBase $model, string $notifiable, string $classKey)
     {
-        //dd($classKey);
         $notifiable = reduceProperties($model, $notifiable);
 
         if ($notifiable && method_exists($notifiable, 'notify')) {

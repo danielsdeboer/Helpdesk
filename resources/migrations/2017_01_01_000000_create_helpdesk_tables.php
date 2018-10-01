@@ -22,6 +22,7 @@ class CreateHelpdeskTables extends Migration
             $table->integer('content_id')->unsigned()->nullable();
             $table->string('content_type')->nullable();
             $table->string('status')->default('open');
+            $table->timestamp('is_ignored')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
