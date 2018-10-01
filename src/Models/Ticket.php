@@ -19,7 +19,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
 use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Aviator\Helpdesk\Observers\TicketObserver;
 
 /**
  * Class Ticket.

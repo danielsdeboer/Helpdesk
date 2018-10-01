@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use PHPUnit\Framework\Assert;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +16,6 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Aviator\Database\Migrations\CreateUsersTable;
-use Illuminate\Support\Facades\Config;
 
 abstract class TestCase extends Orchestra
 {
