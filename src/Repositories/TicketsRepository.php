@@ -78,6 +78,22 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
+    public function openWithoutIgnored ()
+    {
+        return $this->addScope('openedWithoutIgnored');
+    }
+
+    /**
+     * @return $this
+     */
+    public function closedWithoutIgnored ()
+    {
+        return $this->addScope('closedWithoutIgnored');
+    }
+
+    /**
+     * @return $this
+     */
     public function overdue ()
     {
         return $this->addScope('overdue');
