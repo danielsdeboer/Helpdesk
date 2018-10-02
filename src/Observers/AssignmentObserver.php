@@ -16,10 +16,14 @@ class AssignmentObserver extends AbstractObserver
     {
         $this->createAction('assigned', $observed);
 
-        $this->sendNotification(
-            $observed,
-            'assignee.user',
-            'assignedToAgent'
-        );
+        if (isset($observed->ticket->user->email)) {
+            if (!in_array($observed->ticket->user->email, config('helpdesk.ignored'))) {
+                $this->sendNotification(
+                    $observed,
+                    'assignee.user',
+                    'assignedToAgent'
+                );
+            }
+        }
     }
 }

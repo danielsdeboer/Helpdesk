@@ -619,6 +619,17 @@ class Ticket extends AbstractModel
     }
 
     /**
+     * Get all open tickets except ignored tickets.
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOpenedWithoutIgnored (Builder $query) : Builder
+    {
+        return $query->where('status', 'open')
+            ->whereNull('is_ignored');
+    }
+
+    /**
      * Get tickets with closed status.
      * @param Builder $query
      * @return Builder
@@ -626,6 +637,17 @@ class Ticket extends AbstractModel
     public function scopeClosed (Builder $query) : Builder
     {
         return $query->where('status', 'closed');
+    }
+
+    /**
+     * Get all closed tickets except ignored ones.
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeClosedWithoutIgnored (Builder $query) : Builder
+    {
+        return $query->where('status', 'closed')
+            ->whereNull('is_ignored');
     }
 
     /**

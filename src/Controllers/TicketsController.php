@@ -37,15 +37,27 @@ class TicketsController extends Controller
      */
     public function index (TicketsRepository $tickets)
     {
-        $openTickets = $tickets->clone()
+        if (in_array(auth()->user()->email, config('helpdesk.ignored'))) {
+            $openTickets = $tickets->clone()
             ->with($this->indexRelations)
             ->open()
             ->paginate();
 
-        $closedTickets = $tickets->clone()
+            $closedTickets = $tickets->clone()
             ->with($this->indexRelations)
             ->closed()
             ->paginate();
+        } else {
+            $openTickets = $tickets->clone()
+                ->with($this->indexRelations)
+                ->openWithoutIgnored()
+                ->paginate();
+
+            $closedTickets = $tickets->clone()
+                ->with($this->indexRelations)
+                ->closedWithoutIgnored()
+                ->paginate();
+        }
 
         $ignoredTickets = $tickets->clone()
             ->with($this->indexRelations)

@@ -6,6 +6,7 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
 use Aviator\Helpdesk\Tests\ModelTestCase;
+use Aviator\Helpdesk\Models\GenericContent;
 
 class AssignmentTest extends ModelTestCase
 {
@@ -36,5 +37,32 @@ class AssignmentTest extends ModelTestCase
         ]);
 
         $this->assertNotSentTo(Agent::all());
+    }
+
+    /** @test */
+    public function if_ticket_is_ignored_user_doesnt_receive_notification()
+    {
+        $user = $this->make->user;
+        $agent = $this->make->agent;
+        $ignoredUser = $this->make->user;
+
+        $this->addIgnoredUser([$ignoredUser->email]);
+
+        $ticket = Ticket::query()->create([
+            'user_id' => $ignoredUser->id,
+            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
+            'status' => 'open',
+            'uuid' => 1,
+        ]);
+
+        Assignment::query()->create([
+            'ticket_id' => $ticket->id,
+            'assigned_to' => $agent->id,
+            'agent_id' => null,
+            'is_visible' => false,
+        ]);
+
+        $this->assertNotSentTo($agent->user);
     }
 }

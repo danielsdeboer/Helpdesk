@@ -114,4 +114,50 @@ class IndexTest extends TestCase
 
         $response->assertSee('<a id="open-see-more" class="button" href=');
     }
+
+    /** @test */
+    public function ignored_tickets_only_appear_in_ignored_list_for_supers ()
+    {
+        $user1 = $this->make->user;
+        $user2 = $this->make->user;
+        $ignoredUser = $this->make->user;
+        $super = $this->make->super;
+
+        $this->addIgnoredUser([$ignoredUser->email]);
+
+        $user1OpenTicket = $this->make->ticket($user1);
+        $user2OpenTicket = $this->make->ticket($user2);
+        $user1ClosedTicket = $user1OpenTicket->close(null, $user1);
+        $ignoredOpenTicket = $this->make->ticket($ignoredUser);
+        $ignoredClosedTicket = $ignoredOpenTicket->close(null, $ignoredUser);
+
+        $response = $this->actingAs($super->user)->get($this->url);
+
+        $htmlString = $response->getContent();
+
+        $this->assertEquals(1, substr_count($htmlString, $ignoredUser->name));
+    }
+
+    /** @test */
+    public function ignored_users_see_open_and_closed_tickets ()
+    {
+        $user1 = $this->make->user;
+        $user2 = $this->make->user;
+        $ignoredUser1 = $this->make->user;
+        $ignoredUser2 = $this->make->user;
+        $super = $this->make->super;
+
+        $this->addIgnoredUser([$ignoredUser1->email, $ignoredUser2->email]);
+
+        $ignoredOpenTicket1 = $this->make->ticket($ignoredUser1);
+        $ignoredOpenTicket2 = $this->make->ticket($ignoredUser2);
+        $ignoredClosedTicket1 = $ignoredOpenTicket1->close(null, $ignoredUser1);
+
+        $response = $this->actingAs($ignoredUser1)->get($this->url);
+
+        $htmlString = $response->getContent();
+
+        $response->assertDontSee('<a id="ignored-see-more"');
+        $this->assertEquals(1, substr_count($htmlString, $ignoredUser1->name));
+    }
 }
