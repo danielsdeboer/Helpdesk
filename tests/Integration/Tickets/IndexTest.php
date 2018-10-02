@@ -156,7 +156,7 @@ class IndexTest extends TestCase
         $response = $this->actingAs($ignoredUser1)->get($this->url);
 
         $htmlString = $response->getContent();
-        
+
         $response->assertDontSee('<a id="ignored-see-more"');
         $this->assertEquals(1, substr_count($htmlString, $ignoredUser1->name));
     }
