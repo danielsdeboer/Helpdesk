@@ -29,8 +29,16 @@ class OpenTicketsController extends Controller
      */
     public function index (TicketsRepository $tickets)
     {
+        $openTickets = null;
+
+        if (in_array(auth()->user()->email, config('helpdesk.ignored'))) {
+            $openTickets = $tickets->with($this->relations)->open()->paginate();
+        } else {
+            $openTickets = $tickets->with($this->relations)->openWithoutIgnored()->paginate();
+        }
+
         return view('helpdesk::tickets.open.index')->with([
-            'open' => $tickets->with($this->relations)->open()->paginate(),
+            'open' => $openTickets,
         ]);
     }
 }
