@@ -33,8 +33,16 @@ class ClosedTicketsController extends Controller
      */
     public function index (TicketsRepository $tickets)
     {
+        $closedTickets = null;
+
+        if (in_array(auth()->user()->email, config('helpdesk.ignored'))) {
+            $closedTickets = $tickets->with($this->relations)->closed()->paginate();
+        } else {
+            $closedTickets = $tickets->with($this->relations)->closedWithoutIgnored()->paginate();
+        }
+
         return view('helpdesk::tickets.closed.index')->with([
-            'closed' => $tickets->with($this->relations)->closed()->paginate(),
+            'closed' => $closedTickets,
         ]);
     }
 }

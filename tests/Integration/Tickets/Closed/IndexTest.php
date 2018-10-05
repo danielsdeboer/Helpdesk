@@ -246,4 +246,25 @@ class IndexTest extends TestCase
             $ticket1->closing->agent->user->name,
         ]);
     }
+
+    /** @test */
+    public function only_ignored_users_can_see_their_closed_tickets ()
+    {
+        $user = $this->make->user;
+        $ignoredUser = $this->make->user;
+        $super = $this->make->super;
+
+        $this->addIgnoredUser([$ignoredUser->email]);
+
+        $ignoredOpenTicket = $this->make->ticket($ignoredUser);
+        $ignoredClosedTicket = $ignoredOpenTicket->close(null, $ignoredUser);
+
+        $response = $this->actingAs($ignoredUser)->get($this->url);
+        $htmlString = $response->getContent();
+        $response->assertSee('<td id="row-1-title">');
+
+        $response = $this->actingAs($super->user)->get($this->url);
+        $htmlString = $response->getContent();
+        $response->assertDontSee('<td id="row-1-title">');
+    }
 }
