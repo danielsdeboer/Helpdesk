@@ -651,7 +651,7 @@ class Ticket extends AbstractModel
     }
 
     /**
-     * Get tickets with closed status.
+     * Get ignored tickets.
      * @param Builder $query
      * @return Builder
      */
