@@ -538,7 +538,8 @@ class Ticket extends AbstractModel
     public function scopeUnassigned (Builder $query) : Builder
     {
         return $query->whereDoesntHave('assignment')
-            ->where('status', 'open');
+            ->where('status', 'open')
+            ->whereNull('is_ignored');
     }
 
     /**
@@ -575,7 +576,8 @@ class Ticket extends AbstractModel
             ->whereHas('dueDate', function (Builder $query) {
                 $query->where('due_on', '<', Carbon::now()->toDateString());
             })
-            ->where('status', 'open');
+            ->where('status', 'open')
+            ->whereNull('is_ignored');
     }
 
     /**

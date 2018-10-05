@@ -25,7 +25,7 @@ class SupervisorController extends Controller
         return view('helpdesk::dashboard.index')->with([
             'unassigned' => $tickets->unassigned()->get(),
             'overdue' => $tickets->overdue()->get(),
-            'open' => $tickets->open()->get(),
+            'open' => $tickets->openWithoutIgnored()->get(),
             'collab' => $tickets->collaborating()->get(),
             'tab' => 'dashboard',
             'isSuper' => true,
