@@ -23,8 +23,8 @@ class UserController extends Controller
     public function index(TicketsRepository $tickets)
     {
         return view('helpdesk::dashboard.index', [
-            'open' => $tickets->open()->get(),
-            'overdue' => $tickets->overdue()->get(),
+            'open' => $tickets->clone()->open()->get(),
+            'overdue' => $tickets->clone()->overdue()->get(),
             'tab' => 'dashboard',
         ]);
     }
