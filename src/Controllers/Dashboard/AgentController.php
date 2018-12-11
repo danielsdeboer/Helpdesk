@@ -24,10 +24,10 @@ class AgentController extends Controller
     public function index (TicketsRepository $tickets)
     {
         return view('helpdesk::dashboard.index')->with([
-            'team' => $tickets->team()->unassigned()->get(),
-            'overdue' => $tickets->overdue()->get(),
-            'open' => $tickets->openWithoutIgnored()->get(),
-            'collab' => $tickets->collaborating()->get(),
+            'team' => $tickets->clone()->team()->unassigned()->get(),
+            'overdue' => $tickets->clone()->overdue()->get(),
+            'open' => $tickets->clone()->openWithoutIgnored()->get(),
+            'collab' => $tickets->clone()->collaborating()->get(),
             'tab' => 'dashboard',
         ]);
     }
