@@ -10,15 +10,16 @@
     ]
   },
   "require": {
-    "php" : ">=7.0.0",
-    "laravel/framework": "5.5.x",
-    "aviator/makeable": "^0.1.0"
+    "php" : ">=7.1.3",
+    "laravel/framework": "5.6.x",
+    "aviator/makeable": "^0.1.0",
+    "composer/xdebug-handler": "^1.3"
   },
   "require-dev": {
-    "phpunit/phpunit": "6.x.x",
-    "orchestra/testbench-browser-kit": "3.5.x",
-    "orchestra/testbench": "3.5.x",
-    "orchestra/database": "3.5.x"
+    "phpunit/phpunit": ">=7.1.3",
+    "orchestra/testbench-browser-kit": "3.6.x",
+    "orchestra/testbench": "3.6.x",
+    "orchestra/database": "3.6.x"
   },
   "autoload-dev": {
     "psr-4": {
@@ -27,5 +28,8 @@
     "files": [
       "tests/fixtures/functions.php"
     ]
+  },
+  "scripts": {
+    "test": "php phpunit.php"
   }
 }
