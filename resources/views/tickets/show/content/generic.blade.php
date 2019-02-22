@@ -1,6 +1,6 @@
 <div class="content">
   <p>
-    <strong>From</strong> {{ $ticket->user->name or '(deleted)' }}
+    <strong>From</strong> {{ $ticket->user->name ?? '(deleted)' }}
     <br>
     <strong>Title:</strong> {{ $ticket->content->title }}
   </p>

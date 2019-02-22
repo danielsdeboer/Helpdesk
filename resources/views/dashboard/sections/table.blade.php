@@ -18,7 +18,7 @@
       <tr>
         <td><a href="{{ route('helpdesk.tickets.show', $ticket->id) }}">{{ str_limit($ticket->content->title(), 50) }}</a></td>
 
-        <td>{{ $ticket->user->name or '(deleted)' }}</td>
+        <td>{{ $ticket->user->name ?? '(deleted)' }}</td>
 
         @if (isset($withOpened))
           <td>{{ $ticket->opening->created_at->diffForHumans() }}</td>

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @property mixed id
  * @property string email
+ * @property string name
  * @property \Aviator\Helpdesk\Models\Agent agent
  */
 class User extends Authenticatable

@@ -25,7 +25,7 @@
           visible: false,
         },
       },
-      users: {!! $users or '[]' !!}
+      users: {!! $users ?? '[]' !!}
     },
     methods: {
       toggle: function(modal) {

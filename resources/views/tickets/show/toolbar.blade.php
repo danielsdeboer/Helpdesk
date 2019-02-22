@@ -1,5 +1,5 @@
 @if (auth()->user())
-  <div class="section {{ $withClass or '' }}" id="ticket-toolbar">
+  <div class="section {{ $withClass ?? '' }}" id="ticket-toolbar">
     <div class="container">
       @if (hd_is_agent())
         @include('helpdesk::tickets.show.agent-toolbar')
