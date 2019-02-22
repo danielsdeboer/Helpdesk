@@ -5,7 +5,7 @@
   <br>
   <em>Team Name</em>: {{ $action->object->team->name }}
   <br>
-  <em>By</em>: {{ $action->object->agent->name or 'System Process' }}
+  <em>By</em>: {{ $action->object->agent->name ?? 'System Process' }}
 @overwrite
 
 @section('action-note')

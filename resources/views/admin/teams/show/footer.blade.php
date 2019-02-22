@@ -35,7 +35,7 @@
           visible: false,
         },
       },
-      agents: {!! $agents or '[]' !!}
+      agents: {!! $agents ?? '[]' !!}
     },
     methods: {
       toggle: function(modal) {

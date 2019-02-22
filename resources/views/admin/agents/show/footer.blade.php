@@ -98,7 +98,7 @@
           visible: false,
         },
       },
-      teams: {!! $teams or '[]' !!}
+      teams: {!! $teams ?? '[]' !!}
     },
     methods: {
       toggle: function(modal) {

@@ -5,7 +5,7 @@
   <br>
   <em>To</em>: {{ $action->object->assignee->user->name }}
   <br>
-  <em>By</em>: {{ $action->object->created_by or 'System Process' }}
+  <em>By</em>: {{ $action->object->created_by ?? 'System Process' }}
 @overwrite
 
 @section('action-note')

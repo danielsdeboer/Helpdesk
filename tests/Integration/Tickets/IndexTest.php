@@ -118,24 +118,23 @@ class IndexTest extends TestCase
     /** @test */
     public function ignored_tickets_only_appear_in_ignored_list_for_supers ()
     {
-        $user1 = $this->make->user;
-        $user2 = $this->make->user;
-        $ignoredUser = $this->make->user;
+        $ignored = $this->make->user;
+        $this->addIgnoredUser([$ignored->email]);
+
+        $user = $this->make->user;
         $super = $this->make->super;
 
-        $this->addIgnoredUser([$ignoredUser->email]);
+        // The ignored closed ticket.
+        $this->make->ticket($ignored)
+            ->close(null, $ignored);
 
-        $user1OpenTicket = $this->make->ticket($user1);
-        $user2OpenTicket = $this->make->ticket($user2);
-        $user1ClosedTicket = $user1OpenTicket->close(null, $user1);
-        $ignoredOpenTicket = $this->make->ticket($ignoredUser);
-        $ignoredClosedTicket = $ignoredOpenTicket->close(null, $ignoredUser);
+        // A regular user shouldn't see ignored tickets.
+        $response = $this->actingAs($user)->get($this->url);
+        $response->assertDontSee($ignored->name);
 
+        // A super user should.
         $response = $this->actingAs($super->user)->get($this->url);
-
-        $htmlString = $response->getContent();
-
-        $this->assertEquals(1, substr_count($htmlString, $ignoredUser->name));
+        $response->assertSee($ignored->name);
     }
 
     /** @test */
