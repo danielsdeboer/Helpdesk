@@ -10,6 +10,7 @@ use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Foundation\Testing\Assert as PHPUnit;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
@@ -96,6 +97,12 @@ abstract class TestCase extends Orchestra
 
                 $position = $valuePosition + mb_strlen($value);
             }
+        });
+
+        TestResponse::macro('assertSeeEncoded', function (string $value) {
+            PHPUnit::assertStringContainsString((string) $value, $this->getContent());
+
+            return $this;
         });
 
         Collection::macro('assertContains', function ($value) {
