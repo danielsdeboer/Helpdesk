@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Helpers;
 
-use Aviator\Helpdesk\Interfaces\HasUserCallback;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Aviator\Helpdesk\Interfaces\HasUserCallback;
 
 class UserCallbackProvider implements HasUserCallback
 {

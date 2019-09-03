@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Helpers\Ticket;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 
 class Contents extends TicketHelper
 {

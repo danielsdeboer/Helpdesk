@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rule;
 
 class TeamMembersController extends Controller
 {

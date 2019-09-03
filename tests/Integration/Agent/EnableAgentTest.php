@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Agent;
 
+use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
-use Carbon\Carbon;
 
 class EnableAgentTest extends TestCase
 {

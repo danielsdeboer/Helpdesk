@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
-use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Tests\ModelTestCase;
 
 class ClosingTest extends ModelTestCase

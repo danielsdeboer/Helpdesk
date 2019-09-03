@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Admin\TeamMembers;
 
-use Aviator\Helpdesk\Tests\AdminBase;
 use Exception;
+use Aviator\Helpdesk\Tests\AdminBase;
 use Illuminate\Database\QueryException;
 
 class AddTest extends AdminBase

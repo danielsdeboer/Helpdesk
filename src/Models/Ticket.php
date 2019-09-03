@@ -2,23 +2,23 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
-use Aviator\Helpdesk\Helpers\Ticket\Contents;
-use Aviator\Helpdesk\Helpers\Ticket\Status;
-use Aviator\Helpdesk\Interfaces\TicketContent;
+use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Aviator\Helpdesk\Helpers\Ticket\Status;
+use Aviator\Helpdesk\Helpers\Ticket\Contents;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
+use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 /**
  * Class Ticket.

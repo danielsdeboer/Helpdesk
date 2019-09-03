@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Commands;
 
+use Illuminate\Console\Command;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Traits\InteractsWithUsers;
-use Illuminate\Console\Command;
 
 class CreateSuper extends Command
 {

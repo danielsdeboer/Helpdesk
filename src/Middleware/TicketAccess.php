@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Middleware;
 
-use Aviator\Helpdesk\Models\Ticket;
 use Closure;
 use Illuminate\Http\Request;
+use Aviator\Helpdesk\Models\Ticket;
 
 class TicketAccess
 {

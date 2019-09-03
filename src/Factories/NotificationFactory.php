@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Factories;
 
-use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
+use Exception;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Makeable\Traits\MakeableTrait;
-use Exception;
 use Illuminate\Notifications\Notification;
+use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 
 class NotificationFactory implements NotificationFactoryInterface
 {

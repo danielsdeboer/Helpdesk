@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
+use Illuminate\Http\Request;
 use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class NoteController extends Controller
 {

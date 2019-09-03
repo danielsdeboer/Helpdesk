@@ -2,12 +2,12 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Http\Request;
 use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class TeamsController extends Controller
 {

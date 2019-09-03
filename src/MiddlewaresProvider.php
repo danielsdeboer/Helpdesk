@@ -2,16 +2,16 @@
 
 namespace Aviator\Helpdesk;
 
+use Illuminate\Routing\Router;
+use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
+use Aviator\Helpdesk\Middleware\UsersOnly;
 use Aviator\Helpdesk\Middleware\AgentsOnly;
-use Aviator\Helpdesk\Middleware\DashboardRedirector;
 use Aviator\Helpdesk\Middleware\SupersOnly;
 use Aviator\Helpdesk\Middleware\TicketAccess;
 use Aviator\Helpdesk\Middleware\TicketsRedirector;
-use Aviator\Helpdesk\Middleware\UsersOnly;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\Kernel;
-use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
+use Aviator\Helpdesk\Middleware\DashboardRedirector;
 
 class MiddlewaresProvider extends ServiceProvider
 {

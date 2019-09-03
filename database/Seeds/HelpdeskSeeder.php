@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Database\Seeds;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Team;
-use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Ticket;
 
 class HelpdeskSeeder extends Seeder
 {

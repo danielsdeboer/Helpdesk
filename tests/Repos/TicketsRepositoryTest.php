@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Repos;
 
-use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Aviator\Helpdesk\Tests\TestCase;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class TicketsRepositoryTest extends TestCase
 {

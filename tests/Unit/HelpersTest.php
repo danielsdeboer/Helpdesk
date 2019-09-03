@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Tests\Helpers;
 
-use Aviator\Helpdesk\Helpers\Helpers;
+use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Tests\User;
+use Aviator\Helpdesk\Helpers\Helpers;
 
 class HelpersTest extends TestCase
 {

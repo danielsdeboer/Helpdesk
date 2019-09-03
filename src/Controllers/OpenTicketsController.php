@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Controllers;
 
-use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Repositories\TicketsRepository;
 
 class OpenTicketsController extends Controller
 {

@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Aviator\Helpdesk\Traits\MorphsWithTrashed;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string name

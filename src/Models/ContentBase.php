@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Aviator\Helpdesk\Interfaces\TicketContent;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 
 abstract class ContentBase extends AbstractModel implements TicketContent
 {

@@ -2,16 +2,16 @@
 
 namespace Aviator\Helpdesk\Controllers\Admin;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Team;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Traits\InteractsWithUsers;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
 use Illuminate\Validation\Rule;
+use Aviator\Helpdesk\Models\Team;
+use Aviator\Helpdesk\Models\Agent;
+use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Builder;
+use Aviator\Helpdesk\Traits\InteractsWithUsers;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class DisabledAgentsController extends Controller
 {

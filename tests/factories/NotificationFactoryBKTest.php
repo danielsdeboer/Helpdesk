@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests\factories;
 
-use Aviator\Helpdesk\Factories\DefinitionNotFound;
-use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Notifications\Notification;
+use Aviator\Helpdesk\Factories\DefinitionNotFound;
+use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 
 class NotificationFactoryBKTest extends BKTestCase
 {

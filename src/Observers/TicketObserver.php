@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Observers;
 
-use Aviator\Helpdesk\Models\Opening;
-use Aviator\Helpdesk\Models\Ticket;
 use Carbon\Carbon;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Models\Opening;
 
 class TicketObserver
 {

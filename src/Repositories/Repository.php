@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
+use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 abstract class Repository
 {

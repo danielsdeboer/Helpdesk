@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
 
 class CollaboratorController extends Controller
 {

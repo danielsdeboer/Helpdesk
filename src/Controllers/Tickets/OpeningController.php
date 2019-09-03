@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Controllers\Tickets;
 
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Http\Request;
+use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Routing\Controller;
+use Aviator\Helpdesk\Models\Ticket;
 
 class OpeningController extends Controller
 {

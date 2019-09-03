@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Exception;
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Collaborator;
-use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Exception;
+use Aviator\Helpdesk\Models\Collaborator;
+use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
 
 class TicketTest extends TestCase
 {
