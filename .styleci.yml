@@ -2,6 +2,7 @@ preset: laravel
 
 enabled:
   - concat_with_spaces
+  - ordered_imports
 
 disabled:
   - concat_without_spaces
