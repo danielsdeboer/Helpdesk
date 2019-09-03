@@ -2,23 +2,23 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Carbon\Carbon;
+use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
+use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
+use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
+use Aviator\Helpdesk\Helpers\Ticket\Contents;
+use Aviator\Helpdesk\Helpers\Ticket\Status;
+use Aviator\Helpdesk\Interfaces\TicketContent;
 use Aviator\Helpdesk\Tests\User;
 use Aviator\Helpdesk\Traits\AutoUuids;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Aviator\Helpdesk\Helpers\Ticket\Status;
-use Aviator\Helpdesk\Helpers\Ticket\Contents;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Aviator\Helpdesk\Interfaces\TicketContent;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Aviator\Helpdesk\Exceptions\CreatorRequiredException;
-use Aviator\Helpdesk\Exceptions\CreatorMustBeAUserException;
-use Aviator\Helpdesk\Exceptions\SupervisorNotFoundException;
 
 /**
  * Class Ticket.
@@ -103,7 +103,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false) : self
+    public function assignToAgent (Agent $agent, Agent $creator = null, $isVisible = false): self
     {
         Assignment::query()
             ->create([
@@ -125,7 +125,7 @@ class Ticket extends AbstractModel
      * @param bool $isVisible
      * @return Ticket
      */
-    public function assignToTeam ($team, Agent $creator = null, $isVisible = false) : self
+    public function assignToTeam ($team, Agent $creator = null, $isVisible = false): self
     {
         TeamAssignment::query()
             ->create([
@@ -141,7 +141,7 @@ class Ticket extends AbstractModel
     /**
      * @return \Aviator\Helpdesk\Helpers\Ticket\Contents
      */
-    public function contents () : Contents
+    public function contents (): Contents
     {
         return new Contents($this);
     }
@@ -156,7 +156,7 @@ class Ticket extends AbstractModel
      * @param  bool $isVisible
      * @return Ticket
      */
-    public function dueOn ($date, Agent $creator = null, $isVisible = true) : self
+    public function dueOn ($date, Agent $creator = null, $isVisible = true): self
     {
         DueDate::query()
             ->create([
@@ -179,7 +179,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function close ($note, $creator) : self
+    public function close ($note, $creator): self
     {
         if (!$creator) {
             throw new CreatorRequiredException('An agent or user must be provided when closing a ticket.');
@@ -213,7 +213,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function open ($note, $creator) : self
+    public function open ($note, $creator): self
     {
         if (!$creator) {
             throw new CreatorRequiredException('A user or agent is required when opening a ticket.');
@@ -245,7 +245,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorRequiredException
      */
-    public function note ($body, $creator, $isVisible = true) : self
+    public function note ($body, $creator, $isVisible = true): self
     {
         if (!$creator) {
             throw new CreatorRequiredException('A user or agent is required when adding a note.');
@@ -275,7 +275,7 @@ class Ticket extends AbstractModel
      * @param  Agent $agent
      * @return Ticket
      */
-    public function internalReply ($body, Agent $agent) : self
+    public function internalReply ($body, Agent $agent): self
     {
         Reply::query()
             ->create([
@@ -297,7 +297,7 @@ class Ticket extends AbstractModel
      * @return Ticket
      * @throws CreatorMustBeAUserException
      */
-    public function externalReply ($body, $user) : self
+    public function externalReply ($body, $user): self
     {
         $userClass = config('helpdesk.userModel');
 
@@ -338,7 +338,7 @@ class Ticket extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Agent $creator
      * @return Ticket
      */
-    public function addCollaborator (Agent $collab, Agent $creator) : self
+    public function addCollaborator (Agent $collab, Agent $creator): self
     {
         $collabs = $this->collaborators()->with('agent')->get();
 
@@ -358,7 +358,7 @@ class Ticket extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return Ticket
      */
-    public function removeCollaborator (Agent $agent) : self
+    public function removeCollaborator (Agent $agent): self
     {
         $this->collaborators()->where('agent_id', $agent->id)->delete();
 
@@ -535,7 +535,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeUnassigned (Builder $query) : Builder
+    public function scopeUnassigned (Builder $query): Builder
     {
         return $query->whereDoesntHave('assignment')
             ->where('status', 'open')
@@ -547,7 +547,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeAssigned (Builder $query) : Builder
+    public function scopeAssigned (Builder $query): Builder
     {
         return $query->has('assignment')
             ->where('status', 'open');
@@ -558,7 +558,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeTeamed (Builder $query) : Builder
+    public function scopeTeamed (Builder $query): Builder
     {
         return $query->has('teamAssignment')
             ->whereDoesntHave('assignment')
@@ -570,7 +570,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeOverdue (Builder $query) : Builder
+    public function scopeOverdue (Builder $query): Builder
     {
         return $query
             ->whereHas('dueDate', function (Builder $query) {
@@ -585,7 +585,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeOnTime (Builder $query) : Builder
+    public function scopeOnTime (Builder $query): Builder
     {
         return $query
             ->whereHas('dueDate', function (Builder $query) {
@@ -599,7 +599,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeDueToday (Builder $query) : Builder
+    public function scopeDueToday (Builder $query): Builder
     {
         return $query
             ->whereHas('dueDate', function (Builder $query) {
@@ -615,7 +615,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeOpened (Builder $query) : Builder
+    public function scopeOpened (Builder $query): Builder
     {
         return $query->where('status', 'open');
     }
@@ -625,7 +625,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeOpenedWithoutIgnored (Builder $query) : Builder
+    public function scopeOpenedWithoutIgnored (Builder $query): Builder
     {
         return $query->where('status', 'open')
             ->whereNull('is_ignored');
@@ -636,7 +636,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeClosed (Builder $query) : Builder
+    public function scopeClosed (Builder $query): Builder
     {
         return $query->where('status', 'closed');
     }
@@ -646,7 +646,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeClosedWithoutIgnored (Builder $query) : Builder
+    public function scopeClosedWithoutIgnored (Builder $query): Builder
     {
         return $query->where('status', 'closed')
             ->whereNull('is_ignored');
@@ -657,7 +657,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeIgnored (Builder $query) : Builder
+    public function scopeIgnored (Builder $query): Builder
     {
         return $query->whereNotNull('is_ignored');
     }
@@ -667,7 +667,7 @@ class Ticket extends AbstractModel
      * @param Builder $query
      * @return Builder
      */
-    public function scopeWithActions (Builder $query) : Builder
+    public function scopeWithActions (Builder $query): Builder
     {
         return $query->with([
             'actions' => function (MorphMany $query) {
@@ -701,7 +701,7 @@ class Ticket extends AbstractModel
      * @param \Illuminate\Foundation\Auth\User $user
      * @return Builder
      */
-    public function scopeAccessibleToUser ($query, Authenticatable $user) : Builder
+    public function scopeAccessibleToUser ($query, Authenticatable $user): Builder
     {
         return $query->where(
             'user_id',
@@ -715,7 +715,7 @@ class Ticket extends AbstractModel
      * @param Agent $agent
      * @return Builder
      */
-    public function scopeAccessibleToAgent ($query, $agent) : Builder
+    public function scopeAccessibleToAgent ($query, $agent): Builder
     {
         if ($agent->isSuper()) {
             return $query;
@@ -781,7 +781,7 @@ class Ticket extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function user () : BelongsTo
+    public function user (): BelongsTo
     {
         return $this->belongsTo(
             config('helpdesk.userModel')

@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Agent;
 
-use Carbon\Carbon;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
+use Carbon\Carbon;
 
 class EnableAgentTest extends TestCase
 {
@@ -23,7 +23,8 @@ class EnableAgentTest extends TestCase
 
         $this->be($super->user);
 
-        $response = $this->patch('helpdesk/admin/disabled/3',
+        $response = $this->patch(
+            'helpdesk/admin/disabled/3',
             [
                 'user_id' => $agent->user_id,
             ]

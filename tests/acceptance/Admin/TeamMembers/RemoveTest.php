@@ -2,7 +2,6 @@
 
 namespace Aviator\Helpdesk\Tests\Admin\TeamMembers;
 
-use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\AdminBase;
 
 class RemoveTest extends AdminBase

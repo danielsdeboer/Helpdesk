@@ -13,7 +13,7 @@ class SupervisorsOnlyTest extends TestCase
     /*
      * Create a route to test against.
      */
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

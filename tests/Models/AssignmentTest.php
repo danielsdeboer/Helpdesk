@@ -3,10 +3,10 @@
 namespace Aviator\Helpdesk\Tests\Models;
 
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Models\Assignment;
-use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Tests\ModelTestCase;
 
 class AssignmentTest extends ModelTestCase
 {

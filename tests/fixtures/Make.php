@@ -2,22 +2,22 @@
 
 namespace Aviator\Helpdesk\Tests\Fixtures;
 
-use Carbon\Carbon;
-use Aviator\Helpdesk\Tests\User;
-use Aviator\Helpdesk\Models\Note;
-use Aviator\Helpdesk\Models\Team;
-use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Models\Reply;
-use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\Closing;
-use Aviator\Helpdesk\Models\DueDate;
-use Aviator\Helpdesk\Models\Opening;
+use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
+use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\Collaborator;
+use Aviator\Helpdesk\Models\DueDate;
 use Aviator\Helpdesk\Models\GenericContent;
+use Aviator\Helpdesk\Models\Note;
+use Aviator\Helpdesk\Models\Opening;
+use Aviator\Helpdesk\Models\Reply;
+use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\TeamAssignment;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Tests\User;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Class Create.
@@ -219,7 +219,7 @@ class Make
      * @param \Aviator\Helpdesk\Tests\User|null $user
      * @return \Illuminate\Support\Collection
      */
-    public function tickets (int $quantity, User $user = null) : Collection
+    public function tickets (int $quantity, User $user = null): Collection
     {
         $user = $user ?: factory(User::class)->create();
 
@@ -258,7 +258,7 @@ class Make
         return factory(Team::class)->create();
     }
 
-    public function option (Agent $agent, string $idSlug) : string
+    public function option (Agent $agent, string $idSlug): string
     {
         return '<option value="' . $agent->id . '" id="' . $idSlug . $agent->id . '">' . $agent->user->name . '</option>';
     }

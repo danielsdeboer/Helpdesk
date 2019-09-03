@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Factories;
 
-use Exception;
+use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Makeable\Traits\MakeableTrait;
+use Exception;
 use Illuminate\Notifications\Notification;
-use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 
 class NotificationFactory implements NotificationFactoryInterface
 {
@@ -38,7 +38,7 @@ class NotificationFactory implements NotificationFactoryInterface
      * @return Notification
      * @throws DefinitionNotFound
      */
-    public function make (string $name, Ticket $ticket) : Notification
+    public function make (string $name, Ticket $ticket): Notification
     {
         try {
             return new $this->className($ticket, $this->config[$name]);

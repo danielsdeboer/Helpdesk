@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Support\Str;
 use Aviator\Helpdesk\Models\Agent;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class CreateSuperBKTest extends BKTestCase
 {

@@ -21,7 +21,7 @@ class Assignment extends ActionBase
     /**
      * @return BelongsTo
      */
-    public function assignee () : BelongsTo
+    public function assignee (): BelongsTo
     {
         return $this->belongsTo(Agent::class, 'assigned_to');
     }

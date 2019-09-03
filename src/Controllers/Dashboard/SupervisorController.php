@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Controllers\Dashboard;
 
-use Illuminate\Routing\Controller;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
+use Illuminate\Routing\Controller;
 
 class SupervisorController extends Controller
 {

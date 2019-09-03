@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Illuminate\Support\Collection;
 use Aviator\Helpdesk\Models\Ticket;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 abstract class Repository
 {
@@ -36,7 +36,7 @@ abstract class Repository
      * Get a count of the result set.
      * @return int
      */
-    public function count () : int
+    public function count (): int
     {
         return $this->prepare()->count();
     }
@@ -73,7 +73,7 @@ abstract class Repository
      * Get a collection of results.
      * @return \Illuminate\Support\Collection
      */
-    public function get () : Collection
+    public function get (): Collection
     {
         return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
@@ -86,7 +86,7 @@ abstract class Repository
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      * @throws \InvalidArgumentException
      */
-    public function paginate (int $resultsPerPage = null) : LengthAwarePaginator
+    public function paginate (int $resultsPerPage = null): LengthAwarePaginator
     {
         return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
@@ -109,7 +109,7 @@ abstract class Repository
      * @param $arguments
      * @return $this
      */
-    protected function addScope (string $name, $arguments = []) : self
+    protected function addScope (string $name, $arguments = []): self
     {
         $this->query->scopes([
             $name => is_array($arguments) ? $arguments : [$arguments],

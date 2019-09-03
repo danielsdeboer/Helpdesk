@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Tests\Seeders;
 
+use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Database\Seeds\HelpdeskSeeder;
 
 class SeederTest extends TestCase
 {

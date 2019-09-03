@@ -13,7 +13,7 @@ class UsersOnlyTest extends TestCase
     /*
      * Set up a testing route.
      */
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

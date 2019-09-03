@@ -2,15 +2,15 @@
 
 namespace Aviator\Helpdesk\Tests\Repos;
 
-use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Repositories\TicketsRepository;
+use Aviator\Helpdesk\Tests\TestCase;
 
 class TicketsRepositoryTest extends TestCase
 {
     /**
      * @return \Aviator\Helpdesk\Repositories\TicketsRepository
      */
-    protected function repo () : TicketsRepository
+    protected function repo (): TicketsRepository
     {
         return app(TicketsRepository::class);
     }

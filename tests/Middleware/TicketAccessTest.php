@@ -23,7 +23,7 @@ class TicketAccessTest extends TestCase
     /**
      * Create a guarded test route.
      */
-    public function setUp ()
+    public function setUp (): void
     {
         parent::setUp();
 

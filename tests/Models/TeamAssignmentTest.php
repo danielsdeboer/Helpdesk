@@ -2,11 +2,10 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
-use Aviator\Helpdesk\Models\Team;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\TeamAssignment;
+use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Tests\ModelTestCase;
 
 class TeamAssignmentTest extends ModelTestCase
 {

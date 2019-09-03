@@ -38,7 +38,7 @@ trait InteractsWithUsers
     /**
      * @return Collection
      */
-    protected function fetchAllUsers () : Collection
+    protected function fetchAllUsers (): Collection
     {
         return $this->userModelName::all();
     }
@@ -46,7 +46,7 @@ trait InteractsWithUsers
     /**
      * @return Collection
      */
-    protected function fetchFilteredUsers () : Collection
+    protected function fetchFilteredUsers (): Collection
     {
         $class = config('helpdesk.callbacks.user');
         /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $callback */

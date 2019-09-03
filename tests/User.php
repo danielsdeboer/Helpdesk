@@ -3,9 +3,9 @@
 namespace Aviator\Helpdesk\Tests;
 
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Notifications\Notifiable;
 use Aviator\Helpdesk\Traits\HasAgentRelation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property mixed id

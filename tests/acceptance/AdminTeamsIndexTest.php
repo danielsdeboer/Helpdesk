@@ -8,7 +8,7 @@ class AdminTeamsIndexTest extends BKTestCase
 {
     const URI = 'helpdesk/admin/teams';
 
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

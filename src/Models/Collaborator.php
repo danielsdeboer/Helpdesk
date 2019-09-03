@@ -20,7 +20,7 @@ class Collaborator extends ActionBase
     /**
      * @return BelongsTo
      */
-    public function createdBy () : BelongsTo
+    public function createdBy (): BelongsTo
     {
         return $this->belongsTo(Agent::class, 'created_by');
     }

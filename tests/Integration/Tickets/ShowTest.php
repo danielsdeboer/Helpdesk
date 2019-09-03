@@ -3,9 +3,9 @@
 namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
 
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Aviator\Helpdesk\Models\GenericContent;
 use Illuminate\Foundation\Testing\TestResponse;
 
 class ShowTest extends TestCase
@@ -27,7 +27,7 @@ class ShowTest extends TestCase
      * @param null $id
      * @return string
      */
-    protected function url ($id = null) : string
+    protected function url ($id = null): string
     {
         return $this->url . ($id ?: 1);
     }

@@ -134,7 +134,7 @@ class IndexTest extends TestCase
 
         // A super user should.
         $response = $this->actingAs($super->user)->get($this->url);
-        $response->assertSee($ignored->name);
+        $response->assertSeeEncoded($ignored->name);
     }
 
     /** @test */

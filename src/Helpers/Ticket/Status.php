@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Helpers\Ticket;
 
-use Carbon\Carbon;
-use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Team;
+use Carbon\Carbon;
 
 class Status extends TicketHelper
 {
@@ -12,7 +12,7 @@ class Status extends TicketHelper
      * Is the ticket assigned to an agent or team.
      * @return bool
      */
-    public function assigned () : bool
+    public function assigned (): bool
     {
         return $this->assignedToAnAgent()
             || $this->assignedToATeam();
@@ -23,7 +23,7 @@ class Status extends TicketHelper
      * @param Agent $agent
      * @return bool
      */
-    public function assignedTo (Agent $agent) : bool
+    public function assignedTo (Agent $agent): bool
     {
         return $this->assignedToAnAgent()
             && (int) $this->ticket->assignment->assigned_to === $agent->id;
@@ -32,7 +32,7 @@ class Status extends TicketHelper
     /**
      * @return bool
      */
-    public function assignedToAnAgent () : bool
+    public function assignedToAnAgent (): bool
     {
         return (bool) $this->ticket->assignment;
     }
@@ -41,7 +41,7 @@ class Status extends TicketHelper
      * @param Team $team
      * @return bool
      */
-    public function assignedToTeam (Team $team) : bool
+    public function assignedToTeam (Team $team): bool
     {
         return $this->assignedToATeam()
             && $this->ticket->teamAssignment->team->id === $team->id;
@@ -50,7 +50,7 @@ class Status extends TicketHelper
     /**
      * @return bool
      */
-    public function assignedToATeam () : bool
+    public function assignedToATeam (): bool
     {
         return (bool) $this->ticket->teamAssignment;
     }
@@ -58,7 +58,7 @@ class Status extends TicketHelper
     /**
      * @return bool
      */
-    public function closed () : bool
+    public function closed (): bool
     {
         return $this->ticket->status === 'closed';
     }
@@ -68,7 +68,7 @@ class Status extends TicketHelper
      * @param \Aviator\Helpdesk\Models\Agent $agent
      * @return bool
      */
-    public function collaborates (Agent $agent) : bool
+    public function collaborates (Agent $agent): bool
     {
         return $this->ticket->collaborators
             ->pluck('agent.id')
@@ -78,7 +78,7 @@ class Status extends TicketHelper
     /**
      * @return bool
      */
-    public function open () : bool
+    public function open (): bool
     {
         return $this->ticket->status === 'open';
     }
@@ -87,7 +87,7 @@ class Status extends TicketHelper
      * Is the ticket overdue.
      * @return bool
      */
-    public function overdue () : bool
+    public function overdue (): bool
     {
         return $this->ticket->dueDate
             && $this->ticket->dueDate->due_on->lte(Carbon::now());
@@ -98,7 +98,7 @@ class Status extends TicketHelper
      * @param $user
      * @return bool
      */
-    public function ownedBy ($user) : bool
+    public function ownedBy ($user): bool
     {
         return (int) $user->id === (int) $this->ticket->user_id;
     }

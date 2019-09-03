@@ -3,8 +3,8 @@
 namespace Aviator\Helpdesk\Repositories;
 
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User;
 
 class TicketsRepository extends Repository
 {

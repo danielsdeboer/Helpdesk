@@ -14,7 +14,7 @@ trait HasAgentRelation
      * The agent relationship.
      * @return HasOne
      */
-    public function agent () : HasOne
+    public function agent (): HasOne
     {
         return $this->hasOne(Agent::class);
     }

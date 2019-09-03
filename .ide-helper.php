@@ -14282,6 +14282,10 @@ namespace Illuminate\Foundation\Testing {
         public function assertSeeInOrder (array $values)
         {
         }
+
+        public function assertSeeEncoded (string $value): TestResponse
+        {
+        }
     }
 }
 
