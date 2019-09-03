@@ -100,7 +100,7 @@ abstract class TestCase extends Orchestra
         });
 
         TestResponse::macro('assertSeeEncoded', function (string $value) {
-            PHPUnit::assertStringContainsString((string) $value, $this->getContent());
+            PHPUnit::assertStringContainsString(e($value), $this->getContent());
 
             return $this;
         });
