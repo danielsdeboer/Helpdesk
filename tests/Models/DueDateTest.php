@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Models;
 
-use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\TestCase;
+use Carbon\Carbon;
 
 class DueDateTest extends TestCase
 {

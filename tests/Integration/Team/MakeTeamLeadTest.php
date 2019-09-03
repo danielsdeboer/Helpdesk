@@ -18,7 +18,8 @@ class MakeTeamLeadTest extends TestCase
 
         $this->be($super->user);
 
-        $response = $this->post('helpdesk/admin/team-members/make-team-lead',
+        $response = $this->post(
+            'helpdesk/admin/team-members/make-team-lead',
             [
                 'agent_id' => $super->id,
                 'team_id' => $team->id,

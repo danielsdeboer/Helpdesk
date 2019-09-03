@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Aviator\Helpdesk\Traits\MorphsWithTrashed;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string name
@@ -25,7 +25,7 @@ class Action extends AbstractModel
     /**
      * @return MorphTo
      */
-    public function subject () : MorphTo
+    public function subject (): MorphTo
     {
         return $this->morphToWithTrashed('subject');
     }
@@ -33,7 +33,7 @@ class Action extends AbstractModel
     /**
      * @return MorphTo
      */
-    public function object () : MorphTo
+    public function object (): MorphTo
     {
         return $this->morphToWithTrashed('object');
     }

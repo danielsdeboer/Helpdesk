@@ -19,7 +19,8 @@ class DisableAgentTest extends TestCase
 
         $this->be($super->user);
 
-        $response = $this->patch('helpdesk/admin/agents/4',
+        $response = $this->patch(
+            'helpdesk/admin/agents/4',
             [
                 'user_id' => $agent->user_id,
             ]

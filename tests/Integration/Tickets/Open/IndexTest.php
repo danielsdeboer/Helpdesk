@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests\Integration\Tickets\Open;
 
-use Carbon\Carbon;
 use Aviator\Helpdesk\Tests\TestCase;
+use Carbon\Carbon;
 
 class IndexTest extends TestCase
 {

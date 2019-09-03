@@ -18,20 +18,20 @@ class ReplyObserver extends AbstractObserver
 
         if ($observed->agent) {
             $this->sendNotification(
-               $observed,
-               'ticket.user',
-               'agentReplied'
-           );
+                $observed,
+                'ticket.user',
+                'agentReplied'
+            );
         }
 
         if (isset($observed->ticket->user->email)) {
             if (!in_array($observed->ticket->user->email, config('helpdesk.ignored'))) {
                 if ($observed->user) {
                     $this->sendNotification(
-                    $observed,
-                    'ticket.assignment.assignee',
-                    'userReplied'
-                );
+                        $observed,
+                        'ticket.assignment.assignee',
+                        'userReplied'
+                    );
                 }
             }
         }

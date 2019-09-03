@@ -2,18 +2,18 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use PHPUnit\Framework\Assert;
+use Aviator\Database\Migrations\CreateUsersTable;
+use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Support\Facades\Route;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\HelpdeskServiceProvider;
-use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Aviator\Database\Migrations\CreateUsersTable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowserKit;
+use PHPUnit\Framework\Assert;
 
 abstract class BKTestCase extends OrchestraBrowserKit
 {
@@ -35,7 +35,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
         ],
     ];
 
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

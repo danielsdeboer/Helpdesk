@@ -13,7 +13,7 @@ class ShowTest extends TestCase
      * @param null $id
      * @return string
      */
-    protected function url ($id = null) : string
+    protected function url ($id = null): string
     {
         return $this->url . ($id ?: 1);
     }

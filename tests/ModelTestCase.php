@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use Illuminate\Database\Eloquent\Model;
 use Aviator\Helpdesk\Notifications\Generic;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
 
 abstract class ModelTestCase extends TestCase

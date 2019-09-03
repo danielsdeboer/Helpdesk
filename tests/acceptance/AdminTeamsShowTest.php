@@ -9,7 +9,7 @@ class AdminTeamsShowTest extends BKTestCase
     /** @const string */
     const URI = 'helpdesk/admin/teams/1';
 
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

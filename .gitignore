@@ -3,3 +3,5 @@ vendor
 test_logs
 .idea
 .vscode/**
+reports/
+*.cache

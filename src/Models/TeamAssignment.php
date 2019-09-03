@@ -20,7 +20,7 @@ class TeamAssignment extends ActionBase
     /**
      * @return BelongsTo
      */
-    public function team () : BelongsTo
+    public function team (): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }

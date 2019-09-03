@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property mixed user
@@ -63,7 +63,7 @@ class Agent extends AbstractModel
      * Route notifications for the mail channel.
      * @return string
      */
-    public function routeNotificationForMail () : string
+    public function routeNotificationForMail (): string
     {
         $email = config('helpdesk.userModelEmailColumn');
 
@@ -95,7 +95,7 @@ class Agent extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent
      */
-    public function makeTeamLeadOf (Team $team) : self
+    public function makeTeamLeadOf (Team $team): self
     {
         // If the agent is already in the team but not team lead
         // we need to detach first. This does nothing otherwise.
@@ -113,7 +113,7 @@ class Agent extends AbstractModel
      * @param \Aviator\Helpdesk\Models\Team $team
      * @return Agent
      */
-    public function removeTeamLeadOf (Team $team) : self
+    public function removeTeamLeadOf (Team $team): self
     {
         $this->teams()->detach($team->id);
 
@@ -129,7 +129,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return Agent
      */
-    public function addToTeam (Team $team) : self
+    public function addToTeam (Team $team): self
     {
         $this->teams()->attach($team->id);
 
@@ -141,7 +141,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return Agent
      */
-    public function removeFromTeam (Team $team) : self
+    public function removeFromTeam (Team $team): self
     {
         $this->teams()->detach($team->id);
 
@@ -153,7 +153,7 @@ class Agent extends AbstractModel
      * @param array $teams
      * @return Agent
      */
-    public function addToTeams (array $teams) : self
+    public function addToTeams (array $teams): self
     {
         foreach ($teams as $team) {
             $this->teams()->attach($team);
@@ -167,7 +167,7 @@ class Agent extends AbstractModel
      * @param array $teams
      * @return Agent
      */
-    public function removeFromTeams (array $teams) : self
+    public function removeFromTeams (array $teams): self
     {
         foreach ($teams as $team) {
             $this->teams()->detach($team);
@@ -185,7 +185,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return bool
      */
-    public function isMemberOf (Team $team) : bool
+    public function isMemberOf (Team $team): bool
     {
         return $team->agents->pluck('id')->contains($this->id);
     }
@@ -194,7 +194,7 @@ class Agent extends AbstractModel
      * @param Team $team
      * @return bool
      */
-    public function isLeadOf (Team $team) : bool
+    public function isLeadOf (Team $team): bool
     {
         return $this->teamLeads->pluck('id')->contains($team->id);
     }
@@ -203,7 +203,7 @@ class Agent extends AbstractModel
      * @param Ticket $ticket
      * @return bool
      */
-    public function isLeadFor (Ticket $ticket) : bool
+    public function isLeadFor (Ticket $ticket): bool
     {
         return $ticket->teamAssignment
             && $this->isLeadOf($ticket->teamAssignment->team);
@@ -213,7 +213,7 @@ class Agent extends AbstractModel
      * Check if the user is a supervisor.
      * @return bool
      */
-    public function isSuper () : bool
+    public function isSuper (): bool
     {
         return (bool) $this->is_super;
     }
@@ -280,7 +280,7 @@ class Agent extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function user () : BelongsTo
+    public function user (): BelongsTo
     {
         return $this->belongsTo($this->userModelName);
     }
@@ -288,7 +288,7 @@ class Agent extends AbstractModel
     /**
      * @return BelongsToMany
      */
-    public function teams() : BelongsToMany
+    public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')
@@ -298,7 +298,7 @@ class Agent extends AbstractModel
     /**
      * @return BelongsToMany
      */
-    public function teamLeads () : BelongsToMany
+    public function teamLeads (): BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')

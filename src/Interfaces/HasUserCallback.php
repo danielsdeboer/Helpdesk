@@ -6,5 +6,5 @@ use Closure;
 
 interface HasUserCallback
 {
-    public function getUserCallback () : Closure;
+    public function getUserCallback (): Closure;
 }

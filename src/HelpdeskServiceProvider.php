@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk;
 
-use Illuminate\Support\ServiceProvider;
 use Aviator\Helpdesk\Commands\CreateSuper;
+use Illuminate\Support\ServiceProvider;
 
 class HelpdeskServiceProvider extends ServiceProvider
 {

@@ -2,10 +2,10 @@
 
 namespace Aviator\Helpdesk\Observers\Abstracts;
 
-use Aviator\Helpdesk\Models\Action;
-use Aviator\Helpdesk\Models\Ticket;
-use Aviator\Helpdesk\Models\ActionBase;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
+use Aviator\Helpdesk\Models\Action;
+use Aviator\Helpdesk\Models\ActionBase;
+use Aviator\Helpdesk\Models\Ticket;
 
 abstract class AbstractObserver
 {

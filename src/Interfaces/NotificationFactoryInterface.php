@@ -12,5 +12,5 @@ interface NotificationFactoryInterface
      * @param Ticket $ticket
      * @return Notification
      */
-    public function make (string $classKey, Ticket $ticket) : Notification;
+    public function make (string $classKey, Ticket $ticket): Notification;
 }

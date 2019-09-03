@@ -2,11 +2,11 @@
 
 namespace Aviator\Helpdesk\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Aviator\Helpdesk\Models\Ticket;
-use Illuminate\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class Generic extends Notification implements ShouldQueue
 {
@@ -51,7 +51,7 @@ class Generic extends Notification implements ShouldQueue
      * @param array $params
      * @return Generic
      */
-    public function setParams (array $params) : self
+    public function setParams (array $params): self
     {
         foreach ($params as $field => $value) {
             $this->{$field} = $value;
@@ -64,7 +64,7 @@ class Generic extends Notification implements ShouldQueue
      * Get the notification's delivery channels.
      * @return array
      */
-    public function via () : array
+    public function via (): array
     {
         return ['mail'];
     }
@@ -73,7 +73,7 @@ class Generic extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail () : MailMessage
+    public function toMail (): MailMessage
     {
         $message = new MailMessage;
 

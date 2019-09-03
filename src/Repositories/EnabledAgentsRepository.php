@@ -2,8 +2,8 @@
 
 namespace Aviator\Helpdesk\Repositories;
 
-use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Models\Team;
 
 class EnabledAgentsRepository extends Repository
 {

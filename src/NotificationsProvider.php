@@ -2,9 +2,9 @@
 
 namespace Aviator\Helpdesk;
 
-use Illuminate\Support\ServiceProvider;
 use Aviator\Helpdesk\Factories\NotificationFactory;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
+use Illuminate\Support\ServiceProvider;
 
 class NotificationsProvider extends ServiceProvider
 {

@@ -12,7 +12,7 @@ class DashboardRedirectorTest extends TestCase
     /*
      * Set the url with the route name.
      */
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 

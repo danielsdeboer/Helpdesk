@@ -2,20 +2,20 @@
 
 namespace Aviator\Helpdesk\Tests;
 
-use PHPUnit\Framework\Assert;
+use Aviator\Database\Migrations\CreateUsersTable;
+use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Aviator\Helpdesk\Models\Agent;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
 use Aviator\Helpdesk\Tests\Fixtures\Get;
 use Aviator\Helpdesk\Tests\Fixtures\Make;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Notification;
-use Aviator\Helpdesk\HelpdeskServiceProvider;
-use Illuminate\Foundation\Exceptions\Handler;
-use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Aviator\Database\Migrations\CreateUsersTable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
+use Orchestra\Testbench\TestCase as Orchestra;
+use PHPUnit\Framework\Assert;
 
 abstract class TestCase extends Orchestra
 {
@@ -37,7 +37,7 @@ abstract class TestCase extends Orchestra
         ],
     ];
 
-    public function setUp()
+    public function setUp (): void
     {
         parent::setUp();
 
