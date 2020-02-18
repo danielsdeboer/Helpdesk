@@ -123,7 +123,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
             ]);
 
             Agent::query()->create([
-               'user_id' => $user->id,
+                'user_id' => $user->id,
                 'is_super' => 1,
             ]);
         }
