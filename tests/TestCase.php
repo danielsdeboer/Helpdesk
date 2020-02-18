@@ -183,7 +183,7 @@ abstract class TestCase extends Orchestra
             ]);
 
             Agent::query()->create([
-               'user_id' => $user->id,
+                'user_id' => $user->id,
                 'is_super' => 1,
             ]);
         }

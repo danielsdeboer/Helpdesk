@@ -71,9 +71,9 @@ class EnabledAgentsRepository extends Repository
         );
 
         $this->query->select([
-           $this->agentsTable . '.*',
-           $table . '.name as user_name',
-           $table . '.email as user_email',
+            $this->agentsTable . '.*',
+            $table . '.name as user_name',
+            $table . '.email as user_email',
         ]);
     }
 
