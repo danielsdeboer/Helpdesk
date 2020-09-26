@@ -34,7 +34,9 @@
         @endforeach
       </tbody>
     </table>
-    @include('helpdesk::admin.agents.index.modals.enable')
+    @if(!$agents->isEmpty())
+      @include('helpdesk::admin.agents.index.modals.enable')
+    @endif
   </section>
 
   @include('helpdesk::partials.vue')
