@@ -12,7 +12,7 @@ class AdminTeamsStoreTest extends BKTestCase
     {
         $this->post('helpdesk/admin/teams');
 
-        $this->assertResponseStatus('302');
+        $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
     }
 
@@ -22,7 +22,7 @@ class AdminTeamsStoreTest extends BKTestCase
         $this->be($this->make->user);
         $this->post(self::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 
     /** @test */
@@ -31,7 +31,7 @@ class AdminTeamsStoreTest extends BKTestCase
         $this->be($this->make->agent->user);
         $this->post(self::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 
     /** @test */

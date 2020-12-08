@@ -50,7 +50,7 @@ abstract class AdminBase extends BKTestCase
     {
         $this->call(static::VERB, static::URI);
 
-        $this->assertResponseStatus('302');
+        $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
     }
 
@@ -65,7 +65,7 @@ abstract class AdminBase extends BKTestCase
         $this->be($user);
         $this->call(static::VERB, static::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 
     /**
@@ -79,6 +79,6 @@ abstract class AdminBase extends BKTestCase
         $this->be($agent->user);
         $this->call(static::VERB, static::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 }

@@ -99,7 +99,7 @@ class IndexTest extends TestCase
 
         $response = $this->get($this->url);
 
-        $response->assertSee('<a id="open-see-more" class="button is-disabled">No more to show...</a>');
+        $response->assertSee('<a id="open-see-more" class="button is-disabled">No more to show...</a>', false);
     }
 
     /** @test */
@@ -112,7 +112,7 @@ class IndexTest extends TestCase
         $this->be($user);
         $response = $this->get($this->url);
 
-        $response->assertSee('<a id="open-see-more" class="button" href=');
+        $response->assertSee('<a id="open-see-more" class="button" href=', false);
     }
 
     /** @test */

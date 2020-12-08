@@ -134,7 +134,7 @@ class IndexTest extends TestCase
 
         // We have pagination due to the number of results.
         $response->assertStatus(200);
-        $response->assertSee('<ul class="pagination-list">');
+        $response->assertSee('<ul class="pagination-list">', false);
     }
 
     /** @test */
@@ -190,7 +190,7 @@ class IndexTest extends TestCase
             $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-1-who">',
             'You',
-        ]);
+        ], false);
         $response->assertSeeInOrder([
             '<td id="row-2-title">',
             $ticket1->content->title(),
@@ -200,7 +200,7 @@ class IndexTest extends TestCase
             $ticket1->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
             $agent->user->name,
-        ]);
+        ], false);
     }
 
     /** @test */
@@ -232,7 +232,7 @@ class IndexTest extends TestCase
             $ticket2->closing->created_at->format('Y-m-d'),
             '<td id="row-1-who">',
             $ticket2->user->name,
-        ]);
+        ], false);
         $response->assertSeeInOrder([
             '<td id="row-2-title">',
             $ticket1->content->title(),
@@ -244,7 +244,7 @@ class IndexTest extends TestCase
             $ticket1->closing->created_at->format('Y-m-d'),
             '<td id="row-2-who">',
             $ticket1->closing->agent->user->name,
-        ]);
+        ], false);
     }
 
     /** @test */
@@ -261,10 +261,10 @@ class IndexTest extends TestCase
 
         $response = $this->actingAs($ignoredUser)->get($this->url);
         $htmlString = $response->getContent();
-        $response->assertSee('<td id="row-1-title">');
+        $response->assertSee('<td id="row-1-title">', false);
 
         $response = $this->actingAs($super->user)->get($this->url);
         $htmlString = $response->getContent();
-        $response->assertDontSee('<td id="row-1-title">');
+        $response->assertDontSee('<td id="row-1-title">', false);
     }
 }
