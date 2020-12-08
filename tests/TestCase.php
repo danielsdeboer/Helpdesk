@@ -10,11 +10,11 @@ use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Testing\Assert as PHPUnit;
-use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Testing\Assert as PHPUnit;
+use Illuminate\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as Orchestra;
 use PHPUnit\Framework\Assert;
 
