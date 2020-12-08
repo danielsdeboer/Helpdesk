@@ -21,7 +21,7 @@ class AdminTeamsIndexTest extends BKTestCase
     {
         $this->get(self::URI);
 
-        $this->assertResponseStatus('302');
+        $this->assertResponseStatus(302);
         $this->assertRedirectedTo('login');
     }
 
@@ -31,7 +31,7 @@ class AdminTeamsIndexTest extends BKTestCase
         $this->be($this->make->user);
         $this->get(self::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 
     /** @test */
@@ -40,7 +40,7 @@ class AdminTeamsIndexTest extends BKTestCase
         $this->be($this->make->agent->user);
         $this->get(self::URI);
 
-        $this->assertResponseStatus('403');
+        $this->assertResponseStatus(403);
     }
 
     /** @test */

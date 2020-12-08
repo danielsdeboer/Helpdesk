@@ -10,8 +10,8 @@ use Aviator\Helpdesk\Tests\Fixtures\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Foundation\Testing\Assert as PHPUnit;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\Assert as PHPUnit;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
@@ -46,9 +46,12 @@ abstract class TestCase extends Orchestra
 
         $this->setUpDatabase();
 
-        $this->artisan('migrate', [
-            '--database'    => 'testing',
-        ]);
+        $this->artisan(
+            'migrate',
+            [
+                '--database' => 'testing',
+            ]
+        );
 
         $this->createSupers();
 
@@ -57,10 +60,13 @@ abstract class TestCase extends Orchestra
         $this->make = new Make();
         $this->get = new Get();
 
-        TestResponse::macro('data', function ($key) {
-            /* @noinspection PhpUndefinedFieldInspection */
-            return $this->original->getData()[$key];
-        });
+        TestResponse::macro(
+            'data',
+            function ($key) {
+                /* @noinspection PhpUndefinedFieldInspection */
+                return $this->original->getData()[$key];
+            }
+        );
 
         TestResponse::macro(
             'assertActiveHeaderTab',
@@ -73,61 +79,72 @@ abstract class TestCase extends Orchestra
                 );
 
                 /* @var TestResponse $this */
-                $this->assertSee('id="header-tab-' . $activeTab . '-active"');
+                $this->assertSee('id="header-tab-' . $activeTab . '-active"', false);
 
                 foreach ($inactiveTabs as $tab) {
                     /* @var TestResponse $this */
-                    $this->assertDontSee('id="header-tab-' . $tab . '-active"');
+                    $this->assertDontSee('id="header-tab-' . $tab . '-active"', false);
                 }
             }
         );
 
-        TestResponse::macro('assertSeeInOrder', function (array $values) {
-            $position = 0;
+//        TestResponse::macro(
+//            'assertSeeInOrder',
+//            function (array $values) {
+//                $position = 0;
+//
+//                foreach ($values as $value) {
+//                    $valuePosition = mb_strpos($this->getContent(), $value, $position);
+//
+//                    if ($valuePosition === false || $valuePosition < $position) {
+//                        Assert::fail(
+//                            'Failed asserting that \'' . $this->getContent() .
+//                            '\' contains "' . $value . '" in specified order.'
+//                        );
+//                    }
+//
+//                    $position = $valuePosition + mb_strlen($value);
+//                }
+//            }
+//        );
 
-            foreach ($values as $value) {
-                $valuePosition = mb_strpos($this->getContent(), $value, $position);
+        TestResponse::macro(
+            'assertSeeEncoded',
+            function (string $value) {
+                PHPUnit::assertStringContainsString(e($value), $this->getContent());
 
-                if ($valuePosition === false || $valuePosition < $position) {
-                    Assert::fail(
-                        'Failed asserting that \'' . $this->getContent() .
-                        '\' contains "' . $value . '" in specified order.'
-                    );
-                }
-
-                $position = $valuePosition + mb_strlen($value);
+                return $this;
             }
-        });
+        );
 
-        TestResponse::macro('assertSeeEncoded', function (string $value) {
-            PHPUnit::assertStringContainsString(e($value), $this->getContent());
+        Collection::macro(
+            'assertContains',
+            function ($value) {
+                /* @noinspection PhpParamsInspection */
+                Assert::assertTrue(
+                    $this->contains($value),
+                    'Failed asserting that the collection contains the given value.'
+                );
+            }
+        );
 
-            return $this;
-        });
-
-        Collection::macro('assertContains', function ($value) {
-            /* @noinspection PhpParamsInspection */
-            Assert::assertTrue(
-                $this->contains($value),
-                'Failed asserting that the collection contains the given value.'
-            );
-        });
-
-        Collection::macro('assertNotContains', function ($value) {
-            /* @noinspection PhpParamsInspection */
-            Assert::assertFalse(
-                $this->contains($value),
-                'Failed asserting that the collection does not contain the given value.'
-            );
-        });
+        Collection::macro(
+            'assertNotContains',
+            function ($value) {
+                /* @noinspection PhpParamsInspection */
+                Assert::assertFalse(
+                    $this->contains($value),
+                    'Failed asserting that the collection does not contain the given value.'
+                );
+            }
+        );
     }
 
     /**
      * @param \Illuminate\Foundation\Application $app
-     *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders ($app)
     {
         return [
             HelpdeskServiceProvider::class,
@@ -136,31 +153,36 @@ abstract class TestCase extends Orchestra
 
     /**
      * Set up the environment.
-     *
      * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp ($app)
     {
         $app['config']->set('app.debug', 'true');
         $app['config']->set('app.key', 'base64:2+SetJaztC7g0a1sSF81LYsDasiWymO6tp8yVv6KGrA=');
         $app['config']->set('database.default', 'testing');
 
-        $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
-        ]);
+        $app['config']->set(
+            'database.connections.testing',
+            [
+                'driver' => 'sqlite',
+                'database' => ':memory:',
+                'prefix' => '',
+            ]
+        );
 
         if (isset($GLOBALS['altdb']) && $GLOBALS['altdb'] === true) {
             $this->setAlternateTablesInConfig($app);
         }
 
-        Route::get('login', function () {
-            //
-        })->name('login');
+        Route::get(
+            'login',
+            function () {
+                //
+            }
+        )->name('login');
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase ()
     {
         // Create testing database fixtures
         include_once __DIR__ . '/../database/migrations/2017_01_01_000000_create_users_table.php';
@@ -173,19 +195,23 @@ abstract class TestCase extends Orchestra
      * are not set.
      * @return void
      */
-    protected function createSupers()
+    protected function createSupers ()
     {
         foreach ($this->supers as $super) {
             /** @var \Aviator\Helpdesk\Tests\User $user */
-            $user = User::query()->create([
-                'name' => $super['name'],
-                'email' => $super['email'],
-            ]);
+            $user = User::query()->create(
+                [
+                    'name' => $super['name'],
+                    'email' => $super['email'],
+                ]
+            );
 
-            Agent::query()->create([
-                'user_id' => $user->id,
-                'is_super' => 1,
-            ]);
+            Agent::query()->create(
+                [
+                    'user_id' => $user->id,
+                    'is_super' => 1,
+                ]
+            );
         }
     }
 
@@ -193,7 +219,7 @@ abstract class TestCase extends Orchestra
      * Set the ignored users array.
      * @return void
      */
-    protected function addIgnoredUser(array $ignoredUsers)
+    protected function addIgnoredUser (array $ignoredUsers)
     {
         Config::set('helpdesk.ignored', $ignoredUsers);
     }
@@ -204,7 +230,7 @@ abstract class TestCase extends Orchestra
      * @param $app
      * @return void
      */
-    protected function setAlternateTablesInConfig($app)
+    protected function setAlternateTablesInConfig ($app)
     {
         $prefix = 'hd_';
 
@@ -227,19 +253,22 @@ abstract class TestCase extends Orchestra
 
     protected function withoutErrorHandling ()
     {
-        app()->instance(ExceptionHandler::class, new class extends Handler {
-            public function __construct()
-            {
-            }
+        app()->instance(
+            ExceptionHandler::class,
+            new class extends Handler {
+                public function __construct ()
+                {
+                }
 
-            public function report(\Exception $e)
-            {
-            }
+                public function report (\Throwable $e)
+                {
+                }
 
-            public function render($request, \Exception $e)
-            {
-                throw $e;
+                public function render ($request, \Throwable $e)
+                {
+                    throw $e;
+                }
             }
-        });
+        );
     }
 }

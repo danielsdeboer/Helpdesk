@@ -64,7 +64,7 @@ class IndexTest extends TestCase
 
         // We have pagination due to the number of results.
         $response->assertStatus(200);
-        $response->assertSee('<ul class="pagination-list">');
+        $response->assertSee('<ul class="pagination-list">', false);
     }
 
     /** @test */

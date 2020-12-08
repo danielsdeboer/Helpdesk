@@ -1,12 +1,12 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Integration\Users\Tickets;
+namespace Aviator\Helpdesk\Tests\Integration\Tickets;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 class ShowTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ShowTest extends TestCase
             $agent->user->id,
             $agent->user->id,
             $agent->user->name
-        ));
+        ), false);
     }
 
     /** @var string */
@@ -78,22 +78,22 @@ class ShowTest extends TestCase
         $this->be($user);
 
         $response = $this->get($this->url($ticket->id));
-        $response->assertSee('id="status-tag-not-assigned"');
+        $response->assertSee('id="status-tag-not-assigned"', false);
 
         $ticket->assignToTeam($this->make->team);
 
         $response = $this->get($this->url($ticket->id));
-        $response->assertSee('id="status-tag-assigned-to-team"');
+        $response->assertSee('id="status-tag-assigned-to-team"', false);
 
         $ticket->assignToAgent($this->make->agent);
 
         $response = $this->get($this->url($ticket->id));
-        $response->assertSee('id="status-tag-assigned"');
+        $response->assertSee('id="status-tag-assigned"', false);
 
         $ticket->close(null, $user);
 
         $response = $this->get($this->url($ticket->id));
-        $response->assertSee('id="status-tag-closed"');
+        $response->assertSee('id="status-tag-closed"', false);
     }
 
     /** @test */
@@ -106,17 +106,17 @@ class ShowTest extends TestCase
 
         $response = $this->get($this->url($ticket->id));
 
-        $response->assertSee('id="toolbar-action-close"');
-        $response->assertSee('id="toolbar-action-reply"');
-        $response->assertDontSee('id="toolbar-action-open"');
+        $response->assertSee('id="toolbar-action-close"', false);
+        $response->assertSee('id="toolbar-action-reply"', false);
+        $response->assertDontSee('id="toolbar-action-open"', false);
 
         $ticket->close('note', $user);
 
         $response = $this->get($this->url($ticket->id));
 
-        $response->assertDontSee('id="toolbar-action-close"');
-        $response->assertDontSee('id="toolbar-action-reply"');
-        $response->assertSee('id="toolbar-action-open"');
+        $response->assertDontSee('id="toolbar-action-close"', false);
+        $response->assertDontSee('id="toolbar-action-reply"', false);
+        $response->assertSee('id="toolbar-action-open"', false);
     }
 
     /** @test */
@@ -152,11 +152,11 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
 
         foreach ($agentActions as $action) {
-            $response->assertSee('id="toolbar-action-' . $action . '"');
+            $response->assertSee('id="toolbar-action-' . $action . '"', false);
         }
 
         foreach ($leadActions as $action) {
-            $response->assertDontSee('id="toolbar-action-' . $action . '"');
+            $response->assertDontSee('id="toolbar-action-' . $action . '"', false);
         }
     }
 
@@ -180,21 +180,21 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
 
         foreach ($openActions as $action) {
-            $response->assertSee('id="toolbar-action-' . $action . '"');
+            $response->assertSee('id="toolbar-action-' . $action . '"', false);
         }
 
         $this->make->agent->assign($ticket);
         $response = $this->get($this->url($ticket->id));
 
         foreach ($assignedActions as $action) {
-            $response->assertSee('id="toolbar-action-' . $action . '"');
+            $response->assertSee('id="toolbar-action-' . $action . '"', false);
         }
 
         $ticket->close(null, $agent);
         $response = $this->get($this->url($ticket->id));
 
         foreach ($closedActions as $action) {
-            $response->assertSee('id="toolbar-action-' . $action . '"');
+            $response->assertSee('id="toolbar-action-' . $action . '"', false);
         }
     }
 
@@ -236,8 +236,8 @@ class ShowTest extends TestCase
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-        $response->assertSee('id="action-opened"');
-        $response->assertDontSee('id="action-assigned"');
+        $response->assertSee('id="action-opened"', false);
+        $response->assertDontSee('id="action-assigned"', false);
     }
 
     /** @test */
@@ -252,8 +252,8 @@ class ShowTest extends TestCase
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-        $response->assertSee('id="action-opened"');
-        $response->assertSee('id="action-assigned"');
+        $response->assertSee('id="action-opened"', false);
+        $response->assertSee('id="action-assigned"', false);
     }
 
     /** @test */
@@ -277,10 +277,10 @@ class ShowTest extends TestCase
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-        $response->assertSee('<p class="heading">Assign</p>');
+        $response->assertSee('<p class="heading">Assign</p>', false);
         $response->assertViewHas('agents');
-        $response->assertSee($agent1->user->name . '</option>');
-        $response->assertSee($agent2->user->name . '</option>');
+        $response->assertSee($agent1->user->name . '</option>', false);
+        $response->assertSee($agent2->user->name . '</option>', false);
     }
 
     /** @test */
@@ -310,7 +310,7 @@ class ShowTest extends TestCase
         );
 
         $response->assertSuccessful();
-        $response->assertSee('<p class="heading">Assign</p>');
+        $response->assertSee('<p class="heading">Assign</p>', false);
         $response->assertViewHas('agents');
         $this->assertSeeInAssignList($response, $agentOnSupersTeam);
         $this->assertSeeInAssignList($response, $agentOnNoTeam);
@@ -331,7 +331,7 @@ class ShowTest extends TestCase
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-        $response->assertSee('<p class="heading">Reassign</p>');
+        $response->assertSee('<p class="heading">Reassign</p>', false);
     }
 
     /** @test */
@@ -353,7 +353,7 @@ class ShowTest extends TestCase
         $response = $this->get($this->url($ticket->id));
 
         $response->assertSuccessful();
-        $response->assertSee('<p class="heading">Reassign</p>');
+        $response->assertSee('<p class="heading">Reassign</p>', false);
     }
 
     /** @test */
@@ -404,11 +404,11 @@ class ShowTest extends TestCase
         //An agent can't see the ignored list.
         $response = $this->actingAs($agent->user)->get('helpdesk/tickets/');
         $response->assertViewHas('ignored');
-        $response->assertDontSee('<div class="section" id="ignored">');
+        $response->assertDontSee('<div class="section" id="ignored">', false);
 
         //A super can see the ignored list.
         $response = $this->actingAs($super->user)->get('helpdesk/tickets/');
         $response->assertViewHas('ignored');
-        $response->assertSee('<div class="section" id="ignored">');
+        $response->assertSee('<div class="section" id="ignored">', false);
     }
 }
