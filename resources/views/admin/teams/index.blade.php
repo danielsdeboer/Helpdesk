@@ -24,9 +24,9 @@
             <td>
               @foreach($team->agents as $agent)
                 @if($loop->last)
-                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a>
+                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">@include('helpdesk::agent-name')</a>
                 @else
-                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a>,&nbsp;
+                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">@include('helpdesk::agent-name')</a>,&nbsp;
                 @endif
               @endforeach
             </td>

@@ -51,7 +51,7 @@
             @foreach($team->agents as $agent)
               <tr>
                 <td>
-                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a>
+                  <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">@include('helpdesk::agent-name')</a>
                 </td>
 
                 <td>

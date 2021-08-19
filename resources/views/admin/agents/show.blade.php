@@ -14,7 +14,7 @@
         <div class="level">
           <div class="level-left">
             <div>
-              <h1 class="title"><strong>{{ $agent->user->name }}</strong></h1>
+              <h1 class="title"><strong>@include('helpdesk::agent-name')</strong></h1>
               <h2 class="subtitle">Added on {{ $agent->created_at->toDateString() }}</h2>
             </div>
           </div>

@@ -70,8 +70,8 @@ class AdminTeamsShowTest extends BKTestCase
         $this->be($super->user);
         $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent2->id . '">' . $agent2->user->name . '</a>')
-            ->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent3->id . '">' . $agent3->user->name . '</a>');
+        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent2->id . '">')
+            ->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent3->id . '">');
     }
 
     /** @test */
