@@ -158,7 +158,8 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
     protected function withoutErrorHandling ()
     {
-        app()->instance(ExceptionHandler::class, new class extends Handler {
+        app()->instance(ExceptionHandler::class, new class extends Handler
+        {
             public function __construct()
             {
             }

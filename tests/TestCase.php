@@ -255,7 +255,8 @@ abstract class TestCase extends Orchestra
     {
         app()->instance(
             ExceptionHandler::class,
-            new class extends Handler {
+            new class extends Handler
+            {
                 public function __construct ()
                 {
                 }
