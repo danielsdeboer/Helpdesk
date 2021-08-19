@@ -23,7 +23,7 @@
               <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">@include('helpdesk::agent-name')</a>
             </td>
 
-            <td class="table-has-va">{{ $agent->user->$email }}</td>
+            <td class="table-has-va">{{ $agent->user->$email ?? '[Deleted]' }}</td>
 
             <td>
               @if($agent->user)
