@@ -1,0 +1,1 @@
+{{ $agent->user->name ?? '[Deleted]' }}

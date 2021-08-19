@@ -13,10 +13,10 @@ class ShowTest extends TestCase
     private function assertSeeInAssignList (TestResponse $response, Agent $agent)
     {
         $response->assertSee(sprintf(
-            '<option value="%s" id="agent-option-%s">%s</option>',
+            '<option value="%s" id="agent-option-%s">%s',
             $agent->user->id,
             $agent->user->id,
-            $agent->user->name
+            $agent->user->name,
         ), false);
     }
 
@@ -279,8 +279,8 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
         $response->assertSee('<p class="heading">Assign</p>', false);
         $response->assertViewHas('agents');
-        $response->assertSee($agent1->user->name . '</option>', false);
-        $response->assertSee($agent2->user->name . '</option>', false);
+        $response->assertSee('>' . $agent1->user->name,false);
+        $response->assertSee('>' . $agent2->user->name, false);
     }
 
     /** @test */

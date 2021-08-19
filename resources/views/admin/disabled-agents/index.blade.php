@@ -20,15 +20,17 @@
         @foreach($agents as $agent)
           <tr>
             <td class="table-has-va">
-              <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">{{ $agent->user->name }}</a>
+              <a href="{{ route('helpdesk.admin.agents.show', $agent->id) }}">@include('helpdesk::agent-name')</a>
             </td>
 
             <td class="table-has-va">{{ $agent->user->$email }}</td>
 
             <td>
-              <button class="button" @click="toggle('enable', {{ $agent->user }})">
-                Enable Agent
-              </button>
+              @if($agent->user)
+                <button class="button" @click="toggle('enable', {{ $agent->user }})">
+                  Enable Agent
+                </button>
+              @endif
             </td>
           </tr>
         @endforeach

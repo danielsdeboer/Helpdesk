@@ -10,7 +10,7 @@
     ]
   },
   "require": {
-    "php" : ">=7.2.5",
+    "php" : ">=7.4",
     "laravel/framework": "^7.0",
     "aviator/makeable": "^0.1.0",
     "composer/xdebug-handler": "^1.3",
@@ -21,7 +21,7 @@
     "orchestra/testbench-browser-kit": "^5.0",
     "orchestra/testbench": "^5.0",
     "orchestra/database": "^5.0",
-    "friendsofphp/php-cs-fixer": "^2.15"
+    "friendsofphp/php-cs-fixer": "^2.19"
   },
   "autoload-dev": {
     "psr-4": {

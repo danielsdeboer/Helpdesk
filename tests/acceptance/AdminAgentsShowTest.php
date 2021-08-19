@@ -25,7 +25,6 @@ class AdminAgentsShowTest extends AdminBase
         $this->visit('helpdesk/admin/agents/' . $agent->id);
 
         $this->see('id="tab-admin-agents"')
-            ->see('<strong>' . $agent->user->name . '</strong>')
             ->see('<h2 class="subtitle">Added on ' . $agent->created_at->toDateString() . '</h2>')
             ->see('In 0 teams')
             ->see('0 open tickets');

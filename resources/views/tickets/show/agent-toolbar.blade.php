@@ -92,7 +92,7 @@
       <span class="select">
         <select name="agent_id" title="agent-id">
         @foreach ($agents as $agent)
-            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">@include('helpdesk::agent-name')</option>
           @endforeach
         </select>
       </span>
@@ -112,7 +112,7 @@
       <span class="select">
         <select name="agent_id" title="agent-id">
         @foreach ($agents as $agent)
-            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+            <option value="{{ $agent->id }}" id="agent-option-{{ $agent->id }}">@include('helpdesk::agent-name')</option>
           @endforeach
         </select>
       </span>
@@ -168,7 +168,7 @@
         <select name="collab-id" title="collab-id">
           @if (isset($collaborators))
             @foreach($collaborators as $agent)
-              <option value="{{ $agent->id }}" id="collab-option-{{ $agent->id }}">{{ $agent->user->name }}</option>
+              <option value="{{ $agent->id }}" id="collab-option-{{ $agent->id }}">@include('helpdesk::agent-name')</option>
             @endforeach
           @endif
         </select>
