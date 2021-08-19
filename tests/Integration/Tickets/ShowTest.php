@@ -279,7 +279,7 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
         $response->assertSee('<p class="heading">Assign</p>', false);
         $response->assertViewHas('agents');
-        $response->assertSee('>' . $agent1->user->name,false);
+        $response->assertSee('>' . $agent1->user->name, false);
         $response->assertSee('>' . $agent2->user->name, false);
     }
 
