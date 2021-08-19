@@ -13,10 +13,12 @@
   <section class="section" id="modal-disable">
     <table class="table">
       <thead>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Teams</th>
-        <th></th>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Teams</th>
+          <th></th>
+        </tr>
       </thead>
 
       <tbody>
@@ -28,7 +30,7 @@
               </a>
             </td>
 
-            <td class="table-has-va">{{ $agent->user->$email }}</td>
+            <td class="table-has-va">{{ $agent->user->$email ?? '[Deleted]' }}</td>
 
             <td class="table-has-va">
               @foreach($agent->teams as $team)
