@@ -830,7 +830,7 @@ class Ticket extends AbstractModel
             );
         } catch (\Error $error) {
             $instance = tap(new DeletedContent(), function ($instance) {
-                if (! $instance->getConnectionName()) {
+                if (!$instance->getConnectionName()) {
                     $instance->setConnection($this->connection);
                 }
             });
