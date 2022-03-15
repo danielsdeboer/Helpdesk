@@ -87,6 +87,20 @@ class Ticket extends AbstractModel
         return $ticket;
     }
 
+    /**
+     * Safely get content.
+     */
+    public function getSafeContent (): TicketContent
+    {
+        $content = $this->content;
+
+        if (!$content) {
+            return new DeletedContent();
+        }
+
+        return $content;
+    }
+
     /*
      * Fluent Methods
      */
@@ -788,132 +802,123 @@ class Ticket extends AbstractModel
         );
     }
 
-    /**
-     * @return MorphTo
-     */
-    public function content ()
+    public function content (): MorphTo
     {
-        return $this->morphTo()->withTrashed();
+        $name = 'content';
+        [$type, $id] = $this->getMorphs(
+            $name,
+            'content_type',
+            'content_id',
+        );
+
+        $class = $this->{$type};
+
+        if (is_null($class) || $class === '') {
+            return new MorphTo(
+                $this->newQuery()->setEagerLoads([]),
+                $this,
+                'content_id',
+                'id',
+                'content_type',
+                'content',
+            );
+        }
+
+        try {
+            $instance = $this->newRelatedInstance(
+                static::getActualClassNameForMorph($class)
+            );
+        } catch (\Error $error) {
+            $instance = tap(new DeletedContent(), function ($instance) {
+                if (!$instance->getConnectionName()) {
+                    $instance->setConnection($this->connection);
+                }
+            });
+        }
+
+        return new MorphTo(
+            $instance->newQuery(),
+            $this,
+            $id,
+            $ownerKey ?? $instance->getKeyName(),
+            $type,
+            $name,
+        );
     }
 
-    /**
-     * @return MorphMany
-     */
-    public function actions ()
+    public function actions (): MorphMany
     {
         return $this->morphMany(Action::class, 'subject');
     }
 
-    /**
-     * @return HasMany
-     */
-    public function assignments ()
+    public function assignments (): HasMany
     {
         return $this->hasMany(Assignment::class);
     }
 
-    /**
-     * @return HasOne
-     */
-    public function assignment ()
+    public function assignment (): HasOne
     {
         return $this->hasOne(Assignment::class)
             ->latest();
     }
 
-    /**
-     * @return HasMany
-     */
-    public function teamAssignments ()
+    public function teamAssignments (): HasMany
     {
         return $this->hasMany(TeamAssignment::class);
     }
 
-    /**
-     * @return HasOne
-     */
-    public function teamAssignment ()
+    public function teamAssignment (): HasOne
     {
         return $this->hasOne(TeamAssignment::class)
             ->latest();
     }
 
-    /**
-     * @return HasMany
-     */
-    public function dueDates ()
+    public function dueDates (): HasMany
     {
         return $this->hasMany(DueDate::class);
     }
 
-    /**
-     * @return HasOne
-     */
-    public function dueDate ()
+    public function dueDate (): HasOne
     {
         return $this->hasOne(DueDate::class)->latest();
     }
 
-    /**
-     * @return HasMany
-     */
-    public function internalReplies ()
+    public function internalReplies (): HasMany
     {
         return $this->hasMany(Reply::class)->whereNotNull('agent_id');
     }
 
-    /**
-     * @return HasMany
-     */
-    public function externalReplies ()
+    public function externalReplies (): HasMany
     {
         return $this->hasMany(Reply::class)->whereNotNull('user_id');
     }
 
-    /**
-     * @return HasOne
-     */
-    public function closing ()
+    public function closing (): HasOne
     {
         return $this->hasOne(Closing::class)->latest();
     }
 
-    /**
-     * @return HasMany
-     */
-    public function closings ()
+    public function closings (): HasMany
     {
         return $this->hasMany(Closing::class);
     }
 
-    /**
-     * @return HasOne
-     */
-    public function opening ()
+    public function opening (): HasOne
     {
         return $this->hasOne(Opening::class)->orderBy('id', 'desc');
     }
 
-    /**
-     * @return HasMany
-     */
-    public function openings ()
+    public function openings (): HasMany
     {
         return $this->hasMany(Opening::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function notes ()
+    public function notes (): HasMany
     {
         return $this->hasMany(Note::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function collaborators ()
+    public function collaborators (): HasMany
     {
         return $this->hasMany(Collaborator::class);
     }

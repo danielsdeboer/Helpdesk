@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Helpers;
+namespace Aviator\Helpdesk\Tests\Unit;
 
 use Aviator\Helpdesk\Helpers\Helpers;
 use Aviator\Helpdesk\Models\Agent;

@@ -43,6 +43,7 @@ return [
         'agents' => 'agents',
         'agent_team' => 'agent_team',
         'generic_contents' => 'generic_contents',
+        'deleted_contents' => 'deleted_contents',
         'actions' => 'actions',
         'assignments' => 'assignments',
         'due_dates' => 'due_dates',

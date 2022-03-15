@@ -27,7 +27,7 @@
       "Aviator\\Helpdesk\\Tests\\": "tests/"
     },
     "files": [
-      "tests/fixtures/functions.php"
+      "tests/Support/functions.php"
     ]
   },
   "scripts": {

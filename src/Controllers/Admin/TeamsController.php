@@ -5,7 +5,11 @@ namespace Aviator\Helpdesk\Controllers\Admin;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Team;
 use Aviator\Helpdesk\Models\Ticket;
+use Aviator\Helpdesk\Requests\Admin\Teams\StoreRequest;
+use Aviator\Helpdesk\Requests\Admin\Teams\UpdateRequest;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -16,7 +20,7 @@ class TeamsController extends Controller
     /**
      * Add middleware.
      */
-    public function __construct()
+    public function __construct ()
     {
         $this->middleware([
             'auth',
@@ -24,16 +28,8 @@ class TeamsController extends Controller
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index (): View
     {
-        $userModel = config('helpdesk.userModel');
-        $email = config('helpdesk.userModelEmailColumn');
-
         return view('helpdesk::admin.teams.index')->with([
             'teams' => Team::all(),
             'isSuper' => true,
@@ -41,42 +37,30 @@ class TeamsController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->val($request);
-
-        $team = Team::create([
-            'name' => $request->name,
-        ]);
-
-        return $this->toShow($team);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show (int $id): View
     {
         $team = Team::findOrFail($id);
 
-        $tickets = Ticket::whereHas('teamAssignment', function ($query) use ($team) {
-            $query->where('team_id', $team->id);
-        })->get();
+        $tickets = Ticket::query()
+            ->whereHas(
+                'teamAssignment',
+                function ($query) use ($team) {
+                    $query->where('team_id', $team->id);
+                }
+            )
+            ->get();
 
         // Get all agents who are not assigned to this team (or who
         // are assigned to no team)
-        $agents = Agent::with('user')->doesntHave('teams', 'or', function ($query) use ($team) {
-            $query->where('team_id', $team->id);
-        })->get();
+        $agents = Agent::with('user')
+            ->doesntHave(
+                'teams',
+                'or',
+                function ($query) use ($team) {
+                    $query->where('team_id', $team->id);
+                }
+            )
+            ->get();
 
         return view('helpdesk::admin.teams.show')->with([
             'team' => $team,
@@ -87,66 +71,35 @@ class TeamsController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function store (StoreRequest $request): RedirectResponse
     {
-        $this->val($request);
-
-        $team = Team::findOrFail($id);
-
-        $team->update([
-            'name' => $request->name,
-        ]);
+        $team = Team::create($request->validated());
 
         return $this->toShow($team);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function update (UpdateRequest $request, int $id): RedirectResponse
     {
-        $this->validate($request, [
-            'delete_team_confirmed' => 'required|in:1',
-        ]);
+        $team = Team::findOrFail($id);
+
+        $team->update($request->validated());
+
+        return $this->toShow($team);
+    }
+
+    public function destroy (Request $request, int $id): RedirectResponse
+    {
+        $this->validate($request, ['delete_team_confirmed' => 'required|in:1']);
 
         $team = Team::findOrFail($id);
 
         $team->delete();
 
-        return redirect(route('helpdesk.admin.teams.index'));
+        return redirect()->route('helpdesk.admin.teams.index');
     }
 
-    /**
-     * Perform request validation.
-     * @param  Request $request
-     * @return void
-     */
-    protected function val(Request $request)
+    protected function toShow (Team $team): RedirectResponse
     {
-        $this->validate($request, [
-            'name' => [
-                'required',
-            ],
-        ]);
-    }
-
-    /**
-     * Redirect to the show route with param.
-     * @param  Team   $team
-     * @return Response
-     */
-    protected function toShow(Team $team)
-    {
-        return redirect(route('helpdesk.admin.teams.show', $team->id));
+        return redirect()->route('helpdesk.admin.teams.show', $team->id);
     }
 }

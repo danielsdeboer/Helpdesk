@@ -5,11 +5,10 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Database\Migrations\CreateUsersTable;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\Fixtures\Get;
-use Aviator\Helpdesk\Tests\Fixtures\Make;
-use Illuminate\Contracts\Debug\ExceptionHandler;
+use Aviator\Helpdesk\Tests\Support\Call;
+use Aviator\Helpdesk\Tests\Support\Get;
+use Aviator\Helpdesk\Tests\Support\Make;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
@@ -20,11 +19,9 @@ use PHPUnit\Framework\Assert;
 
 abstract class TestCase extends Orchestra
 {
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
-    protected $make;
-
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Get */
-    protected $get;
+    protected Call $call;
+    protected Make $make;
+    protected Get $get;
 
     /** @var array */
     protected $supers = [
@@ -59,6 +56,7 @@ abstract class TestCase extends Orchestra
 
         $this->make = new Make();
         $this->get = new Get();
+        $this->call = new Call($this->app);
 
         TestResponse::macro(
             'data',
@@ -198,7 +196,7 @@ abstract class TestCase extends Orchestra
     protected function createSupers ()
     {
         foreach ($this->supers as $super) {
-            /** @var \Aviator\Helpdesk\Tests\User $user */
+            /** @var \Aviator\Helpdesk\Tests\Feature\Http\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
             $user = User::query()->create(
                 [
                     'name' => $super['name'],
@@ -249,27 +247,5 @@ abstract class TestCase extends Orchestra
         $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
         $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
         $app->config->set('helpdesk.tables.collaborators', $prefix . 'collaborators');
-    }
-
-    protected function withoutErrorHandling ()
-    {
-        app()->instance(
-            ExceptionHandler::class,
-            new class extends Handler
-            {
-                public function __construct ()
-                {
-                }
-
-                public function report (\Throwable $e)
-                {
-                }
-
-                public function render ($request, \Throwable $e)
-                {
-                    throw $e;
-                }
-            }
-        );
     }
 }
