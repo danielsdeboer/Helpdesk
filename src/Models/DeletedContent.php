@@ -3,10 +3,12 @@
 namespace Aviator\Helpdesk\Models;
 
 use Aviator\Helpdesk\Interfaces\TicketContent;
-use Illuminate\Database\Eloquent\Model;
 
-class DeletedContent extends Model implements TicketContent
+class DeletedContent extends AbstractModel implements TicketContent
 {
+    /** @var string */
+    protected $configKey = 'helpdesk.tables.deleted_contents';
+
     public function partial (): string
     {
         return 'helpdesk::tickets.show.content.deleted';
