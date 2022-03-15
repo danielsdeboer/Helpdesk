@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests\Integration\Tickets\Closed;
+namespace Aviator\Helpdesk\Tests\Acceptance\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\Integration\Tickets\Closed;
 
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;

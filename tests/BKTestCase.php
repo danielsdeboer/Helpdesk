@@ -17,14 +17,9 @@ use PHPUnit\Framework\Assert;
 
 abstract class BKTestCase extends OrchestraBrowserKit
 {
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
-    protected $make;
-
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Get */
-    protected $get;
-
-    /** @var array */
-    protected $supers = [
+    protected Make $make;
+    protected Get $get;
+    protected array $supers = [
         [
             'name' => 'Super Visor',
             'email' => 'supervisor@test.com',
@@ -56,7 +51,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
         Collection::macro('assertContains', function ($value) {
             Assert::assertTrue(
-                $this->contains($value),
+                $this->containsIdentical($value),
                 'Failed asserting that the collection contains the given value.'
             );
         });
@@ -116,7 +111,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
     protected function createSupers()
     {
         foreach ($this->supers as $super) {
-            /** @var \Aviator\Helpdesk\Tests\User $user */
+            /** @var \Aviator\Helpdesk\Tests\Acceptance\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
             $user = User::query()->create([
                 'name' => $super['name'],
                 'email' => $super['email'],
@@ -164,11 +159,11 @@ abstract class BKTestCase extends OrchestraBrowserKit
             {
             }
 
-            public function report(\Exception $e)
+            public function report(\Throwable $e)
             {
             }
 
-            public function render($request, \Exception $e)
+            public function render($request, \Throwable $e)
             {
                 throw $e;
             }

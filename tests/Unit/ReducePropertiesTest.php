@@ -1,8 +1,9 @@
 <?php
 
-namespace Aviator\Helpdesk\Tests;
+namespace Aviator\Helpdesk\Tests\Unit;
 
-use Aviator\Helpdesk\Tests\fixtures\LevelOne;
+use Aviator\Helpdesk\Tests\BKTestCase;
+use Aviator\Helpdesk\Tests\Fixtures\LevelOne;
 
 class ReducePropertiesTest extends BKTestCase
 {

@@ -20,11 +20,8 @@ use PHPUnit\Framework\Assert;
 
 abstract class TestCase extends Orchestra
 {
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Make */
-    protected $make;
-
-    /** @var \Aviator\Helpdesk\Tests\Fixtures\Get */
-    protected $get;
+    protected Make $make;
+    protected Get $get;
 
     /** @var array */
     protected $supers = [
@@ -198,7 +195,7 @@ abstract class TestCase extends Orchestra
     protected function createSupers ()
     {
         foreach ($this->supers as $super) {
-            /** @var \Aviator\Helpdesk\Tests\User $user */
+            /** @var \Aviator\Helpdesk\Tests\Acceptance\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
             $user = User::query()->create(
                 [
                     'name' => $super['name'],
