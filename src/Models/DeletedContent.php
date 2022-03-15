@@ -24,6 +24,6 @@ class DeletedContent extends Model implements TicketContent
 
     public function save (array $options = [])
     {
-         return $this;
+        return $this;
     }
 }
