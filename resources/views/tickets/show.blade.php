@@ -8,7 +8,7 @@
       <div class="level">
         <div class="level-left">
           <div>
-            <p class="title">{{ $ticket->content->title() }}</p>
+            <p class="title">{{ $ticket->getSafeContent()->title() }}</p>
             <p class="subtitle">Timeline For Ticket # {{ $ticket->id }}</p>
           </div>
         </div>
@@ -16,8 +16,8 @@
         @include('helpdesk::tickets.show.status')
       </div>
 
-      @if($ticket->content)
-        @include($ticket->content->partial())
+      @if($ticket->getSafeContent())
+        @include($ticket->getSafeContent()->partial())
       @endif
 
       <a href="{{ route('helpdesk.tickets.permalink.show', $ticket->uuid) }}">Permalink</a>
