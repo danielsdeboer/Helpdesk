@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Database\Migrations\CreateUsersTable;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Aviator\Helpdesk\Models\Agent;
+use Aviator\Helpdesk\Tests\Support\Call;
 use Aviator\Helpdesk\Tests\Support\Get;
 use Aviator\Helpdesk\Tests\Support\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Assert;
 
 abstract class TestCase extends Orchestra
 {
+    protected Call $call;
     protected Make $make;
     protected Get $get;
 
@@ -56,6 +58,7 @@ abstract class TestCase extends Orchestra
 
         $this->make = new Make();
         $this->get = new Get();
+        $this->call = new Call($this->app);
 
         TestResponse::macro(
             'data',
@@ -246,27 +249,5 @@ abstract class TestCase extends Orchestra
         $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
         $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
         $app->config->set('helpdesk.tables.collaborators', $prefix . 'collaborators');
-    }
-
-    protected function withoutErrorHandling ()
-    {
-        app()->instance(
-            ExceptionHandler::class,
-            new class extends Handler
-            {
-                public function __construct ()
-                {
-                }
-
-                public function report (\Throwable $e)
-                {
-                }
-
-                public function render ($request, \Throwable $e)
-                {
-                    throw $e;
-                }
-            }
-        );
     }
 }

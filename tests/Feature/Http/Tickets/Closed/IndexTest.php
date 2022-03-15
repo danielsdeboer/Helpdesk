@@ -23,7 +23,6 @@ class IndexTest extends TestCase
     /** @test */
     public function users_only_see_their_own_closed_tickets ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user);
         $ticket2 = $this->make->ticket($user)->close(null, $user);
@@ -113,7 +112,6 @@ class IndexTest extends TestCase
     /** @test */
     public function results_are_paginated_when_displaying_more_than_24_tickets ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $ticket = $this->make->ticket($user)->close(null, $user);
 

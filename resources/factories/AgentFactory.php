@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use Aviator\Helpdesk\Models\Agent;
 
 $factory->define(Agent::class, function () {

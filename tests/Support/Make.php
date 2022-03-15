@@ -25,6 +25,7 @@ use Illuminate\Support\Collection;
  * @property \Aviator\Helpdesk\Models\Agent agent
  * @property \Aviator\Helpdesk\Models\Team team
  * @property \Aviator\Helpdesk\Models\Ticket ticket
+ * @property \Aviator\Helpdesk\Models\Ticket ticketWithDeletedContent
  * @property string ticketUri
  * @property \Aviator\Helpdesk\Models\Action action
  * @property \Aviator\Helpdesk\Models\Assignment assignment
@@ -154,6 +155,13 @@ class Make
         return factory(Ticket::class)->create([
             'user_id' => $user->id,
             'created_at' => Carbon::parse($when),
+        ]);
+    }
+
+    public function ticketWithDeletedContent (): Ticket
+    {
+        return factory(Ticket::class)->create([
+            'content_type' => 'Foo\\Bar\\DeletedContent',
         ]);
     }
 

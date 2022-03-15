@@ -41,7 +41,7 @@ class TeamsController extends Controller
     {
         $team = Team::findOrFail($id);
 
-        $tickets = Ticket::with('content')
+        $tickets = Ticket::query()
             ->whereHas(
                 'teamAssignment',
                 function ($query) use ($team) {

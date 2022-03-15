@@ -23,7 +23,6 @@ class IndexTest extends TestCase
     {
         $this->be($this->make->agent->user);
 
-        $this->withoutErrorHandling();
         $response = $this->get($this->url);
 
         $response->assertSuccessful();
@@ -80,7 +79,6 @@ class IndexTest extends TestCase
     /** @test */
     public function only_the_header_tickets_tab_is_enabled ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
 
         $this->be($user);
@@ -105,7 +103,6 @@ class IndexTest extends TestCase
     /** @test */
     public function for_more_than_24_tickets_the_see_more_button_is_enabled ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $this->make->tickets(25, $user);
 

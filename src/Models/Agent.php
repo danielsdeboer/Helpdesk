@@ -59,6 +59,11 @@ class Agent extends AbstractModel
      * Public Api
      */
 
+    public function getUserName (): string
+    {
+        return $this->user->name ?? '[Deleted]';
+    }
+
     /**
      * Route notifications for the mail channel.
      * @return string

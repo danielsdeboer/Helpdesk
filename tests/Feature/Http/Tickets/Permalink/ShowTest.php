@@ -21,7 +21,6 @@ class ShowTest extends TestCase
     /** @test */
     public function guests_may_visit ()
     {
-        $this->withoutErrorHandling();
         $ticket = $this->make->ticket;
 
         $response = $this->get($this->url($ticket->permalink));

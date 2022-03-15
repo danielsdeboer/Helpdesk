@@ -111,7 +111,6 @@ class IndexTest extends TestCase
     /** @test */
     public function results_are_paginated_when_displaying_more_than_24_tickets ()
     {
-        $this->withoutErrorHandling();
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
 

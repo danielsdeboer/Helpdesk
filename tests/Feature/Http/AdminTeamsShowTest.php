@@ -71,8 +71,23 @@ class AdminTeamsShowTest extends BKTestCase
         $this->be($super->user);
         $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent2->id . '">')
-            ->see('<a href="http://localhost/helpdesk/admin/agents/' . $agent3->id . '">');
+        /** @var \Aviator\Helpdesk\Models\Agent $agent */
+        foreach ([$agent2, $agent3] as $agent) {
+            $this->see(sprintf(
+                'href="http://localhost/helpdesk/admin/agents/%s"',
+                $agent->getKey(),
+            ));
+
+            $this->see(sprintf(
+                'data-agent-id="%s"',
+                $agent->getKey(),
+            ));
+
+            $this->see(sprintf(
+                'data-agent-name="%s"',
+                $agent->user->name,
+            ));
+        }
     }
 
     /** @test */
@@ -87,8 +102,25 @@ class AdminTeamsShowTest extends BKTestCase
         $this->be($super->user);
         $this->visit(self::URI);
 
-        $this->see('<a href="http://localhost/helpdesk/tickets/' . $ticket1->id . '">' . $ticket1->content->title() . '</a>')
-            ->see('<a href="http://localhost/helpdesk/tickets/' . $ticket2->id . '">' . $ticket2->content->title() . '</a>');
+        $this->see('data-section="tickets-table"');
+
+        /** @var \Aviator\Helpdesk\Models\Ticket $ticket */
+        foreach ([$ticket1, $ticket2] as $ticket) {
+            $this->see(sprintf(
+                'href="http://localhost/helpdesk/tickets/%s"',
+                $ticket->getKey(),
+            ));
+
+            $this->see(sprintf(
+                'data-ticket-id="%s"',
+                $ticket->getKey(),
+            ));
+
+            $this->see(sprintf(
+                'data-ticket-title="%s"',
+                $ticket->getSafeContent()->title(),
+            ));
+        }
     }
 
     /** @test */

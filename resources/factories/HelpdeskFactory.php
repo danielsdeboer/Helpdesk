@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use Aviator\Helpdesk\Models\Action;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Assignment;
