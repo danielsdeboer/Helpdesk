@@ -2,13 +2,13 @@
 
 namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets;
 
+use function auth;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use Illuminate\Testing\TestResponse;
-use function auth;
 use function factory;
+use Illuminate\Testing\TestResponse;
 
 class ShowTest extends TestCase
 {

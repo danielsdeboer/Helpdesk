@@ -26,6 +26,6 @@ class DeletedContent extends AbstractModel implements TicketContent
 
     public function save (array $options = [])
     {
-         return $this;
+        return $this;
     }
 }
