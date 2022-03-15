@@ -199,7 +199,7 @@ class Make
     public function option (Agent $agent, string $idSlug): string
     {
         return sprintf(
-            "<option value=\"%s\" id=\"%s%s\">%s</option>",
+            '<option value="%s" id="%s%s">%s</option>',
             $agent->id,
             $idSlug,
             $agent->id,
