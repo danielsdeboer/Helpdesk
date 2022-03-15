@@ -7,5 +7,6 @@ disabled:
   - concat_without_spaces
   - function_declaration
   - not_operator_with_successor_space
-  - phpdoc_separation
+  - laravel_phpdoc_alignment
+  - laravel_phpdoc_separation
 
