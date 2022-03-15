@@ -3,7 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Unit;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
-use Aviator\Helpdesk\Tests\Fixtures\LevelOne;
+use Aviator\Helpdesk\Tests\Support\LevelOne;
 
 class ReducePropertiesTest extends BKTestCase
 {

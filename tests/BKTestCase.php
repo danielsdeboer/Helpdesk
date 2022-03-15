@@ -5,8 +5,8 @@ namespace Aviator\Helpdesk\Tests;
 use Aviator\Database\Migrations\CreateUsersTable;
 use Aviator\Helpdesk\HelpdeskServiceProvider;
 use Aviator\Helpdesk\Models\Agent;
-use Aviator\Helpdesk\Tests\Fixtures\Get;
-use Aviator\Helpdesk\Tests\Fixtures\Make;
+use Aviator\Helpdesk\Tests\Support\Get;
+use Aviator\Helpdesk\Tests\Support\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -111,7 +111,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
     protected function createSupers()
     {
         foreach ($this->supers as $super) {
-            /** @var \Aviator\Helpdesk\Tests\Acceptance\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
+            /** @var \Aviator\Helpdesk\Tests\Feature\Http\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
             $user = User::query()->create([
                 'name' => $super['name'],
                 'email' => $super['email'],
