@@ -413,4 +413,19 @@ class ShowTest extends TestCase
         $response->assertViewHas('ignored');
         $response->assertSee('<div class="section" id="ignored">', false);
     }
+
+    /** @test */
+    public function ticket_with_deleted_content (): void
+    {
+        $agent = $this->make->agent;
+        $ticket = $this->make->ticketWithDeletedContent->assignToAgent($agent);
+
+        $this->be($agent->user);
+
+        $this->withoutExceptionHandling();
+
+        $this->call->tickets->show($ticket)
+            ->assertOk()
+            ->assertSee('Deleted Content');
+    }
 }
