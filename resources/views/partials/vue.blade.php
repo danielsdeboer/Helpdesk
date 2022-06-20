@@ -1,5 +1,15 @@
 @if(config('app.debug'))
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.js"
+    integrity="sha512-pSyYzOKCLD2xoGM1GwkeHbdXgMRVsSqQaaUoHskx/HF09POwvow2VfVEdARIYwdeFLbu+2FCOTRYuiyeGxXkEg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
 @else
-  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"
+    integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
 @endif
