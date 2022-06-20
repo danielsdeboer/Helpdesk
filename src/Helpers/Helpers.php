@@ -21,6 +21,10 @@ class Helpers
             return $action->object->user->name;
         }
 
+        if ($action->object->agent_id === null) {
+            return 'System Process';
+        }
+
         return '(deleted user)';
     }
 }

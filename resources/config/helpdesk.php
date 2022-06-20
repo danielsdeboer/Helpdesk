@@ -29,7 +29,7 @@ return [
         /*
          * The class to get the User filter closure from. Whatever class you specify here
          * will have a the 'getUserCallback()' method called on it. This closure enables
-         * adding only a certain subset of user as a agents. The default implementation
+         * adding only a certain subset of user as agents. The default implementation
          * looks for an is_internal field on the User, set to 1. You'll need to change
          * this to match your own implementation. If you use multiple guards or don't
          * care about this setting, set this key to null.
