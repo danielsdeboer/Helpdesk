@@ -10,15 +10,20 @@ use Aviator\Helpdesk\Tests\Support\Make;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowserKit;
 use PHPUnit\Framework\Assert;
+use Throwable;
 
 abstract class BKTestCase extends OrchestraBrowserKit
 {
     protected Make $make;
+
     protected Get $get;
+
     protected array $supers = [
         [
             'name' => 'Super Visor',
@@ -30,16 +35,18 @@ abstract class BKTestCase extends OrchestraBrowserKit
         ],
     ];
 
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
+
+        $this->getEnvironmentSetUp(resolve(App::class));
 
         $this->withFactories(__DIR__ . '/../resources/factories');
 
         $this->setUpDatabase();
 
         $this->artisan('migrate', [
-            '--database'    => 'testing',
+            '--database' => 'testing',
         ]);
 
         $this->createSupers();
@@ -59,7 +66,6 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
     /**
      * @param \Illuminate\Foundation\Application $app
-     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -76,14 +82,13 @@ abstract class BKTestCase extends OrchestraBrowserKit
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('app.debug', 'true');
-        $app['config']->set('app.key', 'base64:2+SetJaztC7g0a1sSF81LYsDasiWymO6tp8yVv6KGrA=');
-        $app['config']->set('database.default', 'testing');
-
-        $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+        Config::set('app.debug', 'true');
+        Config::set('app.key', 'base64:2+SetJaztC7g0a1sSF81LYsDasiWymO6tp8yVv6KGrA=');
+        Config::set('database.default', 'testing');
+        Config::set('database.connections.testing', [
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
 
         if (isset($GLOBALS['altdb']) && $GLOBALS['altdb'] === true) {
@@ -106,6 +111,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
      * Create the supervisor user. This is necessary as the supervisor user
      * is the fallback for notifications where an assignment or team assignment
      * are not set.
+     *
      * @return void
      */
     protected function createSupers()
@@ -127,43 +133,43 @@ abstract class BKTestCase extends OrchestraBrowserKit
     /**
      * Set alternate table names for testing that the database names
      * are properly variable everywhere.
-     * @param $app
+     *
      * @return void
      */
     protected function setAlternateTablesInConfig($app)
     {
         $prefix = 'hd_';
 
-        $app->config->set('helpdesk.tables.users', 'users');
-        $app->config->set('helpdesk.tables.tickets', $prefix . 'tickets');
-        $app->config->set('helpdesk.tables.agents', $prefix . 'agents');
-        $app->config->set('helpdesk.tables.agent_team', $prefix . 'agent_team');
-        $app->config->set('helpdesk.tables.actions', $prefix . 'actions');
-        $app->config->set('helpdesk.tables.generic_contents', $prefix . 'generic_contents');
-        $app->config->set('helpdesk.tables.assignments', $prefix . 'assignments');
-        $app->config->set('helpdesk.tables.due_dates', $prefix . 'due_dates');
-        $app->config->set('helpdesk.tables.replies', $prefix . 'replies');
-        $app->config->set('helpdesk.tables.teams', $prefix . 'teams');
-        $app->config->set('helpdesk.tables.team_assignments', $prefix . 'team_assignments');
-        $app->config->set('helpdesk.tables.closings', $prefix . 'closings');
-        $app->config->set('helpdesk.tables.openings', $prefix . 'openings');
-        $app->config->set('helpdesk.tables.notes', $prefix . 'notes');
-        $app->config->set('helpdesk.tables.collaborators', $prefix . 'collaborators');
+        Config::set('helpdesk.tables.users', 'users');
+        Config::set('helpdesk.tables.tickets', $prefix . 'tickets');
+        Config::set('helpdesk.tables.agents', $prefix . 'agents');
+        Config::set('helpdesk.tables.agent_team', $prefix . 'agent_team');
+        Config::set('helpdesk.tables.actions', $prefix . 'actions');
+        Config::set('helpdesk.tables.generic_contents', $prefix . 'generic_contents');
+        Config::set('helpdesk.tables.assignments', $prefix . 'assignments');
+        Config::set('helpdesk.tables.due_dates', $prefix . 'due_dates');
+        Config::set('helpdesk.tables.replies', $prefix . 'replies');
+        Config::set('helpdesk.tables.teams', $prefix . 'teams');
+        Config::set('helpdesk.tables.team_assignments', $prefix . 'team_assignments');
+        Config::set('helpdesk.tables.closings', $prefix . 'closings');
+        Config::set('helpdesk.tables.openings', $prefix . 'openings');
+        Config::set('helpdesk.tables.notes', $prefix . 'notes');
+        Config::set('helpdesk.tables.collaborators', $prefix . 'collaborators');
     }
 
-    protected function withoutErrorHandling ()
+    protected function withoutErrorHandling()
     {
-        app()->instance(ExceptionHandler::class, new class extends Handler
+        app()->instance(ExceptionHandler::class, new class() extends Handler
         {
             public function __construct()
             {
             }
 
-            public function report(\Throwable $e)
+            public function report(Throwable $e)
             {
             }
 
-            public function render($request, \Throwable $e)
+            public function render($request, Throwable $e)
             {
                 throw $e;
             }

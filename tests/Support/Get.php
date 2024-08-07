@@ -11,15 +11,17 @@ use Illuminate\Database\Eloquent\Builder;
 class Get
 {
     protected string $namespace = '\\Aviator\\Helpdesk\\Models\\';
+
     protected bool $orderByLatest = false;
+
     protected bool $getCount = false;
+
     protected bool $includeSoftDeleted = false;
 
     /**
-     * @param $name
      * @return mixed
      */
-    public function getModel ($name)
+    public function getModel($name)
     {
         /** @var \Illuminate\Database\Eloquent\Model $model */
         $model = $this->namespace . ucfirst($name);
@@ -40,10 +42,9 @@ class Get
     }
 
     /**
-     * @param $name
      * @return $this
      */
-    public function __get ($name)
+    public function __get($name)
     {
         if ($name === 'latest') {
             $this->orderByLatest = true;

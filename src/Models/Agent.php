@@ -16,11 +16,13 @@ use Illuminate\Notifications\Notifiable;
  * @property \Carbon\Carbon created_at
  * @property \Aviator\Helpdesk\Models\Team team
  * @property \Illuminate\Support\Collection teamLeads
+ *
  * @method static Builder withTrashed()
  */
 class Agent extends AbstractModel
 {
-    use SoftDeletes, Notifiable;
+    use Notifiable;
+    use SoftDeletes;
 
     /** @var \Illuminate\Database\Eloquent\Model */
     protected $userModelName;
@@ -46,9 +48,8 @@ class Agent extends AbstractModel
 
     /**
      * Set the table name from the Helpdesk config.
-     * @param array $attributes
      */
-    public function __construct (array $attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
@@ -59,16 +60,15 @@ class Agent extends AbstractModel
      * Public Api
      */
 
-    public function getUserName (): string
+    public function getUserName(): string
     {
         return $this->user->name ?? '[Deleted]';
     }
 
     /**
      * Route notifications for the mail channel.
-     * @return string
      */
-    public function routeNotificationForMail (): string
+    public function routeNotificationForMail(): string
     {
         $email = config('helpdesk.userModelEmailColumn');
 
@@ -77,12 +77,11 @@ class Agent extends AbstractModel
 
     /**
      * Assign a ticket to this agent.
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
-     * @param \Aviator\Helpdesk\Models\Agent|null $assigner
+     *
      * @param bool $public
      * @return $this
      */
-    public function assign (Ticket $ticket, self $assigner = null, $public = true)
+    public function assign(Ticket $ticket, self|null $assigner = null, $public = true)
     {
         Assignment::query()
             ->create([
@@ -97,10 +96,8 @@ class Agent extends AbstractModel
 
     /**
      * Make the Agent a team lead.
-     * @param \Aviator\Helpdesk\Models\Team $team
-     * @return Agent
      */
-    public function makeTeamLeadOf (Team $team): self
+    public function makeTeamLeadOf(Team $team): self
     {
         // If the agent is already in the team but not team lead
         // we need to detach first. This does nothing otherwise.
@@ -115,10 +112,8 @@ class Agent extends AbstractModel
 
     /**
      * Remove a team lead.
-     * @param \Aviator\Helpdesk\Models\Team $team
-     * @return Agent
      */
-    public function removeTeamLeadOf (Team $team): self
+    public function removeTeamLeadOf(Team $team): self
     {
         $this->teams()->detach($team->id);
 
@@ -131,10 +126,8 @@ class Agent extends AbstractModel
 
     /**
      * Add the agent to a team.
-     * @param Team $team
-     * @return Agent
      */
-    public function addToTeam (Team $team): self
+    public function addToTeam(Team $team): self
     {
         $this->teams()->attach($team->id);
 
@@ -143,10 +136,8 @@ class Agent extends AbstractModel
 
     /**
      * Remove the agent from a team.
-     * @param Team $team
-     * @return Agent
      */
-    public function removeFromTeam (Team $team): self
+    public function removeFromTeam(Team $team): self
     {
         $this->teams()->detach($team->id);
 
@@ -155,10 +146,8 @@ class Agent extends AbstractModel
 
     /**
      * Add the agent to multiple teams.
-     * @param array $teams
-     * @return Agent
      */
-    public function addToTeams (array $teams): self
+    public function addToTeams(array $teams): self
     {
         foreach ($teams as $team) {
             $this->teams()->attach($team);
@@ -169,10 +158,8 @@ class Agent extends AbstractModel
 
     /**
      * Remove the agent from multiple teams.
-     * @param array $teams
-     * @return Agent
      */
-    public function removeFromTeams (array $teams): self
+    public function removeFromTeams(array $teams): self
     {
         foreach ($teams as $team) {
             $this->teams()->detach($team);
@@ -187,28 +174,18 @@ class Agent extends AbstractModel
 
     /**
      * Is this agent a member of this team.
-     * @param Team $team
-     * @return bool
      */
-    public function isMemberOf (Team $team): bool
+    public function isMemberOf(Team $team): bool
     {
         return $team->agents->pluck('id')->contains($this->id);
     }
 
-    /**
-     * @param Team $team
-     * @return bool
-     */
-    public function isLeadOf (Team $team): bool
+    public function isLeadOf(Team $team): bool
     {
         return $this->teamLeads->pluck('id')->contains($team->id);
     }
 
-    /**
-     * @param Ticket $ticket
-     * @return bool
-     */
-    public function isLeadFor (Ticket $ticket): bool
+    public function isLeadFor(Ticket $ticket): bool
     {
         return $ticket->teamAssignment
             && $this->isLeadOf($ticket->teamAssignment->team);
@@ -216,9 +193,8 @@ class Agent extends AbstractModel
 
     /**
      * Check if the user is a supervisor.
-     * @return bool
      */
-    public function isSuper (): bool
+    public function isSuper(): bool
     {
         return (bool) $this->is_super;
     }
@@ -229,11 +205,10 @@ class Agent extends AbstractModel
 
     /**
      * Scope to agents in a particular team.
-     * @param Builder $query
-     * @param Team $team
+     *
      * @return Builder
      */
-    public function scopeInTeam (Builder $query, Team $team)
+    public function scopeInTeam(Builder $query, Team $team)
     {
         return $query->whereHas('teams', function (Builder $query) use ($team) {
             $query->where('team_id', $team->id);
@@ -242,10 +217,10 @@ class Agent extends AbstractModel
 
     /**
      * Get all agents except the currently signed in agent.
-     * @param Builder $query
+     *
      * @return $this|Builder
      */
-    public function scopeExceptAuthorized (Builder $query)
+    public function scopeExceptAuthorized(Builder $query)
     {
         if (auth()->user() && auth()->user()->agent) {
             return $query->where(
@@ -260,20 +235,20 @@ class Agent extends AbstractModel
 
     /**
      * Get all enabled agents.
-     * @param Builder $query
+     *
      * @return $this|Builder
      */
-    public function scopeEnabled (Builder $query)
+    public function scopeEnabled(Builder $query)
     {
         return $query->whereNull($this->table . '.is_disabled');
     }
 
     /**
      * Get all disabled agents.
-     * @param Builder $query
+     *
      * @return $this|Builder
      */
-    public function scopeDisabled (Builder $query)
+    public function scopeDisabled(Builder $query)
     {
         return $query->whereNotNull($this->table . '.is_disabled');
     }
@@ -282,17 +257,11 @@ class Agent extends AbstractModel
      * Relationships
      */
 
-    /**
-     * @return BelongsTo
-     */
-    public function user (): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo($this->userModelName);
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
@@ -300,10 +269,7 @@ class Agent extends AbstractModel
             ->withTimestamps();
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function teamLeads (): BelongsToMany
+    public function teamLeads(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, config('helpdesk.tables.agent_team'))
             ->withPivot('is_team_lead')

@@ -11,15 +11,14 @@ class ShowTest extends TestCase
 
     /**
      * @param null $id
-     * @return string
      */
-    protected function url ($id = null): string
+    protected function url($id = null): string
     {
         return $this->url . ($id ?: 1);
     }
 
     /** @test */
-    public function guests_may_visit ()
+    public function guests_may_visit()
     {
         $ticket = $this->make->ticket;
 
@@ -28,7 +27,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function guests_do_not_see_the_action_bar ()
+    public function guests_do_not_see_the_action_bar()
     {
         $ticket = $this->make->ticket;
 

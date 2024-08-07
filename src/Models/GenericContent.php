@@ -19,6 +19,7 @@ class GenericContent extends ContentBase
 
     /**
      * The partial that displays this content.
+     *
      * @var string
      */
     protected $partial = 'helpdesk::tickets.show.content.generic';

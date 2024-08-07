@@ -10,7 +10,7 @@ class AdminTeamsUpdateTest extends BKTestCase
     const URI = 'helpdesk/admin/teams';
 
     /** @test */
-    public function supervisors_can_update_teams ()
+    public function supervisors_can_update_teams()
     {
         $team = $this->make->team;
         $this->be($this->make->super->user);
@@ -28,7 +28,7 @@ class AdminTeamsUpdateTest extends BKTestCase
     }
 
     /** @test */
-    public function nonexistent_teams_throw_a_404 ()
+    public function nonexistent_teams_throw_a_404()
     {
         $this->be($this->make->super->user);
 

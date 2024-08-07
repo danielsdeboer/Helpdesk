@@ -2,17 +2,18 @@
 
 namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets;
 
-use function auth;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
-use function factory;
 use Illuminate\Testing\TestResponse;
+
+use function auth;
+use function factory;
 
 class ShowTest extends TestCase
 {
-    private function assertSeeInAssignList (TestResponse $response, Agent $agent)
+    private function assertSeeInAssignList(TestResponse $response, Agent $agent)
     {
         $response->assertSee(sprintf(
             '<option value="%s" id="agent-option-%s">%s',
@@ -27,15 +28,14 @@ class ShowTest extends TestCase
 
     /**
      * @param null $id
-     * @return string
      */
-    protected function url ($id = null): string
+    protected function url($id = null): string
     {
         return $this->url . ($id ?: 1);
     }
 
     /** @test */
-    public function guests_may_not_visit ()
+    public function guests_may_not_visit()
     {
         $response = $this->get($this->url());
 
@@ -44,7 +44,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function users_can_only_visit_their_own_tickets ()
+    public function users_can_only_visit_their_own_tickets()
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket;
@@ -60,7 +60,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_the_header_with_tickets_tab_active ()
+    public function it_shows_the_header_with_tickets_tab_active()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
@@ -72,7 +72,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_tickets_status_tags ()
+    public function it_shows_tickets_status_tags()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
@@ -99,7 +99,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function when_a_ticket_is_open_a_user_may_close_or_reply ()
+    public function when_a_ticket_is_open_a_user_may_close_or_reply()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
@@ -122,7 +122,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function users_dont_see_agent_actions ()
+    public function users_dont_see_agent_actions()
     {
         $adminActions = ['assign', 'note', 'collab'];
 
@@ -139,7 +139,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function agents_dont_see_team_lead_actions ()
+    public function agents_dont_see_team_lead_actions()
     {
         $agentActions = ['reply', 'note', 'close', 'collab'];
         $leadActions = ['assign'];
@@ -163,7 +163,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function team_leads_see_all_actions ()
+    public function team_leads_see_all_actions()
     {
         $openActions = ['reply', 'note', 'close', 'assign'];
 
@@ -201,7 +201,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function agents_are_listed_alphabetically ()
+    public function agents_are_listed_alphabetically()
     {
         $agent1 = $this->make->agentNamed('zzz');
         $agent2 = $this->make->agentNamed('aaa');
@@ -227,7 +227,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function users_dont_see_private_actions ()
+    public function users_dont_see_private_actions()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -243,7 +243,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_private_actions ()
+    public function agents_see_private_actions()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -259,7 +259,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function supers_can_assign_ticket_when_ticket_is_assigned_to_team ()
+    public function supers_can_assign_ticket_when_ticket_is_assigned_to_team()
     {
         $user = $this->make->user;
         $super = $this->make->super;
@@ -286,7 +286,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function supers_can_assign_tickets_outside_of_their_own_team ()
+    public function supers_can_assign_tickets_outside_of_their_own_team()
     {
         // The super, their team, their fellow users
         $super = $this->make->super;
@@ -320,7 +320,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function supers_can_reassign_tickets ()
+    public function supers_can_reassign_tickets()
     {
         $user = $this->make->user;
         $super = $this->make->super;
@@ -337,7 +337,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function team_leads_can_reassign_tickets ()
+    public function team_leads_can_reassign_tickets()
     {
         $user = $this->make->user;
         $agent2 = $this->make->agent;
@@ -359,7 +359,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function can_not_see_open_tickets_in_closed_list ()
+    public function can_not_see_open_tickets_in_closed_list()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -382,7 +382,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function ignored_tickets_are_only_seen_by_supers ()
+    public function ignored_tickets_are_only_seen_by_supers()
     {
         $agent = $this->make->agent;
         $super = $this->make->super;
@@ -415,7 +415,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function ticket_with_deleted_content (): void
+    public function ticket_with_deleted_content(): void
     {
         $agent = $this->make->agent;
         $ticket = $this->make->ticketWithDeletedContent->assignToAgent($agent);

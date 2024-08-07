@@ -8,6 +8,7 @@ class AgentController extends Controller
 {
     /**
      * Who is the reponse for.
+     *
      * @var string
      */
     protected $for;
@@ -22,6 +23,7 @@ class AgentController extends Controller
 
     /**
      * Display an index of the resource.
+     *
      * @return Response
      */
     public function index()

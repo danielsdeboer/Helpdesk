@@ -152,7 +152,7 @@ class AgentTest extends TestCase
     /**
      * @test
      */
-    public function checking_if_an_agent_is_super ()
+    public function checking_if_an_agent_is_super()
     {
         $agent = $this->make->agent;
         $super = $this->make->super;
@@ -165,7 +165,7 @@ class AgentTest extends TestCase
     }
 
     /** @test */
-    public function it_can_check_if_an_agent_is_lead_of_a_team ()
+    public function it_can_check_if_an_agent_is_lead_of_a_team()
     {
         $agent = $this->make->agent;
         $leadOf = $this->make->team;
@@ -177,7 +177,7 @@ class AgentTest extends TestCase
     }
 
     /** @test */
-    public function it_can_check_if_an_agent_is_lead_for_a_ticket ()
+    public function it_can_check_if_an_agent_is_lead_for_a_ticket()
     {
         $team1 = $this->make->team;
         $team2 = $this->make->team;
@@ -190,7 +190,7 @@ class AgentTest extends TestCase
     }
 
     /** @test */
-    public function it_can_scope_to_a_team ()
+    public function it_can_scope_to_a_team()
     {
         $agent1 = $this->make->agent;
         $agent2 = $this->make->agent;

@@ -10,9 +10,8 @@ class UserCallbackProvider implements HasUserCallback
 {
     /**
      * Get a callback to filter users.
-     * @return \Closure
      */
-    public function getUserCallback (): Closure
+    public function getUserCallback(): Closure
     {
         return function (Builder $query) {
             $query->where('is_internal', 1);

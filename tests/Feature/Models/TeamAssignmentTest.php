@@ -18,7 +18,7 @@ class TeamAssignmentTest extends ModelTestCase
     }
 
     /** @test */
-    public function creating_a_team_assignment_fires_a_notification_to_the_team_leads ()
+    public function creating_a_team_assignment_fires_a_notification_to_the_team_leads()
     {
         $user = $this->make->user;
         $team = $this->make->team;
@@ -32,7 +32,7 @@ class TeamAssignmentTest extends ModelTestCase
     }
 
     /** @test */
-    public function it_doesnt_send_a_notification_to_team_lead_if_from_ignored_user ()
+    public function it_doesnt_send_a_notification_to_team_lead_if_from_ignored_user()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;

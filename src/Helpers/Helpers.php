@@ -8,7 +8,7 @@ class Helpers
 {
     /**
      * Get the name of the user or agent who created a ticket.
-     * @param Action $action
+     *
      * @return string
      */
     public static function actionCreator(Action $action)

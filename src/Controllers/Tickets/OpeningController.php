@@ -19,7 +19,9 @@ class OpeningController extends Controller
 
     /**
      * Create a new assignment.
+     *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
     protected function create(Request $request, Ticket $ticket)

@@ -20,7 +20,9 @@ use PHPUnit\Framework\Assert;
 abstract class TestCase extends Orchestra
 {
     protected Call $call;
+
     protected Make $make;
+
     protected Get $get;
 
     /** @var array */
@@ -35,7 +37,7 @@ abstract class TestCase extends Orchestra
         ],
     ];
 
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -86,25 +88,25 @@ abstract class TestCase extends Orchestra
             }
         );
 
-//        TestResponse::macro(
-//            'assertSeeInOrder',
-//            function (array $values) {
-//                $position = 0;
-//
-//                foreach ($values as $value) {
-//                    $valuePosition = mb_strpos($this->getContent(), $value, $position);
-//
-//                    if ($valuePosition === false || $valuePosition < $position) {
-//                        Assert::fail(
-//                            'Failed asserting that \'' . $this->getContent() .
-//                            '\' contains "' . $value . '" in specified order.'
-//                        );
-//                    }
-//
-//                    $position = $valuePosition + mb_strlen($value);
-//                }
-//            }
-//        );
+        //        TestResponse::macro(
+        //            'assertSeeInOrder',
+        //            function (array $values) {
+        //                $position = 0;
+        //
+        //                foreach ($values as $value) {
+        //                    $valuePosition = mb_strpos($this->getContent(), $value, $position);
+        //
+        //                    if ($valuePosition === false || $valuePosition < $position) {
+        //                        Assert::fail(
+        //                            'Failed asserting that \'' . $this->getContent() .
+        //                            '\' contains "' . $value . '" in specified order.'
+        //                        );
+        //                    }
+        //
+        //                    $position = $valuePosition + mb_strlen($value);
+        //                }
+        //            }
+        //        );
 
         TestResponse::macro(
             'assertSeeEncoded',
@@ -142,7 +144,7 @@ abstract class TestCase extends Orchestra
      * @param \Illuminate\Foundation\Application $app
      * @return array
      */
-    protected function getPackageProviders ($app)
+    protected function getPackageProviders($app)
     {
         return [
             HelpdeskServiceProvider::class,
@@ -151,9 +153,10 @@ abstract class TestCase extends Orchestra
 
     /**
      * Set up the environment.
+     *
      * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp ($app)
+    protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('app.debug', 'true');
         $app['config']->set('app.key', 'base64:2+SetJaztC7g0a1sSF81LYsDasiWymO6tp8yVv6KGrA=');
@@ -180,7 +183,7 @@ abstract class TestCase extends Orchestra
         )->name('login');
     }
 
-    protected function setUpDatabase ()
+    protected function setUpDatabase()
     {
         // Create testing database fixtures
         include_once __DIR__ . '/../database/migrations/2017_01_01_000000_create_users_table.php';
@@ -191,12 +194,13 @@ abstract class TestCase extends Orchestra
      * Create the supervisor user. This is necessary as the supervisor user
      * is the fallback for notifications where an assignment or team assignment
      * are not set.
+     *
      * @return void
      */
-    protected function createSupers ()
+    protected function createSupers()
     {
         foreach ($this->supers as $super) {
-            /** @var \Aviator\Helpdesk\Tests\Feature\Http\Dashboard\Acceptance\Tickets\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Acceptance\Tickets\User $user */
+            /** @var \Aviator\Helpdesk\Tests\User $user */
             $user = User::query()->create(
                 [
                     'name' => $super['name'],
@@ -215,9 +219,10 @@ abstract class TestCase extends Orchestra
 
     /**
      * Set the ignored users array.
+     *
      * @return void
      */
-    protected function addIgnoredUser (array $ignoredUsers)
+    protected function addIgnoredUser(array $ignoredUsers)
     {
         Config::set('helpdesk.ignored', $ignoredUsers);
     }
@@ -225,10 +230,10 @@ abstract class TestCase extends Orchestra
     /**
      * Set alternate table names for testing that the database names
      * are properly variable everywhere.
-     * @param $app
+     *
      * @return void
      */
-    protected function setAlternateTablesInConfig ($app)
+    protected function setAlternateTablesInConfig($app)
     {
         $prefix = 'hd_';
 

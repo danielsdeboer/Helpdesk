@@ -25,55 +25,54 @@ abstract class Repository
 
     /**
      * Get a fresh instance of the repository.
+     *
      * @return static
      */
-    public function clone ()
+    public function clone()
     {
         return app(static::class);
     }
 
     /**
      * Get a count of the result set.
-     * @return int
      */
-    public function count (): int
+    public function count(): int
     {
         return $this->prepare()->count();
     }
 
     /**
      * Get a single ticket by id.
-     * @param int $id
+     *
      * @return Ticket|null
      */
-    public function find (int $id)
+    public function find(int $id)
     {
         return $this->prepare()->find($id);
     }
 
     /**
-     * @param int $id
      * @return Ticket|null
      */
-    public function findOrFail (int $id)
+    public function findOrFail(int $id)
     {
         return $this->prepare()->findOrFail($id);
     }
 
     /**
      * Get the first item of the result set.
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function first ()
+    public function first()
     {
         return $this->prepare()->first();
     }
 
     /**
      * Get a collection of results.
-     * @return \Illuminate\Support\Collection
      */
-    public function get (): Collection
+    public function get(): Collection
     {
         return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
@@ -82,11 +81,10 @@ abstract class Repository
 
     /**
      * Get a paginated collection of results.
-     * @param int $resultsPerPage
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
      * @throws \InvalidArgumentException
      */
-    public function paginate (int $resultsPerPage = null): LengthAwarePaginator
+    public function paginate(int|null $resultsPerPage = null): LengthAwarePaginator
     {
         return $this->prepare()
             ->orderBy($this->orderByColumn, $this->orderByDirection)
@@ -94,10 +92,9 @@ abstract class Repository
     }
 
     /**
-     * @param array $relations
      * @return $this
      */
-    public function with (array $relations)
+    public function with(array $relations)
     {
         $this->relations = $relations;
 
@@ -105,11 +102,9 @@ abstract class Repository
     }
 
     /**
-     * @param string $name
-     * @param $arguments
      * @return $this
      */
-    protected function addScope (string $name, $arguments = []): self
+    protected function addScope(string $name, $arguments = []): self
     {
         $this->query->scopes([
             $name => is_array($arguments) ? $arguments : [$arguments],
@@ -121,16 +116,17 @@ abstract class Repository
     /**
      * @return $this|\Illuminate\Database\Eloquent\Builder|static
      */
-    protected function query ()
+    protected function query()
     {
         return $this->query->with($this->relations);
     }
 
     /**
      * Pre-run query prepare. Can be over-ridden.
+     *
      * @return Repository|\Illuminate\Database\Eloquent\Builder
      */
-    protected function prepare ()
+    protected function prepare()
     {
         return $this->query();
     }

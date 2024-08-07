@@ -18,10 +18,7 @@ class Assignment extends ActionBase
     /** @var string */
     protected $configKey = 'helpdesk.tables.assignments';
 
-    /**
-     * @return BelongsTo
-     */
-    public function assignee (): BelongsTo
+    public function assignee(): BelongsTo
     {
         return $this->belongsTo(Agent::class, 'assigned_to');
     }

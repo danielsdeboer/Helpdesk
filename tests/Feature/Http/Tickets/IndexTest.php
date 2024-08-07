@@ -10,7 +10,7 @@ class IndexTest extends TestCase
     protected $url = 'helpdesk/tickets';
 
     /** @test */
-    public function guests_are_redirected_to_login ()
+    public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
 
@@ -19,7 +19,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_may_visit ()
+    public function agents_may_visit()
     {
         $this->be($this->make->agent->user);
 
@@ -29,7 +29,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_can_visit ()
+    public function users_can_visit()
     {
         $this->be($this->make->user);
 
@@ -39,7 +39,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_only_see_their_own_open_and_closed_tickets ()
+    public function users_only_see_their_own_open_and_closed_tickets()
     {
         $user = $this->make->user;
         $openTicket = $this->make->ticket($user);
@@ -58,7 +58,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_tickets_assigned_to_them ()
+    public function agents_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
         $ticket1 = $this->make->ticket->assignToAgent($agent);
@@ -77,7 +77,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function only_the_header_tickets_tab_is_enabled ()
+    public function only_the_header_tickets_tab_is_enabled()
     {
         $user = $this->make->user;
 
@@ -88,7 +88,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function for_less_than_24_tickets_the_see_more_button_is_disabled ()
+    public function for_less_than_24_tickets_the_see_more_button_is_disabled()
     {
         $user = $this->make->user;
         $this->make->ticket($user);
@@ -101,7 +101,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function for_more_than_24_tickets_the_see_more_button_is_enabled ()
+    public function for_more_than_24_tickets_the_see_more_button_is_enabled()
     {
         $user = $this->make->user;
         $this->make->tickets(25, $user);
@@ -113,7 +113,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function ignored_tickets_only_appear_in_ignored_list_for_supers ()
+    public function ignored_tickets_only_appear_in_ignored_list_for_supers()
     {
         $ignored = $this->make->user;
         $this->addIgnoredUser([$ignored->email]);
@@ -135,7 +135,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function ignored_users_see_open_and_closed_tickets ()
+    public function ignored_users_see_open_and_closed_tickets()
     {
         $user1 = $this->make->user;
         $user2 = $this->make->user;

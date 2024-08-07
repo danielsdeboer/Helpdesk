@@ -23,10 +23,11 @@ class DueDate extends ActionBase
     /**
      * Enforce the dateString format for due_on. This is useful
      * for sqlite which doesn't have a date type.
+     *
      * @param mixed $value
      * @return void
      */
-    public function setDueOnAttribute ($value)
+    public function setDueOnAttribute($value)
     {
         $this->attributes['due_on'] = Carbon::parse($value)->toDateString();
     }

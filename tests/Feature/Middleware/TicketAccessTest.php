@@ -12,10 +12,9 @@ class TicketAccessTest extends TestCase
     protected $url = 'guarded/';
 
     /**
-     * @param int $id
      * @return string
      */
-    protected function url (int $id)
+    protected function url(int $id)
     {
         return $this->url . $id;
     }
@@ -23,7 +22,7 @@ class TicketAccessTest extends TestCase
     /**
      * Create a guarded test route.
      */
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +35,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function guest_get_a_403 ()
+    public function guest_get_a_403()
     {
         $response = $this->get($this->url(1));
 
@@ -44,7 +43,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function tickets_that_dont_exist_get_a_403 ()
+    public function tickets_that_dont_exist_get_a_403()
     {
         $this->be($this->make->user);
 
@@ -54,7 +53,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function it_aborts_if_the_user_doesnt_own_the_ticket ()
+    public function it_aborts_if_the_user_doesnt_own_the_ticket()
     {
         $ticket = $this->make->ticket;
 
@@ -65,7 +64,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function it_proceeds_if_the_user_owns_the_ticket ()
+    public function it_proceeds_if_the_user_owns_the_ticket()
     {
         $ticket = $this->make->ticket;
 
@@ -100,7 +99,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function it_proceeds_if_the_agent_is_a_collaborator ()
+    public function it_proceeds_if_the_agent_is_a_collaborator()
     {
         $agent1 = $this->make->agent;
         $agent2 = $this->make->agent;
@@ -114,7 +113,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function it_proceeds_for_team_leads_of_the_assigned_team ()
+    public function it_proceeds_for_team_leads_of_the_assigned_team()
     {
         $team = $this->make->team;
         $ticket = $this->make->ticket->assignToTeam($team);
@@ -127,7 +126,7 @@ class TicketAccessTest extends TestCase
     }
 
     /** @test */
-    public function other_team_leads_get_a_403 ()
+    public function other_team_leads_get_a_403()
     {
         $team = $this->make->team;
         $otherTeam = $this->make->team;

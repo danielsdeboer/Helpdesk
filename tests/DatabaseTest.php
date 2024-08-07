@@ -6,6 +6,7 @@ class DatabaseTest extends BKTestCase
 {
     /**
      * @group database
+     *
      * @test
      */
     public function the_database_contains_users()
@@ -17,6 +18,7 @@ class DatabaseTest extends BKTestCase
 
     /**
      * @group database
+     *
      * @test
      */
     public function a_persisted_user_has_an_email()

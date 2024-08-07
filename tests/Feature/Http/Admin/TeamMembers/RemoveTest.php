@@ -7,10 +7,11 @@ use Aviator\Helpdesk\Tests\AdminBase;
 class RemoveTest extends AdminBase
 {
     const VERB = 'POST';
+
     const URI = 'helpdesk/admin/team-members/remove';
 
     /** @test */
-    public function access_test ()
+    public function access_test()
     {
         $this->noGuests();
         $this->noUsers();
@@ -18,7 +19,7 @@ class RemoveTest extends AdminBase
     }
 
     /** @test */
-    public function the_request_requires_three_parameters ()
+    public function the_request_requires_three_parameters()
     {
         $agent = $this->make->agent;
         $team = $this->make->team;

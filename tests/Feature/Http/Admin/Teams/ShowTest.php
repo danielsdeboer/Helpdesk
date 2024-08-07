@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Tests\TestCase;
 class ShowTest extends TestCase
 {
     /** @test */
-    public function it_shows_a_teams_agents (): void
+    public function it_shows_a_teams_agents(): void
     {
         $team = $this->make->team;
         $team2 = $this->make->team;
@@ -25,7 +25,7 @@ class ShowTest extends TestCase
     }
 
     /** @test */
-    public function handling_deleted_contents (): void
+    public function handling_deleted_contents(): void
     {
         $this->withoutExceptionHandling();
 

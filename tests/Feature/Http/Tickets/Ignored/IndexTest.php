@@ -11,7 +11,7 @@ class IndexTest extends TestCase
     protected $url = 'helpdesk/tickets/ignored';
 
     /** @test */
-    public function guests_are_redirected_to_login ()
+    public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
 
@@ -20,7 +20,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function only_supers_see_ignored_tickets ()
+    public function only_supers_see_ignored_tickets()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -42,7 +42,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_paginated_when_displaying_more_than_24_tickets ()
+    public function results_are_paginated_when_displaying_more_than_24_tickets()
     {
         $user = $this->make->user;
         $ignoredUser = $this->make->user;
@@ -68,7 +68,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_ordered_by_latest_first ()
+    public function results_are_ordered_by_latest_first()
     {
         $ignoredUser = $this->make->user;
         $super = $this->make->super;

@@ -30,36 +30,24 @@ abstract class ActionBase extends AbstractModel
         'is_visible' => 'boolean',
     ];
 
-    /**
-     * @return BelongsTo
-     */
-    public function ticket (): BelongsTo
+    public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function agent (): BelongsTo
+    public function agent(): BelongsTo
     {
         return $this->belongsTo(Agent::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function user (): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(
             config('helpdesk.userModel')
         );
     }
 
-    /**
-     * @return MorphOne
-     */
-    public function action (): MorphOne
+    public function action(): MorphOne
     {
         return $this->morphOne(Action::class, 'object');
     }

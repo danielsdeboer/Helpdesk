@@ -9,7 +9,7 @@ class AdminTeamsIndexTest extends BKTestCase
 {
     const URI = 'helpdesk/admin/teams';
 
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -18,7 +18,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function guests_cant_visit ()
+    public function guests_cant_visit()
     {
         $this->get(self::URI);
 
@@ -27,7 +27,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function users_cant_visit ()
+    public function users_cant_visit()
     {
         $this->be($this->make->user);
         $this->get(self::URI);
@@ -36,7 +36,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function agents_cant_visit ()
+    public function agents_cant_visit()
     {
         $this->be($this->make->agent->user);
         $this->get(self::URI);
@@ -45,7 +45,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function supervisors_can_visit ()
+    public function supervisors_can_visit()
     {
         $team = $this->make->team;
 
@@ -57,7 +57,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_a_list_of_all_teams ()
+    public function it_has_a_list_of_all_teams()
     {
         $super = $this->make->super;
         $team1 = $this->make->team;
@@ -71,7 +71,7 @@ class AdminTeamsIndexTest extends BKTestCase
     }
 
     /** @test */
-    public function it_lists_agents_in_teams ()
+    public function it_lists_agents_in_teams()
     {
         $super = $this->make->super;
         $team = $this->make->team;

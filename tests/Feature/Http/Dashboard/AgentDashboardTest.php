@@ -10,7 +10,7 @@ class AgentDashboardTest extends BKTestCase
     const URI = 'helpdesk/dashboard/agent';
 
     /** @test */
-    public function a_user_cannot_visit_the_agent_dashboard ()
+    public function a_user_cannot_visit_the_agent_dashboard()
     {
         $this->be($this->make->user);
         $this->get(self::URI);
@@ -19,7 +19,7 @@ class AgentDashboardTest extends BKTestCase
     }
 
     /** @test */
-    public function an_agent_can_visit_their_dashboard ()
+    public function an_agent_can_visit_their_dashboard()
     {
         $this->be($this->make->agent->user);
         $this->get(self::URI);
@@ -28,7 +28,7 @@ class AgentDashboardTest extends BKTestCase
     }
 
     /** @test */
-    public function an_agent_can_see_their_dashboard ()
+    public function an_agent_can_see_their_dashboard()
     {
         $this->be($this->make->agent->user);
 
@@ -42,7 +42,7 @@ class AgentDashboardTest extends BKTestCase
     }
 
     /** @test */
-    public function agent_dashboard_has_collaborating_list ()
+    public function agent_dashboard_has_collaborating_list()
     {
         $this->be($this->make->agent->user);
 

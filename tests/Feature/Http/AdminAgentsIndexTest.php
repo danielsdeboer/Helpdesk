@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Tests\AdminBase;
 class AdminAgentsIndexTest extends AdminBase
 {
     const VERB = 'get';
+
     const URI = 'helpdesk/admin';
 
     /** @test */
@@ -45,7 +46,7 @@ class AdminAgentsIndexTest extends AdminBase
     }
 
     /** @test */
-    public function the_agents_list_includes_supervisors ()
+    public function the_agents_list_includes_supervisors()
     {
         $super = $this->make->super;
         $team = $this->make->team;
@@ -60,7 +61,7 @@ class AdminAgentsIndexTest extends AdminBase
     }
 
     /** @test */
-    public function the_user_listing_is_filtered_by_the_user_callback ()
+    public function the_user_listing_is_filtered_by_the_user_callback()
     {
         $this->make->agent;
         $this->make->internalUser;

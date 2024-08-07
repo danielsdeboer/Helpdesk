@@ -27,10 +27,8 @@ class MiddlewaresProvider extends ServiceProvider
 
     /**
      * Bootstrap the application services.
-     * @param Kernel $kernel
-     * @param Router $router
      */
-    public function boot (Kernel $kernel, Router $router)
+    public function boot(Kernel $kernel, Router $router)
     {
         /* @var Model $model */
         foreach ($this->middlewares as $alias => $class) {

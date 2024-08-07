@@ -9,7 +9,7 @@ class CollaboratorObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param Collaborator $observed
+     *
      * @return void
      */
     public function created(Collaborator $observed)

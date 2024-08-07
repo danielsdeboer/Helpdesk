@@ -6,6 +6,7 @@ abstract class AdminBase extends BKTestCase
 {
     /**
      * Act as the supervisor.
+     *
      * @return void
      */
     protected function beSuper()
@@ -15,6 +16,7 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * Call the uri with the verb and optional request.
+     *
      * @param array $request
      * @return void
      */
@@ -25,6 +27,7 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * Die and dump with the response content.
+     *
      * @return void
      */
     protected function ddc()
@@ -34,7 +37,6 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * This doesn't seem right.
-     * @param $errors
      */
     protected function assertValidationFailed($errors)
     {
@@ -44,6 +46,7 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * Deny guests.
+     *
      * @return void
      */
     protected function noGuests()
@@ -56,6 +59,7 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * Deny users.
+     *
      * @return void
      */
     protected function noUsers()
@@ -70,6 +74,7 @@ abstract class AdminBase extends BKTestCase
 
     /**
      * Deny agents.
+     *
      * @return void
      */
     protected function noAgents()

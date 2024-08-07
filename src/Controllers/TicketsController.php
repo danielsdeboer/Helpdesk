@@ -31,22 +31,23 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
+     *
      * @return \Illuminate\Contracts\View\View
+     *
      * @throws \InvalidArgumentException
      */
-    public function index (TicketsRepository $tickets)
+    public function index(TicketsRepository $tickets)
     {
         if (in_array(auth()->user()->email, config('helpdesk.ignored'))) {
             $openTickets = $tickets->clone()
-            ->with($this->indexRelations)
-            ->open()
-            ->paginate();
+                ->with($this->indexRelations)
+                ->open()
+                ->paginate();
 
             $closedTickets = $tickets->clone()
-            ->with($this->indexRelations)
-            ->closed()
-            ->paginate();
+                ->with($this->indexRelations)
+                ->closed()
+                ->paginate();
         } else {
             $openTickets = $tickets->clone()
                 ->with($this->indexRelations)
@@ -76,12 +77,10 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource.
-     * @param EnabledAgentsRepository $agents
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
-     * @param int $id
+     *
      * @return \Illuminate\Contracts\View\View
      */
-    public function show (EnabledAgentsRepository $agents, TicketsRepository $tickets, int $id)
+    public function show(EnabledAgentsRepository $agents, TicketsRepository $tickets, int $id)
     {
         $teamMembers = collect();
 

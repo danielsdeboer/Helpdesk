@@ -10,8 +10,8 @@ class TicketAccess
 {
     /**
      * Handle an incoming request.
+     *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -76,7 +76,6 @@ class TicketAccess
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
      * @return \Aviator\Helpdesk\Models\Ticket
      */
     protected function getTicketFromRequest(Request $request)

@@ -17,23 +17,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Action extends AbstractModel
 {
-    use SoftDeletes, MorphsWithTrashed;
+    use MorphsWithTrashed;
+    use SoftDeletes;
 
     /** @var string */
     protected $configKey = 'helpdesk.tables.actions';
 
-    /**
-     * @return MorphTo
-     */
-    public function subject (): MorphTo
+    public function subject(): MorphTo
     {
         return $this->morphToWithTrashed('subject');
     }
 
-    /**
-     * @return MorphTo
-     */
-    public function object (): MorphTo
+    public function object(): MorphTo
     {
         return $this->morphToWithTrashed('object');
     }

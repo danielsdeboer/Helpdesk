@@ -22,8 +22,7 @@ class NoteController extends Controller
 
     /**
      * Create a new assignment.
-     * @param \Illuminate\Http\Request $request
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function create(Request $request, Ticket $ticket)

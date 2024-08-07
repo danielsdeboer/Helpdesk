@@ -18,7 +18,7 @@ class CollaboratorController extends Controller
 
     /**
      * Create a new assignment.
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function create(Ticket $ticket)
@@ -39,7 +39,6 @@ class CollaboratorController extends Controller
     }
 
     /**
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function redirect(Ticket $ticket)

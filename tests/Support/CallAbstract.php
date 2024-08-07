@@ -11,7 +11,7 @@ abstract class CallAbstract
 
     protected Application $app;
 
-    public function __construct (Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

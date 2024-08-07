@@ -19,7 +19,7 @@ class CreateSuper extends Command
     /**
      * Constructor.
      */
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct();
         $this->setUserConfig();
@@ -27,6 +27,7 @@ class CreateSuper extends Command
 
     /**
      * Execute the console command.
+     *
      * @return mixed
      */
     public function handle()
@@ -38,7 +39,7 @@ class CreateSuper extends Command
          */
         if ($callbackClass = config('helpdesk.callbacks.user')) {
             /** @var \Aviator\Helpdesk\Interfaces\HasUserCallback $class */
-            $class = new $callbackClass;
+            $class = new $callbackClass();
             $callback = $class->getUserCallback();
         }
 
@@ -60,9 +61,8 @@ class CreateSuper extends Command
 
     /**
      * Perform the agent creation.
-     * @param $user
      */
-    protected function updateOrCreateSuper ($user)
+    protected function updateOrCreateSuper($user)
     {
         Agent::query()
             ->updateOrCreate(

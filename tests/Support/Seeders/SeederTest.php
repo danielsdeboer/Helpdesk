@@ -10,6 +10,7 @@ class SeederTest extends TestCase
 {
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_creates_tickets()
@@ -23,6 +24,7 @@ class SeederTest extends TestCase
 
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_assigns_half_the_tickets_to_teams()
@@ -36,6 +38,7 @@ class SeederTest extends TestCase
 
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_assigns_half_the_remaining_unassigned_tickets_to_assignment_teams()
@@ -49,6 +52,7 @@ class SeederTest extends TestCase
 
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_adds_a_due_date_for_assigned_and_teamed_tickets()
@@ -62,6 +66,7 @@ class SeederTest extends TestCase
 
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_adds_a_reply_to_a_subset_of_assigned_tickets()
@@ -75,6 +80,7 @@ class SeederTest extends TestCase
 
     /**
      * @group seeders
+     *
      * @test
      */
     public function it_closes_some_random_tickets()

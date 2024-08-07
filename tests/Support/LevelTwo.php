@@ -12,6 +12,6 @@ class LevelTwo
 
     public function __construct()
     {
-        $this->levelThree = new LevelThree;
+        $this->levelThree = new LevelThree();
     }
 }

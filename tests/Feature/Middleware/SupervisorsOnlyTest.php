@@ -13,7 +13,7 @@ class SupervisorsOnlyTest extends TestCase
     /*
      * Create a route to test against.
      */
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -26,7 +26,7 @@ class SupervisorsOnlyTest extends TestCase
     }
 
     /** @test */
-    public function guests_get_a_403 ()
+    public function guests_get_a_403()
     {
         $response = $this->get($this->url);
 
@@ -34,7 +34,7 @@ class SupervisorsOnlyTest extends TestCase
     }
 
     /** @test */
-    public function users_get_a_403 ()
+    public function users_get_a_403()
     {
         $this->be($this->make->user);
 
@@ -44,7 +44,7 @@ class SupervisorsOnlyTest extends TestCase
     }
 
     /** @test */
-    public function non_super_agents_get_a_403 ()
+    public function non_super_agents_get_a_403()
     {
         $this->be($this->make->agent->user);
 
@@ -54,7 +54,7 @@ class SupervisorsOnlyTest extends TestCase
     }
 
     /** @test */
-    public function it_continues_for_supervisors ()
+    public function it_continues_for_supervisors()
     {
         $this->be($this->make->super->user);
 

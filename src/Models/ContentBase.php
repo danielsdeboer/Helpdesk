@@ -21,18 +21,16 @@ abstract class ContentBase extends AbstractModel implements TicketContent
 
     /**
      * Get the partial associated with this piece of content.
-     * @return string
      */
-    public function partial (): string
+    public function partial(): string
     {
         return $this->partial;
     }
 
     /**
      * Get the title associated with this piece of content.
-     * @return string
      */
-    public function title (): string
+    public function title(): string
     {
         return $this->title;
     }

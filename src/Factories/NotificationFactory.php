@@ -20,8 +20,6 @@ class NotificationFactory implements NotificationFactoryInterface
 
     /**
      * Constructor.
-     * @param string $className
-     * @param array $config
      */
     public function __construct(string $className, array $config)
     {
@@ -33,12 +31,9 @@ class NotificationFactory implements NotificationFactoryInterface
     }
 
     /**
-     * @param string $name
-     * @param Ticket $ticket
-     * @return Notification
      * @throws DefinitionNotFound
      */
-    public function make (string $name, Ticket $ticket): Notification
+    public function make(string $name, Ticket $ticket): Notification
     {
         try {
             return new $this->className($ticket, $this->config[$name]);
@@ -48,10 +43,9 @@ class NotificationFactory implements NotificationFactoryInterface
     }
 
     /**
-     * @param string $name
      * @throws DefinitionNotFound
      */
-    private function throwDefinitionException (string $name)
+    private function throwDefinitionException(string $name)
     {
         throw new DefinitionNotFound('The definition "' . $name . '" was not found in the notification factory.');
     }

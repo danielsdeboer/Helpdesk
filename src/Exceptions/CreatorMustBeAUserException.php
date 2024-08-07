@@ -2,6 +2,8 @@
 
 namespace Aviator\Helpdesk\Exceptions;
 
-class CreatorMustBeAUserException extends \Exception
+use Exception;
+
+class CreatorMustBeAUserException extends Exception
 {
 }

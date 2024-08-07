@@ -25,10 +25,10 @@ class TicketsController extends Controller
 
     /**
      * Display an index of the resource.
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
+     *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index (TicketsRepository $tickets)
+    public function index(TicketsRepository $tickets)
     {
         $openTickets = $tickets->clone()
             ->with($this->relations)
@@ -49,11 +49,10 @@ class TicketsController extends Controller
 
     /**
      * Display a instance of the resource.
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
-     * @param int $id
+     *
      * @return \Illuminate\Contracts\View\View
      */
-    public function show (TicketsRepository $tickets, int $id)
+    public function show(TicketsRepository $tickets, int $id)
     {
         return view('helpdesk::tickets.show')->with([
             'for' => 'user',

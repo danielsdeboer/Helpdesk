@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Tests\AdminBase;
 class AdminAgentsDeleteTest extends AdminBase
 {
     const VERB = 'DELETE';
+
     const URI = 'helpdesk/admin/agents/2';
 
     /** @test */
@@ -34,7 +35,7 @@ class AdminAgentsDeleteTest extends AdminBase
     }
 
     /** @test */
-    public function the_super_cant_delete_themselves ()
+    public function the_super_cant_delete_themselves()
     {
         $super = $this->make->super;
 

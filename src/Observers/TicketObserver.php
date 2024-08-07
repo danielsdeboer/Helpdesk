@@ -13,16 +13,15 @@ class TicketObserver
 
     /**
      * Constructor.
-     * @param Opening $opening
      */
-    public function __construct (Opening $opening)
+    public function __construct(Opening $opening)
     {
         $this->opening = $opening;
     }
 
     /**
      * Listen to the creating event.
-     * @param Ticket $ticket
+     *
      * @return void
      */
     public function creating(Ticket $ticket)
@@ -37,7 +36,7 @@ class TicketObserver
 
     /**
      * Listen to the created event.
-     * @param Ticket $ticket
+     *
      * @return void
      */
     public function created(Ticket $ticket)
@@ -45,10 +44,7 @@ class TicketObserver
         $this->createOpening($ticket);
     }
 
-    /**
-     * @param Ticket $ticket
-     */
-    protected function createOpening (Ticket $ticket)
+    protected function createOpening(Ticket $ticket)
     {
         $this->opening->create([
             'ticket_id' => $ticket->id,

@@ -167,7 +167,7 @@ class ReplyTest extends ModelTestCase
     }
 
     /** @test */
-    public function it_doesnt_send_a_notification_to_assignee_if_ignored ()
+    public function it_doesnt_send_a_notification_to_assignee_if_ignored()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;

@@ -9,10 +9,10 @@ class ClosingObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param Closing $observed
+     *
      * @return void
      */
-    public function created (Closing $observed)
+    public function created(Closing $observed)
     {
         $this->createAction('closed', $observed);
 

@@ -24,9 +24,8 @@ class EnabledAgentsRepository extends Repository
 
     /**
      * Constructor.
-     * @param Agent $model
      */
-    public function __construct (Agent $model)
+    public function __construct(Agent $model)
     {
         $this->query = $model::query();
         $this->agentsTable = $model->getTable();
@@ -36,10 +35,10 @@ class EnabledAgentsRepository extends Repository
 
     /**
      * Get all the agents in the given team.
-     * @param Team $team
+     *
      * @return EnabledAgentsRepository
      */
-    public function inTeam (Team $team)
+    public function inTeam(Team $team)
     {
         $this->addScope('inTeam', $team);
 
@@ -48,20 +47,21 @@ class EnabledAgentsRepository extends Repository
 
     /**
      * Scope the query to exclude the currently signed-in agent.
+     *
      * @return $this
      */
-    public function exceptAuthorized ()
+    public function exceptAuthorized()
     {
         $this->addScope('exceptAuthorized');
 
         return $this;
     }
 
-    private function addJoins ()
+    private function addJoins()
     {
         $userModel = config('helpdesk.userModel');
         /** @noinspection PhpUndefinedMethodInspection */
-        $table = (new $userModel)->getTable();
+        $table = (new $userModel())->getTable();
 
         $this->query->join(
             $table,
@@ -79,9 +79,10 @@ class EnabledAgentsRepository extends Repository
 
     /**
      * Selects only enabled agents to be listed within active lists.
+     *
      * @return void
      */
-    private function enabledAgents ()
+    private function enabledAgents()
     {
         $this->query->whereNull($this->agentsTable . '.is_disabled');
     }

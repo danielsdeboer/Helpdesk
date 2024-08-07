@@ -28,7 +28,6 @@ class TeamMembersController extends Controller
     /**
      * Add an agent to a team.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function add(Request $request)

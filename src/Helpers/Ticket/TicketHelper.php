@@ -11,9 +11,8 @@ abstract class TicketHelper
 
     /**
      * Constructor.
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
      */
-    public function __construct (Ticket $ticket)
+    public function __construct(Ticket $ticket)
     {
         $this->ticket = $ticket;
     }

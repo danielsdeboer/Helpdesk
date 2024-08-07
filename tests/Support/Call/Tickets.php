@@ -11,7 +11,7 @@ class Tickets extends CallAbstract
     /**
      * @param \Aviator\Helpdesk\Models\Ticket|int $ticket
      */
-    public function show ($ticket): TestResponse
+    public function show($ticket): TestResponse
     {
         return $this->get(sprintf(
             'helpdesk/tickets/%s',

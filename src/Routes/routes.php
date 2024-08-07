@@ -1,6 +1,7 @@
 <?php
 
 // Helpdesk Group
+use Aviator\Helpdesk\Middleware\DashboardRedirector;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -69,7 +70,7 @@ Route::group([
         'prefix' => hd_route('dashboard.prefix'),
     ], function () {
         Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@doNothing')
-            ->middleware(\Aviator\Helpdesk\Middleware\DashboardRedirector::class)
+            ->middleware(DashboardRedirector::class)
             ->name('router');
 
         Route::get(

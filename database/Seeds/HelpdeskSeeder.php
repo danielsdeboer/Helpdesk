@@ -11,7 +11,9 @@ use Illuminate\Database\Seeder;
 class HelpdeskSeeder extends Seeder
 {
     protected $tickets;
+
     protected $agents;
+
     protected $teams;
 
     /**
@@ -33,7 +35,8 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Create a batch of tickets.
-     * @param  int $numberOfTickets
+     *
+     * @param int $numberOfTickets
      * @return $this
      */
     protected function createTickets($numberOfTickets)
@@ -45,7 +48,8 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Create a batch of agents.
-     * @param  int $numberOfUsers
+     *
+     * @param int $numberOfUsers
      * @return $this
      */
     protected function createAgents($numberOfAgents)
@@ -57,7 +61,8 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Create a batch of teams.
-     * @param  int $numberOfTeams
+     *
+     * @param int $numberOfTeams
      * @return $this
      */
     protected function createTeams($numberOfTeams)
@@ -69,6 +74,7 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Assign every other ticket to a random agent.
+     *
      * @return $this
      */
     protected function assignTicketsToUsers()
@@ -84,6 +90,7 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Assign half the unassigned tickets to assignment teams.
+     *
      * @return $this
      */
     protected function assignTicketsToTeams()
@@ -99,6 +106,7 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Add a due date for each assigned or teamed tickets.
+     *
      * @return $this
      */
     protected function addDueDatesToAssignedOrTeamedTickets()
@@ -114,6 +122,7 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Add internal replies to some assigned tickets.
+     *
      * @param int $numberOfReplies
      * @return $this
      */
@@ -128,7 +137,8 @@ class HelpdeskSeeder extends Seeder
 
     /**
      * Close some random tickets.
-     * @param  int $numberOfTickets
+     *
+     * @param int $numberOfTickets
      * @return $this
      */
     protected function closeRandomTickets($numberOfTickets)

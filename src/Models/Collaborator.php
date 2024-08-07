@@ -17,10 +17,7 @@ class Collaborator extends ActionBase
     /** @var string */
     protected $configKey = 'helpdesk.tables.collaborators';
 
-    /**
-     * @return BelongsTo
-     */
-    public function createdBy (): BelongsTo
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(Agent::class, 'created_by');
     }

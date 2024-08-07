@@ -20,7 +20,7 @@ class TeamsController extends Controller
     /**
      * Add middleware.
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->middleware([
             'auth',
@@ -28,7 +28,7 @@ class TeamsController extends Controller
         ]);
     }
 
-    public function index (): View
+    public function index(): View
     {
         return view('helpdesk::admin.teams.index')->with([
             'teams' => Team::all(),
@@ -37,7 +37,7 @@ class TeamsController extends Controller
         ]);
     }
 
-    public function show (int $id): View
+    public function show(int $id): View
     {
         $team = Team::findOrFail($id);
 
@@ -71,14 +71,14 @@ class TeamsController extends Controller
         ]);
     }
 
-    public function store (StoreRequest $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
         $team = Team::create($request->validated());
 
         return $this->toShow($team);
     }
 
-    public function update (UpdateRequest $request, int $id): RedirectResponse
+    public function update(UpdateRequest $request, int $id): RedirectResponse
     {
         $team = Team::findOrFail($id);
 
@@ -87,7 +87,7 @@ class TeamsController extends Controller
         return $this->toShow($team);
     }
 
-    public function destroy (Request $request, int $id): RedirectResponse
+    public function destroy(Request $request, int $id): RedirectResponse
     {
         $this->validate($request, ['delete_team_confirmed' => 'required|in:1']);
 
@@ -98,7 +98,7 @@ class TeamsController extends Controller
         return redirect()->route('helpdesk.admin.teams.index');
     }
 
-    protected function toShow (Team $team): RedirectResponse
+    protected function toShow(Team $team): RedirectResponse
     {
         return redirect()->route('helpdesk.admin.teams.show', $team->id);
     }

@@ -22,6 +22,7 @@ class ReplyController extends Controller
 
     /**
      * Create a new assignment.
+     *
      * @return Response
      */
     protected function create(Request $request, Ticket $ticket)

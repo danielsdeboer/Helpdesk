@@ -17,10 +17,12 @@ use Aviator\Helpdesk\Models\TeamAssignment;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
 
 /**
  * Class Create.
+ *
  * @property \Aviator\Helpdesk\Models\Agent super
  * @property \Aviator\Helpdesk\Models\Agent agent
  * @property \Aviator\Helpdesk\Models\Team team
@@ -45,70 +47,70 @@ class Make
 {
     protected string $ticketUriSlug = 'helpdesk/tickets/';
 
-    public function action (): Action
+    public function action(): Action
     {
         return factory(Action::class)->create();
     }
 
-    public function assignment (): Assignment
+    public function assignment(): Assignment
     {
         return factory(Assignment::class)->create();
     }
 
-    public function agent (User $user = null): Agent
+    public function agent(User|null $user = null): Agent
     {
         return $user
             ? factory(Agent::class)->create(['user_id' => $user->id])
             : factory(Agent::class)->create();
     }
 
-    public function agentNamed (string $name): Agent
+    public function agentNamed(string $name): Agent
     {
         return factory(Agent::class)->create([
             'user_id' => factory(User::class)->create(['name' => $name])->id,
         ]);
     }
 
-    public function agents (int $count): Collection
+    public function agents(int $count): Collection
     {
         if ($count <= 1) {
-            throw new \Exception('Count must be greater than 1.');
+            throw new Exception('Count must be greater than 1.');
         }
 
         return factory(Agent::class, $count)->create();
     }
 
-    public function closing (): Closing
+    public function closing(): Closing
     {
         return factory(Closing::class)->create();
     }
 
-    public function collaborator (): Collaborator
+    public function collaborator(): Collaborator
     {
         return factory(Collaborator::class)->create();
     }
 
-    public function content (): GenericContent
+    public function content(): GenericContent
     {
         return factory(GenericContent::class)->create();
     }
 
-    public function dueDate (): DueDate
+    public function dueDate(): DueDate
     {
         return factory(DueDate::class)->create();
     }
 
-    public function note (): Note
+    public function note(): Note
     {
         return factory(Note::class)->create();
     }
 
-    public function opening (): Opening
+    public function opening(): Opening
     {
         return factory(Opening::class)->create();
     }
 
-    public function teamAssignment (Team $team = null): TeamAssignment
+    public function teamAssignment(Team|null $team = null): TeamAssignment
     {
         $team = $team
             ?: $this->team();
@@ -118,7 +120,7 @@ class Make
         ]);
     }
 
-    public function teamLead (Team $team = null): Agent
+    public function teamLead(Team|null $team = null): Agent
     {
         return $this->agent()
             ->makeTeamLeadOf(
@@ -127,27 +129,27 @@ class Make
             );
     }
 
-    public function reply (): Reply
+    public function reply(): Reply
     {
         return factory(Reply::class)->create();
     }
 
-    public function super (): Agent
+    public function super(): Agent
     {
         return factory(Agent::class)->states('isSuper')->create();
     }
 
-    public function user (): User
+    public function user(): User
     {
         return factory(User::class)->create();
     }
 
-    public function internalUser (): User
+    public function internalUser(): User
     {
         return factory(User::class)->states('isInternal')->create();
     }
 
-    public function ticket (User $user = null, string $when = 'now'): Ticket
+    public function ticket(User|null $user = null, string $when = 'now'): Ticket
     {
         $user = $user
             ?: factory(User::class)->create();
@@ -158,17 +160,17 @@ class Make
         ]);
     }
 
-    public function ticketWithDeletedContent (): Ticket
+    public function ticketWithDeletedContent(): Ticket
     {
         return factory(Ticket::class)->create([
             'content_type' => 'Foo\\Bar\\DeletedContent',
         ]);
     }
 
-    public function tickets (int $quantity, User $user = null): Collection
+    public function tickets(int $quantity, User|null $user = null): Collection
     {
         if ($quantity <= 1) {
-            throw new \Exception('Quantity must be greater than 1.');
+            throw new Exception('Quantity must be greater than 1.');
         }
 
         $user = $user
@@ -179,24 +181,24 @@ class Make
         ]);
     }
 
-    public function ticketUri (Ticket $ticket = null): string
+    public function ticketUri(Ticket|null $ticket = null): string
     {
         return $ticket
             ? sprintf('%s%s', $this->ticketUriSlug, $ticket->id)
             : $this->ticketUriSlug;
     }
 
-    public function ticketUuidUri (Ticket $ticket): string
+    public function ticketUuidUri(Ticket $ticket): string
     {
         return sprintf('%spublic/%s', $this->ticketUriSlug, $ticket->uuid);
     }
 
-    public function team (): Team
+    public function team(): Team
     {
         return factory(Team::class)->create();
     }
 
-    public function option (Agent $agent, string $idSlug): string
+    public function option(Agent $agent, string $idSlug): string
     {
         return sprintf(
             '<option value="%s" id="%s%s">%s</option>',
@@ -208,16 +210,16 @@ class Make
     }
 
     /**
-     * @param $name
      * @return mixed
+     *
      * @throws \Exception
      */
-    public function __get ($name)
+    public function __get($name)
     {
         if (method_exists($this, $name)) {
             return $this->$name();
         }
 
-        throw new \Exception('Property ' . $name . ' not found.');
+        throw new Exception('Property ' . $name . ' not found.');
     }
 }

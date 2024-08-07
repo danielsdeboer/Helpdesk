@@ -7,7 +7,7 @@ use Aviator\Helpdesk\Tests\TestCase;
 class TeamTest extends TestCase
 {
     /** @test */
-    public function adding_multiple_team_leads ()
+    public function adding_multiple_team_leads()
     {
         $team = $this->make->team;
         $agent1 = $this->make->agent;

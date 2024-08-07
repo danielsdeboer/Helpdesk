@@ -17,10 +17,7 @@ class TeamAssignment extends ActionBase
     /** @var string */
     protected $configKey = 'helpdesk.tables.team_assignments';
 
-    /**
-     * @return BelongsTo
-     */
-    public function team (): BelongsTo
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }

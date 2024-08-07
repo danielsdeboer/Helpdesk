@@ -1,0 +1,28 @@
+{
+  "preset": "laravel",
+  "rules": {
+    "concat_space": {
+      "spacing": "one"
+    },
+    "nullable_type_declaration": {
+      "syntax": "union"
+    },
+    "nullable_type_declaration_for_default_null_value": {
+      "use_nullable_type_declaration": true
+    },
+    "ordered_types": {
+      "null_adjustment": "always_last"
+    },
+    "not_operator_with_space": false,
+    "not_operator_with_successor_space": false,
+    "phpdoc_align": {
+      "align": "left"
+    },
+    "single_line_empty_body": false,
+    "new_with_parentheses": {
+      "anonymous_class": true,
+      "named_class": true
+    },
+    "single_trait_insert_per_statement": true
+  }
+}

@@ -8,6 +8,7 @@ use Aviator\Helpdesk\Tests\AdminBase;
 class AdminAgentsStoreTest extends AdminBase
 {
     const VERB = 'POST';
+
     const URI = 'helpdesk/admin/agents';
 
     /** @test */
@@ -19,7 +20,7 @@ class AdminAgentsStoreTest extends AdminBase
     }
 
     /** @test */
-    public function supervisors_can_create_agents ()
+    public function supervisors_can_create_agents()
     {
         $super = $this->make->super;
         $user = $this->make->user;
@@ -36,7 +37,7 @@ class AdminAgentsStoreTest extends AdminBase
     }
 
     /** @test */
-    public function the_same_user_cant_be_added_as_an_agent_twice ()
+    public function the_same_user_cant_be_added_as_an_agent_twice()
     {
         $super = $this->make->super;
         $agent = $this->make->agent;
@@ -54,7 +55,7 @@ class AdminAgentsStoreTest extends AdminBase
     }
 
     /** @test */
-    public function a_non_existent_user_cant_be_added ()
+    public function a_non_existent_user_cant_be_added()
     {
         $super = $this->make->super;
 
@@ -70,7 +71,7 @@ class AdminAgentsStoreTest extends AdminBase
     }
 
     /** @test */
-    public function an_agent_can_be_deleted_and_then_created_again_with_the_same_user_id ()
+    public function an_agent_can_be_deleted_and_then_created_again_with_the_same_user_id()
     {
         $super = $this->make->super;
         $user = $this->make->internalUser;

@@ -29,10 +29,8 @@ class TicketsRepository extends Repository
 
     /**
      * Constructor.
-     * @param \Aviator\Helpdesk\Models\Ticket $ticket
-     * @param \Illuminate\Foundation\Auth\User $user
      */
-    public function __construct (Ticket $ticket, User $user = null)
+    public function __construct(Ticket $ticket, User|null $user = null)
     {
         $this->query = $ticket::query();
         $this->user = $user;
@@ -42,7 +40,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function closed ()
+    public function closed()
     {
         return $this->addScope('closed');
     }
@@ -50,7 +48,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function collaborating ()
+    public function collaborating()
     {
         if ($this->user->agent) {
             return $this->addScope('collaborating', $this->user->agent);
@@ -62,7 +60,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function ignored ()
+    public function ignored()
     {
         return $this->addScope('ignored');
     }
@@ -70,7 +68,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function open ()
+    public function open()
     {
         return $this->addScope('opened');
     }
@@ -78,7 +76,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function openWithoutIgnored ()
+    public function openWithoutIgnored()
     {
         return $this->addScope('openedWithoutIgnored');
     }
@@ -86,7 +84,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function closedWithoutIgnored ()
+    public function closedWithoutIgnored()
     {
         return $this->addScope('closedWithoutIgnored');
     }
@@ -94,7 +92,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function overdue ()
+    public function overdue()
     {
         return $this->addScope('overdue');
     }
@@ -102,7 +100,7 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function team ()
+    public function team()
     {
         if ($this->user->agent) {
             return $this->addScope('team', $this->user->agent);
@@ -114,16 +112,15 @@ class TicketsRepository extends Repository
     /**
      * @return $this
      */
-    public function unassigned ()
+    public function unassigned()
     {
         return $this->addScope('unassigned');
     }
 
     /**
-     * @param string $permalink
      * @return $this
      */
-    public function permalink (string $permalink)
+    public function permalink(string $permalink)
     {
         $this->permalinkApplied = true;
 
@@ -132,9 +129,10 @@ class TicketsRepository extends Repository
 
     /**
      * Pre-run query prepare. Can be over-ridden.
+     *
      * @return Builder
      */
-    protected function prepare ()
+    protected function prepare()
     {
         if (!$this->user && !$this->permalinkApplied) {
             abort(403, 'Guests may only request tickets via permalinks.');
@@ -145,9 +143,10 @@ class TicketsRepository extends Repository
 
     /**
      * Apply query scopes based on whether the user is an agent or not.
+     *
      * @return $this
      */
-    private function addAutoScopes ()
+    private function addAutoScopes()
     {
         if ($this->user && $this->user->agent) {
             return $this->addScope('accessibleToAgent', $this->user->agent);

@@ -9,7 +9,7 @@ class OpeningObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param Opening $observed
+     *
      * @return void
      */
     public function created(Opening $observed)

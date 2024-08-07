@@ -15,7 +15,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use HasAgentRelation, Notifiable;
+    use HasAgentRelation;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

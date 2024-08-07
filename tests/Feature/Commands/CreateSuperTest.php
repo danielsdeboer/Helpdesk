@@ -12,7 +12,7 @@ class CreateSuperTest extends BKTestCase
     /**
      * @test
      */
-    public function it_creates_a_supervisor_agent ()
+    public function it_creates_a_supervisor_agent()
     {
         $user = $this->make->internalUser;
 
@@ -33,7 +33,7 @@ class CreateSuperTest extends BKTestCase
     /**
      * @test
      */
-    public function it_stops_and_outputs_an_error_if_no_user_can_be_found ()
+    public function it_stops_and_outputs_an_error_if_no_user_can_be_found()
     {
         $this->artisan('helpdesk:super', [
             'email' => 'some@user.net',
@@ -45,7 +45,7 @@ class CreateSuperTest extends BKTestCase
     }
 
     /** @test */
-    public function it_modifies_existing_users ()
+    public function it_modifies_existing_users()
     {
         $user = $this->make->internalUser;
 
@@ -74,7 +74,7 @@ class CreateSuperTest extends BKTestCase
     }
 
     /** @test */
-    public function it_uses_the_user_filter_callback ()
+    public function it_uses_the_user_filter_callback()
     {
         $external = $this->make->user;
         $internal = $this->make->internalUser;

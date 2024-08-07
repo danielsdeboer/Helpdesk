@@ -9,9 +9,10 @@ use Illuminate\Contracts\Foundation\Application;
 class Call extends CallAbstract
 {
     public Admin $admin;
+
     public Tickets $tickets;
 
-    public function __construct (Application $app)
+    public function __construct(Application $app)
     {
         parent::__construct($app);
 

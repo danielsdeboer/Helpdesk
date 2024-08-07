@@ -17,7 +17,8 @@ use Illuminate\Validation\Rule;
 
 class AgentsController extends Controller
 {
-    use ValidatesRequests, InteractsWithUsers;
+    use InteractsWithUsers;
+    use ValidatesRequests;
 
     /**
      * AgentsController constructor.
@@ -34,6 +35,7 @@ class AgentsController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
      * @return View
      */
     public function index()
@@ -51,7 +53,8 @@ class AgentsController extends Controller
 
     /**
      * Display the specified resource.
-     * @param  int  $id
+     *
+     * @param int $id
      * @return View
      */
     public function show($id)
@@ -74,6 +77,7 @@ class AgentsController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      * @return RedirectResponse
      */
     public function store()
@@ -100,6 +104,7 @@ class AgentsController extends Controller
 
     /**
      * Update an agent to add them to disabled list.
+     *
      * @return RedirectResponse
      */
     public function update($id)
@@ -126,7 +131,8 @@ class AgentsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param  int  $id
+     *
+     * @param int $id
      * @return RedirectResponse
      */
     public function destroy($id)

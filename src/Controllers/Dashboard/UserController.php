@@ -17,7 +17,7 @@ class UserController extends Controller
 
     /**
      * Display an index of the controller.
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function index(TicketsRepository $tickets)

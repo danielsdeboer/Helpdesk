@@ -11,7 +11,7 @@ class IndexTest extends TestCase
     protected $url = 'helpdesk/tickets/open';
 
     /** @test */
-    public function guests_are_redirected_to_login ()
+    public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
 
@@ -20,7 +20,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_only_see_their_own_open_tickets ()
+    public function users_only_see_their_own_open_tickets()
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user);
@@ -40,7 +40,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_tickets_assigned_to_them ()
+    public function agents_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
         $ticket1 = $this->make->ticket->assignToAgent($agent);
@@ -109,7 +109,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_paginated_when_displaying_more_than_24_tickets ()
+    public function results_are_paginated_when_displaying_more_than_24_tickets()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user);
@@ -131,7 +131,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_ordered_by_latest_first ()
+    public function results_are_ordered_by_latest_first()
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user);
@@ -155,7 +155,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_see_the_user_table_sorted_by_newest_first ()
+    public function users_see_the_user_table_sorted_by_newest_first()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -186,7 +186,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_the_agent_table_sorted_by_newest_first ()
+    public function agents_see_the_agent_table_sorted_by_newest_first()
     {
         $user1 = $this->make->user;
         $user2 = $this->make->user;
@@ -220,7 +220,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function only_ignored_users_can_see_their_open_tickets ()
+    public function only_ignored_users_can_see_their_open_tickets()
     {
         $user = $this->make->user;
         $ignoredUser = $this->make->user;

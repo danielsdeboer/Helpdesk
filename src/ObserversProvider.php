@@ -41,7 +41,7 @@ class ObserversProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot ()
+    public function boot()
     {
         /** @var Model $model */
         foreach ($this->observers as $model => $observer) {

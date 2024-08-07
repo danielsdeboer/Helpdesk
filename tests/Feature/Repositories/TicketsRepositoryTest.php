@@ -7,16 +7,13 @@ use Aviator\Helpdesk\Tests\TestCase;
 
 class TicketsRepositoryTest extends TestCase
 {
-    /**
-     * @return \Aviator\Helpdesk\Repositories\TicketsRepository
-     */
-    protected function repo (): TicketsRepository
+    protected function repo(): TicketsRepository
     {
         return app(TicketsRepository::class);
     }
 
     /** @test */
-    public function it_scopes_queries_to_the_user ()
+    public function it_scopes_queries_to_the_user()
     {
         $user = $this->make->user;
 
@@ -33,7 +30,7 @@ class TicketsRepositoryTest extends TestCase
     }
 
     /** @test */
-    public function it_scopes_queries_to_the_agent ()
+    public function it_scopes_queries_to_the_agent()
     {
         $agent = $this->make->agent;
 
@@ -47,7 +44,7 @@ class TicketsRepositoryTest extends TestCase
     }
 
     /** @test */
-    public function it_scopes_queries_to_the_super ()
+    public function it_scopes_queries_to_the_super()
     {
         $super = $this->make->super;
 
@@ -61,9 +58,10 @@ class TicketsRepositoryTest extends TestCase
 
     /**
      * @test
+     *
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-    public function it_gets_open_tickets ()
+    public function it_gets_open_tickets()
     {
         $super = $this->make->super;
 
@@ -79,9 +77,10 @@ class TicketsRepositoryTest extends TestCase
 
     /**
      * @test
+     *
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
-    public function it_gets_closed_tickets ()
+    public function it_gets_closed_tickets()
     {
         $super = $this->make->super;
 
@@ -96,7 +95,7 @@ class TicketsRepositoryTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_overdue_tickets ()
+    public function it_gets_overdue_tickets()
     {
         $super = $this->make->super;
 

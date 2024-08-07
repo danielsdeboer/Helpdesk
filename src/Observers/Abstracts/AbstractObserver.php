@@ -17,10 +17,8 @@ abstract class AbstractObserver
 
     /**
      * Constructor.
-     * @param NotificationFactoryInterface $factory
-     * @param Action $action
      */
-    public function __construct (NotificationFactoryInterface $factory, Action $action)
+    public function __construct(NotificationFactoryInterface $factory, Action $action)
     {
         $this->factory = $factory;
         $this->action = $action;
@@ -28,11 +26,10 @@ abstract class AbstractObserver
 
     /**
      * Create the action.
-     * @param string $name
-     * @param ActionBase $model
+     *
      * @return void
      */
-    protected function createAction (string $name, ActionBase $model)
+    protected function createAction(string $name, ActionBase $model)
     {
         $this->action->name = ucwords($name);
         $this->action->subject_id = $model->ticket_id;
@@ -43,11 +40,9 @@ abstract class AbstractObserver
     }
 
     /**
-     * @param ActionBase $model
      * @param string $notifiable Dot notated string used to access the notifiable.
-     * @param string $classKey
      */
-    protected function sendNotification (ActionBase $model, string $notifiable, string $classKey)
+    protected function sendNotification(ActionBase $model, string $notifiable, string $classKey)
     {
         $notifiable = reduceProperties($model, $notifiable);
 

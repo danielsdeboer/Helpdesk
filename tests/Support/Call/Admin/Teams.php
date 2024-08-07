@@ -11,7 +11,7 @@ class Teams extends CallAbstract
     /**
      * @param Team|int $team
      */
-    public function show ($team): TestResponse
+    public function show($team): TestResponse
     {
         if ($team instanceof Team) {
             $team = $team->getKey();

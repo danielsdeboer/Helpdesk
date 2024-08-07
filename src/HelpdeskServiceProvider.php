@@ -41,6 +41,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
     /**
      * Make the configuration file available for publishing.
+     *
      * @return void
      */
     protected function publishConfig()
@@ -52,6 +53,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
     /**
      * Make the helpdesk factory available for publishing.
+     *
      * @return void
      */
     protected function publishFactories()
@@ -63,6 +65,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
     /**
      * Publish avatar images.
+     *
      * @return void
      */
     protected function publishImages()
@@ -74,6 +77,7 @@ class HelpdeskServiceProvider extends ServiceProvider
 
     /**
      * Publish blade directives.
+     *
      * @return void
      */
     protected function setBladeDirectives()

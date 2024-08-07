@@ -14,7 +14,7 @@ class NotificationsProvider extends ServiceProvider
     /**
      * Register application bindings.
      */
-    public function register ()
+    public function register()
     {
         $this->app->singleton(
             NotificationFactoryInterface::class,

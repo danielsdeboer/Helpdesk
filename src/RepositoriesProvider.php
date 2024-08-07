@@ -14,12 +14,12 @@ class RepositoriesProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register ()
+    public function register()
     {
         $this->app->bind(
             TicketsRepository::class,
             function () {
-                return new TicketsRepository(new Ticket, auth()->user());
+                return new TicketsRepository(new Ticket(), auth()->user());
             }
         );
     }

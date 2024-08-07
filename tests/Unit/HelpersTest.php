@@ -42,7 +42,10 @@ class HelpersTest extends TestCase
     /** @test */
     public function action_creator_returns_deleted_user()
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
+
+        /** @var Ticket $ticket */
         $ticket = factory(Ticket::class)->create([
             'user_id' => $user->id,
         ]);
@@ -51,7 +54,7 @@ class HelpersTest extends TestCase
         $user->delete();
 
         $this->assertSame(
-            '(deleted user)',
+            'System Process',
             Helpers::actionCreator($ticket->actions->last())
         );
     }

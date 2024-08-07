@@ -11,9 +11,8 @@ abstract class AbstractModel extends Model
 
     /**
      * Set the table name from the Helpdesk config.
-     * @param array $attributes
      */
-    public function __construct (array $attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 

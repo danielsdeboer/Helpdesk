@@ -12,7 +12,7 @@ class DashboardRedirectorTest extends TestCase
     /*
      * Set the url with the route name.
      */
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -20,7 +20,7 @@ class DashboardRedirectorTest extends TestCase
     }
 
     /** @test */
-    public function it_routes_guests_to_the_login_page ()
+    public function it_routes_guests_to_the_login_page()
     {
         $response = $this->get($this->url);
 
@@ -29,7 +29,7 @@ class DashboardRedirectorTest extends TestCase
     }
 
     /** @test */
-    public function it_routes_users_to_the_public_dashboard ()
+    public function it_routes_users_to_the_public_dashboard()
     {
         $this->be($this->make->user);
 
@@ -40,7 +40,7 @@ class DashboardRedirectorTest extends TestCase
     }
 
     /** @test */
-    public function it_routes_agents_to_the_agent_dashboard ()
+    public function it_routes_agents_to_the_agent_dashboard()
     {
         $this->be($this->make->agent->user);
 
@@ -51,7 +51,7 @@ class DashboardRedirectorTest extends TestCase
     }
 
     /** @test */
-    public function it_routes_supervisors_to_the_supervisor_dashboard ()
+    public function it_routes_supervisors_to_the_supervisor_dashboard()
     {
         $this->be($this->make->super->user);
 

@@ -17,9 +17,7 @@ class PermalinkController extends Controller
 
     /**
      * Display a instance of the resource.
-     * @param EnabledAgentsRepository $agents
-     * @param TicketsRepository $tickets
-     * @param string $permalink
+     *
      * @return View
      */
     public function show(EnabledAgentsRepository $agents, TicketsRepository $tickets, string $permalink)

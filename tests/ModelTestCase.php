@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Notification;
 
 abstract class ModelTestCase extends TestCase
 {
-    /**
-     * @param $notifiable
-     */
-    protected function assertSentTo ($notifiable)
+    protected function assertSentTo($notifiable)
     {
         Notification::assertSentTo(
             $notifiable,
@@ -32,10 +29,7 @@ abstract class ModelTestCase extends TestCase
         );
     }
 
-    /**
-     * @param $notifiable
-     */
-    protected function assertNotSentTo ($notifiable)
+    protected function assertNotSentTo($notifiable)
     {
         Notification::assertNotSentTo(
             $notifiable,
@@ -53,7 +47,7 @@ abstract class ModelTestCase extends TestCase
     /**
      * Mock the event dispatcher so all events are silenced and collected.
      */
-    protected function withoutEvents ()
+    protected function withoutEvents()
     {
         Model::unsetEventDispatcher();
     }

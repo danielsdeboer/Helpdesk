@@ -7,6 +7,7 @@ use Aviator\Helpdesk\Tests\AdminBase;
 class AdminAgentsShowTest extends AdminBase
 {
     const VERB = 'GET';
+
     const URI = 'helpdesk/admin/agents/1';
 
     /** @test */
@@ -18,7 +19,7 @@ class AdminAgentsShowTest extends AdminBase
     }
 
     /** @test */
-    public function supervisors_can_visit ()
+    public function supervisors_can_visit()
     {
         $super = $this->make->super;
         $agent = $this->make->agent;
@@ -33,7 +34,7 @@ class AdminAgentsShowTest extends AdminBase
     }
 
     /** @test */
-    public function it_lists_the_teams_the_agent_belongs_to ()
+    public function it_lists_the_teams_the_agent_belongs_to()
     {
         $super = $this->make->super;
         $team = $this->make->team;
@@ -48,7 +49,7 @@ class AdminAgentsShowTest extends AdminBase
     }
 
     /** @test */
-    public function it_has_a_list_of_the_agents_open_tickets ()
+    public function it_has_a_list_of_the_agents_open_tickets()
     {
         $super = $this->make->super;
         $agent = $this->make->agent;

@@ -13,7 +13,7 @@ class UsersOnlyTest extends TestCase
     /*
      * Set up a testing route.
      */
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -26,7 +26,7 @@ class UsersOnlyTest extends TestCase
     }
 
     /** @test */
-    public function it_aborts_with_403_for_guests ()
+    public function it_aborts_with_403_for_guests()
     {
         $response = $this->get($this->url);
 
@@ -35,7 +35,7 @@ class UsersOnlyTest extends TestCase
     }
 
     /** @test */
-    public function it_aborts_with_403_if_the_user_is_an_agent ()
+    public function it_aborts_with_403_if_the_user_is_an_agent()
     {
         $this->be($this->make->agent->user);
 
@@ -45,7 +45,7 @@ class UsersOnlyTest extends TestCase
     }
 
     /** @test */
-    public function it_continues_if_the_user_is_not_an_agent ()
+    public function it_continues_if_the_user_is_not_an_agent()
     {
         $this->be($this->make->user);
 

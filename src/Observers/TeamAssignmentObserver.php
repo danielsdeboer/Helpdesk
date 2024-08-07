@@ -9,10 +9,10 @@ class TeamAssignmentObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param \Aviator\Helpdesk\Models\TeamAssignment $observed
+     *
      * @return void
      */
-    public function created (TeamAssignment $observed)
+    public function created(TeamAssignment $observed)
     {
         $this->createAction('assigned to team', $observed);
 

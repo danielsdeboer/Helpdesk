@@ -12,7 +12,7 @@ class IndexTest extends TestCase
     protected $url = 'helpdesk/tickets/closed';
 
     /** @test */
-    public function guests_are_redirected_to_login ()
+    public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
 
@@ -21,7 +21,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_only_see_their_own_closed_tickets ()
+    public function users_only_see_their_own_closed_tickets()
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user);
@@ -41,7 +41,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_tickets_assigned_to_them ()
+    public function agents_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
         $ticket1 = $this->make->ticket->assignToAgent($agent);
@@ -110,7 +110,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_paginated_when_displaying_more_than_24_tickets ()
+    public function results_are_paginated_when_displaying_more_than_24_tickets()
     {
         $user = $this->make->user;
         $ticket = $this->make->ticket($user)->close(null, $user);
@@ -136,7 +136,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function results_are_ordered_by_latest_first ()
+    public function results_are_ordered_by_latest_first()
     {
         $user = $this->make->user;
         $ticket1 = $this->make->ticket($user)->close(null, $user);
@@ -160,7 +160,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function users_see_the_user_tickets_table ()
+    public function users_see_the_user_tickets_table()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -202,7 +202,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function agents_see_the_agents_table ()
+    public function agents_see_the_agents_table()
     {
         $user = $this->make->user;
         $agent = $this->make->agent;
@@ -246,7 +246,7 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function only_ignored_users_can_see_their_closed_tickets ()
+    public function only_ignored_users_can_see_their_closed_tickets()
     {
         $user = $this->make->user;
         $ignoredUser = $this->make->user;

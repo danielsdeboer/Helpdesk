@@ -10,17 +10,17 @@ class SupervisorController extends Controller
     /**
      * Construct with agents only middleware.
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->middleware('helpdesk.supervisors');
     }
 
     /**
      * Display an index of the controller.
-     * @param \Aviator\Helpdesk\Repositories\TicketsRepository $tickets
+     *
      * @return \Illuminate\View\View
      */
-    public function index (TicketsRepository $tickets)
+    public function index(TicketsRepository $tickets)
     {
         return view('helpdesk::dashboard.index')->with([
             'unassigned' => $tickets->clone()->unassigned()->get(),

@@ -9,7 +9,7 @@ class ReplyObserver extends AbstractObserver
 {
     /**
      * Listen to the created event.
-     * @param  Reply $observed
+     *
      * @return void
      */
     public function created(Reply $observed)

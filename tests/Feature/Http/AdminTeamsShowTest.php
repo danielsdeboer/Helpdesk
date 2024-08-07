@@ -10,7 +10,7 @@ class AdminTeamsShowTest extends BKTestCase
     /** @const string */
     const URI = 'helpdesk/admin/teams/1';
 
-    public function setUp (): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function guests_cant_visit ()
+    public function guests_cant_visit()
     {
         $this->get(self::URI);
 
@@ -28,7 +28,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function users_cant_visit ()
+    public function users_cant_visit()
     {
         $this->be($this->make->user);
         $this->get(self::URI);
@@ -37,7 +37,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function agents_cant_visit ()
+    public function agents_cant_visit()
     {
         $this->be($this->make->agent->user);
         $this->get(self::URI);
@@ -46,7 +46,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function supervisors_can_visit ()
+    public function supervisors_can_visit()
     {
         $super = $this->make->super;
         $team = $this->make->team;
@@ -60,7 +60,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_a_list_of_agents ()
+    public function it_has_a_list_of_agents()
     {
         $super = $this->make->super;
         $team1 = $this->make->team;
@@ -91,7 +91,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function it_has_a_list_of_open_tickets ()
+    public function it_has_a_list_of_open_tickets()
     {
         $super = $this->make->super;
         $team1 = $this->make->team;
@@ -124,7 +124,7 @@ class AdminTeamsShowTest extends BKTestCase
     }
 
     /** @test */
-    public function it_displays_nothing_to_see_here_on_no_tickets ()
+    public function it_displays_nothing_to_see_here_on_no_tickets()
     {
         $super = $this->make->super;
         $team1 = $this->make->team;

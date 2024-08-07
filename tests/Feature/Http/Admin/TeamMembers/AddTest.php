@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 class AddTest extends AdminBase
 {
     const VERB = 'POST';
+
     const URI = 'helpdesk/admin/team-members/add';
 
     /** @test */
@@ -50,7 +51,7 @@ class AddTest extends AdminBase
     }
 
     /** @test */
-    public function an_agent_cant_be_added_to_a_team_more_than_once ()
+    public function an_agent_cant_be_added_to_a_team_more_than_once()
     {
         $agent = $this->make->agent;
         $team = $this->make->team;

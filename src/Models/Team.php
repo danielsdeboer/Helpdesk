@@ -28,7 +28,7 @@ class Team extends AbstractModel
 
     /**
      * Check if an agent is a team lead of this team.
-     * @param  Agent   $agent
+     *
      * @return bool
      */
     public function isTeamLead(Agent $agent)
@@ -38,10 +38,10 @@ class Team extends AbstractModel
 
     /**
      * Add a team lead.
-     * @param Agent $agent
+     *
      * @return $this
      */
-    public function addLead (Agent $agent)
+    public function addLead(Agent $agent)
     {
         $agent->makeTeamLeadOf($this);
 
@@ -49,10 +49,9 @@ class Team extends AbstractModel
     }
 
     /**
-     * @param Agent $agent
      * @return $this
      */
-    public function addMember (Agent $agent)
+    public function addMember(Agent $agent)
     {
         $agent->addToTeam($this);
 
@@ -61,10 +60,10 @@ class Team extends AbstractModel
 
     /**
      * Add multiple members.
-     * @param array $agents
+     *
      * @return $this
      */
-    public function addMembers (array $agents)
+    public function addMembers(array $agents)
     {
         foreach ($agents as $agent) {
             $this->addMember($agent);
@@ -75,10 +74,10 @@ class Team extends AbstractModel
 
     /**
      * Assign a ticket to this team.
-     * @param Ticket $ticket
+     *
      * @return $this
      */
-    public function assign (Ticket $ticket)
+    public function assign(Ticket $ticket)
     {
         $ticket->assignToTeam($this);
 

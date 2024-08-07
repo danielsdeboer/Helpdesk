@@ -10,7 +10,7 @@ class AdminTeamsDeleteTest extends BKTestCase
     const URI = 'helpdesk/admin/teams';
 
     /** @test */
-    public function supervisors_can_delete_teams ()
+    public function supervisors_can_delete_teams()
     {
         $super = $this->make->super;
         $team = $this->make->team;
@@ -28,7 +28,7 @@ class AdminTeamsDeleteTest extends BKTestCase
     }
 
     /** @test */
-    public function nonexistent_teams_throw_a_404 ()
+    public function nonexistent_teams_throw_a_404()
     {
         $super = $this->make->super;
 
