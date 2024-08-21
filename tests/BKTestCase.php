@@ -24,6 +24,8 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
     protected Get $get;
 
+    protected string $domain = '';
+
     protected array $supers = [
         [
             'name' => 'Super Visor',
@@ -90,6 +92,10 @@ abstract class BKTestCase extends OrchestraBrowserKit
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        if ($this->domain) {
+            Config::set('helpdesk.domain', $this->domain);
+        }
 
         if (isset($GLOBALS['altdb']) && $GLOBALS['altdb'] === true) {
             $this->setAlternateTablesInConfig($app);

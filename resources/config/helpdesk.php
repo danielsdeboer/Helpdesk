@@ -129,6 +129,8 @@ return [
         ],
     ],
 
+    'domain' => '',
+
     'routes' => [
         'helpdesk' => [
             'prefix' => 'helpdesk',

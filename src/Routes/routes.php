@@ -4,14 +4,20 @@
 use Aviator\Helpdesk\Middleware\DashboardRedirector;
 use Illuminate\Support\Facades\Route;
 
+$domain = config('helpdesk.domain');
+
 Route::group([
     'as' => 'helpdesk.',
     'prefix' => hd_route('helpdesk.prefix'),
     'middleware' => 'web',
+    ...($domain ? compact('domain') : []),
 ], function () {
 
     // Helpdesk splash page
-    Route::get('/', '\Aviator\Helpdesk\Controllers\PublicController@splash');
+    Route::get(
+        '/',
+        '\Aviator\Helpdesk\Controllers\PublicController@splash'
+    )->name('splash');
 
     // Helpdesk admin redirect
     Route::get('admin', '\Aviator\Helpdesk\Controllers\PublicController@redirectToAdmin')
