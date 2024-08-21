@@ -5,3 +5,4 @@ test_logs
 .vscode/**
 reports/
 *.cache
+phpunit.xml
