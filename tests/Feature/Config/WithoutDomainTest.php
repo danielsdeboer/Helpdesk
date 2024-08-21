@@ -8,7 +8,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 class WithoutDomainTest extends BKTestCase
 {
     /** @test */
-    public function it_includes_the_domain(): void
+    public function it_excludes_the_domain(): void
     {
         $url = resolve(UrlGenerator::class)->route('helpdesk.splash');
 
