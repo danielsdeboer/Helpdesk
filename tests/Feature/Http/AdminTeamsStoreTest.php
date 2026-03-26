@@ -3,13 +3,14 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminTeamsStoreTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/admin/teams';
 
-    /** @test */
+    #[Test]
     public function guests_cant_visit()
     {
         $this->post('helpdesk/admin/teams');
@@ -18,7 +19,7 @@ class AdminTeamsStoreTest extends BKTestCase
         $this->assertRedirectedTo('login');
     }
 
-    /** @test */
+    #[Test]
     public function users_cant_visit()
     {
         $this->be($this->make->user);
@@ -27,7 +28,7 @@ class AdminTeamsStoreTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_visit()
     {
         $this->be($this->make->agent->user);
@@ -36,7 +37,7 @@ class AdminTeamsStoreTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_store_teams()
     {
         $this->be($this->make->super->user);

@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\AdminBase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminAgentsDeleteTest extends AdminBase
 {
@@ -10,7 +11,7 @@ class AdminAgentsDeleteTest extends AdminBase
 
     const URI = 'helpdesk/admin/agents/2';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
@@ -18,7 +19,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->noAgents();
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_delete()
     {
         $super = $this->make->super;
@@ -34,7 +35,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->assertRedirectedToRoute('helpdesk.admin.agents.index');
     }
 
-    /** @test */
+    #[Test]
     public function the_super_cant_delete_themselves()
     {
         $super = $this->make->super;
@@ -48,7 +49,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function a_non_existent_user_cant_be_deleted()
     {
         $super = $this->make->super;
@@ -62,7 +63,7 @@ class AdminAgentsDeleteTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function delete_must_be_confirmed()
     {
         $super = $this->make->super;

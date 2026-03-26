@@ -6,6 +6,7 @@ use Aviator\Helpdesk\Factories\DefinitionNotFound;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Notifications\Notification;
+use PHPUnit\Framework\Attributes\Test;
 
 use function notification;
 use function resolve;
@@ -23,7 +24,7 @@ class NotificationFactoryTest extends BKTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_produces_a_new_notification_instance()
     {
         $notification = $this->notificationFactory->make(
@@ -41,7 +42,7 @@ class NotificationFactoryTest extends BKTestCase
         $this->assertInstanceOf(Notification::class, $fromFunction);
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_an_exception_if_the_class_cannot_be_created()
     {
         $this->expectException(DefinitionNotFound::class);

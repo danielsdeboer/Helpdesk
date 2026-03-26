@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\AdminBase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminAgentsShowTest extends AdminBase
 {
@@ -10,7 +11,7 @@ class AdminAgentsShowTest extends AdminBase
 
     const URI = 'helpdesk/admin/agents/1';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
@@ -18,7 +19,7 @@ class AdminAgentsShowTest extends AdminBase
         $this->noAgents();
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_visit()
     {
         $super = $this->make->super;
@@ -33,7 +34,7 @@ class AdminAgentsShowTest extends AdminBase
             ->see('0 open tickets');
     }
 
-    /** @test */
+    #[Test]
     public function it_lists_the_teams_the_agent_belongs_to()
     {
         $super = $this->make->super;
@@ -48,7 +49,7 @@ class AdminAgentsShowTest extends AdminBase
             ->see('<a href="http://localhost/helpdesk/admin/teams/2">' . $team2->name . '</a>');
     }
 
-    /** @test */
+    #[Test]
     public function it_has_a_list_of_the_agents_open_tickets()
     {
         $super = $this->make->super;

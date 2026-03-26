@@ -7,14 +7,15 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 use Aviator\Helpdesk\Tests\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class HelpersTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function action_creator_returns_the_agent_name()
     {
-        $agent = factory(Agent::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $agent = Agent::factory()->create();
+        $ticket = Ticket::factory()->create();
         $ticket->assignToAgent($agent, $agent);
 
         $this->assertSame(
@@ -23,11 +24,11 @@ class HelpersTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function action_creator_returns_the_user_name()
     {
-        $user = factory(User::class)->create();
-        $ticket = factory(Ticket::class)->create([
+        $user = User::factory()->create();
+        $ticket = Ticket::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -39,14 +40,14 @@ class HelpersTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function action_creator_returns_deleted_user()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Ticket $ticket */
-        $ticket = factory(Ticket::class)->create([
+        $ticket = Ticket::factory()->create([
             'user_id' => $user->id,
         ]);
 

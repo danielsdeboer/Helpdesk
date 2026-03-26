@@ -6,10 +6,11 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Models\Collaborator;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CollaboratorTest extends ModelTestCase
 {
-    /** @test */
+    #[Test]
     public function creating_an_collaborator_creates_an_action_via_the_collaborator_observer()
     {
         $collab = $this->make->collaborator;
@@ -17,7 +18,7 @@ class CollaboratorTest extends ModelTestCase
         $this->assertEquals('Collaborator Added', $collab->action->name);
     }
 
-    /** @test */
+    #[Test]
     public function creating_an_assignment_fires_a_notification_to_the_assignee()
     {
         $collab = $this->make->collaborator;
@@ -25,7 +26,7 @@ class CollaboratorTest extends ModelTestCase
         $this->assertSentTo($collab->agent->user);
     }
 
-    /** @test */
+    #[Test]
     public function a_collaborator_has_an_agent()
     {
         $collab = $this->make->collaborator;
@@ -33,7 +34,7 @@ class CollaboratorTest extends ModelTestCase
         $this->assertInstanceOf(Agent::class, $collab->agent);
     }
 
-    /** @test */
+    #[Test]
     public function a_collaborator_has_a_ticket()
     {
         $collab = $this->make->collaborator;
@@ -41,7 +42,7 @@ class CollaboratorTest extends ModelTestCase
         $this->assertInstanceOf(Ticket::class, $collab->ticket);
     }
 
-    /** @test */
+    #[Test]
     public function a_collaborator_has_a_creator()
     {
         $collab = $this->make->collaborator;
@@ -49,13 +50,13 @@ class CollaboratorTest extends ModelTestCase
         $this->assertInstanceOf(Agent::class, $collab->createdBy);
     }
 
-    /** @test */
+    #[Test]
     public function if_collaborator_doesnt_exist_dont_send_notification()
     {
         Collaborator::query()->create([
             'agent_id' => 9932,
-            'ticket_id' => factory(Ticket::class)->create()->id,
-            'created_by' => factory(Agent::class)->create(),
+            'ticket_id' => Ticket::factory()->create()->id,
+            'created_by' => Agent::factory()->create(),
         ]);
 
         $this->assertNotSentTo(Collaborator::all());

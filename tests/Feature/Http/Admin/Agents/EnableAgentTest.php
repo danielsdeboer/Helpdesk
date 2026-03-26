@@ -5,10 +5,11 @@ namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\Agents;
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 
 class EnableAgentTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function enable_agent_puts_agent_onto_agents_list()
     {
         $this->assertSame(2, Agent::enabled()->get()->count());

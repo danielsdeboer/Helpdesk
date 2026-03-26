@@ -4,13 +4,14 @@ namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets\Ignored;
 
 use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 
 class IndexTest extends TestCase
 {
     /** @var string */
     protected $url = 'helpdesk/tickets/ignored';
 
-    /** @test */
+    #[Test]
     public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
@@ -19,7 +20,7 @@ class IndexTest extends TestCase
             ->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function only_supers_see_ignored_tickets()
     {
         $user = $this->make->user;
@@ -41,7 +42,7 @@ class IndexTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function results_are_paginated_when_displaying_more_than_24_tickets()
     {
         $user = $this->make->user;
@@ -67,7 +68,7 @@ class IndexTest extends TestCase
         $response->assertSee('<ul class="pagination-list">', false);
     }
 
-    /** @test */
+    #[Test]
     public function results_are_ordered_by_latest_first()
     {
         $ignoredUser = $this->make->user;

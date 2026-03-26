@@ -3,10 +3,11 @@
 namespace Aviator\Helpdesk\Tests\Feature\Models;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TeamTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function adding_multiple_team_leads()
     {
         $team = $this->make->team;
@@ -19,7 +20,7 @@ class TeamTest extends TestCase
         $this->assertEquals(2, $team->teamLeads->count());
     }
 
-    /** @test */
+    #[Test]
     public function a_team_has_many_agents()
     {
         $team = $this->make->team;
@@ -31,7 +32,7 @@ class TeamTest extends TestCase
         $this->assertEquals(2, $team->agents->count());
     }
 
-    /** @test */
+    #[Test]
     public function theIsTeamLeadMethodReturnsTrueIfAnAgentIsALeadOfThatTeam()
     {
         $team = $this->make->team;
@@ -42,7 +43,7 @@ class TeamTest extends TestCase
         $this->assertTrue($team->isTeamLead($agent));
     }
 
-    /** @test */
+    #[Test]
     public function theIsTeamLeadMethodReturnsFalseIfAnAgentIsNotALeadOfThatTeam()
     {
         $team = $this->make->team;

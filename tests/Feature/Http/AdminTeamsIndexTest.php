@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminTeamsIndexTest extends BKTestCase
 {
@@ -17,7 +18,7 @@ class AdminTeamsIndexTest extends BKTestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function guests_cant_visit()
     {
         $this->get(self::URI);
@@ -26,7 +27,7 @@ class AdminTeamsIndexTest extends BKTestCase
         $this->assertRedirectedTo('login');
     }
 
-    /** @test */
+    #[Test]
     public function users_cant_visit()
     {
         $this->be($this->make->user);
@@ -35,7 +36,7 @@ class AdminTeamsIndexTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_visit()
     {
         $this->be($this->make->agent->user);
@@ -44,7 +45,7 @@ class AdminTeamsIndexTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_visit()
     {
         $team = $this->make->team;
@@ -56,7 +57,7 @@ class AdminTeamsIndexTest extends BKTestCase
             ->see('<a href="http://localhost/helpdesk/admin/teams/1">' . $team->name . '</a>');
     }
 
-    /** @test */
+    #[Test]
     public function it_has_a_list_of_all_teams()
     {
         $super = $this->make->super;
@@ -70,7 +71,7 @@ class AdminTeamsIndexTest extends BKTestCase
             ->see('<a href="http://localhost/helpdesk/admin/teams/2">' . $team2->name . '</a>');
     }
 
-    /** @test */
+    #[Test]
     public function it_lists_agents_in_teams()
     {
         $super = $this->make->super;

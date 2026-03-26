@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets;
 
 use Aviator\Helpdesk\Tests\AdminBase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TicketsShowTest extends AdminBase
 {
@@ -10,13 +11,13 @@ class TicketsShowTest extends AdminBase
 
     const URI = 'helpdesk/tickets/1';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
     }
 
-    /** @test */
+    #[Test]
     public function users_can_see_their_own_tickets()
     {
         $user = $this->make->user;
@@ -29,7 +30,7 @@ class TicketsShowTest extends AdminBase
             ->see($ticket->content->title());
     }
 
-    /** @test */
+    #[Test]
     public function users_cant_see_other_tickets()
     {
         $user = $this->make->user;
@@ -41,7 +42,7 @@ class TicketsShowTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function agents_can_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
@@ -54,7 +55,7 @@ class TicketsShowTest extends AdminBase
             ->see($ticket->content->title());
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_see_tickets_not_assigned_to_them()
     {
         $agent = $this->make->agent;
@@ -66,7 +67,7 @@ class TicketsShowTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_see_tickets_assigned_to_another_agent()
     {
         $agent = $this->make->agent;
@@ -79,7 +80,7 @@ class TicketsShowTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_see_tickets_assigned_to_their_team_unless_it_is_assigned_to_them()
     {
         $agent = $this->make->agent;
@@ -93,7 +94,7 @@ class TicketsShowTest extends AdminBase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function team_leads_can_see_tickets_assigned_to_their_team()
     {
         $agent = $this->make->agent;
@@ -108,7 +109,7 @@ class TicketsShowTest extends AdminBase
         $this->assertResponseOk();
     }
 
-    /** @test */
+    #[Test]
     public function super_can_see_everything()
     {
         $agent = $this->make->super;

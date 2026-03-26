@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\TeamMembers;
 
 use Aviator\Helpdesk\Tests\AdminBase;
+use PHPUnit\Framework\Attributes\Test;
 
 class RemoveTest extends AdminBase
 {
@@ -10,7 +11,7 @@ class RemoveTest extends AdminBase
 
     const URI = 'helpdesk/admin/team-members/remove';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
@@ -18,7 +19,7 @@ class RemoveTest extends AdminBase
         $this->noAgents();
     }
 
-    /** @test */
+    #[Test]
     public function the_request_requires_three_parameters()
     {
         $agent = $this->make->agent;
@@ -30,7 +31,7 @@ class RemoveTest extends AdminBase
         $this->assertValidationFailed(['agent_id', 'team_id', 'from']);
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_can_be_removed_from_a_team()
     {
         $agent = $this->make->agent;

@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Repositories;
 
 use Aviator\Helpdesk\Repositories\TicketsRepository;
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TicketsRepositoryTest extends TestCase
 {
@@ -12,7 +13,7 @@ class TicketsRepositoryTest extends TestCase
         return app(TicketsRepository::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_scopes_queries_to_the_user()
     {
         $user = $this->make->user;
@@ -29,7 +30,7 @@ class TicketsRepositoryTest extends TestCase
         $this->assertCount(1, $repo->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_scopes_queries_to_the_agent()
     {
         $agent = $this->make->agent;
@@ -43,7 +44,7 @@ class TicketsRepositoryTest extends TestCase
         $this->assertCount(1, $repo->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_scopes_queries_to_the_super()
     {
         $super = $this->make->super;
@@ -57,10 +58,10 @@ class TicketsRepositoryTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
+    #[Test]
     public function it_gets_open_tickets()
     {
         $super = $this->make->super;
@@ -76,10 +77,10 @@ class TicketsRepositoryTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @throws \Aviator\Helpdesk\Exceptions\CreatorRequiredException
      */
+    #[Test]
     public function it_gets_closed_tickets()
     {
         $super = $this->make->super;
@@ -94,7 +95,7 @@ class TicketsRepositoryTest extends TestCase
         $this->assertCount(2, $repo->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_overdue_tickets()
     {
         $super = $this->make->super;

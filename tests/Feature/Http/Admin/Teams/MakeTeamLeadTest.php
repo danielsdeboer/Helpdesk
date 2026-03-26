@@ -3,10 +3,11 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\Teams;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class MakeTeamLeadTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function make_team_lead_creates_new_team_lead()
     {
         $team = $this->make->team;

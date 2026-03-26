@@ -16,13 +16,6 @@ abstract class ActionBase extends AbstractModel
     use SoftDeletes;
 
     /** @var array */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    /** @var array */
     protected $guarded = [];
 
     /** @var array */

@@ -9,13 +9,6 @@ abstract class ContentBase extends AbstractModel implements TicketContent
 {
     use SoftDeletes;
 
-    /** @var array */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     /** @var string */
     protected $partial;
 

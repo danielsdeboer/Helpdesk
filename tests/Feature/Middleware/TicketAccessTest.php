@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Middleware;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 
 class TicketAccessTest extends TestCase
 {
@@ -34,7 +35,7 @@ class TicketAccessTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function guest_get_a_403()
     {
         $response = $this->get($this->url(1));
@@ -42,7 +43,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function tickets_that_dont_exist_get_a_403()
     {
         $this->be($this->make->user);
@@ -52,7 +53,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function it_aborts_if_the_user_doesnt_own_the_ticket()
     {
         $ticket = $this->make->ticket;
@@ -63,7 +64,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function it_proceeds_if_the_user_owns_the_ticket()
     {
         $ticket = $this->make->ticket;
@@ -74,7 +75,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function it_aborts_if_the_agent_isnt_assigned_to_the_ticket()
     {
         $agent = $this->make->agent;
@@ -86,7 +87,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function it_proceeds_if_the_agent_is_assigned_to_the_ticket()
     {
         $agent = $this->make->agent;
@@ -98,7 +99,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function it_proceeds_if_the_agent_is_a_collaborator()
     {
         $agent1 = $this->make->agent;
@@ -112,7 +113,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function it_proceeds_for_team_leads_of_the_assigned_team()
     {
         $team = $this->make->team;
@@ -125,7 +126,7 @@ class TicketAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function other_team_leads_get_a_403()
     {
         $team = $this->make->team;

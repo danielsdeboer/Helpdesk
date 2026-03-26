@@ -2,10 +2,13 @@
 
 namespace Aviator\Helpdesk\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractModel extends Model
 {
+    use HasFactory;
+
     /** @var string */
     protected $configKey;
 
@@ -21,5 +24,13 @@ abstract class AbstractModel extends Model
                 config($this->configKey)
             );
         }
+    }
+
+    protected static function newFactory()
+    {
+        $modelClass = class_basename(static::class);
+        $factoryClass = "Aviator\\Helpdesk\\Database\\Factories\\{$modelClass}Factory";
+
+        return $factoryClass::new();
     }
 }

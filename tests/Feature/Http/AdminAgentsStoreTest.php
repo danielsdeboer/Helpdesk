@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\AdminBase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminAgentsStoreTest extends AdminBase
 {
@@ -11,7 +12,7 @@ class AdminAgentsStoreTest extends AdminBase
 
     const URI = 'helpdesk/admin/agents';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
@@ -19,7 +20,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->noAgents();
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_create_agents()
     {
         $super = $this->make->super;
@@ -36,7 +37,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->assertRedirectedToRoute('helpdesk.admin.agents.show', $user->id);
     }
 
-    /** @test */
+    #[Test]
     public function the_same_user_cant_be_added_as_an_agent_twice()
     {
         $super = $this->make->super;
@@ -54,7 +55,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->assertSessionHasErrors('user_id');
     }
 
-    /** @test */
+    #[Test]
     public function a_non_existent_user_cant_be_added()
     {
         $super = $this->make->super;
@@ -70,7 +71,7 @@ class AdminAgentsStoreTest extends AdminBase
         $this->assertSessionHasErrors('user_id');
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_can_be_deleted_and_then_created_again_with_the_same_user_id()
     {
         $super = $this->make->super;

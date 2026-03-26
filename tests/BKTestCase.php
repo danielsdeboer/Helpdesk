@@ -43,8 +43,6 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
         $this->getEnvironmentSetUp(resolve(App::class));
 
-        $this->withFactories(__DIR__ . '/../resources/factories');
-
         $this->setUpDatabase();
 
         $this->artisan('migrate', [
@@ -60,7 +58,7 @@ abstract class BKTestCase extends OrchestraBrowserKit
 
         Collection::macro('assertContains', function ($value) {
             Assert::assertTrue(
-                $this->containsIdentical($value),
+                $this->contains($value),
                 'Failed asserting that the collection contains the given value.'
             );
         });

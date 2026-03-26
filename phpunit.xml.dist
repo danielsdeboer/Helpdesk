@@ -2,30 +2,21 @@
 <phpunit
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   backupGlobals="false"
-  backupStaticAttributes="false"
   bootstrap="vendor/autoload.php"
   colors="true"
-  convertErrorsToExceptions="true"
-  convertNoticesToExceptions="true"
-  convertWarningsToExceptions="true"
   processIsolation="false"
   stopOnFailure="true"
-  verbose="true"
   beStrictAboutTestsThatDoNotTestAnything="false"
-  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
 >
-  <coverage>
+  <source>
     <include>
       <directory suffix=".php">./src</directory>
     </include>
-    <report>
-      <html outputDirectory="./reports/coverage"/>
-    </report>
-  </coverage>
+  </source>
   <testsuites>
     <testsuite name="Package Test Suite">
-      <directory suffix=".php">./tests/</directory>
+      <directory suffix="Test.php">./tests/</directory>
     </testsuite>
   </testsuites>
-  <logging/>
 </phpunit>

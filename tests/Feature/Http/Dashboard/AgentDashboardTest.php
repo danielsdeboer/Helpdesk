@@ -3,13 +3,14 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Dashboard;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AgentDashboardTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/dashboard/agent';
 
-    /** @test */
+    #[Test]
     public function a_user_cannot_visit_the_agent_dashboard()
     {
         $this->be($this->make->user);
@@ -18,7 +19,7 @@ class AgentDashboardTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_can_visit_their_dashboard()
     {
         $this->be($this->make->agent->user);
@@ -27,7 +28,7 @@ class AgentDashboardTest extends BKTestCase
         $this->assertResponseOk();
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_can_see_their_dashboard()
     {
         $this->be($this->make->agent->user);
@@ -41,7 +42,7 @@ class AgentDashboardTest extends BKTestCase
             ->dontSee('id="header-tab-admin"');
     }
 
-    /** @test */
+    #[Test]
     public function agent_dashboard_has_collaborating_list()
     {
         $this->be($this->make->agent->user);

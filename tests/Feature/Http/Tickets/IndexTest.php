@@ -3,13 +3,14 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class IndexTest extends TestCase
 {
     /** @var string */
     protected $url = 'helpdesk/tickets';
 
-    /** @test */
+    #[Test]
     public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
@@ -18,7 +19,7 @@ class IndexTest extends TestCase
             ->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function agents_may_visit()
     {
         $this->be($this->make->agent->user);
@@ -28,7 +29,7 @@ class IndexTest extends TestCase
         $response->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function users_can_visit()
     {
         $this->be($this->make->user);
@@ -38,7 +39,7 @@ class IndexTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function users_only_see_their_own_open_and_closed_tickets()
     {
         $user = $this->make->user;
@@ -57,7 +58,7 @@ class IndexTest extends TestCase
         $response->data('closed')->assertNotContains($otherClosedTicket);
     }
 
-    /** @test */
+    #[Test]
     public function agents_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
@@ -76,7 +77,7 @@ class IndexTest extends TestCase
         $response->data('closed')->assertNotContains($ticket4);
     }
 
-    /** @test */
+    #[Test]
     public function only_the_header_tickets_tab_is_enabled()
     {
         $user = $this->make->user;
@@ -87,7 +88,7 @@ class IndexTest extends TestCase
         $response->assertActiveHeaderTab('tickets');
     }
 
-    /** @test */
+    #[Test]
     public function for_less_than_24_tickets_the_see_more_button_is_disabled()
     {
         $user = $this->make->user;
@@ -100,7 +101,7 @@ class IndexTest extends TestCase
         $response->assertSee('<a id="open-see-more" class="button is-disabled">No more to show...</a>', false);
     }
 
-    /** @test */
+    #[Test]
     public function for_more_than_24_tickets_the_see_more_button_is_enabled()
     {
         $user = $this->make->user;
@@ -112,7 +113,7 @@ class IndexTest extends TestCase
         $response->assertSee('<a id="open-see-more" class="button" href=', false);
     }
 
-    /** @test */
+    #[Test]
     public function ignored_tickets_only_appear_in_ignored_list_for_supers()
     {
         $ignored = $this->make->user;
@@ -134,7 +135,7 @@ class IndexTest extends TestCase
         $response->assertSeeEncoded($ignored->name);
     }
 
-    /** @test */
+    #[Test]
     public function ignored_users_see_open_and_closed_tickets()
     {
         $user1 = $this->make->user;

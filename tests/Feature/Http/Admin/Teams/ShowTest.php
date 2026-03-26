@@ -3,10 +3,11 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\Teams;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ShowTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_shows_a_teams_agents(): void
     {
         $team = $this->make->team;
@@ -24,7 +25,7 @@ class ShowTest extends TestCase
         $response->assertSeeText('Team Lead');
     }
 
-    /** @test */
+    #[Test]
     public function handling_deleted_contents(): void
     {
         $this->withoutExceptionHandling();

@@ -4,13 +4,11 @@ namespace Aviator\Helpdesk;
 
 use Aviator\Helpdesk\Factories\NotificationFactory;
 use Aviator\Helpdesk\Interfaces\NotificationFactoryInterface;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class NotificationsProvider extends ServiceProvider
+class NotificationsProvider extends ServiceProvider implements DeferrableProvider
 {
-    /** @var bool */
-    protected $defer = true;
-
     /**
      * Register application bindings.
      */
@@ -25,5 +23,10 @@ class NotificationsProvider extends ServiceProvider
                 );
             }
         );
+    }
+
+    public function provides(): array
+    {
+        return [NotificationFactoryInterface::class];
     }
 }
