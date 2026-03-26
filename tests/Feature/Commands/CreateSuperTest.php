@@ -6,12 +6,11 @@ use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 
 class CreateSuperTest extends BKTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_a_supervisor_agent()
     {
         $user = $this->make->internalUser;
@@ -30,9 +29,7 @@ class CreateSuperTest extends BKTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_stops_and_outputs_an_error_if_no_user_can_be_found()
     {
         $this->artisan('helpdesk:super', [
@@ -44,7 +41,7 @@ class CreateSuperTest extends BKTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_modifies_existing_users()
     {
         $user = $this->make->internalUser;
@@ -73,7 +70,7 @@ class CreateSuperTest extends BKTestCase
         $this->assertTrue($agent->fresh()->isSuper());
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_the_user_filter_callback()
     {
         $external = $this->make->user;

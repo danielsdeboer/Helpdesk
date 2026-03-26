@@ -4,10 +4,11 @@ namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\Agents;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DisableAgentTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function disable_agent_puts_agent_onto_disabled_list_removes_from_teams()
     {
         $team = $this->make->team;

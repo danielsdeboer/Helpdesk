@@ -5,10 +5,11 @@ namespace Aviator\Helpdesk\Tests\Feature\Models;
 use Aviator\Helpdesk\Models\Closing;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ClosingTest extends ModelTestCase
 {
-    /** @test */
+    #[Test]
     public function creating_a_closing_creates_an_action_via_its_observer()
     {
         $closing = $this->make->closing;
@@ -16,7 +17,7 @@ class ClosingTest extends ModelTestCase
         $this->assertEquals('Closed', $closing->action->name);
     }
 
-    /** @test */
+    #[Test]
     public function creating_an_closing_fires_a_notification_to_the_end_user()
     {
         $closing = $this->make->closing;
@@ -24,12 +25,12 @@ class ClosingTest extends ModelTestCase
         $this->assertSentTo($closing->ticket->user);
     }
 
-    /** @test */
+    #[Test]
     public function if_user_is_null_dont_send_notification()
     {
         $this->withoutEvents();
 
-        $ticket = factory(Ticket::class)->create();
+        $ticket = Ticket::factory()->create();
         $ticket->user->delete();
 
         $this->withEvents();

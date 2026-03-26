@@ -6,10 +6,11 @@ use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\TeamAssignment;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TeamAssignmentTest extends ModelTestCase
 {
-    /** @test */
+    #[Test]
     public function creating_a_team_assignment_creates_an_action_via_the_team_assignment_observer()
     {
         $assignment = $this->make->teamAssignment;
@@ -17,7 +18,7 @@ class TeamAssignmentTest extends ModelTestCase
         $this->assertEquals('Assigned To Team', $assignment->action->name);
     }
 
-    /** @test */
+    #[Test]
     public function creating_a_team_assignment_fires_a_notification_to_the_team_leads()
     {
         $user = $this->make->user;
@@ -31,7 +32,7 @@ class TeamAssignmentTest extends ModelTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_doesnt_send_a_notification_to_team_lead_if_from_ignored_user()
     {
         $user = $this->make->user;
@@ -45,7 +46,7 @@ class TeamAssignmentTest extends ModelTestCase
 
         $ticket = Ticket::query()->create([
             'user_id' => $ignoredUser->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 1,

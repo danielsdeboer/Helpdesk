@@ -49,25 +49,25 @@ class Make
 
     public function action(): Action
     {
-        return factory(Action::class)->create();
+        return Action::factory()->create();
     }
 
     public function assignment(): Assignment
     {
-        return factory(Assignment::class)->create();
+        return Assignment::factory()->create();
     }
 
     public function agent(User|null $user = null): Agent
     {
         return $user
-            ? factory(Agent::class)->create(['user_id' => $user->id])
-            : factory(Agent::class)->create();
+            ? Agent::factory()->create(['user_id' => $user->id])
+            : Agent::factory()->create();
     }
 
     public function agentNamed(string $name): Agent
     {
-        return factory(Agent::class)->create([
-            'user_id' => factory(User::class)->create(['name' => $name])->id,
+        return Agent::factory()->create([
+            'user_id' => User::factory()->create(['name' => $name])->id,
         ]);
     }
 
@@ -77,37 +77,37 @@ class Make
             throw new Exception('Count must be greater than 1.');
         }
 
-        return factory(Agent::class, $count)->create();
+        return Agent::factory()->count($count)->create();
     }
 
     public function closing(): Closing
     {
-        return factory(Closing::class)->create();
+        return Closing::factory()->create();
     }
 
     public function collaborator(): Collaborator
     {
-        return factory(Collaborator::class)->create();
+        return Collaborator::factory()->create();
     }
 
     public function content(): GenericContent
     {
-        return factory(GenericContent::class)->create();
+        return GenericContent::factory()->create();
     }
 
     public function dueDate(): DueDate
     {
-        return factory(DueDate::class)->create();
+        return DueDate::factory()->create();
     }
 
     public function note(): Note
     {
-        return factory(Note::class)->create();
+        return Note::factory()->create();
     }
 
     public function opening(): Opening
     {
-        return factory(Opening::class)->create();
+        return Opening::factory()->create();
     }
 
     public function teamAssignment(Team|null $team = null): TeamAssignment
@@ -115,7 +115,7 @@ class Make
         $team = $team
             ?: $this->team();
 
-        return factory(TeamAssignment::class)->create([
+        return TeamAssignment::factory()->create([
             'team_id' => $team->id,
         ]);
     }
@@ -131,30 +131,30 @@ class Make
 
     public function reply(): Reply
     {
-        return factory(Reply::class)->create();
+        return Reply::factory()->create();
     }
 
     public function super(): Agent
     {
-        return factory(Agent::class)->states('isSuper')->create();
+        return Agent::factory()->isSuper()->create();
     }
 
     public function user(): User
     {
-        return factory(User::class)->create();
+        return User::factory()->create();
     }
 
     public function internalUser(): User
     {
-        return factory(User::class)->states('isInternal')->create();
+        return User::factory()->isInternal()->create();
     }
 
     public function ticket(User|null $user = null, string $when = 'now'): Ticket
     {
         $user = $user
-            ?: factory(User::class)->create();
+            ?: User::factory()->create();
 
-        return factory(Ticket::class)->create([
+        return Ticket::factory()->create([
             'user_id' => $user->id,
             'created_at' => Carbon::parse($when),
         ]);
@@ -162,7 +162,7 @@ class Make
 
     public function ticketWithDeletedContent(): Ticket
     {
-        return factory(Ticket::class)->create([
+        return Ticket::factory()->create([
             'content_type' => 'Foo\\Bar\\DeletedContent',
         ]);
     }
@@ -174,9 +174,9 @@ class Make
         }
 
         $user = $user
-            ?: factory(User::class)->create();
+            ?: User::factory()->create();
 
-        return factory(Ticket::class, $quantity)->create([
+        return Ticket::factory()->count($quantity)->create([
             'user_id' => $user->id,
         ]);
     }
@@ -195,7 +195,7 @@ class Make
 
     public function team(): Team
     {
-        return factory(Team::class)->create();
+        return Team::factory()->create();
     }
 
     public function option(Agent $agent, string $idSlug): string

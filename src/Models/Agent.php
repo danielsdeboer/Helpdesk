@@ -31,13 +31,6 @@ class Agent extends AbstractModel
     protected $configKey = 'helpdesk.tables.agents';
 
     /** @var array */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    /** @var array */
     protected $guarded = [];
 
     /** @var array */

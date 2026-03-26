@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets\Permalink;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ShowTest extends TestCase
 {
@@ -17,7 +18,7 @@ class ShowTest extends TestCase
         return $this->url . ($id ?: 1);
     }
 
-    /** @test */
+    #[Test]
     public function guests_may_visit()
     {
         $ticket = $this->make->ticket;
@@ -26,7 +27,7 @@ class ShowTest extends TestCase
         $response->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function guests_do_not_see_the_action_bar()
     {
         $ticket = $this->make->ticket;

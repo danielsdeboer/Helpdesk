@@ -3,6 +3,7 @@
 namespace Aviator\Helpdesk\Tests\Feature\Middleware;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DashboardRedirectorTest extends TestCase
 {
@@ -19,7 +20,7 @@ class DashboardRedirectorTest extends TestCase
         $this->url = route('helpdesk.dashboard.router');
     }
 
-    /** @test */
+    #[Test]
     public function it_routes_guests_to_the_login_page()
     {
         $response = $this->get($this->url);
@@ -28,7 +29,7 @@ class DashboardRedirectorTest extends TestCase
         $response->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function it_routes_users_to_the_public_dashboard()
     {
         $this->be($this->make->user);
@@ -39,7 +40,7 @@ class DashboardRedirectorTest extends TestCase
         $response->assertRedirect(route('helpdesk.dashboard.user'));
     }
 
-    /** @test */
+    #[Test]
     public function it_routes_agents_to_the_agent_dashboard()
     {
         $this->be($this->make->agent->user);
@@ -50,7 +51,7 @@ class DashboardRedirectorTest extends TestCase
         $response->assertRedirect(route('helpdesk.dashboard.agent'));
     }
 
-    /** @test */
+    #[Test]
     public function it_routes_supervisors_to_the_supervisor_dashboard()
     {
         $this->be($this->make->super->user);

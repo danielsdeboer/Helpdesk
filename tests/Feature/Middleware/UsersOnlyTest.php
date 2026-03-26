@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Middleware;
 
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 
 class UsersOnlyTest extends TestCase
 {
@@ -25,7 +26,7 @@ class UsersOnlyTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_aborts_with_403_for_guests()
     {
         $response = $this->get($this->url);
@@ -34,7 +35,7 @@ class UsersOnlyTest extends TestCase
         $response->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function it_aborts_with_403_if_the_user_is_an_agent()
     {
         $this->be($this->make->agent->user);
@@ -44,7 +45,7 @@ class UsersOnlyTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function it_continues_if_the_user_is_not_an_agent()
     {
         $this->be($this->make->user);

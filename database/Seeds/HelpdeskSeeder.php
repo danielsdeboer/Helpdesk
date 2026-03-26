@@ -41,7 +41,7 @@ class HelpdeskSeeder extends Seeder
      */
     protected function createTickets($numberOfTickets)
     {
-        $this->tickets = factory(Ticket::class, $numberOfTickets)->create();
+        $this->tickets = Ticket::factory()->count($numberOfTickets)->create();
 
         return $this;
     }
@@ -54,7 +54,7 @@ class HelpdeskSeeder extends Seeder
      */
     protected function createAgents($numberOfAgents)
     {
-        $this->agents = factory(Agent::class, $numberOfAgents)->create();
+        $this->agents = Agent::factory()->count($numberOfAgents)->create();
 
         return $this;
     }
@@ -67,7 +67,7 @@ class HelpdeskSeeder extends Seeder
      */
     protected function createTeams($numberOfTeams)
     {
-        $this->teams = factory(Team::class, $numberOfTeams)->create();
+        $this->teams = Team::factory()->count($numberOfTeams)->create();
 
         return $this;
     }

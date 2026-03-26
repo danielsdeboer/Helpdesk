@@ -2,17 +2,17 @@
 
 namespace Aviator\Helpdesk\Traits;
 
+use Illuminate\Support\Str;
+
 trait AutoUuids
 {
     /**
      * Boot the trait.
      */
-    protected static function boot()
+    protected static function bootAutoUuids()
     {
-        parent::boot();
-
         static::creating(function ($model) {
-            $model->uuid = strtolower(str_random(32));
+            $model->uuid = strtolower(Str::random(32));
         });
     }
 }

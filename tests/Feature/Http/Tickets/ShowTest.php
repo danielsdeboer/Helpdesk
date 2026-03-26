@@ -7,9 +7,11 @@ use Aviator\Helpdesk\Models\GenericContent;
 use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\TestCase;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\Attributes\Test;
+
+use Aviator\Helpdesk\Tests\User;
 
 use function auth;
-use function factory;
 
 class ShowTest extends TestCase
 {
@@ -34,7 +36,7 @@ class ShowTest extends TestCase
         return $this->url . ($id ?: 1);
     }
 
-    /** @test */
+    #[Test]
     public function guests_may_not_visit()
     {
         $response = $this->get($this->url());
@@ -43,7 +45,7 @@ class ShowTest extends TestCase
             ->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function users_can_only_visit_their_own_tickets()
     {
         $user = $this->make->user;
@@ -59,7 +61,7 @@ class ShowTest extends TestCase
         $response2->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_the_header_with_tickets_tab_active()
     {
         $user = $this->make->user;
@@ -71,7 +73,7 @@ class ShowTest extends TestCase
         $response->assertActiveHeaderTab('tickets');
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_tickets_status_tags()
     {
         $user = $this->make->user;
@@ -98,7 +100,7 @@ class ShowTest extends TestCase
         $response->assertSee('id="status-tag-closed"', false);
     }
 
-    /** @test */
+    #[Test]
     public function when_a_ticket_is_open_a_user_may_close_or_reply()
     {
         $user = $this->make->user;
@@ -121,7 +123,7 @@ class ShowTest extends TestCase
         $response->assertSee('id="toolbar-action-open"', false);
     }
 
-    /** @test */
+    #[Test]
     public function users_dont_see_agent_actions()
     {
         $adminActions = ['assign', 'note', 'collab'];
@@ -138,7 +140,7 @@ class ShowTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function agents_dont_see_team_lead_actions()
     {
         $agentActions = ['reply', 'note', 'close', 'collab'];
@@ -162,7 +164,7 @@ class ShowTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function team_leads_see_all_actions()
     {
         $openActions = ['reply', 'note', 'close', 'assign'];
@@ -200,7 +202,7 @@ class ShowTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function agents_are_listed_alphabetically()
     {
         $agent1 = $this->make->agentNamed('zzz');
@@ -226,7 +228,7 @@ class ShowTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function users_dont_see_private_actions()
     {
         $user = $this->make->user;
@@ -242,7 +244,7 @@ class ShowTest extends TestCase
         $response->assertDontSee('id="action-assigned"', false);
     }
 
-    /** @test */
+    #[Test]
     public function agents_see_private_actions()
     {
         $user = $this->make->user;
@@ -258,7 +260,7 @@ class ShowTest extends TestCase
         $response->assertSee('id="action-assigned"', false);
     }
 
-    /** @test */
+    #[Test]
     public function supers_can_assign_ticket_when_ticket_is_assigned_to_team()
     {
         $user = $this->make->user;
@@ -285,7 +287,7 @@ class ShowTest extends TestCase
         $response->assertSee('>' . $agent2->user->name, false);
     }
 
-    /** @test */
+    #[Test]
     public function supers_can_assign_tickets_outside_of_their_own_team()
     {
         // The super, their team, their fellow users
@@ -319,7 +321,7 @@ class ShowTest extends TestCase
         $this->assertSeeInAssignList($response, $agentOnSomeOtherTeam);
     }
 
-    /** @test */
+    #[Test]
     public function supers_can_reassign_tickets()
     {
         $user = $this->make->user;
@@ -336,7 +338,7 @@ class ShowTest extends TestCase
         $response->assertSee('<p class="heading">Reassign</p>', false);
     }
 
-    /** @test */
+    #[Test]
     public function team_leads_can_reassign_tickets()
     {
         $user = $this->make->user;
@@ -358,7 +360,7 @@ class ShowTest extends TestCase
         $response->assertSee('<p class="heading">Reassign</p>', false);
     }
 
-    /** @test */
+    #[Test]
     public function can_not_see_open_tickets_in_closed_list()
     {
         $user = $this->make->user;
@@ -381,7 +383,7 @@ class ShowTest extends TestCase
         $this->assertSame(1, count($content['open']));
     }
 
-    /** @test */
+    #[Test]
     public function ignored_tickets_are_only_seen_by_supers()
     {
         $agent = $this->make->agent;
@@ -397,7 +399,7 @@ class ShowTest extends TestCase
 
         $ignoredTicket = Ticket::query()->create([
             'user_id' => $ignoredUser->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 2,
@@ -414,7 +416,7 @@ class ShowTest extends TestCase
         $response->assertSee('<div class="section" id="ignored">', false);
     }
 
-    /** @test */
+    #[Test]
     public function ticket_with_deleted_content(): void
     {
         $agent = $this->make->agent;

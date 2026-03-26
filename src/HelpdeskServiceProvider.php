@@ -26,7 +26,6 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'helpdesk');
         $this->loadRoutesFrom(__DIR__ . '/Routes/routes.php');
 
-        $this->publishFactories();
         $this->publishImages();
 
         $this->setBladeDirectives();
@@ -49,18 +48,6 @@ class HelpdeskServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../resources/config/helpdesk.php' => config_path('helpdesk.php'),
         ], 'config');
-    }
-
-    /**
-     * Make the helpdesk factory available for publishing.
-     *
-     * @return void
-     */
-    protected function publishFactories()
-    {
-        $this->publishes([
-            __DIR__ . '/../resources/factories/HelpdeskFactory.php' => database_path('factories/HelpdeskFactory.php'),
-        ], 'factories');
     }
 
     /**

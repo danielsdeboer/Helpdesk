@@ -4,6 +4,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminTeamsShowTest extends BKTestCase
 {
@@ -18,7 +19,7 @@ class AdminTeamsShowTest extends BKTestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function guests_cant_visit()
     {
         $this->get(self::URI);
@@ -27,7 +28,7 @@ class AdminTeamsShowTest extends BKTestCase
         $this->assertRedirectedTo('login');
     }
 
-    /** @test */
+    #[Test]
     public function users_cant_visit()
     {
         $this->be($this->make->user);
@@ -36,7 +37,7 @@ class AdminTeamsShowTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function agents_cant_visit()
     {
         $this->be($this->make->agent->user);
@@ -45,7 +46,7 @@ class AdminTeamsShowTest extends BKTestCase
         $this->assertResponseStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function supervisors_can_visit()
     {
         $super = $this->make->super;
@@ -59,7 +60,7 @@ class AdminTeamsShowTest extends BKTestCase
             ->see('0 open tickets');
     }
 
-    /** @test */
+    #[Test]
     public function it_has_a_list_of_agents()
     {
         $super = $this->make->super;
@@ -90,7 +91,7 @@ class AdminTeamsShowTest extends BKTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_has_a_list_of_open_tickets()
     {
         $super = $this->make->super;
@@ -123,7 +124,7 @@ class AdminTeamsShowTest extends BKTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_displays_nothing_to_see_here_on_no_tickets()
     {
         $super = $this->make->super;

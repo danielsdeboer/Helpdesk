@@ -9,10 +9,11 @@ use Aviator\Helpdesk\Models\Ticket;
 use Aviator\Helpdesk\Tests\ModelTestCase;
 use Aviator\Helpdesk\Tests\User;
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 
 class ReplyTest extends ModelTestCase
 {
-    /** @test */
+    #[Test]
     public function it_creates_an_action_via_its_observer()
     {
         $reply = $this->make->reply;
@@ -20,7 +21,7 @@ class ReplyTest extends ModelTestCase
         $this->assertEquals('Reply Added', $reply->action->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_is_visible_by_default()
     {
         $reply = $this->make->reply;
@@ -28,7 +29,7 @@ class ReplyTest extends ModelTestCase
         $this->assertTrue($reply->is_visible);
     }
 
-    /** @test */
+    #[Test]
     public function it_sends_a_notification_to_the_user_if_created_by_an_agent()
     {
         $reply = $this->make->reply;
@@ -36,7 +37,7 @@ class ReplyTest extends ModelTestCase
         $this->assertSentTo($reply->ticket->user);
     }
 
-    /** @test */
+    #[Test]
     public function it_sends_a_notification_to_the_agent_if_created_by_an_user_and_assigned()
     {
         $ticket = $this->make->ticket
@@ -46,13 +47,13 @@ class ReplyTest extends ModelTestCase
         $this->assertSentTo($ticket->assignment->assignee);
     }
 
-    /** @test */
+    #[Test]
     public function if_user_doesnt_exist_dont_send_notification_to_agent()
     {
         /** @var Ticket $ticket */
         $ticket = Ticket::query()->create([
-            'user_id' => factory(config('helpdesk.userModel'))->create()->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'user_id' => User::factory()->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
 
@@ -72,13 +73,13 @@ class ReplyTest extends ModelTestCase
         $this->assertNotSentTo(Agent::all());
     }
 
-    /** @test */
+    #[Test]
     public function if_the_ticket_is_not_assigned_dont_notify_an_agent()
     {
         /** @var Ticket $ticket */
         $ticket = Ticket::query()->create([
-            'user_id' => factory(config('helpdesk.userModel'))->create()->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'user_id' => User::factory()->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
 
@@ -99,17 +100,17 @@ class ReplyTest extends ModelTestCase
         $this->assertNotSentTo(Agent::all());
     }
 
-    /** @test */
+    #[Test]
     public function if_agent_doesnt_exist_dont_send_notification_to_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->withoutEvents();
 
         /** @var Ticket $ticket */
         $ticket = Ticket::query()->create([
             'user_id' => $user->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 1,
@@ -133,17 +134,17 @@ class ReplyTest extends ModelTestCase
         $this->assertNotSentTo($user);
     }
 
-    /** @test */
+    #[Test]
     public function if_user_doesnt_exist_dont_send_notification()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->withoutEvents();
 
         /** @var Ticket $ticket */
         $ticket = Ticket::query()->create([
             'user_id' => $user->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 1,
@@ -166,7 +167,7 @@ class ReplyTest extends ModelTestCase
         $this->assertNotSentTo($user);
     }
 
-    /** @test */
+    #[Test]
     public function it_doesnt_send_a_notification_to_assignee_if_ignored()
     {
         $user = $this->make->user;
@@ -177,7 +178,7 @@ class ReplyTest extends ModelTestCase
 
         $ticket = Ticket::query()->create([
             'user_id' => $ignoredUser->id,
-            'content_id' => factory(GenericContent::class)->create()->id,
+            'content_id' => GenericContent::factory()->create()->id,
             'content_type' => 'Aviator\Helpdesk\Models\GenericContent',
             'status' => 'open',
             'uuid' => 1,

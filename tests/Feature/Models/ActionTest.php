@@ -3,10 +3,11 @@
 namespace Aviator\Helpdesk\Tests\Feature\Models;
 
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_has_an_object()
     {
         $action = $this->make->action;
@@ -14,7 +15,7 @@ class ActionTest extends TestCase
         $this->assertNotNull($action->object);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_an_subject()
     {
         $action = $this->make->action;

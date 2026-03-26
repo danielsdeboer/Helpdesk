@@ -60,13 +60,6 @@ class Ticket extends AbstractModel
     protected $configKey = 'helpdesk.tables.tickets';
 
     /** @var array */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    /** @var array */
     protected $guarded = [];
 
     /**

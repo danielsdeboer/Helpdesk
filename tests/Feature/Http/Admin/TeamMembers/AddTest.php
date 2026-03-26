@@ -5,6 +5,7 @@ namespace Aviator\Helpdesk\Tests\Feature\Http\Admin\TeamMembers;
 use Aviator\Helpdesk\Tests\AdminBase;
 use Exception;
 use Illuminate\Database\QueryException;
+use PHPUnit\Framework\Attributes\Test;
 
 class AddTest extends AdminBase
 {
@@ -12,7 +13,7 @@ class AddTest extends AdminBase
 
     const URI = 'helpdesk/admin/team-members/add';
 
-    /** @test */
+    #[Test]
     public function access_test()
     {
         $this->noGuests();
@@ -20,7 +21,7 @@ class AddTest extends AdminBase
         $this->noAgents();
     }
 
-    /** @test */
+    #[Test]
     public function the_request_requires_three_parameters()
     {
         $this->make->agent;
@@ -33,7 +34,7 @@ class AddTest extends AdminBase
         $this->assertValidationFailed(['agent_id', 'team_id', 'from']);
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_can_be_added_to_a_team()
     {
         $agent = $this->make->agent;
@@ -50,7 +51,7 @@ class AddTest extends AdminBase
         $this->assertEquals(1, $agent->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function an_agent_cant_be_added_to_a_team_more_than_once()
     {
         $agent = $this->make->agent;

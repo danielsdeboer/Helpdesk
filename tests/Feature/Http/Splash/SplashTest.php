@@ -3,10 +3,11 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http\Splash;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class SplashTest extends BKTestCase
 {
-    /** @test */
+    #[Test]
     public function the_splash_exists()
     {
         $this->visit('/helpdesk')

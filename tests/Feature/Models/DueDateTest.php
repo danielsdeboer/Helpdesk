@@ -4,10 +4,11 @@ namespace Aviator\Helpdesk\Tests\Feature\Models;
 
 use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 
 class DueDateTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function creating_a_due_date_creates_an_action_via_its_observer()
     {
         $dueDate = $this->make->dueDate;
@@ -15,7 +16,7 @@ class DueDateTest extends TestCase
         $this->assertEquals('Due Date Added', $dueDate->action->name);
     }
 
-    /** @test */
+    #[Test]
     public function the_due_on_field_is_cast_to_a_carbon_instance()
     {
         $dueDate = $this->make->dueDate;

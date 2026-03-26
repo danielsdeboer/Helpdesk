@@ -4,10 +4,11 @@ namespace Aviator\Helpdesk\Tests\Feature\Models;
 
 use Aviator\Helpdesk\Models\Agent;
 use Aviator\Helpdesk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AgentTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_belongs_to_a_user()
     {
         $agent = $this->make->agent;
@@ -15,7 +16,7 @@ class AgentTest extends TestCase
         $this->assertNotNull($agent->user);
     }
 
-    /** @test */
+    #[Test]
     public function it_may_belong_to_many_teams()
     {
         $agent1 = $this->make->agent;
@@ -31,7 +32,7 @@ class AgentTest extends TestCase
         $this->assertEquals(2, $agent2->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_added_to_a_team()
     {
         $agent = $this->make->agent;
@@ -42,7 +43,7 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_removed_from_a_team()
     {
         $agent = $this->make->agent;
@@ -58,7 +59,7 @@ class AgentTest extends TestCase
         $this->assertEquals(0, $agent->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_added_to_many_teams()
     {
         $agent = $this->make->agent;
@@ -70,7 +71,7 @@ class AgentTest extends TestCase
         $this->assertEquals(2, $agent->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_removed_from_many_teams()
     {
         $agent = $this->make->agent;
@@ -88,7 +89,7 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_made_team_lead_of_a_team()
     {
         $agent = $this->make->agent;
@@ -99,7 +100,7 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_made_team_lead_of_a_team_it_already_belongs_to()
     {
         $agent = $this->make->agent;
@@ -112,7 +113,7 @@ class AgentTest extends TestCase
         $this->assertEquals(1, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /** @test */
+    #[Test]
     public function it_may_be_made_team_lead_and_then_removed_as_team_lead()
     {
         $agent = $this->make->agent;
@@ -129,7 +130,7 @@ class AgentTest extends TestCase
         $this->assertEquals(0, $agent->teams->first()->pivot->is_team_lead);
     }
 
-    /** @test */
+    #[Test]
     public function isMemberOfReturnsTrueIfAnAgentIsAMemberOfThatTeam()
     {
         $agent = $this->make->agent;
@@ -140,7 +141,7 @@ class AgentTest extends TestCase
         $this->assertTrue($agent->isMemberOf($team));
     }
 
-    /** @test */
+    #[Test]
     public function isMemberOfReturnsFalseIfAnAgentIsntAMemberOfThatTeam()
     {
         $agent = $this->make->agent;
@@ -149,9 +150,7 @@ class AgentTest extends TestCase
         $this->assertFalse($agent->isMemberOf($team));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checking_if_an_agent_is_super()
     {
         $agent = $this->make->agent;
@@ -164,7 +163,7 @@ class AgentTest extends TestCase
         $this->assertSame(true, $super->is_super);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_an_agent_is_lead_of_a_team()
     {
         $agent = $this->make->agent;
@@ -176,7 +175,7 @@ class AgentTest extends TestCase
         $this->assertFalse($agent->isLeadOf($notLeadOf));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_an_agent_is_lead_for_a_ticket()
     {
         $team1 = $this->make->team;
@@ -189,7 +188,7 @@ class AgentTest extends TestCase
         $this->assertFalse($agent->isLeadFor($ticket2));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_scope_to_a_team()
     {
         $agent1 = $this->make->agent;

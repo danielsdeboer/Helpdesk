@@ -3,13 +3,14 @@
 namespace Aviator\Helpdesk\Tests\Feature\Http;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminTeamsDeleteTest extends BKTestCase
 {
     /** @const string */
     const URI = 'helpdesk/admin/teams';
 
-    /** @test */
+    #[Test]
     public function supervisors_can_delete_teams()
     {
         $super = $this->make->super;
@@ -27,7 +28,7 @@ class AdminTeamsDeleteTest extends BKTestCase
         $this->assertEquals(1, $this->get->withTrashed->count->team);
     }
 
-    /** @test */
+    #[Test]
     public function nonexistent_teams_throw_a_404()
     {
         $super = $this->make->super;
@@ -40,7 +41,7 @@ class AdminTeamsDeleteTest extends BKTestCase
         $this->assertResponseStatus(404);
     }
 
-    /** @test */
+    #[Test]
     public function delete_confirmation_is_required()
     {
         $super = $this->make->super;

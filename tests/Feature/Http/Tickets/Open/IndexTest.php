@@ -4,13 +4,14 @@ namespace Aviator\Helpdesk\Tests\Feature\Http\Tickets\Open;
 
 use Aviator\Helpdesk\Tests\TestCase;
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 
 class IndexTest extends TestCase
 {
     /** @var string */
     protected $url = 'helpdesk/tickets/open';
 
-    /** @test */
+    #[Test]
     public function guests_are_redirected_to_login()
     {
         $response = $this->get($this->url);
@@ -19,7 +20,7 @@ class IndexTest extends TestCase
             ->assertRedirect('login');
     }
 
-    /** @test */
+    #[Test]
     public function users_only_see_their_own_open_tickets()
     {
         $user = $this->make->user;
@@ -39,7 +40,7 @@ class IndexTest extends TestCase
         $response->data('open')->assertNotContains($ticket4);
     }
 
-    /** @test */
+    #[Test]
     public function agents_see_tickets_assigned_to_them()
     {
         $agent = $this->make->agent;
@@ -59,7 +60,7 @@ class IndexTest extends TestCase
         $response->data('open')->assertNotContains($ticket4);
     }
 
-    /** @test */
+    #[Test]
     public function team_leads_see_all_ticket_assigned_to_their_team()
     {
         $agent = $this->make->agent;
@@ -108,7 +109,7 @@ class IndexTest extends TestCase
         $tickets->assertNotContains($ticket8);
     }
 
-    /** @test */
+    #[Test]
     public function results_are_paginated_when_displaying_more_than_24_tickets()
     {
         $user = $this->make->user;
@@ -130,7 +131,7 @@ class IndexTest extends TestCase
         $response->assertSee('ul class="pagination-list"', false);
     }
 
-    /** @test */
+    #[Test]
     public function results_are_ordered_by_latest_first()
     {
         $user = $this->make->user;
@@ -154,7 +155,7 @@ class IndexTest extends TestCase
         $this->assertSame($ticket1->id, $response->data('open')[2]->id);
     }
 
-    /** @test */
+    #[Test]
     public function users_see_the_user_table_sorted_by_newest_first()
     {
         $user = $this->make->user;
@@ -185,7 +186,7 @@ class IndexTest extends TestCase
         ], false);
     }
 
-    /** @test */
+    #[Test]
     public function agents_see_the_agent_table_sorted_by_newest_first()
     {
         $user1 = $this->make->user;
@@ -219,7 +220,7 @@ class IndexTest extends TestCase
         ], false);
     }
 
-    /** @test */
+    #[Test]
     public function only_ignored_users_can_see_their_open_tickets()
     {
         $user = $this->make->user;

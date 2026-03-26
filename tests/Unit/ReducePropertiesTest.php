@@ -4,10 +4,11 @@ namespace Aviator\Helpdesk\Tests\Unit;
 
 use Aviator\Helpdesk\Tests\BKTestCase;
 use Aviator\Helpdesk\Tests\Support\LevelOne;
+use PHPUnit\Framework\Attributes\Test;
 
 class ReducePropertiesTest extends BKTestCase
 {
-    /** @test */
+    #[Test]
     public function it_takes_an_object_and_a_dot_notated_path_and_gets_the_properties()
     {
         $class = new LevelOne();
@@ -16,7 +17,7 @@ class ReducePropertiesTest extends BKTestCase
         $this->assertSame('testing', $result);
     }
 
-    /** @test */
+    #[Test]
     public function if_it_receives_a_null_value_from_the_previous_iteration_it_returns_null()
     {
         $class = new LevelOne();
